@@ -1,0 +1,153 @@
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  line-height: 1.6;
+  background-color: #ffffff;
+  color: #333333;
+}
+
+.App {
+  display: flex;
+  flex-direction: column;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.AppMain {
+  text-align: center;
+}
+
+.AppMain h1 {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 5em;
+  color: dimgray;
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+}
+
+.AppMain p {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 1em;
+  color: #666;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.AppHeader {
+  text-align: center;
+}
+
+.AppHeader p {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 1em;
+  color: #666;
+  font-weight: 500;
+}
+
+.AppLogo {
+  height: 20vmin;
+  pointer-events: none;
+}
+
+footer {
+  text-align: center;
+  font-size: 0.9em;
+  color: #666;
+  margin-top: 50px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .AppLogo {
+    animation: App-logo-spin infinite 10s linear;
+  }
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Media Queries for Responsiveness */
+@media (max-width: 1200px) {
+  .App {
+    padding: 15px;
+  }
+
+  .AppMain h1 {
+    font-size: 4em;
+  }
+
+  footer {
+    font-size: 0.6em;
+  }
+}
+
+@media (max-width: 992px) {
+  .App {
+    padding: 10px;
+  }
+
+  .AppMain h1 {
+    font-size: 3em;
+  }
+
+  .AppMain p {
+    font-size: 0.9em;
+  }
+
+  footer {
+    font-size: 0.6em;
+  }
+}
+
+@media (max-width: 768px) {
+  .App {
+    padding: 5px;
+  }
+
+  .AppMain h1 {
+    font-size: 2.5em;
+  }
+
+  .AppMain p {
+    font-size: 0.8em;
+  }
+
+  .AppLogo {
+    height: 25vmin;
+  }
+
+  footer {
+    font-size: 0.6em;
+  }
+}
+
+@media (max-width: 576px) {
+  .AppMain h1 {
+    font-size: 2em;
+  }
+
+  .AppMain p {
+    font-size: 0.7em;
+  }
+
+  .AppLogo {
+    height: 30vmin;
+  }
+
+  footer {
+    font-size: 0.6em;
+  }
+}

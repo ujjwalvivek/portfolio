@@ -1,23 +1,22 @@
+import React from "react";
 import logo from './logo.svg';
-import './App.css';
+import styles from './App.module.css';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Work in progress. Expected to finish by 15th March.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+    <div className={styles.App}>
+      <header className={styles.AppHeader}>
+        <p>powered by <span style={{color: '#61DAFB', fontWeight: 'bold'}}>React</span></p><br></br>
+        <img src={logo} className={styles.AppLogo} alt="logo" />
       </header>
+      <main className={styles.AppMain}>
+        <h1>Work In Progress</h1>
+        <p style={{textTransform:'none'}}>Something cool coming before the New Year!</p>
+        <p>Be on the lookout</p>
+      </main>
+      <footer>
+        <p>© 2024 Ujjwal Vivek. Fuelled by sleepless nights, almost ready to shine!</p>
+      </footer>
     </div>
   );
 }
