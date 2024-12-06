@@ -1,70 +1,140 @@
-# Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Portfolio Website
 
-## Available Scripts
+This project is a personal portfolio website built with React. It showcases the work and projects of **Ujjwal Vivek**. The website is still a work in progress and will be launched soon.
+
+---
+
+## Table of Contents
+
+- [Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+- [Project Features](#project-features)
+- [Development Workflow](#development-workflow)
+  - [Available Scripts](#available-scripts)
+- [PostCSS Integration](#postcss-integration)
+- [CSS Modules Usage](#css-modules-usage)
+- [Project Structure](#project-structure)
+- [License](#license)
+
+---
+
+## Getting Started
+
+Follow these steps to get a local copy of the project up and running for development and testing.
+
+### Prerequisites
+
+Make sure you have the following installed:
+- **Node.js** (>=14.x)
+- **npm** (>=6.x)
+
+### Installation
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/your-username/portfolio.git
+   cd portfolio
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+---
+
+## Project Features
+
+- Built with **React** for a responsive and dynamic UI.
+- Styled using **CSS Modules** for component-specific styles.
+- Integrated with **PostCSS** plugins for advanced CSS processing.
+- Fully customizable and optimized for deployment.
+
+---
+
+## Development Workflow
+
+The project uses `react-app-rewired` and `customize-cra` to modify the default Create React App configurations.
+
+### Available Scripts
 
 In the project directory, you can run:
 
-### `npm start`
+- **Start the Development Server:**
+  ```bash
+  npm start
+  ```
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- **Run Tests:**
+  ```bash
+  npm test
+  ```
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- **Build the Project for Production:**
+  ```bash
+  npm run build
+  ```
 
-### `npm test`
+---
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## PostCSS Integration
 
-### `npm run build`
+This project uses PostCSS with the following plugins:
+- `postcss-import` for handling `@import` rules.
+- `postcss-preset-env` for modern CSS features.
+- `postcss-nested` for nesting CSS rules.
+- `autoprefixer` for adding vendor prefixes.
+- `cssnano` for CSS minification.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+---
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## CSS Modules Usage
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+The project employs **CSS Modules** to scope styles to individual components. For example:
+- **App.module.css** contains styles specific to the `App` component.
+- Import the styles in the component:
+  ```javascript
+  import styles from './App.module.css';
+  ```
+- Use the styles:
+  ```javascript
+  <div className={styles.AppHeader}>...</div>
+  ```
 
-### `npm run eject`
+---
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Project Structure
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+The project follows a structured file organization:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+```
+portfolio/
+├── .github/
+├── public/
+├── src/
+│   ├── App.js
+│   ├── App.module.css
+│   ├── App.test.js
+│   ├── index.css
+│   ├── index.js
+│   ├── logo.svg
+│   ├── reportWebVitals.js
+│   └── setupTests.js
+├── config-overrides.js
+├── postcss.config.js
+├── package.json
+├── README.md
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+---
 
-## Learn More
+## License
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+This project is licensed under the MIT License. You are free to use, modify, and distribute this project as long as proper credit is given.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+---
 
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+**© 2024 Ujjwal Vivek**  
+Fuelled by sleepless nights, almost ready to shine!
