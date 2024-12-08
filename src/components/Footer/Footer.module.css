@@ -1,0 +1,42 @@
+.Footer {
+    position: static;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    padding: 10px 0;
+    /* box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1); */
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9em;
+    font-weight: 300;
+    letter-spacing: 0.1em;
+    color: #222222;
+}
+
+.Footer p {
+    margin: 0;
+    padding: 5px 10px;
+}
+
+.Footer.dark {
+    color: #E3DCED;
+}
+
+/* ------- WEB BREAKPOINTS ------- */
+
+/* @media (max-width: 992px) {
+    .Footer {
+        font-size: 0.9em;
+    }
+} */
+
+@media (max-width: 768px) {
+    .Footer {
+        font-size: 0.8em;
+    }
+}
+
+@media (max-width: 576px) {
+    .Footer {
+        font-size: 0.7em;
+    }
+}

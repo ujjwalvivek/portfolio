@@ -1,5 +1,6 @@
 .Header {
     position: sticky;
+    top: 0;
     width: 100%;
     background: #E3DCED;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -31,7 +32,7 @@
     font-family: 'DM Sans', sans-serif;
     font-size: 1em;
     color: #222222;
-    font-weight: 700;
+    font-weight: 400;
     letter-spacing: 0.2em;
     text-decoration: none;
 }
@@ -53,11 +54,11 @@
     position: relative;
     display: inline-block;
     padding: 10px 15px;
-    color: #222222;
+    color: dimgray;
     font-size: 1em;
     font-family: 'DM Sans', sans-serif;
     letter-spacing: 0.2em;
-    font-weight: 500;
+    font-weight: 300;
     text-decoration: none;
     border: 2px solid transparent;
     transition: color 0.3s ease, border-color 0.3s ease;
@@ -69,11 +70,11 @@
 }
 
 .NavLink.dark {
-    color: #E3DCED;
+    color: gray;
 }
 
 .MenuIcon {
-    display: block;
+    display: none;
     font-size: 2em;
     cursor: pointer;
     line-height: 0.9;
@@ -81,16 +82,11 @@
 }
 
 .Icon {
-    /* display: flex;
-    align-items: center;
-    justify-content: center; */
     transition: transform 0.3s ease;
-    /* Smooth transition for sliding */
 }
 
 .SlideLeft {
     transform: translateX(-8px);
-    /* Slide the icon to the left */
 }
 
 .Logo.dark {

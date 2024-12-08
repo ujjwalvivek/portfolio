@@ -5,6 +5,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import { ThemeProvider, ThemeContext } from './components/ThemeSwitcher/ThemeContext';
 import Header from './components/Header/Header';
 import LoadingSpinner from './components/Loader/LoadingSpinner';
+import Footer from "./components/Footer/Footer";
 
 function App() {
 
@@ -19,10 +20,20 @@ function App() {
         <h1>Work In Progress</h1>
         <p style={{ textTransform: 'none' }}>Something cool coming before the New Year!</p>
         <p>Be on the lookout</p>
+        <h1>Work In Progress</h1>
+        <p style={{ textTransform: 'none' }}>Something cool coming before the New Year!</p>
+        <p>Be on the lookout</p>
+        <h1>Work In Progress</h1>
+        <p style={{ textTransform: 'none' }}>Something cool coming before the New Year!</p>
+        <p>Be on the lookout</p>
+        <h1>Work In Progress</h1>
+        <p style={{ textTransform: 'none' }}>Something cool coming before the New Year!</p>
+        <p>Be on the lookout</p>
+        <h1>Work In Progress</h1>
+        <p style={{ textTransform: 'none' }}>Something cool coming before the New Year!</p>
+        <p>Be on the lookout</p>
       </main>
-      <footer>
-        <p>© 2024 Ujjwal Vivek. Fuelled by sleepless nights, almost ready to shine!</p>
-      </footer>
+      <Footer />
     </div>
     </LoadingSpinner>
   );
