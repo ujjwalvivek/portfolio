@@ -10,18 +10,13 @@ html, body {
 body {
   font-family: 'DM Sans', sans-serif;
   line-height: 1.6;
-  background-color: #ffffff;
+  background-color: #E3DCED;
   color: #222222;
   transition: background-color 1s ease, color 1s ease;
 }
 
 .App {
-  display: flex;
-  flex-direction: column;
-  max-width: 1200px;
   margin: 0 auto;
-  padding: 20px;
-  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .AppMain {
@@ -45,83 +40,19 @@ body {
   font-weight: 500;
 }
 
-.AppHeader {
-  text-align: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  flex-direction: column;
-}
-
-.ToggleButton {
-  background: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background-color 0.3s ease, color 0.3s ease;
-  position: absolute;
-  right: 0;
-  top: 20px;
-}
-
-.ThemeLogo {
-  fill: currentColor; /* Ensure the fill color is inherited */
-}
-
-.ToggleButton svg {
-  height: 3em;
-  width: 3em;
-}
-
-.invert {
-  filter: invert(1);
-}
-
-.AppHeader p {
-  font-family: 'DM Sans', sans-serif;
-  font-size: 1em;
-  color: #222222;
-  font-weight: 500;
-}
-
-.AppLogo {
-  height: 20vmin;
-  fill: #222222;
-  transition: background-color 0.3s ease, color 0.3s ease;
-  /* pointer-events: none; */
-}
-
 footer {
   text-align: center;
   font-size: 0.9em;
   color: #222222;
-  margin-top: 50px;
 }
 
 /* ------- DARK THEME ------- */
 
-body.dark {
-  background-color: #222222;
+.AppMain.dark h1 {
   color: #E3DCED;
 }
 
-.AppLogo.dark {
-  fill: #E3DCED;
-}
-
-.App.dark .AppMain h1 {
-  color: #E3DCED;
-}
-
-.App.dark .AppMain p {
-  color: #E3DCED;
-}
-
-.App.dark .AppHeader p {
+.AppMain.dark p {
   color: #E3DCED;
 }
 
@@ -131,24 +62,9 @@ body.dark {
 
 /* ------- MEDIA QUERIES ------- */
 
-@media (prefers-reduced-motion: no-preference) {
-  .AppLogo {
-    animation: App-logo-spin infinite 10s linear;
-  }
-}
-
-/* @keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-} */
-
 @media (max-width: 1200px) {
   .App {
-    padding: 15px;
+    padding: none;
   }
 
   .AppMain h1 {
@@ -164,7 +80,7 @@ body.dark {
 
 @media (max-width: 992px) {
   .App {
-    padding: 10px;
+    padding: none;
   }
 
   .AppMain h1 {
@@ -182,7 +98,7 @@ body.dark {
 
 @media (max-width: 768px) {
   .App {
-    padding: 5px;
+    padding: none;
   }
 
   .AppMain h1 {

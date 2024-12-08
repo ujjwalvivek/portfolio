@@ -1,0 +1,159 @@
+.Header {
+    position: sticky;
+    width: 100%;
+    background: #E3DCED;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    transition: background-color 1s ease, color 1s ease;
+}
+
+.Header.dark {
+    background: #222222;
+}
+
+.Container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 10px;
+    margin: 0 auto;
+    gap: 10px;
+}
+
+.RightContainer {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.NavLogo {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1em;
+    color: #222222;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-decoration: none;
+}
+
+.NavLogo.dark {
+    color: #E3DCED;
+}
+
+.Nav {
+    display: flex;
+    align-items: center;
+    gap: 1px;
+    flex: 1;
+    justify-content: center;
+    transition: background-color 1s ease, color 1s ease;
+}
+
+.NavLink {
+    position: relative;
+    display: inline-block;
+    padding: 10px 15px;
+    color: #222222;
+    font-size: 1em;
+    font-family: 'DM Sans', sans-serif;
+    letter-spacing: 0.2em;
+    font-weight: 500;
+    text-decoration: none;
+    border: 2px solid transparent;
+    transition: color 0.3s ease, border-color 0.3s ease;
+}
+
+.NavLink:hover {
+    color: darkslategrey;
+    border-color: darkslategrey;
+}
+
+.NavLink.dark {
+    color: #E3DCED;
+}
+
+.MenuIcon {
+    display: block;
+    font-size: 2em;
+    cursor: pointer;
+    line-height: 0.9;
+    transition: transform 0.3s ease;
+}
+
+.Icon {
+    /* display: flex;
+    align-items: center;
+    justify-content: center; */
+    transition: transform 0.3s ease;
+    /* Smooth transition for sliding */
+}
+
+.SlideLeft {
+    transform: translateX(-8px);
+    /* Slide the icon to the left */
+}
+
+.Logo.dark {
+    fill: #E3DCED;
+}
+
+@media (max-width: 768px) {
+    .Nav {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 60px;
+        left: 0;
+        width: 100%;
+        background-color: #E3DCED;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        z-index: 999;
+        gap: 5px;
+    }
+
+    .Nav.dark {
+        background-color: #222222;
+    }
+
+    .NavLogo {
+        font-size: 0.9em;
+    }
+
+    .Nav.Open {
+        display: flex;
+    }
+
+    .MenuIcon {
+        display: block;
+    }
+
+    .NavLink {
+        padding: 10px 5px;
+        font-size: 0.8em;
+        letter-spacing: 0.2em;
+    }
+}
+
+@media (max-width: 992px) {
+    .NavLogo {
+        font-size: 0.9em;
+    }
+
+    .NavLink {
+        padding: 10px 5px;
+        font-size: 0.9em;
+        letter-spacing: 0.15em;
+    }
+}
+
+@media (max-width: 576px) {
+    .NavLogo {
+        font-size: 0.9em;
+    }
+
+    .NavLink {
+        padding: 5px 10px;
+        font-size: 0.9em;
+        letter-spacing: 0.2em;
+    }
+}
