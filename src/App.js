@@ -41,11 +41,11 @@ function App() {
       </header>
       <main className={styles.AppMain}>
         <h1>Work In Progress</h1>
-        <p style={{ textTransform: 'none' }}>Something cool coming before the New Year!</p>
-        <p>Be on the lookout</p>
+        <p style={{ textTransform: 'none' }}>I’ve been building in silence. You’ll see it when it’s ready.</p>
+        <p>Be on the lookout!</p>
       </main>
       <footer>
-        <p>© 2024 Ujjwal Vivek. Fuelled by sleepless nights, almost ready to shine!</p>
+        <p>© 2025 Ujjwal Vivek. Fuelled by sleepless nights, almost ready to shine!</p>
       </footer>
     </div>
   );
