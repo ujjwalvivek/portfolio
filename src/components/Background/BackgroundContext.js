@@ -44,6 +44,11 @@ export const BackgroundProvider = ({ children }) => {
             const updated = { ...prev, ...newConfig };
             try {
                 localStorage.setItem('globalBackgroundConfig', JSON.stringify(updated));
+                
+                // If we're setting a wallpaper (not 'none'), save it as last wallpaper
+                if (updated.type && updated.type !== 'none') {
+                    localStorage.setItem('lastWallpaperConfig', JSON.stringify(updated));
+                }
             } catch (e) {
                 console.error('Error saving background config:', e);
             }
@@ -52,9 +57,39 @@ export const BackgroundProvider = ({ children }) => {
     };
 
     const toggleBackground = () => {
-        updateBackgroundConfig({ 
-            type: backgroundConfig.type === 'none' ? 'hologram' : 'none' 
-        });
+        if (backgroundConfig.type === 'none') {
+            // Restore last wallpaper from localStorage
+            try {
+                const lastWallpaperData = localStorage.getItem('lastWallpaperConfig');
+                if (lastWallpaperData) {
+                    const lastConfig = JSON.parse(lastWallpaperData);
+                    updateBackgroundConfig(lastConfig);
+                } else {
+                    // Fallback to default hologram if no saved wallpaper
+                    updateBackgroundConfig({ 
+                        type: 'hologram',
+                        opacity: 0.5,
+                        animationSpeed: 1,
+                        density: 1,
+                        colorMode: 'matrix',
+                        customColor: '#00ff41',
+                        isAnimated: true
+                    });
+                }
+            } catch (e) {
+                console.error('Error restoring last wallpaper:', e);
+                updateBackgroundConfig({ type: 'hologram' });
+            }
+        } else {
+            // Save current wallpaper settings before hiding
+            try {
+                const currentWallpaperConfig = { ...backgroundConfig };
+                localStorage.setItem('lastWallpaperConfig', JSON.stringify(currentWallpaperConfig));
+            } catch (e) {
+                console.error('Error saving current wallpaper:', e);
+            }
+            updateBackgroundConfig({ ...backgroundConfig, type: 'none' });
+        }
     };
 
     const resetToDefaults = () => {

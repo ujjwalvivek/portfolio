@@ -40,16 +40,16 @@ const Home = () => {
             <div className={styles.ctaContainer}>
                 {showSocialLinks ? (
                     <>
-                        <a href="https://linkedin.com/in/your-profile" target="_blank" rel="noopener noreferrer" className={styles.cta}>
+                        <a href="https://linkedin.com/in/ujjwalvivek" target="_blank" rel="noopener noreferrer" className={styles.cta}>
                             <span className="cta-link-span">fn(</span>LinkedIn<span className="cta-link-span">)</span>
                         </a>
-                        <a href="https://x.com/your-handle" target="_blank" rel="noopener noreferrer" className={styles.cta}>
+                        <a href="https://x.com/ujjwalvivekx" target="_blank" rel="noopener noreferrer" className={styles.cta}>
                             <span className="cta-link-span">fn(</span>X<span className="cta-link-span">(Formerly Twitter))</span>
                         </a>
-                        <a href="https://github.com/your-username" target="_blank" rel="noopener noreferrer" className={styles.cta}>
+                        <a href="https://github.com/ujjwalvivek" target="_blank" rel="noopener noreferrer" className={styles.cta}>
                             <span className="cta-link-span">fn(</span>GitHub<span className="cta-link-span">)</span>
                         </a>
-                        <button onClick={() => setShowSocialLinks(false)} className={styles.cta}>
+                        <button className={styles.cta} onClick={() => setShowSocialLinks(false)}>
                             <span className="cta-link-span">fn(</span>Close<span className="cta-link-span">)</span>
                         </button>
                     </>
@@ -61,10 +61,10 @@ const Home = () => {
                         <Link to="/about" className={styles.cta}>
                             <span className="cta-link-span">fn(</span>About<span className="cta-link-span">)</span>
                         </Link>
-                        <Link to="/projects" className={styles.cta}>
+                        <Link to="/" className={styles.cta}>
                             <span className="cta-link-span">fn(</span>Projects<span className="cta-link-span">)</span>
                         </Link>
-                        <button onClick={() => setShowSocialLinks(true)} className={styles.cta}>
+                        <button className={styles.cta} onClick={() => setShowSocialLinks(true)}>
                             <span className="cta-link-span">fn(</span>Links<span className="cta-link-span">)</span>
                         </button>
                     </>

@@ -1,7 +1,6 @@
 /* Advanced Background Playground - Professional Grade */
 
 .playground {
-    min-height: 100vh;
     position: relative;
     background: none;
     overflow: hidden;
@@ -17,6 +16,7 @@
     z-index: 1;
     pointer-events: none;
     transition: opacity 0.3s ease;
+
 }
 
 .content {
@@ -24,7 +24,6 @@
     z-index: 10;
     padding: 1.5rem;
     color: var(--text-color);
-    min-height: 100vh;
 }
 
 /* Header Section */
@@ -32,10 +31,8 @@
     text-align: center;
     margin-bottom: 2rem;
     padding: 1.5rem;
-    background: rgba(var(--text-color), 0.02);
     border: 1px solid rgba(var(--text-color), 0.08);
     border-radius: 12px;
-    backdrop-filter: blur(10px);
 }
 
 .header h1 {
@@ -43,7 +40,7 @@
     font-size: 2.8rem;
     font-weight: 800;
     margin-bottom: 0.5rem;
-    color: var(--primary-color);
+    color: var(--text-color);
     letter-spacing: -1px;
 }
 
@@ -83,6 +80,8 @@
     border: 1px solid rgba(var(--text-color), 0.1);
     border-radius: 12px;
     padding: 2rem;
+    background: rgba(var(--text-color), 0.02);
+    backdrop-filter: blur(8px);
 }
 
 .galleryHeader {
@@ -204,6 +203,8 @@
     height: fit-content;
     position: sticky;
     top: 2rem;
+        background: rgba(var(--text-color), 0.02);
+    backdrop-filter: blur(8px);
 }
 
 .controlSection {
@@ -258,7 +259,8 @@
     width: 100%;
     height: 6px;
     border-radius: 3px;
-    background: rgba(var(--text-color), 0.2);
+    background: var(--text-color);
+    opacity: 0.2;
     outline: none;
     appearance: none;
     cursor: pointer;
@@ -266,33 +268,42 @@
 }
 
 .slider:hover {
-    background: rgba(var(--text-color), 0.3);
+    opacity: 0.3;
 }
 
 .slider::-webkit-slider-thumb {
     appearance: none;
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
     border-radius: 50%;
     background: var(--primary-color);
     cursor: pointer;
-    border: 3px solid var(--background-color);
-    box-shadow: 0 2px 8px rgba(var(--primary-color), 0.3);
+    border: 2px solid var(--background-color);
+    box-shadow: 
+        0 0 0 1px var(--primary-color),
+        0 2px 8px rgba(var(--primary-color), 0.4),
+        0 0 12px rgba(var(--primary-color), 0.2);
     transition: all 0.3s ease;
 }
 
 .slider::-webkit-slider-thumb:hover {
-    transform: scale(1.1);
-    box-shadow: 0 4px 12px rgba(var(--primary-color), 0.4);
+    transform: scale(1.2);
+    box-shadow: 
+        0 0 0 2px var(--primary-color),
+        0 4px 12px rgba(var(--primary-color), 0.6),
+        0 0 20px rgba(var(--primary-color), 0.4);
 }
 
 .slider::-moz-range-thumb {
-    width: 20px;
-    height: 20px;
-    background: var(--primary-color);
+    width: 18px;
+    height: 18px;
+    background: var(--text-color);
     cursor: pointer;
-    border: 3px solid var(--background-color);
-    box-shadow: 0 2px 8px rgba(var(--primary-color), 0.3);
+    border: 2px solid var(--background-color);
+    border-radius: 50%;
+    box-shadow: 
+        0 0 0 1px var(--primary-color),
+        0 2px 8px rgba(var(--primary-color), 0.4);
 }
 
 .selectGroup {
@@ -307,7 +318,7 @@
     border: 1px solid rgba(var(--text-color), 0.2);
     font-family: var(--font-mono);
     font-size: 0.8rem;
-    color: var(--text-color);
+    color: var(--primary-color);
     cursor: pointer;
     transition: all 0.3s ease;
     text-align: center;
@@ -316,12 +327,14 @@
 .selectButton:hover {
     background: rgba(var(--text-color), 0.1);
     border-color: var(--primary-color);
+        color: var(--text-color);
+
 }
 
 .selectButton.active {
     background: rgba(var(--primary-color), 0.15);
     border-color: var(--primary-color);
-    color: var(--primary-color);
+    color: var(--text-color);
 }
 
 .colorPicker {
@@ -381,27 +394,22 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 2rem;
+    margin-top: 3rem;
     padding-bottom: 1.5rem;
     border-bottom: 1px solid rgba(var(--text-color), 0.1);
-}
-
-.previewTitle {
-    font-size: 1.8rem;
-    font-weight: 700;
-    color: var(--primary-color);
-    margin: 0;
 }
 
 .liveIndicator {
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    font-size: 0.9rem;
+    font-size: 1rem;
     color: #00ff00;
     background: rgba(0, 255, 0, 0.1);
     padding: 0.5rem 1rem;
     border: 1px solid rgba(0, 255, 0, 0.3);
+    width: 100%; /* Make it full width */
+    justify-content: center;
 }
 
 .pulseIndicator {
@@ -447,15 +455,6 @@
     max-width: 600px;
     margin-left: auto;
     margin-right: auto;
-}
-
-.actionButtons {
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-    margin-top: 8rem;
-    margin-bottom: 2rem;
-    flex-wrap: wrap;
 }
 
 .actionButton {
@@ -507,46 +506,24 @@
     margin: 0 auto;
 }
 
-.codeDisplay code {
-    display: block;
-    margin: 0.4rem 0;
-    color: var(--text-color);
-    opacity: 0.8;
-}
-
 .codeDisplay .comment {
     color: var(--primary-color);
     opacity: 0.6;
 }
 
 /* Export Panel */
-.exportPanel {
-    margin-top: 2rem;
-    padding: 2rem;
-    background: rgba(var(--text-color), 0.02);
-    border: 1px solid rgba(var(--text-color), 0.08);
-    border-radius: 12px;
-    text-align: center;
-}
-
-.exportTitle {
-    font-size: 1.3rem;
-    font-weight: 600;
-    color: var(--primary-color);
-    margin-bottom: 1rem;
-}
 
 .exportButtons {
     display: flex;
     justify-content: center;
-    gap: 1rem;
     flex-wrap: wrap;
+    align-items: center;
 }
 
 .exportButton {
     font-family: var(--font-mono);
     font-size: 0.9rem;
-    padding: 0.7rem 1.5rem;
+    padding: 0.7rem 1rem;
     background: rgba(var(--text-color), 0.05);
     border: 1px solid rgba(var(--text-color), 0.2);
     border-radius: 6px;
@@ -565,6 +542,25 @@
     background: rgba(255, 69, 58, 0.1) !important;
     border-color: rgba(255, 69, 58, 0.3) !important;
     color: #ff453a !important;
+    width: 100%; /* Make it full width */
+    border-radius: 0px;
+    padding: 0.4rem 1rem;
+    justify-content: center;
+    font-size: 1rem;
+
+}
+
+.liveIndicator {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    
+    color: #00ff00;
+    background: rgba(0, 255, 0, 0.1);
+    
+    border: 1px solid rgba(0, 255, 0, 0.3);
+    width: 100%; /* Make it full width */
+
 }
 
 .resetButton:hover {
@@ -596,15 +592,73 @@
 
 /* Config Section */
 .configSection {
-    margin-top: 2rem;
-    padding: 2rem;
-    background: rgba(var(--text-color), 0.02);
     border: 1px solid rgba(var(--text-color), 0.08);
     border-radius: 12px;
+    margin-top: 2rem;
 }
 
 .configDisplay {
     text-align: center;
+}
+
+.codeDisplay code {
+    display: inline;
+}
+
+/* FPS Counter Styles */
+.fpsCounter {
+    margin-top: 1rem;
+    padding: 0.75rem;
+    background: rgba(var(--text-color), 0.03);
+    border: 1px solid rgba(var(--text-color), 0.1);
+    border-radius: 6px;
+}
+
+.fpsDisplay {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.fpsLabel {
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    color: var(--text-color);
+    opacity: 0.7;
+}
+
+.fpsValue {
+    font-family: var(--font-mono);
+    font-size: 1.1rem;
+    font-weight: 600;
+    min-width: 60px;
+    text-align: right;
+}
+
+.fpsHigh {
+    color: #44ff44;
+}
+
+.fpsMedium {
+    color: #ffaa44;
+}
+
+.fpsLow {
+    color: #ff4444;
+}
+
+.fpsBar {
+    height: 4px;
+    background: rgba(var(--text-color), 0.1);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.fpsBarFill {
+    height: 100%;
+    transition: width 0.3s ease, background-color 0.3s ease;
+    border-radius: 2px;
 }
 
 /* Responsive Design */

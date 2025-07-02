@@ -74,7 +74,8 @@ code {
 }
 
 /* Enhanced hover effects for CTA links */
-a:hover .cta-link-span {
+a:hover .cta-link-span,
+button:hover .cta-link-span {
   opacity: 1;
-  color: var(--background-color);
+  color: var(--text-color);
 }

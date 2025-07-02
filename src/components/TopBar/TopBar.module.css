@@ -69,8 +69,7 @@
     font-size: 1rem;
     text-decoration: none;
     border-radius: 6px;
-    padding: 0.25em 0.9em;
-    margin-right: 1.2em;
+    padding: 0.25em 0em;
     transition: background 0.2s, color 0.2s;
     box-shadow: 0 1px 4px rgba(0,0,0,0.03);
     display: flex;
@@ -90,98 +89,20 @@
     align-items: center;
   }
 
-  .tocDropdown {
-    background: rgba(var(--background-rgb), 0.85);
-    color: var(--text-color);
-    border: 1px solid rgba(var(--primary-rgb), 0.15);
-    border-radius: 6px;
-    font-family: var(--font-mono);
-    font-size: 1rem;
-    padding: 0.3em 1.2em 0.3em 0.7em;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-    outline: none;
-    margin: 0 1.5rem;
-    transition: border 0.2s, background 0.2s;
-  }
-
-  .tocDropdown:focus {
-    border: 1.5px solid var(--primary-color);
-    background: rgba(var(--background-rgb), 1);
-  }
-
-  .tocSidebar {
-    position: fixed;
-    top: 64px; /* height of TopBar */
-    left: 0;
-    width: 240px;
-    max-height: calc(100vh - 64px);
-    overflow-y: auto;
-    background: rgba(var(--background-rgb), 0.85);
-    border-right: 1px solid rgba(var(--primary-rgb), 0.08);
-    z-index: 900;
-    padding: 1.5rem 1.2rem 1.5rem 1.5rem;
-    font-family: var(--font-mono);
-    font-size: 1rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-
-  .tocNav ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-
-  .tocH2 {
-    margin-bottom: 0.5em;
-  }
-
-  .tocH3 {
-    margin-left: 1.2em;
-    font-size: 0.95em;
-    opacity: 0.8;
-  }
-
-  .tocNav a {
-    color: var(--primary-color);
-    text-decoration: none;
-    transition: color 0.2s;
-  }
-
-  .tocNav a:hover {
-    color: var(--text-color);
-  }
-
   .testButton {
-    color: var(--primary-color);
+    color: var(--text-color);
     text-decoration: none;
     font-family: var(--font-mono);
-    font-size: 0.8rem;
-    opacity: 0.7;
+    font-size: 1.1rem;
+    opacity: 1;
     transition: opacity 0.2s;
-    padding: 0.25em 0.5em;
+    padding: 0.25em 1em;
     border-radius: 4px;
-    background: rgba(var(--primary-rgb), 0.05);
-    border: 1px solid rgba(var(--primary-rgb), 0.2);
   }
 
   .testButton:hover {
     opacity: 1;
     background: rgba(var(--primary-rgb), 0.1);
-  }
-
-  .testLink {
-    color: var(--primary-color);
-    text-decoration: none;
-    font-family: var(--font-mono);
-    font-size: 0.8rem;
-    opacity: 0.7;
-    transition: opacity 0.2s;
-  }
-
-  .testLink:hover {
-    opacity: 1;
   }
 
   .bgToggleButton {

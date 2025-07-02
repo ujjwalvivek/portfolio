@@ -31,10 +31,10 @@ const TopBar = () => {
         >
           {backgroundConfig.type === 'none' ? '◇' : '◆'}
         </button>
-        <Link to="/bg-test" className={styles.testButton}>
-          [TEST]
-        </Link>
         <ThemeSwitcher />
+        <Link to="/bg-test" className={styles.testButton}>
+          playground
+        </Link>
       </div>
       <div className={styles.logoSection}>
         <Link to="/" className={styles.logoLink}>U J J W A L . V I V E K</Link>

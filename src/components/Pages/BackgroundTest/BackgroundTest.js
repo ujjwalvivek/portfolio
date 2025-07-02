@@ -13,6 +13,24 @@ const BackgroundTest = () => {
     const [colorMode, setColorMode] = useState(backgroundConfig.colorMode || 'matrix');
     const [customColor, setCustomColor] = useState(backgroundConfig.customColor || '#00ff41');
     const [isAnimated, setIsAnimated] = useState(backgroundConfig.isAnimated !== undefined ? backgroundConfig.isAnimated : true);
+    const [fps, setFps] = useState(0);
+
+    // Force animation to be enabled by default
+    React.useEffect(() => {
+        if (backgroundConfig.isAnimated === undefined || backgroundConfig.isAnimated === false) {
+            updateLocalAndGlobal({ isAnimated: true });
+        }
+    }, []);
+
+    // FPS monitoring
+    React.useEffect(() => {
+        const handleFpsUpdate = (event) => {
+            setFps(event.detail);
+        };
+
+        window.addEventListener('fpsUpdate', handleFpsUpdate);
+        return () => window.removeEventListener('fpsUpdate', handleFpsUpdate);
+    }, []);
 
     // Helper function to update both local state and global config
     const updateLocalAndGlobal = (updates) => {
@@ -43,35 +61,59 @@ const BackgroundTest = () => {
     const backgrounds = [
         { 
             id: 'hologram', 
-            name: 'Holographic Display',
-            description: 'Futuristic holographic projection with 3D wireframes and scanning interference patterns',
+            name: 'Holo Display',
+            description: '',
             techStack: 'Holography • 3D Graphics • Sci-Fi UI',
             icon: '👁️',
-            complexity: 'High'
+            complexity: '',
+            controls: {
+                opacity: { min: 0, max: 1, step: 0.05, label: 'Opacity' },
+                animationSpeed: { min: 0.1, max: 3, step: 0.1, label: 'Flow Speed' },
+                density: { min: 0.5, max: 2, step: 0.1, label: 'Pattern Density' }
+            },
+            colorModes: ['default', 'cyber', 'terminal', 'fire', 'ocean', 'custom']
         },
         { 
             id: 'circuit', 
             name: 'Circuit Flora',
-            description: 'Bio-electronic hybrid with organic circuit trees and flowing data streams',
+            description: '',
             techStack: 'Bio-Tech • PCB Design • Organic Computing',
             icon: '🌿',
-            complexity: 'High'
+            complexity: '',
+            controls: {
+                opacity: { min: 0, max: 1, step: 0.05, label: 'Opacity' },
+                animationSpeed: { min: 0.1, max: 5, step: 0.1, label: 'Flow Speed' },
+                density: { min: 0.3, max: 3, step: 0.1, label: 'Pattern Density' }
+            },
+            colorModes: ['default', 'cyber', 'terminal', 'fire', 'ocean', 'custom']
         },
         { 
             id: 'psychedelic', 
-            name: 'Psychedelic Mandala',
-            description: 'Trippy kaleidoscope patterns with vibrant colors and morphing geometry',
+            name: 'Psych Dream',
+            description: '',
             techStack: 'Kaleidoscope • Color Theory • Generative Art',
             icon: '🌈',
-            complexity: 'Extreme'
+            complexity: '',
+            controls: {
+                opacity: { min: 0, max: 0.7, step: 0.1, label: 'Opacity' },
+                animationSpeed: { min: 0.1, max: 10, step: 0.1, label: 'Flow Speed' },
+                density: { min: 0.2, max: 3, step: 0.1, label: 'Pattern Density' }
+            },
+            colorModes: ['default', 'cyber', 'terminal', 'fire', 'ocean', 'custom']
         },
         { 
             id: 'vortex', 
             name: 'Quantum Threads',
-            description: 'An interactive quantum field simulation revealing hidden connections through luminous entanglement networks.',
-            techStack: 'Quantum Physics • Field Dynamics • Emergent Systems',
+            description: '',
+            techStack: 'Field Dynamics • Emergent Systems',
             icon: '⚛️',
-            complexity: 'Extreme'
+            complexity: '',
+            controls: {
+                opacity: { min: 0, max: 1, step: 0.05, label: 'Opacity' },
+                animationSpeed: { min: 0.1, max: 3, step: 0.1, label: 'Flow Speed' },
+                density: { min: 0.3, max: 2, step: 0.1, label: 'Pattern Density' }
+            },
+            colorModes: ['default', 'cyber', 'terminal', 'fire', 'ocean', 'custom']
         }
     ];
 
@@ -146,11 +188,7 @@ const BackgroundTest = () => {
             <div className={styles.content}>
                 <div className={styles.header}>
                     <h1>Background Playground</h1>
-                    <p className={styles.subtitle}>Professional-grade procedural backgrounds for developers</p>
-                    <p className={styles.description}>
-                        Advanced canvas-based background generation with real-time controls, performance scaling, and export capabilities. 
-                        Built for tech professionals who appreciate both aesthetics and functionality.
-                    </p>
+                    <p className={styles.subtitle}>Please select a background from the gallery</p>
                 </div>
 
                 <div className={styles.controlGrid}>
@@ -173,88 +211,19 @@ const BackgroundTest = () => {
                                 </div>
                             ))}
                         </div>
-                    </div>
-
-                    <div className={styles.controlPanel}>
-                        <div className={styles.controlSection}>
-                            <h4 className={styles.sectionTitle}>Visual Controls</h4>
-                            <div className={styles.controlGroup}>
-                                <label className={styles.controlLabel}>Opacity: <span className={styles.controlValue}>{opacity.toFixed(2)}</span></label>
-                                <input type="range" min="0" max="1" step="0.05" value={opacity} onChange={(e) => updateLocalAndGlobal({ opacity: parseFloat(e.target.value) })} className={styles.slider} />
-                            </div>
-                            <div className={styles.controlGroup}>
-                                <label className={styles.controlLabel}>Animation Speed: <span className={styles.controlValue}>{animationSpeed.toFixed(1)}x</span></label>
-                                <input type="range" min="0.1" max="5" step="0.1" value={animationSpeed} onChange={(e) => updateLocalAndGlobal({ animationSpeed: parseFloat(e.target.value) })} className={styles.slider} />
-                            </div>
-                            <div className={styles.controlGroup}>
-                                <label className={styles.controlLabel}>Density: <span className={styles.controlValue}>{density.toFixed(1)}x</span></label>
-                                <input type="range" min="0.2" max="3" step="0.1" value={density} onChange={(e) => updateLocalAndGlobal({ density: parseFloat(e.target.value) })} className={styles.slider} />
-                            </div>
-                        </div>
-
-                        <div className={styles.controlSection}>
-                            <h4 className={styles.sectionTitle}>Color Scheme</h4>
-                            <div className={styles.selectGroup}>
-                                {['matrix', 'cyber', 'terminal', 'ocean', 'fire', 'custom'].map(mode => (
-                                    <button key={mode} className={`${styles.selectButton} ${colorMode === mode ? styles.active : ''}`} onClick={() => updateLocalAndGlobal({ colorMode: mode })}>{mode}</button>
-                                ))}
-                            </div>
-                            {colorMode === 'custom' && (
-                                <div className={styles.controlGroup} style={{ marginTop: '1rem' }}>
-                                    <label className={styles.controlLabel}>Custom Color</label>
-                                    <input type="color" value={customColor} onChange={(e) => updateLocalAndGlobal({ customColor: e.target.value })} className={styles.colorPicker} />
-                                </div>
-                            )}
-                        </div>
-
-                        <div className={styles.controlSection}>
-                            <h4 className={styles.sectionTitle}>Performance</h4>
-                             <div className={styles.selectGroup}>
-                                <button className={`${styles.selectButton} ${isAnimated ? styles.active : ''}`} onClick={() => updateLocalAndGlobal({ isAnimated: true })}>Animated</button>
-                                <button className={`${styles.selectButton} ${!isAnimated ? styles.active : ''}`} onClick={() => updateLocalAndGlobal({ isAnimated: false })}>Static</button>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-
-                <div className={styles.previewSection}>
-                    <div className={styles.previewHeader}>
-                        <h2 className={styles.previewTitle}>Live Preview: {currentBgData?.name}</h2>
-                        {isAnimated && (
-                            <div className={styles.liveIndicator}>
-                                <span className={styles.pulseIndicator}></span>
-                                Procedural Generation Active
-                            </div>
-                        )}
-                    </div>
-                    <div className={styles.previewContent}>
-                        <h1>Tech isn't the hard part.</h1>
-                        <h2>Systems, behavior, and questions are.</h2>
-                        <p>This is a preview of how the background appears on a content page.</p>
-                    </div>
-                </div>
-
-                {/* Current Configuration Display */}
+                        {/* Current Configuration Display */}
                 <div className={styles.configSection}>
                     <div className={styles.configDisplay}>
                         <div className={styles.codeDisplay}>
-                            <code>background: "{currentBg}",</code>
-                            <code>opacity: {opacity},</code>
-                            <code>animationSpeed: {animationSpeed},</code>
-                            <code>density: {density},</code>
-                            <code>colorScheme: "{colorMode}",</code>
-                            <code>complexity: "{currentBgData?.complexity}",</code>
-                            <code>techStack: "{currentBgData?.techStack}"</code>
+                            <code>background: "{currentBg}", </code>
+                            <code>opacity: {opacity}, </code>
+                            <code>animationSpeed: {animationSpeed}, </code>
+                            <code>density: {density}, </code>
+                            <code>colorScheme: "{colorMode}"</code>
                         </div>
                     </div>
-                </div>
-
-                {/* Export & Share Section */}
-                <div className={styles.exportPanel}>
-                    <h3 className={styles.exportTitle}>Export & Share</h3>
-                    <div className={styles.exportButtons}>
-                        <button onClick={exportConfig} className={styles.exportButton}>
+                    <br />
+                    <button onClick={exportConfig} className={styles.exportButton}>
                             💾 Export Config
                         </button>
                         <button onClick={shareConfig} className={styles.exportButton}>
@@ -263,9 +232,111 @@ const BackgroundTest = () => {
                         <button onClick={() => window.print()} className={styles.exportButton}>
                             🖨️ Print Preview
                         </button>
-                        <button onClick={resetAllSettings} className={`${styles.exportButton} ${styles.resetButton}`}>
+                        <div className={styles.previewHeader}>
+                        {isAnimated && (
+                            <div className={styles.liveIndicator}>
+                                <span className={styles.pulseIndicator}></span>
+                                Procedural Generation Active
+                            </div>
+                        )}
+                    </div>
+                </div>
+                    </div>
+
+                    <div className={styles.controlPanel}>
+                        <div className={styles.controlSection}>
+                            <h4 className={styles.sectionTitle}>Visual Controls</h4>
+                            {currentBgData?.controls && Object.entries(currentBgData.controls).map(([key, control]) => (
+                                <div key={key} className={styles.controlGroup}>
+                                    <label className={styles.controlLabel}>
+                                        {control.label}: <span className={styles.controlValue}>
+                                            {key === 'opacity' ? opacity.toFixed(2) :
+                                             key === 'animationSpeed' ? animationSpeed.toFixed(1) + 'x' :
+                                             key === 'density' ? density.toFixed(1) + 'x' : 
+                                             eval(key).toFixed(1)}
+                                        </span>
+                                    </label>
+                                    <input 
+                                        type="range" 
+                                        min={control.min} 
+                                        max={control.max} 
+                                        step={control.step} 
+                                        value={eval(key)} 
+                                        onChange={(e) => updateLocalAndGlobal({ [key]: parseFloat(e.target.value) })} 
+                                        className={styles.slider} 
+                                    />
+                                </div>
+                            ))}
+                        </div>
+
+                        <div className={styles.controlSection}>
+                            <h4 className={styles.sectionTitle}>Color Scheme</h4>
+                            <div className={styles.selectGroup}>
+                                {(currentBgData?.colorModes || ['default', 'cyber', 'terminal', 'ocean', 'fire', 'custom']).map(mode => (
+                                    <button 
+                                        key={mode} 
+                                        className={`${styles.selectButton} ${colorMode === mode ? styles.active : ''}`} 
+                                        onClick={() => updateLocalAndGlobal({ colorMode: mode })}
+                                    >
+                                        {mode}
+                                    </button>
+                                ))}
+                            </div>
+                            {colorMode === 'custom' && (
+                                <div className={styles.controlGroup} style={{ marginTop: '1rem' }}>
+                                    <label className={styles.controlLabel}>Custom Color</label>
+                                    <input 
+                                        type="color" 
+                                        value={customColor} 
+                                        onChange={(e) => updateLocalAndGlobal({ customColor: e.target.value })} 
+                                        className={styles.colorPicker} 
+                                    />
+                                </div>
+                            )}
+                        </div>
+
+                        <div className={styles.controlSection}>
+                            <h4 className={styles.sectionTitle}>Performance</h4>
+                             <div className={styles.selectGroup}>
+                                <button 
+                                    className={`${styles.selectButton} ${isAnimated ? styles.active : ''}`} 
+                                    onClick={() => updateLocalAndGlobal({ isAnimated: true })}
+                                >
+                                    Animated
+                                </button>
+                                <button 
+                                    className={`${styles.selectButton} ${!isAnimated ? styles.active : ''}`} 
+                                    onClick={() => updateLocalAndGlobal({ isAnimated: false })}
+                                >
+                                    Static
+                                </button>
+                            </div>
+                            
+                            {/* FPS Counter */}
+                            <div className={styles.fpsCounter}>
+                                <div className={styles.fpsDisplay}>
+                                    <span className={styles.fpsLabel}>FPS:</span>
+                                    <span className={`${styles.fpsValue} ${fps < 15 ? styles.fpsLow : fps < 25 ? styles.fpsMedium : styles.fpsHigh}`}>
+                                        {isAnimated ? fps : 'Static'}
+                                    </span>
+                                </div>
+                                {isAnimated && fps > 0 && (
+                                    <div className={styles.fpsBar}>
+                                        <div 
+                                            className={styles.fpsBarFill} 
+                                            style={{ 
+                                                width: `${Math.min(fps / 60 * 100, 100)}%`,
+                                                backgroundColor: fps < 15 ? '#ff4444' : fps < 25 ? '#ffaa44' : '#44ff44'
+                                            }}
+                                        ></div>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                <button onClick={resetAllSettings} className={`${styles.exportButton} ${styles.resetButton}`} style={{border: '2px solid #ff4444'}}>
                             🔄 Reset to Defaults
                         </button>
+
                     </div>
                 </div>
             </div>

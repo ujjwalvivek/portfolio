@@ -8,6 +8,10 @@ const GlobalBackground = () => {
     const { darkMode } = useContext(ThemeContext);
     const canvasRef = useRef(null);
     const animationRef = useRef(null);
+    const lastFrameTime = useRef(0);
+    const fpsRef = useRef(0);
+    const frameCount = useRef(0);
+    const lastFpsUpdate = useRef(0);
 
     // Adaptive color schemes based on theme mode
     const getThemeColors = () => {
@@ -427,14 +431,14 @@ const GlobalBackground = () => {
             
             for (let tree = 0; tree < treeCount; tree++) {
                 const rootX = (tree * width / (treeCount + 1)) + width / (treeCount + 1);
-                const rootY = height * 0.9 + Math.sin(time * 0.001 * speed + tree) * 30;
+                const rootY = height * 1 + Math.sin(time * 0.001 * speed + tree) * 30;
                 const treePhase = time * speed * 0.001 + tree * 2.3;
                 
                 const drawCircuitBranch = (x, y, angle, length, depth, energy, isMainStem) => {
                     if (depth > 9 || length < 8) return;
                     
                     // Organic growth with electronic precision
-                    const growthPulse = Math.sin(treePhase + depth * 0.3) * 0.2 + 0.8;
+                    const growthPulse = Math.sin(treePhase + depth * 0.3) * 0.2 + 1.0;
                     const actualLength = length * growthPulse;
                     
                     // Slight organic curvature
@@ -987,12 +991,35 @@ const GlobalBackground = () => {
                 }
             }
 
-            // Deep space background with quantum foam
+            // Helper function to validate colors
+            const validateColor = (color, fallback = '#000000') => {
+                if (!color || typeof color !== 'string') return fallback;
+                if (color.includes('var(')) return fallback;
+                if (!color.startsWith('#')) return fallback;
+                return color;
+            };
+
+            // Validate all colors upfront
+            const validColors = {
+                background: validateColor(colors.background, '#0a0b1e'),
+                primary: validateColor(colors.primary, '#00ffff'),
+                secondary: validateColor(colors.secondary, '#ff00ff'),
+                accent: validateColor(colors.accent, '#ffff00')
+            };
+
+            // Deep space background with quantum foam - respects theme colors
             const bgGrad = ctx.createRadialGradient(width/2, height/2, 0, width/2, height/2, Math.max(width, height));
-            bgGrad.addColorStop(0, '#0a0b1e');
-            bgGrad.addColorStop(1, '#000000');
-            ctx.fillStyle = bgGrad;
-            ctx.fillRect(0, 0, width, height);
+            
+            try {
+                bgGrad.addColorStop(0, validColors.background);
+                bgGrad.addColorStop(1, validColors.background === '#0a0b1e' ? '#000000' : validColors.background + 'cc');
+                ctx.fillStyle = bgGrad;
+                ctx.fillRect(0, 0, width, height);
+            } catch (e) {
+                // Fallback to solid color
+                ctx.fillStyle = '#0a0b1e';
+                ctx.fillRect(0, 0, width, height);
+            }
 
             // Quantum foam (subtle background noise)
             ctx.save();
@@ -1002,7 +1029,7 @@ const GlobalBackground = () => {
                 const y = Math.random() * height;
                 const intensity = Math.sin(t * 20 + x * 0.01 + y * 0.01) * 0.5 + 0.5;
                 if (intensity > 0.7) {
-                    ctx.fillStyle = colors.primary;
+                    ctx.fillStyle = validColors.primary;
                     ctx.fillRect(x, y, 1, 1);
                 }
             }
@@ -1070,8 +1097,8 @@ const GlobalBackground = () => {
                         ctx.globalAlpha = connection.strength * 0.6 * energy;
                         
                         // Color based on energy state
-                        const threadColor = energy > 0.7 ? colors.accent : 
-                                          energy > 0.4 ? colors.primary : colors.secondary;
+                        const threadColor = energy > 0.7 ? validColors.accent : 
+                                          energy > 0.4 ? validColors.primary : validColors.secondary;
                         
                         ctx.strokeStyle = threadColor;
                         ctx.lineWidth = 0.5 + connection.strength * 2;
@@ -1096,18 +1123,22 @@ const GlobalBackground = () => {
             // Draw quantum nodes (field intersections)
             ctx.quantumNodes.forEach(node => {
                 const nodeSize = 2 + node.energy * 4;
-                const nodeColor = node.energy > 0.6 ? colors.accent : colors.primary;
+                const nodeColor = node.energy > 0.6 ? validColors.accent : validColors.primary;
                 
                 ctx.save();
                 ctx.globalAlpha = 0.8 + node.energy * 0.2;
                 
                 // Node core
                 const nodeGrad = ctx.createRadialGradient(node.x, node.y, 0, node.x, node.y, nodeSize * 2);
-                nodeGrad.addColorStop(0, '#ffffff');
-                nodeGrad.addColorStop(0.5, nodeColor);
-                nodeGrad.addColorStop(1, nodeColor + '00');
-                
-                ctx.fillStyle = nodeGrad;
+                try {
+                    nodeGrad.addColorStop(0, '#ffffff');
+                    nodeGrad.addColorStop(0.5, nodeColor);
+                    nodeGrad.addColorStop(1, nodeColor + '00');
+                    ctx.fillStyle = nodeGrad;
+                } catch (e) {
+                    // Fallback to solid color if gradient fails
+                    ctx.fillStyle = nodeColor;
+                }
                 ctx.shadowColor = nodeColor;
                 ctx.shadowBlur = 12;
                 ctx.beginPath();
@@ -1123,6 +1154,34 @@ const GlobalBackground = () => {
     const animate = useCallback((timestamp) => {
         const canvas = canvasRef.current;
         if (!canvas || !backgroundConfig.isAnimated) return;
+
+        // Calculate FPS
+        frameCount.current++;
+        if (timestamp - lastFpsUpdate.current >= 1000) { // Update FPS every second
+            fpsRef.current = Math.round(frameCount.current * 1000 / (timestamp - lastFpsUpdate.current));
+            frameCount.current = 0;
+            lastFpsUpdate.current = timestamp;
+            
+            // Dispatch custom event with FPS data
+            window.dispatchEvent(new CustomEvent('fpsUpdate', { detail: fpsRef.current }));
+        }
+
+        // Throttle to 30fps to reduce interference with other animations
+        const now = timestamp;
+        if (now - lastFrameTime.current < 33) { // 33ms = ~30fps
+            animationRef.current = requestAnimationFrame(animate);
+            return;
+        }
+        lastFrameTime.current = now;
+
+        // Check if canvas is visible
+        const rect = canvas.getBoundingClientRect();
+        const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
+        
+        if (!isVisible) {
+            animationRef.current = requestAnimationFrame(animate);
+            return;
+        }
 
         const ctx = canvas.getContext('2d');
         // Clear the canvas first
