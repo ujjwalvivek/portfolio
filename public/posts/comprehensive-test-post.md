@@ -783,7 +783,7 @@ $$
 
 ### Images
 
-![Sample Image](https://via.placeholder.com/800x400/007acc/ffffff?text=Sample+Image)
+![Sample Image](https://plus.unsplash.com/premium_photo-1750891220483-4288ebf980a5?q=80&w=1674&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)
 
 ### Code with Copy Button
 

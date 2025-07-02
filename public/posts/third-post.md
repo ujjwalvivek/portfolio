@@ -1,14 +1,16 @@
 ---
-title: "My Third Post"
+title: "Building Scalable Backend Systems with Node.js and TypeScript"
 date: "2025-06-20"
 slug: "third-post"
 tags: ["typescript", "node", "backend"]
 description: "Deep dive into backend development with Node.js and TypeScript."
 ---
 
-# Building Scalable Backend Systems with Node.js and TypeScript
-
 In this comprehensive guide, we'll explore how to build robust, scalable backend systems using Node.js and TypeScript. We'll cover everything from project setup to advanced patterns and deployment strategies.
+
+### Images
+
+![Sample Image](https://images.unsplash.com/photo-1751243958744-f0346e3948aa?q=80&w=987&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)
 
 ## Table of Contents
 

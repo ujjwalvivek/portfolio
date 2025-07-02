@@ -2,41 +2,33 @@
   {
     "id": 1,
     "filename": "comprehensive-test-post.md",
-    "title": "Comprehensive Test Post: All The Features",
+    "title": "Test Your Markdown Here",
     "date": "2025-07-01",
-    "description": "A showcase of all the advanced Markdown features available on this blog, including lightboxes, admonitions, and math rendering.",
+    "description": "A showcase of all the advanced Markdown features available on this blog, including lightboxes, admonitions, and math rendering. This post demonstrates every advanced markdown feature available on this blog. It's designed to be a long, scrollable document to test the progress bar functionality and showcase all rendering capabilities.",
     "tags": ["react", "markdown", "webdev", "testing"]
   },
   {
     "id": 2,
     "filename": "dark-net.md",
-    "title": "The Dark Net: A Quick Primer",
+    "title": "The Other Day I Explored the Dark Net",
     "date": "2024-05-20",
-    "description": "A brief introduction to the concepts and technologies behind the Dark Net.",
-    "tags": ["security", "privacy", "networking"]
-  },
-  {
-    "id": 3,
-    "filename": "second-post.md",
-    "title": "My Second Post",
-    "date": "2024-04-15",
-    "description": "Exploring further topics in web development and design.",
-    "tags": ["webdev", "learning"]
+    "description": "A brief introduction to the concepts and technologies behind the Dark Net. The way anonymity was engineered there changed how I think about building systems. We don’t build tech like that anymore.",
+    "tags": ["security", "privacy", "networking", "webdev"]
   },
   {
     "id": 4,
     "filename": "third-post.md",
     "title": "Third Time's the Charm",
     "date": "2024-03-10",
-    "description": "A post about the process of iteration and improvement in software engineering.",
+    "description": "A post about the process of iteration and improvement in software engineering. In this comprehensive guide, we'll explore how to build robust, scalable backend systems using Node.js and TypeScript. We'll cover everything from project setup to advanced patterns and deployment strategies.",
     "tags": ["software", "philosophy"]
   },
   {
     "id": 5,
     "filename": "fourth-post.md",
-    "title": "Fourth Post",
+    "title": "The Art of Simplicity in Code",
     "date": "2024-02-05",
-    "description": "Initial thoughts and ideas on building a personal portfolio and blog.",
+    "description": "Initial thoughts and ideas on building a personal portfolio and blog. Markdown is intended to be as easy-to-read and easy-to-write as is feasible. Reality? Even Easier.",
     "tags": ["blogging", "webdev"]
   }
 ]
