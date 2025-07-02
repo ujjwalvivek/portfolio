@@ -67,10 +67,10 @@ const BackgroundTest = () => {
         },
         { 
             id: 'vortex', 
-            name: 'Psychedelic Vortex',
-            description: 'Swirling cosmic vortex with spiraling particle streams and energy fields',
-            techStack: 'Fluid Dynamics • Particle Systems • Psychedelic Art',
-            icon: '🌀',
+            name: 'Quantum Threads',
+            description: 'An interactive quantum field simulation revealing hidden connections through luminous entanglement networks.',
+            techStack: 'Quantum Physics • Field Dynamics • Emergent Systems',
+            icon: '⚛️',
             complexity: 'Extreme'
         }
     ];

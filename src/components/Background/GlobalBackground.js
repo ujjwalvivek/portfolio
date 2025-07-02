@@ -146,6 +146,11 @@ const GlobalBackground = () => {
 
     // Helper function to convert any color + alpha to rgba
     const hexWithAlpha = (hex, alphaHex) => {
+        // Validate hex string
+        if (typeof hex !== 'string' || !/^#([0-9a-fA-F]{6})$/.test(hex)) {
+            // fallback to transparent if invalid
+            return 'rgba(0,0,0,0)';
+        }
         const r = parseInt(hex.slice(1, 3), 16);
         const g = parseInt(hex.slice(3, 5), 16);
         const b = parseInt(hex.slice(5, 7), 16);
@@ -957,145 +962,159 @@ const GlobalBackground = () => {
         },
 
         vortex: (ctx, width, height, time = 0) => {
+            // QUANTUM THREADS: Visualizing invisible quantum fields through interconnected light filaments
             const colors = getCurrentColors();
-            const adjustedColors = getAlphaAdjustedColors(colors);
-            const speed = backgroundConfig.animationSpeed || 1;
+            const t = time * 0.0003 * (backgroundConfig.animationSpeed || 1);
             const density = backgroundConfig.density || 1;
 
-            const centerX = width / 2;
-            const centerY = height / 2;
-            const t = time * speed * 0.001;
+            // Quantum field parameters
+            const nodeCount = Math.floor(25 * density);
+            const maxDistance = 180;
+            
+            // Initialize quantum nodes if not exists
+            if (!ctx.quantumNodes) {
+                ctx.quantumNodes = [];
+                for (let i = 0; i < nodeCount; i++) {
+                    ctx.quantumNodes.push({
+                        x: Math.random() * width,
+                        y: Math.random() * height,
+                        vx: (Math.random() - 0.5) * 0.3,
+                        vy: (Math.random() - 0.5) * 0.3,
+                        energy: Math.random(),
+                        phase: Math.random() * Math.PI * 2,
+                        connections: []
+                    });
+                }
+            }
 
-            // Psychedelic vortex background
-            const vortexGradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, Math.max(width, height));
-            vortexGradient.addColorStop(0, hexWithAlpha(colors.background, '60'));
-            vortexGradient.addColorStop(0.4, adjustedColors.primaryAlpha('30'));
-            vortexGradient.addColorStop(0.7, adjustedColors.secondaryAlpha('20'));
-            vortexGradient.addColorStop(1, adjustedColors.accentAlpha('10'));
-            ctx.fillStyle = vortexGradient;
+            // Deep space background with quantum foam
+            const bgGrad = ctx.createRadialGradient(width/2, height/2, 0, width/2, height/2, Math.max(width, height));
+            bgGrad.addColorStop(0, '#0a0b1e');
+            bgGrad.addColorStop(1, '#000000');
+            ctx.fillStyle = bgGrad;
             ctx.fillRect(0, 0, width, height);
 
-            // Spiraling vortex arms
-            const armCount = Math.floor(8 * density);
-            for (let arm = 0; arm < armCount; arm++) {
-                const armPhase = t * 2 + (arm * Math.PI * 2 / armCount);
-                const armColor = arm % 3 === 0 ? colors.primary : arm % 3 === 1 ? colors.secondary : colors.accent;
-                
-                ctx.globalAlpha = 0.7;
-                ctx.strokeStyle = armColor;
-                ctx.lineWidth = 3 + Math.sin(t * 3 + arm) * 2;
-                
-                ctx.beginPath();
-                let lastX = centerX;
-                let lastY = centerY;
-                
-                for (let step = 0; step < 200; step++) {
-                    const angle = armPhase + step * 0.1;
-                    const radius = step * 2 + Math.sin(angle + t) * 15;
-                    const spiralX = centerX + Math.cos(angle) * radius;
-                    const spiralY = centerY + Math.sin(angle) * radius;
-                    
-                    if (step === 0) {
-                        ctx.moveTo(spiralX, spiralY);
-                    } else {
-                        ctx.quadraticCurveTo(lastX, lastY, spiralX, spiralY);
-                    }
-                    lastX = spiralX;
-                    lastY = spiralY;
-                    
-                    // Stop if outside canvas
-                    if (radius > Math.max(width, height) / 2) break;
+            // Quantum foam (subtle background noise)
+            ctx.save();
+            ctx.globalAlpha = 0.05;
+            for (let i = 0; i < 200; i++) {
+                const x = Math.random() * width;
+                const y = Math.random() * height;
+                const intensity = Math.sin(t * 20 + x * 0.01 + y * 0.01) * 0.5 + 0.5;
+                if (intensity > 0.7) {
+                    ctx.fillStyle = colors.primary;
+                    ctx.fillRect(x, y, 1, 1);
                 }
-                ctx.stroke();
             }
+            ctx.restore();
 
-            // Psychedelic particle streams
-            const streamCount = Math.floor(150 * density);
-            for (let i = 0; i < streamCount; i++) {
-                const streamAngle = (t * 0.5) + (i * 2.39998); // Golden angle
-                const streamRadius = Math.pow(i / streamCount, 0.7) * (Math.max(width, height) / 2);
+            // Update quantum nodes with field dynamics
+            ctx.quantumNodes.forEach((node, i) => {
+                // Quantum field influence (wave function)
+                const fieldX = Math.sin(t * 2 + node.phase) * 0.5;
+                const fieldY = Math.cos(t * 1.7 + node.phase) * 0.5;
                 
-                const streamX = centerX + Math.cos(streamAngle) * streamRadius;
-                const streamY = centerY + Math.sin(streamAngle) * streamRadius;
+                // Apply quantum tunneling effect
+                node.vx += fieldX * 0.02;
+                node.vy += fieldY * 0.02;
                 
-                const particleIntensity = Math.sin(t * 8 + i * 0.1) * 0.5 + 0.5;
-                const particleSize = Math.max(0.5, 1 + Math.sin(t * 12 + i * 0.3) * 2);
+                // Damping to prevent runaway motion
+                node.vx *= 0.98;
+                node.vy *= 0.98;
                 
-                ctx.globalAlpha = 0.8 * (1 - streamRadius / (Math.max(width, height) / 2)) * particleIntensity;
-                ctx.fillStyle = i % 2 === 0 ? colors.primary : colors.accent;
+                // Update position
+                node.x += node.vx;
+                node.y += node.vy;
+                
+                // Quantum boundary conditions (wrap around)
+                if (node.x < 0) node.x = width;
+                if (node.x > width) node.x = 0;
+                if (node.y < 0) node.y = height;
+                if (node.y > height) node.y = 0;
+                
+                // Update energy based on position in field
+                node.energy = (Math.sin(t * 3 + node.x * 0.01) + Math.cos(t * 2.5 + node.y * 0.01)) * 0.5 + 0.5;
+            });
+
+            // Calculate quantum entanglements (connections)
+            ctx.quantumNodes.forEach(node => {
+                node.connections = [];
+                ctx.quantumNodes.forEach(other => {
+                    if (node !== other) {
+                        const dx = other.x - node.x;
+                        const dy = other.y - node.y;
+                        const distance = Math.sqrt(dx * dx + dy * dy);
+                        
+                        if (distance < maxDistance) {
+                            const strength = 1 - (distance / maxDistance);
+                            const resonance = Math.sin(t * 5 + distance * 0.02) * 0.5 + 0.5;
+                            node.connections.push({
+                                target: other,
+                                strength: strength * resonance,
+                                distance: distance
+                            });
+                        }
+                    }
+                });
+            });
+
+            // Draw quantum threads (entangled connections)
+            ctx.quantumNodes.forEach(node => {
+                node.connections.forEach(connection => {
+                    if (connection.strength > 0.3) {
+                        const target = connection.target;
+                        const energy = (node.energy + target.energy) / 2;
+                        
+                        // Quantum thread appearance
+                        ctx.save();
+                        ctx.globalAlpha = connection.strength * 0.6 * energy;
+                        
+                        // Color based on energy state
+                        const threadColor = energy > 0.7 ? colors.accent : 
+                                          energy > 0.4 ? colors.primary : colors.secondary;
+                        
+                        ctx.strokeStyle = threadColor;
+                        ctx.lineWidth = 0.5 + connection.strength * 2;
+                        ctx.shadowColor = threadColor;
+                        ctx.shadowBlur = 8;
+                        
+                        // Draw curved quantum thread
+                        ctx.beginPath();
+                        ctx.moveTo(node.x, node.y);
+                        
+                        // Quantum fluctuation in the thread
+                        const midX = (node.x + target.x) / 2 + Math.sin(t * 8 + connection.distance * 0.03) * 15;
+                        const midY = (node.y + target.y) / 2 + Math.cos(t * 6 + connection.distance * 0.03) * 15;
+                        
+                        ctx.quadraticCurveTo(midX, midY, target.x, target.y);
+                        ctx.stroke();
+                        ctx.restore();
+                    }
+                });
+            });
+
+            // Draw quantum nodes (field intersections)
+            ctx.quantumNodes.forEach(node => {
+                const nodeSize = 2 + node.energy * 4;
+                const nodeColor = node.energy > 0.6 ? colors.accent : colors.primary;
+                
+                ctx.save();
+                ctx.globalAlpha = 0.8 + node.energy * 0.2;
+                
+                // Node core
+                const nodeGrad = ctx.createRadialGradient(node.x, node.y, 0, node.x, node.y, nodeSize * 2);
+                nodeGrad.addColorStop(0, '#ffffff');
+                nodeGrad.addColorStop(0.5, nodeColor);
+                nodeGrad.addColorStop(1, nodeColor + '00');
+                
+                ctx.fillStyle = nodeGrad;
+                ctx.shadowColor = nodeColor;
+                ctx.shadowBlur = 12;
                 ctx.beginPath();
-                ctx.arc(streamX, streamY, particleSize, 0, Math.PI * 2);
+                ctx.arc(node.x, node.y, nodeSize, 0, Math.PI * 2);
                 ctx.fill();
-                
-                // Particle trail effect
-                if (particleIntensity > 0.7) {
-                    const trailLength = 5;
-                    for (let trail = 1; trail <= trailLength; trail++) {
-                        const trailAngle = streamAngle - trail * 0.05;
-                        const trailRadius = streamRadius - trail * 3;
-                        const adjustedParticleSize = particleSize * (1 - trail / trailLength);
-                        if (trailRadius > 0 && adjustedParticleSize > 0) {
-                            const trailX = centerX + Math.cos(trailAngle) * trailRadius;
-                            const trailY = centerY + Math.sin(trailAngle) * trailRadius;
-                            
-                            ctx.globalAlpha = 0.5 * (1 - trail / trailLength) * particleIntensity;
-                            ctx.fillStyle = colors.secondary;
-                            ctx.beginPath();
-                            ctx.arc(trailX, trailY, adjustedParticleSize, 0, Math.PI * 2);
-                            ctx.fill();
-                        }
-                    }
-                }
-            }
-
-            // Central vortex core
-            const coreRadius = 30 + Math.sin(t * 4) * 10;
-            const coreGradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, coreRadius);
-            coreGradient.addColorStop(0, adjustedColors.primaryAlpha('FF'));
-            coreGradient.addColorStop(0.5, adjustedColors.accentAlpha('80'));
-            coreGradient.addColorStop(1, adjustedColors.secondaryAlpha('20'));
-            
-            ctx.globalAlpha = 0.9;
-            ctx.fillStyle = coreGradient;
-            ctx.beginPath();
-            ctx.arc(centerX, centerY, coreRadius, 0, Math.PI * 2);
-            ctx.fill();
-
-            // Vortex energy rings
-            const ringCount = 6;
-            for (let ring = 0; ring < ringCount; ring++) {
-                const ringPhase = t * 3 + ring * 0.8;
-                const ringRadius = coreRadius + ring * 40 + Math.sin(ringPhase) * 20;
-                const ringIntensity = Math.sin(ringPhase * 2) * 0.5 + 0.5;
-                
-                if (ringIntensity > 0.3) {
-                    ctx.globalAlpha = (ringIntensity - 0.3) * 0.6;
-                    ctx.strokeStyle = ring % 2 === 0 ? colors.primary : colors.accent;
-                    ctx.lineWidth = 3 + ringIntensity * 2;
-                    
-                    // Distorted ring shape
-                    ctx.beginPath();
-                    const segments = 32;
-                    for (let seg = 0; seg <= segments; seg++) {
-                        const segAngle = (seg / segments) * Math.PI * 2;
-                        const distortion = Math.sin(segAngle * 4 + ringPhase * 2) * 0.3 + 1;
-                        const segRadius = ringRadius * distortion;
-                        
-                        const x = centerX + Math.cos(segAngle) * segRadius;
-                        const y = centerY + Math.sin(segAngle) * segRadius;
-                        
-                        if (seg === 0) {
-                            ctx.moveTo(x, y);
-                        } else {
-                            ctx.lineTo(x, y);
-                        }
-                    }
-                    ctx.closePath();
-                    ctx.stroke();
-                }
-            }
-
-            ctx.globalAlpha = 1;
+                ctx.restore();
+            });
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }), [backgroundConfig, darkMode]);
