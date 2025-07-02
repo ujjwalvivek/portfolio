@@ -1,6 +1,14 @@
 .ThemeSwitcherContainer {
   cursor: pointer;
   font-family: 'DM Sans', sans-serif;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.ThemeLogo {
+  font-size: 1.5rem; /* Or any size you prefer */
+  color: var(--text-color);
 }
 
 .ThemeSwitcherContainer.dark {
@@ -9,23 +17,10 @@
 
 .ThemeSwitcherContainer p {
   display: block;
-  color: #222222;
-  font-size: 1em;
+  color: var(--text-color);
+  font-size: 1.1em;
   font-weight: 400;
   letter-spacing: 0.1em;
-}
-
-.ThemeSwitcherContainer.dark p {
-  color: #E3DCED;
-}
-
-.invert {
-  filter: invert(1);
-}
-
-.dark {
-  background-color: #222222;
-  color: #E3DCED;
 }
 
 @media (max-width: 992px) {

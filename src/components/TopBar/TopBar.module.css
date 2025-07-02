@@ -1,0 +1,219 @@
+.topBar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: calc(var(--spacing-unit) * 1.5) calc(var(--spacing-unit) * 4);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1000;
+    background-color: rgba(var(--background-rgb), 0.7); /* semi-transparent for blur */
+    backdrop-filter: blur(64px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    transition: background-color 0.3s ease;
+    box-sizing: border-box;
+    border-bottom: 0px solid rgba(255, 0, 0, 0.08);
+  }
+  
+  .logoSection {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .logo a, .logoLink {
+    color: var(--text-color);
+    text-decoration: none;
+    font-family: var(--font-mono);
+    font-weight: 600;
+    font-size: 1.2rem;
+    letter-spacing: 1px;
+  }
+  
+  .nav {
+    display: flex;
+    gap: 2rem;
+  }
+
+  .navLink {
+    color: var(--text-color);
+    text-decoration: none;
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    position: relative;
+    transition: color 0.3s ease;
+  }
+
+  .navLink:hover {
+    color: var(--primary-color);
+  }
+
+  .navLink.active {
+    color: var(--primary-color);
+    font-weight: 700;
+  }
+
+  .controls {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .backButton {
+    background: rgba(var(--primary-rgb), 0.08);
+    border: none;
+    color: var(--primary-color);
+    cursor: pointer;
+    font-family: var(--font-mono);
+    font-size: 1rem;
+    text-decoration: none;
+    border-radius: 6px;
+    padding: 0.25em 0.9em;
+    margin-right: 1.2em;
+    transition: background 0.2s, color 0.2s;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.03);
+    display: flex;
+    align-items: center;
+    gap: 0.4em;
+  }
+
+  .backButton:hover {
+    background: rgba(var(--primary-rgb), 0.18);
+    color: var(--text-color);
+  }
+
+  .middleArea {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .tocDropdown {
+    background: rgba(var(--background-rgb), 0.85);
+    color: var(--text-color);
+    border: 1px solid rgba(var(--primary-rgb), 0.15);
+    border-radius: 6px;
+    font-family: var(--font-mono);
+    font-size: 1rem;
+    padding: 0.3em 1.2em 0.3em 0.7em;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    outline: none;
+    margin: 0 1.5rem;
+    transition: border 0.2s, background 0.2s;
+  }
+
+  .tocDropdown:focus {
+    border: 1.5px solid var(--primary-color);
+    background: rgba(var(--background-rgb), 1);
+  }
+
+  .tocSidebar {
+    position: fixed;
+    top: 64px; /* height of TopBar */
+    left: 0;
+    width: 240px;
+    max-height: calc(100vh - 64px);
+    overflow-y: auto;
+    background: rgba(var(--background-rgb), 0.85);
+    border-right: 1px solid rgba(var(--primary-rgb), 0.08);
+    z-index: 900;
+    padding: 1.5rem 1.2rem 1.5rem 1.5rem;
+    font-family: var(--font-mono);
+    font-size: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .tocNav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .tocH2 {
+    margin-bottom: 0.5em;
+  }
+
+  .tocH3 {
+    margin-left: 1.2em;
+    font-size: 0.95em;
+    opacity: 0.8;
+  }
+
+  .tocNav a {
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .tocNav a:hover {
+    color: var(--text-color);
+  }
+
+  .testButton {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+    padding: 0.25em 0.5em;
+    border-radius: 4px;
+    background: rgba(var(--primary-rgb), 0.05);
+    border: 1px solid rgba(var(--primary-rgb), 0.2);
+  }
+
+  .testButton:hover {
+    opacity: 1;
+    background: rgba(var(--primary-rgb), 0.1);
+  }
+
+  .testLink {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+  }
+
+  .testLink:hover {
+    opacity: 1;
+  }
+
+  .bgToggleButton {
+    background: none;
+    border: 1px solid rgba(var(--text-color), 0.2);
+    color: var(--text-color);
+    font-size: 1.2rem;
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-mono);
+    margin-right: 0.5rem;
+  }
+
+  .bgToggleButton:hover {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(var(--primary-color), 0.2);
+  }
+
+  .bgToggleButton:active {
+    transform: translateY(0);
+  }
+
+  @media (max-width: 900px) {
+    .tocSidebar {
+      display: none;
+    }
+  }

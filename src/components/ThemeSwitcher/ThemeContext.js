@@ -14,6 +14,13 @@ export const ThemeProvider = ({ children }) => {
   });
   
   useEffect(() => {
+    // Add or remove the dark mode class from the body
+    if (darkMode) {
+      document.body.classList.add('dark-mode');
+    } else {
+      document.body.classList.remove('dark-mode');
+    }
+
     try {
       localStorage.setItem("darkMode", JSON.stringify(darkMode));
     } catch (e) {

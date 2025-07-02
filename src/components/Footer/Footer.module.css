@@ -3,13 +3,12 @@
     bottom: 0;
     width: 100%;
     text-align: center;
-    padding: 10px 0;
-    /* box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1); */
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.9em;
-    font-weight: 300;
-    letter-spacing: 0.1em;
-    color: #222222;
+    padding: calc(var(--spacing-unit) * 2) 0;
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    color: var(--text-color);
+    border-top: 0px solid var(--text-color);
+    margin-top: calc(var(--spacing-unit) * 4);
 }
 
 .Footer p {

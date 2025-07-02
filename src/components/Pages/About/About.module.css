@@ -1,0 +1,17 @@
+.pageContainer {
+  padding: calc(var(--spacing-unit) * 2) 0;
+}
+
+.pageContainer h1 {
+  font-family: var(--font-mono);
+  font-size: 2.5rem;
+  margin-bottom: calc(var(--spacing-unit) * 4);
+  border-bottom: 1px solid var(--text-color);
+  padding-bottom: calc(var(--spacing-unit) * 2);
+}
+
+.pageContainer p {
+    font-family: var(--font-sans);
+    font-size: 1.1rem;
+    line-height: 1.7;
+}

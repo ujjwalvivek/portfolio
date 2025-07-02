@@ -1,0 +1,76 @@
+.searchContainer {
+  margin-bottom: calc(var(--spacing-unit) * 3);
+}
+
+.searchWrapper {
+  position: relative;
+  width: 100%;
+}
+
+.searchInput {
+  width: 100%;
+  padding: calc(var(--spacing-unit) * 1.5) calc(var(--spacing-unit) * 2);
+  padding-right: calc(var(--spacing-unit) * 5);
+  border: 1px solid var(--text-color);
+  border-radius: 4px;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  font-size: 1rem;
+  font-family: var(--font-mono);
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+  opacity: 0.9;
+}
+
+.searchInput:focus {
+  outline: none;
+  border-color: var(--text-color);
+  box-shadow: 0 0 0 2px var(--cta-bg-color);
+  opacity: 1;
+}
+
+.searchInput::placeholder {
+  color: var(--text-color);
+  opacity: 0.5;
+  font-style: italic;
+}
+
+.clearButton {
+  position: absolute;
+  right: calc(var(--spacing-unit) * 1);
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-color);
+  opacity: 0.6;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.clearButton:hover {
+  opacity: 1;
+  background-color: var(--cta-bg-color);
+}
+
+/* Dark mode adjustments */
+body.dark-mode .searchInput {
+  border-color: #666;
+  opacity: 0.9;
+}
+
+body.dark-mode .searchInput:focus {
+  border-color: #888;
+  box-shadow: 0 0 0 2px var(--cta-bg-color);
+  opacity: 1;
+}
+
+body.dark-mode .searchInput::placeholder {
+  color: var(--text-color);
+  opacity: 0.4;
+}
