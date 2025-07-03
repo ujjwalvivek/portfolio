@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { useBackground } from '../../Background/BackgroundContext';
 import styles from './BackgroundTest.module.css';
 
@@ -15,25 +15,8 @@ const BackgroundTest = () => {
     const [isAnimated, setIsAnimated] = useState(backgroundConfig.isAnimated !== undefined ? backgroundConfig.isAnimated : true);
     const [fps, setFps] = useState(0);
 
-    // Force animation to be enabled by default
-    React.useEffect(() => {
-        if (backgroundConfig.isAnimated === undefined || backgroundConfig.isAnimated === false) {
-            updateLocalAndGlobal({ isAnimated: true });
-        }
-    }, []);
-
-    // FPS monitoring
-    React.useEffect(() => {
-        const handleFpsUpdate = (event) => {
-            setFps(event.detail);
-        };
-
-        window.addEventListener('fpsUpdate', handleFpsUpdate);
-        return () => window.removeEventListener('fpsUpdate', handleFpsUpdate);
-    }, []);
-
     // Helper function to update both local state and global config
-    const updateLocalAndGlobal = (updates) => {
+    const updateLocalAndGlobal = useCallback((updates) => {
         // Calculate the new config using current state as base
         const newConfig = {
             type: updates.type !== undefined ? updates.type : currentBg,
@@ -56,7 +39,33 @@ const BackgroundTest = () => {
 
         // Update global config with the complete new state
         updateBackgroundConfig(newConfig);
-    };
+    }, [
+        currentBg,
+        opacity,
+        animationSpeed,
+        density,
+        colorMode,
+        customColor,
+        isAnimated,
+        updateBackgroundConfig
+    ]);
+
+    // Force animation to be enabled by default
+    React.useEffect(() => {
+        if (backgroundConfig.isAnimated === undefined || backgroundConfig.isAnimated === false) {
+            updateLocalAndGlobal({ isAnimated: true });
+        }
+    }, [backgroundConfig.isAnimated, updateLocalAndGlobal]);
+
+    // FPS monitoring
+    React.useEffect(() => {
+        const handleFpsUpdate = (event) => {
+            setFps(event.detail);
+        };
+
+        window.addEventListener('fpsUpdate', handleFpsUpdate);
+        return () => window.removeEventListener('fpsUpdate', handleFpsUpdate);
+    }, []);
 
     const backgrounds = [
         { 
@@ -109,7 +118,7 @@ const BackgroundTest = () => {
             icon: '⚛️',
             complexity: '',
             controls: {
-                opacity: { min: 0, max: 1, step: 0.05, label: 'Opacity' },
+                opacity: { min: 0, max: 1, step: 0.02, label: 'Opacity' },
                 animationSpeed: { min: 0.1, max: 3, step: 0.1, label: 'Flow Speed' },
                 density: { min: 0.3, max: 2, step: 0.1, label: 'Pattern Density' }
             },
@@ -181,6 +190,7 @@ const BackgroundTest = () => {
     };
 
     const currentBgData = backgrounds.find(bg => bg.id === currentBg);
+    const controlValues = { opacity, animationSpeed, density };
 
     return (
         <div className={styles.playground}>
@@ -253,7 +263,7 @@ const BackgroundTest = () => {
                                             {key === 'opacity' ? opacity.toFixed(2) :
                                              key === 'animationSpeed' ? animationSpeed.toFixed(1) + 'x' :
                                              key === 'density' ? density.toFixed(1) + 'x' : 
-                                             eval(key).toFixed(1)}
+                                             (controlValues[key] !== undefined ? controlValues[key].toFixed(1) : '')}
                                         </span>
                                     </label>
                                     <input 
@@ -261,7 +271,7 @@ const BackgroundTest = () => {
                                         min={control.min} 
                                         max={control.max} 
                                         step={control.step} 
-                                        value={eval(key)} 
+                                        value={controlValues[key]} 
                                         onChange={(e) => updateLocalAndGlobal({ [key]: parseFloat(e.target.value) })} 
                                         className={styles.slider} 
                                     />
