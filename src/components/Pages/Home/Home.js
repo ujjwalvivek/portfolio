@@ -9,7 +9,7 @@ const Home = () => {
 
     useEffect(() => {
         const fetchPosts = async () => {
-            const postFiles = ['dark-net.md', 'second-post.md', 'third-post.md', 'fourth-post.md'];
+            const postFiles = ['dark-net.md', 'fourth-post.md', 'third-post.md', 'comprehensive-test-post.md' ];
             const postsData = await Promise.all(
                 postFiles.map(async (file) => {
                     const response = await fetch(`/posts/${file}`);
@@ -71,22 +71,28 @@ const Home = () => {
                 )}
             </div>
             <div className={styles.latestLogs}>
-                <h3>Unfinished Thoughts <span style={{ color: 'var(--primary-color)' }}>[NEW]</span></h3>
-                <ul>
-                    {latestPosts.map((post) => (
-                        <li key={post.slug}>
-                            <Link to={`/blog/${post.filename}`}>
-                                <span className={styles.postDate}>
-                                    [{new Date(post.date).toLocaleDateString('en-US', { month: '2-digit', day: '2-digit' })}]
-                                </span>
-                                <span className={styles.postTitle}>
-                                    {post.title}
-                                </span>
-                            </Link>
-                        </li>
-                    ))}
-                </ul>
-            </div>
+    <h3>Unfinished Thoughts <span style={{ color: 'var(--primary-color)' }}>[NEW]</span></h3>
+    <ul>
+        {latestPosts.map((post) => {
+            const maxLen = 24; // Change this number to your preferred cutoff
+            const shortTitle = post.title.length > maxLen
+                ? post.title.slice(0, maxLen) + '...'
+                : post.title;
+            return (
+                <li key={post.slug}>
+                    <Link to={`/blog/${post.filename}`}>
+                        <span className={styles.postDate}>
+                            [{new Date(post.date).toLocaleDateString('en-US', { month: '2-digit', day: '2-digit' })}]
+                        </span>
+                        <span className={styles.postTitle}>
+                            {shortTitle}
+                        </span>
+                    </Link>
+                </li>
+            );
+        })}
+    </ul>
+</div>
         </div>
     );
 };

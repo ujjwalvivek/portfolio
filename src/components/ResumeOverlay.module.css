@@ -1,0 +1,124 @@
+.resumeOverlayRoot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(12px) saturate(180%);
+  background: var(--resume-overlay-bg, rgba(20, 24, 32, 0.92));
+  animation: resumeOverlayFadeIn 0.25s cubic-bezier(.4, 0, .2, 1);
+}
+
+@keyframes resumeOverlayFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.resumeOverlayModal {
+  background: var(--resume-modal-bg, rgba(255, 255, 255, 0.07));
+  max-width: 90vw;
+  max-height: 90vh;
+  box-shadow: 0 12px 40px rgba(30, 40, 90, 0.22), 0 1.5px 8px rgba(59, 130, 246, 0.1);
+  position: relative;
+  overflow: hidden;
+  border: 2px solid var(--text-color);
+  display: flex;
+  flex-direction: column;
+  transition: background 0.3s, box-shadow 0.3s;
+  animation: resumeModalPopIn 0.25s cubic-bezier(.4, 0, .2, 1);
+}
+
+@keyframes resumeModalPopIn {
+  from { transform: scale(0.97) translateY(30px); opacity: 0; }
+  to { transform: scale(1) translateY(0); opacity: 1; }
+}
+
+.resumeOverlayViewer {
+  width: 80vw;
+  height: 80vh;
+  box-sizing: border-box;
+  background: transparent;
+  transition: background 0.3s;
+  overflow: auto;
+}
+
+.resumeOverlayTopRightClose {
+  background: transparent;
+  color: #f8fafc;
+  border: none;
+  font-size: 1.1rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  padding: 6px 14px;
+  transition: background 0.2s, color 0.2s;
+  white-space: nowrap;
+}
+
+.resumeOverlayTopRightClose:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #f87171;
+}
+
+:root {
+  --resume-overlay-bg: rgba(20, 24, 32, 0.85);
+  --resume-modal-bg: rgba(255, 255, 255, 0.95);
+}
+
+[data-theme='dark'] {
+  --resume-overlay-bg: rgba(20, 24, 32, 0.92);
+  --resume-modal-bg: rgba(30, 34, 44, 0.98);
+}
+
+/* Force viewer to fill */
+.rpv-core__viewer {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.rpv-core__page-layer {
+  width: 100% !important;
+  justify-content: stretch !important;
+}
+
+.rpv-core__inner-pages {
+  justify-content: stretch !important;
+  padding: 0 !important;
+}
+
+.resumeOverlayTopRightButtons {
+  position: absolute;
+  top: 18px;
+  right: 32px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 16px;
+  z-index: 20;
+}
+
+.resumeOverlayThemeSwitch {
+  background: transparent;
+  color: #f8fafc;
+  border: none;
+  font-size: 1.1rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  padding: 6px 12px;
+  transition: background 0.2s ease, color 0.2s ease;
+  position: static; /* Not absolute! */
+}
+
+.resumeOverlayThemeSwitch:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #38bdf8;
+}

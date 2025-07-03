@@ -1,5 +1,5 @@
 ---
-title: "Comprehensive Test Post: All The Features"
+title: "All The Features"
 date: "2025-06-28"
 slug: "comprehensive-test-post"
 tags: ["markdown", "testing", "features", "demo"]

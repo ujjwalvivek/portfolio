@@ -2,17 +2,18 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import styles from './Blog.module.css';
 import SearchBar from '../../SearchBar/SearchBar';
+import { format } from 'util';
 
 // Simple fuzzy search function
 const fuzzySearch = (query, text) => {
   if (!query) return true;
-  
+
   const queryLower = query.toLowerCase();
   const textLower = text.toLowerCase();
-  
+
   // Exact match gets highest priority
   if (textLower.includes(queryLower)) return true;
-  
+
   // Fuzzy match - check if all characters in query appear in order
   let queryIndex = 0;
   for (let i = 0; i < textLower.length && queryIndex < queryLower.length; i++) {
@@ -114,14 +115,14 @@ const BlogList = () => {
           </p>
         </div>
         <SearchBar onSearch={handleSearch} placeholder="Search posts, tags, or content..." />
-        
+
         {filteredPosts.length === 0 && searchQuery ? (
           <div className={styles.noResults}>
             <p>No posts found for "{searchQuery}"</p>
             <p>Try a different search term or browse all posts below.</p>
           </div>
         ) : null}
-        
+
         <ul>
           {filteredPosts.slice(0, visibleCount).map((post, index) => (
             <li key={post.id + '-' + index} className={styles.blogPostItem}>
@@ -130,38 +131,24 @@ const BlogList = () => {
                   <div className={styles.postMain}>
                     <div className={styles.postNumber}>
                       [{String(index + 1).padStart(2, '0')}.{String(post.id).padStart(2, '0')}]
+                      [▢ {String(new Date(post.date).toLocaleDateString('en-GB', { year: '2-digit', month: 'numeric', day: 'numeric' }))}]
+                      [⏱ {String(post.readingTime)}]
                     </div>
                     <div className={styles.postContent}>
                       <h2>{post.title}</h2>
                       <p className={styles.postDescription}>{post.description}</p>
-                      <div className={styles.postMeta}>
-                        <div className={styles.metaItem}>
-                          <span className={styles.metaIcon}>Posted on</span>
-                          <span className={styles.postDate}>
-                            {new Date(post.date).toLocaleDateString('en-US', {
-                              year: 'numeric',
-                              month: 'short',
-                              day: 'numeric'
-                            })}
-                          </span>
-                        </div>
-                        <div className={styles.metaItem}>
-                          <span className={styles.metaIcon}>⏱</span>
-                          <span className={styles.readingTime}>{post.readingTime}</span>
-                        </div>
-                        <div className={styles.postTags}>
-                          {post.tags.map((tag, tagIndex) => (
-                            <span 
-                              key={tag} 
-                              className={`${styles.tag} ${styles[`tag-${tagIndex % 6}`]}`}
-                              title={`Filter by ${tag}`}
-                            >
-                              <span className={styles.tagIcon}>◆</span>
-                              {tag}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
+                    </div>
+                    <div className={styles.postTags}>
+                      {post.tags.map((tag, tagIndex) => (
+                        <span
+                          key={tag}
+                          className={`${styles.tag} ${styles[`tag-${tagIndex % 6}`]}`}
+                          title={`Filter by ${tag}`}
+                        >
+                          <span className={styles.tagIcon}>◆</span>
+                          {tag}
+                        </span>
+                      ))}
                     </div>
                   </div>
                   <div className={styles.postThumbnailWrapper}>
