@@ -6,6 +6,7 @@ import { atomDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { oneLight } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { ThemeContext } from '../../ThemeSwitcher/ThemeContext';
 import { Viewer, Worker, SpecialZoomLevel } from '@react-pdf-viewer/core';
+import { MdOutlineBugReport } from "react-icons/md";
 import {
   FaReact, FaMarkdown, FaConfluence, FaJira, FaGit, FaUnity, FaNodeJs
 } from 'react-icons/fa';
@@ -34,7 +35,7 @@ $ boot --system
   [✓] unlocking experimental mode
 
 # I build, break, and rebuild systems — across code, teams, and products.
-# From VR platforms to Rust game engines, this journey is logged in public.
+# From VR platforms to Rust game engines, this journey is logged.
 
 $ history --roles
   → PM, but always thought like a systems engineer
@@ -59,16 +60,7 @@ $ now
   → testing Rust render loop
   → writing from Bangalore
   
-  $ echo "Welcome to my builder's log. Let's break some systems together."
-  
-  I build, break, and rebuild systems—across code, teams, and products.
-  From VR platforms to Rust game engines, my journey is about learning
-  in public and sharing the logs.
-              
-  I've worked as a PM, but I've always thought like a systems engineer.
-  I've shipped MVPs, built VR platforms, automated ops pipelines, and now I'm writing my own Rust-powered game engine (that may or may not blow up this site).
-  I've been fired three times—not for underperforming, but for not staying quiet. I still ask hard questions. I still build. And I still believe in working on things that matter.
-  This space is where I share logs from the edge, experiments that break, and systems that might hold together.`;
+$ echo "Welcome to my builder's log. Let's break some systems together."`;
 
 const About = () => {
   const [resumeOpen, setResumeOpen] = React.useState(false);
@@ -355,6 +347,7 @@ function TerminalFooter() {
   const [historyIndex, setHistoryIndex] = React.useState(-1);
   const inputRef = React.useRef(null);
   const scrollRef = React.useRef(null);
+  const [mockClose, setMockClose] = React.useState(false);
 
   React.useEffect(() => {
     if (crashed) {
@@ -418,27 +411,38 @@ function TerminalFooter() {
   };
 
   if (crashed) {
-  return (
-    <div className={styles.crashOverlay}>
-      <div className={styles.crashWindow}>
-        <div className={styles.crashWindowBar}>
-          <span className={styles.crashDot} style={{ background: '#ff5f56' }} />
-          <span className={styles.crashDot} style={{ background: '#ffbd2e' }} />
-          <span className={styles.crashDot} style={{ background: '#27c93f' }} />
-          <span className={styles.crashTitle}>System Error</span>
+    return (
+      <div className={styles.crashOverlay} onContextMenu={e => e.preventDefault()}>
+        <div className={styles.crashWindow}>
+          <div className={styles.crashWindowBar}>
+            <span className={styles.crashDot} style={{ background: '#ff5f56' }} onClick={() => 
+            {
+              setMockClose(true);
+              setTimeout(() => setMockClose(false), 800);
+            }} title="You wouldn't"/>
+            <span className={styles.crashDot} style={{ background: '#ffbd2e' }} onClick={() => window.open('https://duckduckgo.com', '_blank')} title="Embrace Privacy!" />
+            <span className={styles.crashDot} style={{ background: '#27c93f' }} onClick={() => window.location.reload()} title="Refresh button for the curious." />
+            <span className={styles.crashTitle}>uh oh!</span>
+            <button className={styles.restartButton} onClick={() => window.location.reload()} title='Send Feedback/Report'><MdOutlineBugReport /></button>
+          </div>
+          <div className={styles.crashWindowContent}>
+            {mockClose && (
+              <div className={styles.mockCloseMsg}>
+                <span>Nice try! Try Harder.</span>
+              </div>
+           )}
+            <div className={styles.crashTextMain + ' ' + styles.blink}>&gt; session.crashed _</div>
+            <div className={styles.crashTextSub}>logs flushed. session configurations saved.</div>
+            <div className={styles.crashTip}>[ tip: open your dev console ]</div>
+            <DinoGame />
+          </div>
         </div>
-        <div className={styles.crashWindowContent}>
-          <div className={styles.crashIcon}>💥</div>
-          <div className={styles.crashTextMain}>Session Crashed</div>
-          <div className={styles.crashTextSub}>logs flushed. session saved.</div>
-          <div className={styles.crashTextSub}>ujjwalvivek.com ∙ no trackers ∙ logs since 2025</div>
-          <div className={styles.crashTip}>[ tip: open your dev console 👀 ]</div>
-          <button className={styles.restartButton} onClick={() => window.location.reload()}>Restart</button>
+        <div className={styles.crashFooter}>
+          <div className={styles.crashTextSub + ' ' + styles.flicker} style={{textShadow: '0 0 0.5rem rgba(82, 255, 39, 0.8)'}}>ujjwalvivek.com ⊗ no trackers ⊗ no cookies ⊗ no analytics</div>
         </div>
       </div>
-    </div>
-  );
-}
+    );
+  }
 
   return (
     <div className={styles.terminalFooterReal} onClick={() => inputRef.current && inputRef.current.focus()}>
@@ -498,4 +502,281 @@ function UptimeCounter({ startDate }) {
   }, [startDate]);
 
   return <span>{uptime}</span>;
+}
+
+function DinoGame() {
+  const [dinoY, setDinoY] = React.useState(0); // 0 = ground, -60 = jump
+  const [isJumping, setIsJumping] = React.useState(false);
+  const [obstacles, setObstacles] = React.useState([{ x: 400, height: 32 }]);
+  const [score, setScore] = React.useState(0);
+  const [gameOver, setGameOver] = React.useState(false);
+  const gameRef = React.useRef();
+  const dinoRef = React.useRef();
+  const [jumpStart, setJumpStart] = React.useState(null);
+  const [jumpPower, setJumpPower] = React.useState(0);
+
+  // Draggable state
+  const [pos, setPos] = React.useState({ x: 0, y: 0 });
+  const [dragging, setDragging] = React.useState(false);
+  const [rel, setRel] = React.useState({ x: 0, y: 0 });
+
+  React.useEffect(() => {
+  setPos({
+    x: window.innerWidth / 2 - 200,
+    y: window.innerHeight / 2 - 250
+  });
+}, []);
+
+  // Drag handlers
+  const onMouseDown = (e) => {
+    setDragging(true);
+    const rect = gameRef.current.getBoundingClientRect();
+    setRel({ x: e.clientX - rect.left, y: e.clientY - rect.top });
+    e.preventDefault();
+  };
+  React.useEffect(() => {
+    const onMouseMove = (e) => {
+      if (!dragging) return;
+      setPos({
+        x: e.clientX - rel.x,
+        y: e.clientY - rel.y,
+      });
+    };
+    const onMouseUp = () => setDragging(false);
+    if (dragging) {
+      window.addEventListener("mousemove", onMouseMove);
+      window.addEventListener("mouseup", onMouseUp);
+    }
+    return () => {
+      window.removeEventListener("mousemove", onMouseMove);
+      window.removeEventListener("mouseup", onMouseUp);
+    };
+  }, [dragging, rel]);
+
+  React.useEffect(() => {
+    const handleKeyDown = (e) => {
+      if ((e.code === "Space" || e.key === " ") && !isJumping && !gameOver && jumpStart === null) {
+        setJumpStart(Date.now());
+        setIsJumping(true);
+      }
+      if ((e.code === "Space" || e.key === " ") && gameOver) {
+        setObstacles([{ x: 400, height: 32 }]);
+        setScore(0);
+        setGameOver(false);
+      }
+    };
+    const handleKeyUp = (e) => {
+      if ((e.code === "Space" || e.key === " ") && isJumping && jumpStart !== null) {
+        const duration = Math.min(Date.now() - jumpStart, 350); // max 350ms
+        const power = duration / 350; // 0 to 1
+        setJumpPower(power);
+        setJumpStart(null);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("keyup", handleKeyUp);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("keyup", handleKeyUp);
+    };
+  }, [isJumping, gameOver, jumpStart]);
+
+  // Handle jump
+  React.useEffect(() => {
+    if (jumpPower > 0) {
+      const jumpHeight = -40 - jumpPower * 40; // -40 to -80
+      setDinoY(jumpHeight);
+      setTimeout(() => {
+        setDinoY(0);
+        setIsJumping(false);
+        setJumpPower(0);
+      }, 400 + jumpPower * 100); // slightly longer hang time for higher jumps
+    }
+  }, [jumpPower]);
+
+  // Move obstacles and check collision
+  React.useEffect(() => {
+    if (gameOver) return;
+    const interval = setInterval(() => {
+      setObstacles((obs) => {
+        let newObs = obs.map(o => ({ ...o, x: o.x - 5 }));
+        // Add new obstacle if needed
+        if (newObs.length === 0 || newObs[newObs.length - 1].x < 200 + Math.random() * 80) {
+          newObs.push({
+            x: 400 + Math.random() * 100,
+            height: 24 + Math.floor(Math.random() * 32) // height between 24 and 56px
+          });
+        }
+        // Remove off-screen
+        newObs = newObs.filter(o => o.x > -20);
+        return newObs;
+      });
+      setScore(s => s + 1);
+    }, 20);
+    return () => clearInterval(interval);
+  }, [gameOver]);
+
+  // Collision detection
+  React.useEffect(() => {
+    if (gameOver) return;
+    for (let o of obstacles) {
+      if (
+        o.x < 50 && o.x > 10 &&
+        dinoY > -30 && // dino is on ground
+        o.height > 20 // only check if obstacle is tall enough
+      ) {
+        setGameOver(true);
+      }
+    }
+  }, [obstacles, dinoY, gameOver]);
+
+  return (
+    <>
+    <div
+      style={{
+        position: "fixed",
+        left: pos.x,
+        top: pos.y + 130, 
+        width: 400,
+        textAlign: "center",
+        color: "#7fffd4",
+        fontFamily: "monospace",
+        fontSize: 10,
+        fontWeight: 400,
+        pointerEvents: "none", // so it doesn't block drag
+        letterSpacing: 1,
+      }}
+    >
+      too lazy to animate, let this phasing 🦖 be your friend in this downtime. try not to crash!
+    </div>
+    <div
+      ref={gameRef}
+      style={{
+        position: "fixed",
+                left: pos.x,
+        top: pos.y,
+        width: 400,
+        height: 100,
+        background: "#222",
+        margin: "1.5rem auto 0 auto",
+        borderRadius: 2,
+        overflow: "hidden",
+        boxShadow: "0 2px 16px 0 rgba(0,0,0,0.18)",
+        border: "2px solid #444",
+        userSelect: "none",
+        cursor: dragging ? "grabbing" : "grab",
+      }}
+      tabIndex={0}
+      onMouseDown={onMouseDown}
+    >
+      {/* Dino */}
+      <div
+        ref={dinoRef}
+        style={{
+          position: "absolute",
+          left: 30,
+          bottom: 10 + dinoY,
+          width: 32,
+          height: 32,
+          borderRadius: 2,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          fontSize: 28,
+          fontFamily: "monospace",
+          textAlign: "center",
+          transform: "scaleX(-1)",
+        }}
+      >
+        🦖
+      </div>
+
+      {/* Obstacles */}
+      {obstacles.map((o, i) => (
+        <div
+          key={i}
+          style={{
+            position: "absolute",
+            left: o.x,
+            bottom: 10,
+            width: 16,
+            height: o.height,
+            background: "#7fffd4",
+            borderTopLeftRadius: 2,
+            borderTopRightRadius: 2,
+          }}
+        />
+      ))}
+
+      {/* Ground */}
+      <div
+        style={{
+          position: "absolute",
+          left: 0,
+          bottom: 0,
+          width: "100%",
+          height: 10,
+          background: "#1f1f1f",
+          borderTop: "2px solid #7fffd4",
+        }}
+      />
+
+      {/* Score */}
+      <div
+        style={{
+          position: "absolute",
+          right: 10,
+          top: 6,
+          color: "#fff",
+          fontFamily: "monospace",
+          fontSize: 16,
+          opacity: 0.7,
+        }}
+      >
+        {score}
+      </div>
+
+      {/* Game Over */}
+      {gameOver && (
+        <div
+          style={{
+            position: "absolute",
+            left: 0,
+            top: 0,
+            width: "100%",
+            height: "100%",
+            background: "linear-gradient(0deg, rgba(20, 20, 20, 0.9) 0%, rgba(20, 20, 20, 0.9) 100%)",            
+            color: "#ff5f56",
+            fontFamily: "monospace",
+            fontSize: 22,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            flexDirection: "column",
+            zIndex: 2,
+            fontWeight: 800,
+          }}
+        >
+          <div>D E A D</div>
+          <div 
+          style={{ 
+            fontSize: 18, 
+            color: "#fff", 
+            fontFamily: "monospace", 
+            letterSpacing: "-1px", 
+            fontWeight: 700,
+            border: "2px solid #7fffd4",
+            borderRadius: 4,
+            padding: "0.1rem 0.5rem",
+            backdropFilter: "blur(20px)",
+            }}
+            >score: <span style={{ color: "#7fffd4" }}>{score}</span></div>
+          <div style={{ fontSize: 14, color: "#fff", opacity: 0.4 }}>
+            press space to restart
+          </div>
+        </div>
+      )}
+    </div>
+    </>
+  );
 }
