@@ -8,8 +8,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  backdrop-filter: blur(12px) saturate(180%);
-  background: var(--resume-overlay-bg, rgba(20, 24, 32, 0.92));
+  backdrop-filter: blur(20px) saturate(180%);
   animation: resumeOverlayFadeIn 0.25s cubic-bezier(.4, 0, .2, 1);
 }
 
