@@ -8,9 +8,8 @@
     font-size: 0.9rem;
     color: var(--text-color);
     border-top: 0px solid var(--text-color);
-    margin-top: calc(var(--spacing-unit) * 4);
-backdrop-filter: blur(64px) saturate(180%);
-    -webkit-backdrop-filter: blur(64px) saturate(180%);
+    backdrop-filter: blur(48px) saturate(180%);
+    -webkit-backdrop-filter: blur(48px) saturate(180%);
 }
 
 .Footer p {
@@ -24,12 +23,6 @@ backdrop-filter: blur(64px) saturate(180%);
 
 /* ------- WEB BREAKPOINTS ------- */
 
-/* @media (max-width: 992px) {
-    .Footer {
-        font-size: 0.9em;
-    }
-} */
-
 @media (max-width: 768px) {
     .Footer {
         font-size: 0.8em;
@@ -38,6 +31,6 @@ backdrop-filter: blur(64px) saturate(180%);
 
 @media (max-width: 576px) {
     .Footer {
-        font-size: 0.7em;
+        font-size: 0.6em;
     }
 }

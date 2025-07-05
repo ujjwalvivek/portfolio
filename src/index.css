@@ -72,7 +72,6 @@ body {
 
 html, body {
   width: 100%; /* Default to full viewport width */
-  min-width: 400px; /* Prevent shrinking below 400px */
   max-width: 100%; /* Prevent exceeding the device width */
   overflow-x: hidden; /* Disable horizontal scrolling */
 }

@@ -1,140 +1,162 @@
+/* --- TopBar main container --- */
 .topBar {
-    position: fixed;
+    position: fixed; /* Sticks to top */
     top: 0;
     left: 0;
     width: 100%;
     padding: calc(var(--spacing-unit) * 1.5) calc(var(--spacing-unit) * 4);
     display: flex;
-    justify-content: space-between;
+    justify-content: space-between; /* Logo left, controls right */
     align-items: center;
     z-index: 1000;
-    background-color: rgba(var(--background-rgb), 0.7); /* semi-transparent for blur */
-    backdrop-filter: blur(64px) saturate(180%);
-    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    backdrop-filter: blur(48px) saturate(180%);
+    -webkit-backdrop-filter: blur(48px) saturate(180%);
     transition: background-color 0.3s ease;
     box-sizing: border-box;
-    border-bottom: 0px solid rgba(255, 0, 0, 0.08);
-  }
-  
-  .logoSection {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-  }
+}
 
-  .logo a, .logoLink {
+/* --- Logo section (left) --- */
+.logoSection {
+    display: inline-flex;
+    align-items: center;
+    flex-direction: row;
+    gap: 1rem;
+}
+
+/* --- Logo text/link --- */
+.logo a, .logoLink {
     color: var(--text-color);
     text-decoration: none;
     font-family: var(--font-mono);
-    font-weight: 600;
-    font-size: 1.2rem;
-    letter-spacing: 1px;
-  }
-  
-  .nav {
-    display: flex;
-    gap: 2rem;
-  }
+    font-weight: 800;
+    font-size: 1.4rem;
+    letter-spacing: 1.5px;
+}
 
-  .navLink {
-    color: var(--text-color);
-    text-decoration: none;
-    font-family: var(--font-sans);
-    font-size: 1rem;
-    position: relative;
-    transition: color 0.3s ease;
-  }
-
-  .navLink:hover {
-    color: var(--primary-color);
-  }
-
-  .navLink.active {
-    color: var(--primary-color);
-    font-weight: 700;
-  }
-
-  .controls {
+/* --- Controls section (right) --- */
+.controls {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
-  }
+    gap: 1rem;
+    letter-spacing: 1px;
+}
 
-  .backButton {
-    background: rgba(var(--primary-rgb), 0.08);
-    border: none;
+/* --- Back button --- */
+.backButton {
     color: var(--primary-color);
     cursor: pointer;
     font-family: var(--font-mono);
     font-size: 1rem;
     text-decoration: none;
-    border-radius: 6px;
-    padding: 0.25em 0em;
-    transition: background 0.2s, color 0.2s;
+    padding: 0.25rem 0rem;
     box-shadow: 0 1px 4px rgba(0,0,0,0.03);
     display: flex;
     align-items: center;
-    gap: 0.4em;
-  }
+    letter-spacing: 0px;
+}
 
-  .backButton:hover {
-    background: rgba(var(--primary-rgb), 0.18);
+.backButton:hover {
     color: var(--text-color);
-  }
+}
 
-  .middleArea {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .testButton {
+/* --- Test button --- */
+.testButton {
     color: var(--text-color);
     text-decoration: none;
     font-family: var(--font-mono);
-    font-size: 1.1rem;
-    opacity: 1;
-    transition: opacity 0.2s;
-    padding: 0.25em 1em;
-    border-radius: 4px;
-  }
+    font-size: 1rem;
+    transition: color 0.2s;
+    padding: 0rem 1rem;
+    display: flex;
+    align-items: center;
+    letter-spacing: 0px;
+}
 
-  .testButton:hover {
-    opacity: 1;
-    background: rgba(var(--primary-rgb), 0.1);
-  }
+.testButton:hover {
+    color: var(--primary-color);
+}
 
-  .bgToggleButton {
+/* --- Background toggle button container --- */
+.bgToggleButtonContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--text-color);
     background: none;
-    border: 1px solid rgba(var(--text-color), 0.2);
+    padding: 2px;
+}
+
+/* --- Background toggle button --- */
+.bgToggleButton {
     color: var(--text-color);
-    font-size: 1.2rem;
-    width: 40px;
-    height: 40px;
-    border-radius: 8px;
+    font-size: 1rem;
+    width: 12px;
+    height: 12px;
     cursor: pointer;
     transition: all 0.3s ease;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-family: var(--font-mono);
-    margin-right: 0.5rem;
-  }
+    font-family: var(--font-sans);
+    background: none;
+    border: 1px solid var(--text-color);
+}
 
-  .bgToggleButton:hover {
+.bgToggleButton:hover {
     border-color: var(--primary-color);
-    color: var(--primary-color);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(var(--primary-color), 0.2);
+    background: var(--primary-color);
+    transform: rotate(0deg);
+    border-radius: 2px;
+}
+
+.bgToggleButton:active {
+    transform: rotate(360deg) scale(0.3);
+    background: var(--text-color);
+}
+
+/* --- Active state for bg toggle button --- */
+.bgToggleButtonactive {
+    background: var(--text-color);
+    width: 12px;
+    height: 12px;
+}
+
+/* --- Mobile styles --- */
+@media (max-width: 600px) {
+  .topBar {
+    display: flex;
+    flex-direction: column; /* Stack logo and controls */
+    align-items: center;
+    padding: var(--spacing-unit) var(--spacing-unit);
+    gap: 0rem;
   }
 
-  .bgToggleButton:active {
-    transform: translateY(0);
+  .controls {
+    display: inline-flex;
+    gap: 0rem;
+    text-align: center;
+    align-items: center;
   }
 
-  @media (max-width: 900px) {
-    .tocSidebar {
-      display: none;
-    }
+  .logoSection {
+    justify-content: center;
   }
+
+  .logoLink {
+    font-size: 1rem;
+    letter-spacing: 0.5px;
+    text-align: center;
+    word-break: break-all;
+  }
+
+  .testButton,
+  .backButton {
+    font-size: 0.9rem;
+    min-width: 36px;
+    min-height: 20px;
+  }
+
+  .bgToggleButton {
+    font-size: 1rem;
+  }
+}

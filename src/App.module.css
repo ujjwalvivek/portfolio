@@ -2,6 +2,7 @@ html, body {
   height: 100%;
   margin: 0;
   padding: 0;
+  font-size: 16px;
 }
 
 .App {
@@ -13,33 +14,17 @@ html, body {
   position: relative;
 }
 
-.AppMain {
-  flex: 1;
-  text-align: center;
-}
-
-.AppMain h1 {
-  font-family: 'DM Sans', sans-serif;
-  font-size: 5em;
-  text-transform: uppercase;
-  font-weight: 700;
-  letter-spacing: 0.2em;
-}
-
-.AppMain p {
-  font-family: 'DM Sans', sans-serif;
-  font-size: 1em;
-  color: #222222;
-  text-transform: uppercase;
-  font-weight: 500;
-}
-
 .mainContent {
   flex: 1;
-  padding: calc(var(--spacing-unit) * 8) var(--spacing-unit);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;   /* vertical center */
+  align-items: center;       /* horizontal center */
+  padding: 8rem 0 0 0;                /* Remove large padding */
   margin: 0 auto;
   width: 100%;
   max-width: var(--main-content-width);
+  min-height: 0; 
 }
 
 /* ------- WEB BREAKPOINTS ------- */
@@ -47,14 +32,6 @@ html, body {
 @media (max-width: 992px) {
   .App {
     padding: none;
-  }
-
-  .AppMain h1 {
-    font-size: 4em;
-  }
-
-  .AppMain p {
-    font-size: 0.9em;
   }
 
   footer {
@@ -67,37 +44,21 @@ html, body {
     padding: none;
   }
 
-  .AppMain h1 {
-    font-size: 2.5em;
-  }
-
-  .AppMain p {
-    font-size: 0.8em;
-  }
-
-  .AppLogo {
-    height: 25vmin;
-  }
-
   footer {
     font-size: 0.6em;
   }
 }
 
 @media (max-width: 576px) {
-  .AppMain h1 {
-    font-size: 2em;
-  }
-
-  .AppMain p {
-    font-size: 0.7em;
-  }
-
-  .AppLogo {
-    height: 30vmin;
-  }
-
   footer {
     font-size: 0.6em;
+  }
+}
+
+@media (max-width: 600px) {
+  html, body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
   }
 }
