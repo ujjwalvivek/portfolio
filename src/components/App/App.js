@@ -1,19 +1,17 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { ThemeProvider } from './components/ThemeSwitcher/ThemeContext';
-import { BackgroundProvider, useBackground } from './components/Background/BackgroundContext';
-import GlobalBackground from './components/Background/GlobalBackground';
+import { ThemeProvider } from '../ThemeSwitcher/ThemeContext';
+import { BackgroundProvider, useBackground } from '../Background/BackgroundContext';
+import GlobalBackground from '../Background/GlobalBackground';
 import styles from './App.module.css';
-import Home from './components/Pages/Home/Home';
-import About from './components/Pages/About/About';
-import Projects from './components/Pages/Projects/Projects';
-import Contact from './components/Pages/Contact/Contact';
-import Blog from './components/Pages/Blog/Blog';
-import Footer from './components/Footer/Footer';
-import TopBar from './components/TopBar/TopBar';
-import LoadingSpinner from './components/Loader/LoadingSpinner';
-import Links from './components/Pages/Links/Links';
-import BackgroundTest from './components/Pages/BackgroundTest/BackgroundTest'; // Updated import path
+import Home from '../Pages/Home/Home';
+import About from '../Pages/About/About';
+import Projects from '../Pages/Projects/Projects';
+import Blog from '../Pages/Blog/Blog';
+import Footer from '../Footer/Footer';
+import TopBar from '../TopBar/TopBar';
+import LoadingSpinner from '../Loader/LoadingSpinner';
+import BackgroundTest from '../Pages/BackgroundTest/BackgroundTest'; // Updated import path
 
 function AppContent() {
   const { backgroundConfig } = useBackground();
@@ -32,9 +30,7 @@ function AppContent() {
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/projects" element={<Projects />} />
-          <Route path="/contact" element={<Contact />} />
           <Route path="/blog/*" element={<Blog />} />
-          <Route path="/links" element={<Links />} />
           <Route path="/bg-test" element={<BackgroundTest />} />
         </Routes>
       </main>

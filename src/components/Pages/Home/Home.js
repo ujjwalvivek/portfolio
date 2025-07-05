@@ -76,12 +76,12 @@ const Home = () => {
                     Unfinished Thoughts <span style={{ color: 'var(--primary-color)' }}>[NEW]</span>
                 </h3>
                 <ul>
-                    {latestPosts.map((post) => {
+                    {latestPosts.map((post, idx) => {
                         const maxLen = 30;
                         // Truncate long titles
                         const shortTitle = post.title.length > maxLen ? post.title.slice(0, maxLen) + '...' : post.title; 
                         return (
-                            <li key={post.slug}>
+                            <li key={post.slug || post.filename || idx}>
                                 <Link to={`/blog/${post.filename}`}>
                                     <span className={styles.postDate}>
                                         [{new Date(post.date).toLocaleDateString('en-GB', { month: '2-digit', day: '2-digit' })}]

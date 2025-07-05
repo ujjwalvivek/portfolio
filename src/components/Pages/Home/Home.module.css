@@ -82,14 +82,14 @@
     animation: glitchTop 0.05s infinite linear alternate-reverse;
     color: var(--primary-color);
     z-index: 1;
-    top: -1.5px;
+    top: -0.1rem;
 }
 
 .glitch::after {
     animation: glitchBot 0.05s infinite linear alternate-reverse;
     color: var(--text-color);
     z-index: 1;
-    top: 1.5px;
+    top: 0.1rem;
 }
 
 /* --- Glitch keyframes --- */

@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import styles from './About.module.css';
-import ResumeOverlay from '../../ResumeOverlay';
+import ResumeOverlay from '../../ResumeViewer/ResumeOverlay';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { atomDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { oneLight } from 'react-syntax-highlighter/dist/esm/styles/prism';
