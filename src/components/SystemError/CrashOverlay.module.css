@@ -1,25 +1,29 @@
-/* Crash Overlay */
 .crashOverlay {
   position: fixed;
   inset: 0;
   background: #111;
   z-index: 9999;
+  width: 100dvw;
+  height: 100dvh;
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
   display: flex;
-  align-items: center;
+  align-items: stretch;
   justify-content: stretch;
-  backdrop-filter: blur(4px);
 }
 
 .crashWindow {
+  display: flex;
+  flex-direction: column;
   background: #111;
-  border-radius: 0px;
-  box-shadow: 0 8px 40px 0 rgba(0,0,0,0.45);
-width: 100%;
-  height: 100vh; /* <-- change this line */
+  border-radius: 0;
+  box-shadow: none;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
   overflow: hidden;
   animation: crashIn 0.4s cubic-bezier(.4,1.6,.6,1);
-    border: 2px solid red;
-
 }
 
 @keyframes crashIn {
@@ -31,21 +35,29 @@ width: 100%;
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  background: #0c0c0c;
-  padding: 0.5rem 1rem;
+  background: #181818;
+  padding: 0 1rem;
+  min-height: 38px;
+  border-bottom: 1px solid #222;
+  z-index: 1;
   position: relative;
-  z-index: 10001;
-    border: 2px solid red;
+}
 
+.crashDots {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
 }
 
 .crashDot {
-  width: 12px;
-  height: 12px;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
   display: inline-block;
-  margin-right: 0.3rem;
 }
+.crashDot.red { background: #ff5f56; }
+.crashDot.yellow { background: #ffbd2e; }
+.crashDot.green { background: #27c93f; }
 
 .crashTitle {
   font-family: 'JetBrains Mono', monospace;
@@ -54,126 +66,65 @@ width: 100%;
   margin-left: auto;
   opacity: 0.4;
   letter-spacing: -1px;
+  display: flex;
 }
 
 .crashWindowContent {
+  flex: 1 1 0;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 2.2rem 2.5rem 2rem 2.5rem;
-  gap: 0.7rem;
-    border: 2px solid red;
+  justify-content: center;
+  padding: 0rem 2.5rem;
+  gap: 0rem;
+  box-sizing: border-box;
+  width: 100%;
+  border: 2px solid #ff5050;
 
 }
 
 .crashTextMain {
-  font-size: 10rem;
+  font-size: 8rem;
   font-weight: 800;
   color: #202020;
   margin-bottom: 0.2rem;
   font-family: 'JetBrains Mono', monospace;
-  letter-spacing: -8px;
+  letter-spacing: -4px;
   text-shadow:
     -2px -2px 0 #ff5050,
      2px -2px 0 #ff5050,
     -2px  2px 0 #ff5050,
      2px  2px 0 #ff5050;
+  text-align: center;
+  word-break: break-word;
+  display: flex;
 }
 
 .crashTextSub {
   color: #ffffff;
-  font-size: 1rem;
+  font-size: 1.1rem;
   opacity: 0.9;
   text-align: center;
   letter-spacing: -0.5px;
+  display: flex;
 }
 
 .crashFooter {
-  position: fixed;
-  left: 0;
-  bottom: 0;
-  width: 100vw;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: flex-end;
   pointer-events: none;
-  padding: 0.5rem 1rem;
+  padding: 0.7rem 1rem 0.7rem 1rem;
   gap: 0.2rem;
   backdrop-filter: blur(20px);
-    border: 2px solid red;
-
-}
-
-
-.crashTip {
-  color: #ffffff;
   font-size: 0.95rem;
-  margin-top: 0.7rem;
-  opacity: 0.02;
-  letter-spacing: 0px;
-}
-
-.restartButton {
-  background: #ff5050;
-  color: #000;
-  border: none;
-  border-radius: 2px;
-  font-size: 1rem;
-  font-family: 'JetBrains Mono', monospace;
-  font-weight: 400;
-  cursor: pointer;
-  box-shadow: 0 2px 12px 0 rgba(0,0,0,0.18);
-  transition: background 0.2s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.restartButton:hover {
-  background: #501919;
-  color: #fff;
-}
-
-.mockCloseMsg {
-  position: absolute;
-  top: 10px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: #ff5f56;
-  color: #fff;
-  padding: 0.5rem 1.2rem;
-  border-radius: 8px;
-  font-family: monospace;
-  font-size: 1rem;
-  z-index: 10;
-  box-shadow: 0 2px 8px 0 rgba(0,0,0,0.18);
-  pointer-events: none;
-}
-
-.flicker {
-  animation: flickerAnim 1.2s infinite alternate;
-}
-
-@keyframes flickerAnim {
-  0% {
-    opacity: 1;
-  }
-
-  80% {
-    opacity: 0.85;
-  }
-
-  85% {
-    opacity: 0.6;
-  }
-
-  90% {
-    opacity: 0.95;
-  }
-
-  100% {
-    opacity: 1;
-  }
+  color: #aaa;
+  border-top: 1px solid #222;
+  box-sizing: border-box;
+  min-height: 40px;
+  margin-top: auto;
 }
 
 .blink {
@@ -192,44 +143,60 @@ width: 100%;
   }
 }
 
-@media (max-width: 600px) {
-  .crashWindow {
-    min-width: 100vw;
-    min-height: 100vh;
-    border-radius: 0;
-    padding: 0;
+@media (max-width: 1400px) {
+    .crashTextMain {
+    font-size: 6rem;
+    letter-spacing: -1px;
   }
+  
+}
 
+@media (max-width: 600px) {
+  .crashOverlay,
+  .crashWindow {
+    width: 100vw;
+    height: 100vh;      /* Fallback for older browsers */
+    min-width: 0;
+    min-height: 0;
+    overflow-y: auto;
+  }
+  .crashOverlay {
+    /* ...other overlay styles... */
+  }
+  .crashWindow {
+    border-radius: 0;
+    box-sizing: border-box;
+    /* ...other window styles... */
+  }
   .crashWindowContent {
     padding: 1.2rem 0.7rem 1rem 0.7rem;
     gap: 0.5rem;
   }
-
-  .crashTextMain {
-    font-size: 4.5rem;
-    letter-spacing: -3px;
-    margin-bottom: 0.1rem;
+      .crashTextMain {
+    font-size: 2rem;
+    letter-spacing: -1px;
+      text-shadow:
+    -1px -1px 0 #ff5050,
+     1px -1px 0 #ff5050,
+    -1px  1px 0 #ff5050,
+     1px  1px 0 #ff5050;
   }
 
-  .crashTextSub {
-    font-size: 0.95rem;
-    padding: 0 0.2rem;
+      .crashTextSub {
+    font-size: 0.7rem;
+    letter-spacing: -1px;
   }
-
+  .crashTip {
+    font-size: 0.5rem;
+    padding: 0.5rem 0.7rem;
+  }
+  /* svh override comes last for best support */
+  .crashOverlay,
+  .crashWindow {
+    height: 100svh;
+  }
   .crashFooter {
-    padding: 0.3rem 0.5rem;
-    font-size: 0.9rem;
-  }
-
-  .restartButton {
-    font-size: 0.95rem;
-    padding: 0.5rem 1rem;
-  }
-
-  .mockCloseMsg {
-    font-size: 0.95rem;
-    padding: 0.4rem 0.8rem;
-    border-radius: 6px;
-    top: 8px;
+    font-size: 0.5rem;
+    padding: 0.5rem 0.7rem;
   }
 }

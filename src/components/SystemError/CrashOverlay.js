@@ -25,14 +25,14 @@ const CrashOverlay = ({ onRestart }) => {
               <span>Nice try! Try Harder.</span>
             </div>
           )}
-          <div className={styles.crashTextMain + ' ' + styles.blink}>&gt; session.crashed _</div>
+          <div className={styles.crashTextMain + ' ' + styles.blink}>{"> session.crashed _"}</div>
           <div className={styles.crashTextSub}>logs flushed. session configurations saved.</div>
           <div className={styles.crashTip}>[ tip: open your dev console ]</div>
           <DinoGame />
         </div>
-      </div>
-      <div className={styles.crashFooter}>
+        <div className={styles.crashFooter}>
         <div className={styles.crashTextSub + ' ' + styles.flicker} style={{textShadow: '0 0 0.5rem rgba(82, 255, 39, 0.8)'}}>ujjwalvivek.com ⊗ no trackers ⊗ no cookies ⊗ no analytics</div>
+      </div>
       </div>
     </div>
   );
