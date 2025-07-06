@@ -1,87 +1,14 @@
+/* Main Container */
 .pageContainer {
-  padding: calc(var(--spacing-unit) * 2) 0;
-  padding: 1rem 2rem;
+  padding: 1rem 1rem;
+  width: 100%;
   max-width: 1000px;
   margin: 0 auto;
   font-family: 'JetBrains Mono', monospace;
   line-height: 1.6;
 }
 
-.resumeButton {
-  background: none;
-  cursor: pointer;
-  margin: calc(var(--spacing-unit) * 2) calc(var(--spacing-unit) * 4);
-  padding: calc(var(--spacing-unit) * 2) calc(var(--spacing-unit) * 6);
-  border: 1px solid var(--text-color);
-  text-decoration: none;
-  color: var(--text-color);
-  font-family: var(--font-mono);
-  font-weight: 400;
-  font-size: 1.1rem;
-  letter-spacing: 1px;
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
-  white-space: nowrap;
-  display: inline-block;
-  min-width: auto;
-  width: auto;
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-}
-
-.resumeButton:hover {
-  background-color: none;
-  color: var(--text-color);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-}
-
-.resumeButton::after {
-  background: var(--text-color);
-  content: "";
-  height: 155px;
-  left: -75px;
-  opacity: 0.1;
-  position: absolute;
-  top: -50px;
-  transform: rotate(45deg);
-  transition: all 500ms cubic-bezier(0.19, 1, 0.22, 1);
-  width: 50px;
-  z-index: -1;
-  filter: blur(20px);
-}
-
-.resumeButton:hover::after {
-  left: 120%;
-  opacity: 0.2;
-  transition: all 500ms cubic-bezier(0.19, 1, 0.22, 1);
-}
-
-.bio {
-  font-size: 1rem;
-  margin-bottom: 2rem;
-}
-
-.nowSection h2,
-.skillsSection h2 {
-  font-size: 1.25rem;
-  margin-top: 2rem;
-}
-
-ul {
-  list-style: disc;
-  padding-left: 1.5rem;
-}
-
-.easterEgg {
-  margin-top: 2rem;
-  font-size: 0.85rem;
-  color: #555;
-}
-
+/* Hero Section */
 .heroSection {
   display: flex;
   flex-direction: column;
@@ -101,12 +28,13 @@ ul {
 
 .heroTitle {
   font-family: var(--font-mono);
-  font-size: 2.8rem;
+  font-size: 2.5rem;
   font-weight: 800;
   color: var(--text-color);
   letter-spacing: -0.04em;
   text-align: center;
-
+  margin: 0 auto;
+  padding: 0.8rem 0;
 }
 
 .heroSubtitle {
@@ -125,195 +53,12 @@ ul {
   background-clip: content-box, border-box;
 }
 
-.heroDesc {
-  font-size: 1rem;
-  color: var(--text-color);
-  margin-bottom: 1.5rem;
-  font-family: var(--font-mono);
-  line-height: 1.7;
-  font-weight: 400;
-  letter-spacing: -0.05rem;
-  text-align: justify;
-}
-
 .heroArt {
   display: flex;
   align-items: center;
   justify-content: center;
   margin-top: 1.5rem;
   width: 100%;
-}
-
-.terminalSection {
-  margin-bottom: 0rem;
-}
-
-.terminalBlock {
-  background: none;
-  font-family: var(--font-mono);
-  box-shadow: none;
-  border: none;
-  padding: 1.5rem;
-  border-radius: 2px;
-  font-size: 0.9rem;
-  margin-bottom: 2rem;
-  white-space: pre-wrap;
-  backdrop-filter: blur(20px);
-}
-
-.nowSection {
-  margin-bottom: 2.2rem;
-  background: none;
-  border-radius: 0;
-  padding: 0 0 1.2rem 0;
-  border: none;
-  box-shadow: none;
-  backdrop-filter: blur(20px);
-}
-
-.skillsSection {
-  margin-bottom: 2.2rem;
-  background: none;
-  border-radius: 2px;
-  border: none;
-  box-shadow: none;
-}
-
-.skillsSection h2 {
-  font-size: 1.4rem;
-  color: var(--text-color);
-  margin-bottom: 0.5rem;
-  letter-spacing: 0.01em;
-  font-weight: 800;
-}
-
-.nowSection h2 {
-  font-size: 1.3rem;
-  color: var(--primary-color);
-  margin-bottom: 0.7rem;
-  letter-spacing: 0.01em;
-}
-
-.nowSection ul {
-  list-style: disc inside;
-  color: #bdbdbd;
-  font-size: 1.03rem;
-  margin-left: 0.5rem;
-}
-
-.skillsGrid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.6rem 1.1rem;
-  margin-top: 0.5rem;
-}
-
-.skillsGrid span {
-  background: none;
-  color: #b3c7f9;
-  font-family: var(--font-mono);
-  font-size: 0.99rem;
-  padding: 0.32em 1em;
-  border-radius: 0;
-  letter-spacing: 0.01em;
-  box-shadow: none;
-}
-
-/* Skills Grid with Icons */
-.skillsGridIcons {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
-  gap: 2.5rem 0.7rem;
-  margin-top: 1.5rem;
-  margin-bottom: 1.5rem;
-  justify-items: center;
-  align-items: center;
-}
-
-.skillItem {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  backdrop-filter: blur(20px);
-  border-radius: 2px;
-  padding: 1rem 1rem 1rem 1rem;
-  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.10);
-  transition: transform 0.18s, box-shadow 0.18s;
-  cursor: pointer;
-  height: 36px;
-  width: auto;
-  text-align: center;
-}
-
-.skillItem:hover {
-  transform: translateY(-4px) scale(1.001) rotate(0deg);
-  box-shadow: 0 6px 24px 0 rgba(0, 0, 0, 0.18);
-}
-
-.skillItem .frostedIcon {
-  position: relative;
-  z-index: 2;
-}
-
-.skillItem::before {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background: var(--text-color);
-  opacity: 0.5;
-  filter: blur(20px) saturate(180%);
-  z-index: 1;
-  pointer-events: none;
-}
-
-.easterEgg {
-  text-align: center;
-  font-family: 'JetBrains Mono', monospace;
-  user-select: none;
-  width: 100%;
-}
-
-.easterEggIcon {
-  font-size: 1.1em;
-  display: inline-flex;
-  width: 300px;
-  filter: drop-shadow(0 0 8px var(--text-color));
-  margin-right: 0.2em;
-  animation: eggGlow 2s infinite alternate;
-  color: var(--text-color);
-  letter-spacing: 0px;
-  text-align: center;
-  justify-content: center;
-}
-
-@keyframes eggGlow {
-  0% {
-    filter: drop-shadow(0 0 8px #7fffd4cc);
-  }
-
-  100% {
-    filter: drop-shadow(0 0 16px #38bdf8cc);
-  }
-}
-
-.easterEggTooltip {
-  color: var(--text-color);
-  padding: 0.25em 0.7em;
-  border-radius: 2px;
-  font-size: 0.95rem;
-  font-family: var(--font-mono, monospace);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
-  white-space: nowrap;
-  opacity: 0.95;
-  transition: opacity 0.15s;
-  pointer-events: none;
-  backdrop-filter: blur(20px);
 }
 
 .avatarImg {
@@ -343,252 +88,118 @@ ul {
   }
 }
 
-/* Quick Jump Dropdown Terminal Menu */
-
-.quickJumpSection {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-}
-
-.quickJumpRow {
+/* Stack and Statuses */
+/* Skills + Status Side by Side */
+.skillsStatusRow {
   display: flex;
   flex-direction: row;
-  gap: 2.5rem;
-  width: 100%;
-  max-width: 1000px;
-  border-radius: 2px;
-  padding: 2rem 2rem;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 1.1rem;
-  backdrop-filter: blur(20px);
-  --webkit-backdrop-filter: blur(20px);
+  gap: 0rem;
+  margin: 2rem 0 0rem 0;
+  justify-content: space-between;
 }
 
-.recentLogsBox,
-.resumeViewerBox {
+.skillsSection {
+  margin: 0rem 0 2rem 0;
+  background: none;
+  border-radius: 2px;
+  border: none;
+  box-shadow: none;
   flex: 1 1 0;
   min-width: 0;
+  margin-right: 0;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  justify-content: flex-start;
-  margin: 0 0.5rem;
+  justify-content: center; /* Center vertically */
+  padding: 0 2.5rem;
 }
 
-.recentLogsBox {
-  margin-right: 0rem;
-}
-
-.recentLogsBox h2 {
-  font-size: 1.4rem;
+.skillsSection h2 {
   color: var(--text-color);
-  margin-bottom: 0.5rem;
-  letter-spacing: 0.01em;
-  font-weight: 800;
+  font-family: var(--font-mono);
+  margin-bottom: 0rem;
+  padding: 1rem;
+  letter-spacing: 0px;
+  font-weight: 500;
   text-align: center;
+  backdrop-filter: blur(48px);
+}
+
+.spicyHeading {
+  font-size: 1rem;
+  padding: 1rem 2rem;
+  margin: 0 auto 1.5rem auto;
+  border-radius: 2px;
+  backdrop-filter: blur(48px) saturate(180%);
+  display: inline-block;
+  position: relative;
+  z-index: 2;
   width: 100%;
 }
 
-.resumeViewerBox {
-  justify-content: center;
+.skillsGridIcons {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
+  gap: 2.5rem 0.7rem;
+
+  justify-items: center;
   align-items: center;
-  border: 2px solid var(--text-color);
-  padding: 4px;
-  animation: avatarGlow 2s linear infinite;
+  gap: 1rem;
 }
 
-.commandLabel {
-  color: #7fffd4;
-  font-weight: 600;
-  font-size: 1.08em;
-  margin-bottom: 0.5rem;
-}
-
-.commandAction {
-  color: #fff;
-  opacity: 0.8;
-  font-size: 1em;
-  font-weight: 400;
-  margin-left: 0.5em;
-  margin-bottom: 1.2rem;
-}
-
-.resumeViewerOverlay {
-  background: #111;
-  border-radius: 8px;
-  width: 100%;
-  height: auto;
+.skillItem {
+  position: relative;
+  /* Ensure stacking context */
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 2px 16px 0 rgba(0, 0, 0, 0.12);
-  min-width: 0;
-  cursor: zoom-in;
-  position: relative;
+  backdrop-filter: blur(20px);
+  border-radius: 2px;
+  padding: 1rem;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.10);
+  transition: transform 0.18s, box-shadow 0.18s;
+  cursor: cell;
+  height: 60px;
+  width: auto;
+  text-align: center;
+  background: none;
+  overflow: visible;
+  margin: 0.6rem;
 }
 
-.resumeHoverOverlay {
+.skillItem:hover {
+  transform: translateY(-4px) scale(1.001) rotate(0deg);
+  box-shadow: 0 6px 24px 0 rgba(0, 0, 0, 0.18);
+}
+
+.skillItem::before {
+  content: "";
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  backdrop-filter: blur(10px);
-  color: var(--text-color);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.4rem;
-  font-family: var(--font-mono, monospace);
-  opacity: 0;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--text-color);
+  opacity: 0.7;
+  filter: blur(12px) saturate(180%);
+  z-index: 10004;
   pointer-events: none;
-  transition: opacity 0.5s;
-  border-radius: 0px;
-  z-index: 2;
-}
-
-.resumeViewerOverlay:hover .resumeHoverOverlay {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-.resumeIframe {
-  border: none;
-  border-radius: 2px;
-}
-
-
-@media (max-width: 900px) {
-  .quickJumpRow {
-    flex-direction: column;
-    gap: 2.5rem;
-    padding: 1.2rem 0.5rem;
-  }
-
-  .recentLogsBox,
-  .resumeViewerBox {
-    margin: 0;
-    width: 100%;
-  }
-
-  .resumeIframe {
-    height: 320px;
-  }
-}
-
-.quickJumpMenu {
-  display: flex;
-  gap: 2rem;
-  background: var(--background-secondary, #181c20);
-  border-radius: 2px;
-  box-shadow: 0 2px 16px 0 rgba(0, 0, 0, 0.12);
-  padding: 1.5rem 2.5rem;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 1.1rem;
-  position: relative;
-}
-
-.quickJumpItem {
-  position: relative;
-  cursor: pointer;
-  padding: 0rem 1rem;
-  border-radius: 6px;
-  transition: background 0.2s;
-  outline: none;
-  display: flex;
-  align-items: center;
-  gap: 0.7rem;
-}
-
-.quickJumpItem:hover,
-.quickJumpItem:focus {
-  background: rgba(255, 255, 255, 0.06);
-}
-
-.commandLabel {
-  color: #7fffd4;
-  font-weight: 600;
-  font-size: 1.08em;
-}
-
-.commandAction {
-  color: #fff;
-  opacity: 0.8;
-  font-size: 1em;
-  font-weight: 400;
-  margin-left: 0.5em;
-}
-
-.dropdownContent {
-  display: none;
-  position: absolute;
-  left: 0;
-  top: 2.2rem;
-  min-width: 260px;
-  background: #181c20;
-  border: 1px solid #222;
-  border-radius: 8px;
-  box-shadow: 0 4px 24px 0 rgba(0, 0, 0, 0.18);
-  z-index: 10;
-  animation: dropdownIn 0.22s cubic-bezier(.4, 1.6, .6, 1) forwards;
-}
-
-.quickJumpItem:hover .dropdownContent,
-.quickJumpItem:focus .dropdownContent {
-  display: block;
-}
-
-@keyframes dropdownIn {
-  0% {
-    opacity: 0;
-    transform: translateY(-10px) scale(0.98);
-  }
-
-  100% {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-
-.blogList {
-  list-style: none;
-  margin: 0;
-  padding: 0rem 1rem;
-}
-
-.blogList li {
-  list-style: georgian;
-  margin: 1.5rem 0;
-}
-
-.blogList ul {
-    list-style: none;
-}
-
-.blogList a {
-  color: var(--text-color);
-  text-decoration: none;
-  font-size: 0.9em;
-  transition: color 0.18s;
-}
-
-.blogList a:hover {
-  color: var(--text-color);
-  text-decoration: none;
 }
 
 /* Build Status Console */
 .statusConsoleSection {
-  margin: 2rem 0 2.5rem 0;
+  margin: 0rem 0 2rem 0;
   font-family: 'JetBrains Mono', monospace;
   border-radius: 2px;
   box-shadow: 0 2px 16px 0 rgba(0, 0, 0, 0.12);
   padding: 1.5rem 2.5rem;
-  max-width: 480px;
-  margin-left: auto;
   margin-right: auto;
+  flex: 1 1 0;
+  min-width: 0;
+  margin-left: 0;
+  max-width: 480px;
   backdrop-filter: blur(20px);
 }
 
@@ -603,7 +214,7 @@ ul {
 .statusConsoleBlock {
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
+  gap: 0.6rem;
   font-size: 1em;
 }
 
@@ -691,171 +302,284 @@ ul {
   }
 }
 
-/* Crash Overlay */
-.crashOverlay {
-  position: fixed;
-  inset: 0;
-  background: #111;
-  z-index: 9999;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  backdrop-filter: blur(4px);
+/* Terminal section */
+.terminalSection {
+  margin-bottom: 1rem;
+  backdrop-filter: blur(48px);
 }
 
-.crashWindow {
-  background: #111;
-  border-radius: 0px;
-  box-shadow: 0 8px 40px 0 rgba(0,0,0,0.45);
-  min-width: 100vw;
-  min-height: 100vh;
-  padding: 0;
-  overflow: hidden;
-  animation: crashIn 0.4s cubic-bezier(.4,1.6,.6,1);
-}
-
-@keyframes crashIn {
-  0% { opacity: 0; transform: scale(0.95) translateY(30px);}
-  100% { opacity: 1; transform: scale(1) translateY(0);}
-}
-
-.crashWindowBar {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  background: #0c0c0c;
-  padding: 0.5rem 1rem;
-  position: relative;
-  z-index: 10001;
-}
-
-.crashDot {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  display: inline-block;
-  margin-right: 0.3rem;
-}
-
-.crashTitle {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 1rem;
-  color: #fff;
-  margin-left: auto;
-  opacity: 0.4;
-  letter-spacing: -1px;
-}
-
-.crashWindowContent {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 2.2rem 2.5rem 2rem 2.5rem;
-  gap: 0.7rem;
-}
-
-.crashTextMain {
-  font-size: 10rem;
-  font-weight: 800;
-  color: #202020;
-  margin-bottom: 0.2rem;
-  font-family: 'JetBrains Mono', monospace;
-  letter-spacing: -8px;
-  text-shadow:
-    -2px -2px 0 #ff5050,
-     2px -2px 0 #ff5050,
-    -2px  2px 0 #ff5050,
-     2px  2px 0 #ff5050;
-}
-
-.crashTextSub {
-  color: #ffffff;
-  font-size: 1rem;
-  opacity: 0.9;
-  text-align: center;
-  letter-spacing: -0.5px;
-}
-
-.crashFooter {
-  position: fixed;
-  left: 0;
-  bottom: 0;
-  width: 100vw;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  pointer-events: none;
-  padding: 0.5rem 1rem;
-  gap: 0.2rem;
-  backdrop-filter: blur(20px);
-}
-
-
-.crashTip {
-  color: #ffffff;
-  font-size: 0.95rem;
-  margin-top: 0.7rem;
-  opacity: 0.02;
-  letter-spacing: 0px;
-}
-
-.restartButton {
-  background: #ff5050;
-  color: #000;
+.terminalBlock {
+  background: none;
+  font-family: var(--font-mono);
+  box-shadow: none;
   border: none;
+  padding: 1.5rem;
   border-radius: 2px;
-  font-size: 1rem;
-  font-family: 'JetBrains Mono', monospace;
-  font-weight: 400;
-  cursor: pointer;
-  box-shadow: 0 2px 12px 0 rgba(0,0,0,0.18);
-  transition: background 0.2s;
+  font-size: 0.9rem;
+  white-space: pre-wrap;
+}
+
+/* Quick jump row: stack vertically */
+/* Recent Logs and Resume Viewer */
+.quickJumpSection {
+  width: 100%;
   display: flex;
-  align-items: center;
   justify-content: center;
 }
 
-.restartButton:hover {
-  background: #501919;
-  color: #fff;
-}
-
-.mockCloseMsg {
-  position: absolute;
-  top: 10px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: #ff5f56;
-  color: #fff;
-  padding: 0.5rem 1.2rem;
-  border-radius: 8px;
-  font-family: monospace;
-  font-size: 1rem;
-  z-index: 10;
-  box-shadow: 0 2px 8px 0 rgba(0,0,0,0.18);
-  pointer-events: none;
-}
-
-/* Skills + Status Side by Side */
-.skillsStatusRow {
+.quickJumpRow {
   display: flex;
   flex-direction: row;
   gap: 2.5rem;
-  margin: 2.5rem 0 0rem 0;
-  justify-content: space-between;
+  width: 100%;
+  max-width: 1000px;
+  border-radius: 2px;
+  padding: 2rem 2rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.1rem;
+  backdrop-filter: blur(20px);
+  --webkit-backdrop-filter: blur(20px);
 }
 
-.skillsSection {
-  flex: 1 1 0;
-  min-width: 0;
-  margin-right: 0;
+.blogList ul {
+  padding: 0;
+  margin: 0;
 }
 
-.statusConsoleSection {
+.blogList li {
+  margin: 1.5rem 0;
+  font-size: 1.1rem;
+  font-family: var(--font-mono, monospace);
+  color: var(--text-color);
+  background: rgba(255,255,255,0.04);
+  border-radius: 2px;
+  padding: 0.8rem 1.2rem;
+  transition: background 0.2s, transform 0.2s;
+  box-shadow: 0 2px 8px 0 rgba(0,0,0,0.10);
+  position: relative;
+  list-style: none ;
+}
+
+.blogList li:hover {
+  background: rgba(255,255,255,0.10);
+  transform: translateY(-2px) scale(1.01);
+}
+
+.blogList .postDate {
+  color: var(--primary-color);
+  font-weight: bold;
+  margin-right: 0.7em;
+}
+
+.blogList .postTitle {
+  color: var(--text-color);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.blogList a {
+  display: flex;
+  flex-direction: column;
+    text-decoration: none;
+
+}
+
+.recentLogsBox,
+.resumeViewerBox {
   flex: 1 1 0;
   min-width: 0;
-  margin-left: 0;
-  max-width: 480px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  margin: 0 0.5rem;
+}
+
+.recentLogsBox h2 {
+  font-size: 1.4rem;
+  color: var(--text-color);
+  margin-bottom: 0.5rem;
+  letter-spacing: 0.01em;
+  font-weight: 800;
+  text-align: center;
+  width: 100%;
+}
+
+/* Resume Viewer Box */
+.resumeViewerBox {
+  justify-content: center;
+  align-items: center;
+  border: 2px solid var(--text-color);
+  padding: 4px;
+  animation: avatarGlow 2s linear infinite;
+
+}
+
+.resumeViewerOverlay {
+  background: #111;
+  border-radius: 8px;
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 16px 0 rgba(0, 0, 0, 0.12);
+  min-width: 0;
+  cursor: zoom-in;
+  position: relative;
+}
+
+.resumeHoverOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  backdrop-filter: blur(10px);
+  color: var(--text-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  font-family: var(--font-mono, monospace);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s;
+  border-radius: 0px;
+  z-index: 2;
+}
+
+.resumeViewerOverlay:hover .resumeHoverOverlay {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.resumeIframe {
+  border: none;
+  border-radius: 2px;
+}
+
+@media (max-width: 600px) {
+  /* Page container padding and font */
+  .pageContainer {
+    padding: 0.5rem 0.5rem;
+    font-size: 0.97rem;
+    max-width: 100vw;
+  }
+
+  /* Hero section and avatar */
+  .heroSection {
+    gap: 1.2rem;
+    align-items: center;
+  }
+  .heroTitle {
+    font-size: 1.5rem;
+    text-align: center;
+  }
+  .heroSubtitle {
+    font-size: 1rem;
+    text-align: center;
+    padding: 0.2rem 0;
+  }
+  .avatarImg {
+    height: 200px;
+    max-width: 90vw;
+    padding: 2px;
+    border-width: 1px;
+  }
+
+  /* Skills + Status: stack vertically */
+  .skillsStatusRow {
+    flex-direction: column-reverse;
+    gap: 1.5rem;
+    margin: 1.2rem 0 0 0;
+  }
+  .skillsSection,
+  .statusConsoleSection {
+    margin: 0;
+    max-width: 100%;
+    min-width: 0;
+    padding: 0.5rem 0.2rem;
+  }
+
+  /* Skills grid: 4 icons per row, smaller icons */
+  .skillsGridIcons {
+  grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
+  gap: 1rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
+  .skillItem {
+    width: auto;
+    height: 38px;
+    padding: 0.3rem;
+      position: relative;
+  }
+  .skillItem .frostedIcon {
+    font-size: 1.3rem !important;
+  }
+  .spicyHeading {
+    font-size: 0.9rem;;
+  }
+
+  /* Status console */
+  .statusConsoleSection {
+    padding: 1rem 0.5rem;
+    font-size: 0.98rem;
+    box-shadow: none;
+  }
+
+  .quickJumpRow {
+    flex-direction: column;
+    gap: 1.2rem;
+    padding: 0.7rem 0.2rem;
+    max-width: 100vw;
+  }
+  .recentLogsBox,
+  .resumeViewerBox {
+    margin: 0;
+    width: 100%;
+    padding: 0;
+  }
+  .recentLogsBox h2 {
+    font-size: 1.1rem;
+    margin-bottom: 0.3rem;
+  }
+  .resumeIframe {
+    height: 140px;
+  }
+  .resumeViewerBox {
+    padding: 2px;
+  }
+
+  /* Blog list */
+  .blogList {
+    padding: 0 0.2rem;
+  }
+  .blogList li {
+    margin: 1rem 0;
+    font-size: 0.97rem;
+  }
+}
+
+/* Responsive Styles 
+@media (max-width: 900px) {
+  .quickJumpRow {
+    flex-direction: column;
+    gap: 2.5rem;
+    padding: 1.2rem 0.5rem;
+  }
+
+  .recentLogsBox,
+  .resumeViewerBox {
+    margin: 0;
+    width: 100%;
+  }
+
+  .resumeIframe {
+    height: 320px;
+  }
 }
 
 @media (max-width: 900px) {
@@ -871,87 +595,6 @@ ul {
   }
 }
 
-/* --- Real Terminal Footer Styles --- */
-.terminalFooterReal {
-  margin: 2.5rem auto 0 auto;
-  width: 100%;
-  background: #181c20;
-  border-radius: 2px;
-  box-shadow: 0 4px 32px 0 rgba(0, 0, 0, 0.22);
-  font-family: 'Fira Sans', sans-serif;
-  font-size: 1em;
-  overflow: hidden;
-  position: relative;
-  font-weight: 100;
-  letter-spacing: 0.5px;
-}
-
-.terminalFooterWindowBar {
-  display: flex;
-  align-items: center;
-  gap: 0.5em;
-  height: 1.5em;
-  background: #23272e;
-  padding: 0.2em 1.1em;
-  border-bottom: 1px solid #222;
-}
-
-.terminalDot {
-  width: 0.85em;
-  height: 0.85em;
-  border-radius: 50%;
-  display: inline-block;
-  margin-right: 0.3em;
-  box-shadow: 0 0 2px #0008;
-}
-
-.terminalFooterScroll {
-  max-height: 220px;
-  overflow-y: auto;
-  padding: 1.2em 1.5em 1.2em 1.5em;
-  background: none;
-  min-height: 120px;
-}
-
-.terminalInputLine {
-  display: flex;
-  align-items: center;
-  font-family: inherit;
-  color: #7fffd4;
-  margin-bottom: 0.1em;
-}
-
-.terminalPromptReal {
-  color: #00ff62;
-  font-weight: 700;
-  margin-right: 0.3em;
-  font-size: 1.08em;
-}
-
-.terminalInputReal {
-  background: none;
-  border: none;
-  color: #00ff62;
-  font-family: inherit;
-  font-size: 1em;
-  outline: none;
-  width: 70%;
-  min-width: 120px;
-  padding: 0.1em 0.3em;
-  transition: border-color 0.2s;
-}
-
-.terminalInputReal:focus {
-  font-weight: 700;
-}
-
-.terminalOutputLine {
-  color: #00ff62;
-  font-family: inherit;
-  margin-bottom: 0.1em;
-  white-space: pre-wrap;
-}
-
 @media (max-width: 700px) {
   .terminalFooterReal {
     max-width: 98vw;
@@ -962,3 +605,4 @@ ul {
     padding: 0.7em 0.5em 0.7em 0.7em;
   }
 }
+  ---------------- */

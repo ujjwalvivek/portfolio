@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import styles from './Blog.module.css';
 import SearchBar from '../../SearchBar/SearchBar';
-import { format } from 'util';
 
 // Simple fuzzy search function
 const fuzzySearch = (query, text) => {

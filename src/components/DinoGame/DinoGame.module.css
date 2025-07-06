@@ -1,0 +1,113 @@
+.dinoGameNote {
+  position: fixed;
+  width: 400px;
+  text-align: center;
+  color: #7fffd4;
+  font-family: monospace;
+  font-size: 10px;
+  font-weight: 400;
+  pointer-events: none;
+  letter-spacing: 1px;
+  z-index: 10001;
+}
+
+.dinoGameContainer {
+  position: fixed;
+  width: 400px;
+  height: 100px;
+  background: #222;
+  margin: 1.5rem auto 0 auto;
+  border-radius: 2px;
+  overflow: hidden;
+  box-shadow: 0 2px 16px 0 rgba(0,0,0,0.18);
+  border: 2px solid #444;
+  user-select: none;
+  z-index: 10002;
+}
+
+.dinoGameContainer.grabbing {
+  cursor: grabbing;
+}
+.dinoGameContainer.grab {
+  cursor: grab;
+}
+
+.dino {
+  position: absolute;
+  left: 30px;
+  width: 32px;
+  height: 32px;
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  font-family: monospace;
+  text-align: center;
+  transform: scaleX(-1);
+}
+
+.obstacle {
+  position: absolute;
+  bottom: 10px;
+  width: 16px;
+  background: #7fffd4;
+  border-top-left-radius: 2px;
+  border-top-right-radius: 2px;
+}
+
+.ground {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 10px;
+  background: #1f1f1f;
+  border-top: 2px solid #7fffd4;
+}
+
+.score {
+  position: absolute;
+  right: 10px;
+  top: 6px;
+  color: #fff;
+  font-family: monospace;
+  font-size: 16px;
+  opacity: 0.7;
+}
+
+.gameOver {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(0deg, rgba(20, 20, 20, 0.9) 0%, rgba(20, 20, 20, 0.9) 100%);
+  color: #ff5f56;
+  font-family: monospace;
+  font-size: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  z-index: 2;
+  font-weight: 800;
+}
+
+.gameOverScore {
+  font-size: 18px;
+  color: #fff;
+  font-family: monospace;
+  letter-spacing: -1px;
+  font-weight: 700;
+  border: 2px solid #7fffd4;
+  border-radius: 4px;
+  padding: 0.1rem 0.5rem;
+  backdrop-filter: blur(20px);
+}
+
+.gameOverHint {
+  font-size: 14px;
+  color: #fff;
+  opacity: 0.4;
+}

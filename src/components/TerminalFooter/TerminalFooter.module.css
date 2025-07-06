@@ -1,0 +1,214 @@
+/* --- Real Terminal Footer --- */
+.terminalFooterReal {
+  margin: 2.5rem auto 0 auto;
+  width: 100%;
+  backdrop-filter: blur(48px) saturate(180%);
+  border-radius: 2px;
+  box-shadow: 0 4px 32px 0 rgba(0, 0, 0, 0.22);
+  font-family: var(--font-mono);
+  font-size: 1em;
+  overflow: hidden;
+  position: relative;
+  font-weight: 400;
+  letter-spacing: -1px;
+  height: 420px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.terminalFooterWindowBar {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  height: 1.5em;
+  background: #70707054;
+  padding: 0.2em 1.1em;
+  height: 24px;
+  width: 100%;
+  backdrop-filter: blur(48px) saturate(180%);
+}
+
+.terminalDot {
+  width: 0.7em;
+  height: 0.7em;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 0.1em;
+  box-shadow: 0 0 2px #0008;
+}
+
+.terminalFooterScroll {
+  max-height: 420px;
+  overflow-y: auto;
+  padding: 1.2em 1.5em 1.2em 1.5em;
+  background: none;
+  min-height: 120px;
+}
+
+.terminalInputLine {
+  display: flex;
+  align-items: center;
+  font-family: inherit;
+  color: #7fffd4;
+  margin-bottom: 0.1em;
+}
+
+.terminalPromptReal {
+  color: #00ff62;
+  font-weight: 700;
+  margin-right: 0.3em;
+  font-size: 1.08em;
+}
+
+.terminalInputReal {
+  background: none;
+  border: none;
+  color: #535353;
+  font-family: inherit;
+  font-size: 1em;
+  outline: none;
+  width: 70%;
+  min-width: 120px;
+  padding: 0.1em 0.3em;
+  transition: border-color 0.2s;
+  caret-color: #00b894;
+}
+
+.terminalInputReal:focus {
+  font-weight: 700;
+}
+
+.terminalOutputLine {
+  color: #00b894;
+  font-family: inherit;
+  margin-bottom: 0.1em;
+  white-space: pre-wrap;
+  text-shadow: #707070 0 0 4px;
+}
+
+/* --- Flicker/Dim/Alert/Glitch Effects --- */
+
+.flicker {
+  animation: flickerAnim 1.2s infinite alternate;
+}
+
+@keyframes flickerAnim {
+  0% {
+    opacity: 1;
+  }
+
+  80% {
+    opacity: 0.85;
+  }
+
+  85% {
+    opacity: 0.6;
+  }
+
+  90% {
+    opacity: 0.95;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+.blink {
+  animation: blinkAnim 0.7s steps(1) infinite;
+}
+
+@keyframes blinkAnim {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.2;
+  }
+}
+
+.dimmed {
+  background: #111 !important;
+  color: #444 !important;
+  filter: blur(1px) brightness(0.7);
+  transition: filter 0.5s, color 0.5s, background 0.5s;
+}
+
+.alert {
+  background: #2e003e !important;
+  color: #ff003c !important;
+  animation: alertFlash 0.7s steps(1) infinite;
+}
+
+@keyframes alertFlash {
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.2;
+  }
+}
+
+.glitch {
+  color: #fff;
+  text-shadow:
+    2px 0 #ff00c8,
+    -2px 0 #00ffea,
+    0 2px #ff003c,
+    0 -2px #00ffea;
+  animation: glitchAnim 0.3s infinite alternate;
+}
+
+@keyframes glitchAnim {
+  0% {
+    transform: translate(0, 0);
+  }
+
+  20% {
+    transform: translate(-1px, 1px);
+  }
+
+  40% {
+    transform: translate(-2px, -1px);
+  }
+
+  60% {
+    transform: translate(2px, 2px);
+  }
+
+  80% {
+    transform: translate(1px, -2px);
+  }
+
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
+@media (max-width: 600px) {
+  /* Terminal footer */
+  .terminalFooterReal {
+    max-width: 99vw;
+    font-size: 0.93em;
+    margin: 1.2rem auto 0 auto;
+  }
+  .terminalFooterScroll {
+    padding: 0.5em 0.2em 0.5em 0.4em;
+    min-height: 80px;
+    max-height: 120px;
+  }
+  .terminalFooterWindowBar {
+    height: 1.2em;
+    padding: 0.1em 0.5em;
+  }
+  .terminalDot {
+    width: 0.7em;
+    height: 0.7em;
+  }
+}

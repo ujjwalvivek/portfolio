@@ -20,10 +20,9 @@ html, body {
   flex-direction: column;
   justify-content: center;   /* vertical center */
   align-items: center;       /* horizontal center */
-  padding: 8rem 0 0 0;                /* Remove large padding */
+  padding: 8rem 0 0 0;
   margin: 0 auto;
   width: 100%;
-  max-width: var(--main-content-width);
   min-height: 0; 
 }
 
