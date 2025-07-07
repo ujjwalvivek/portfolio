@@ -1,0 +1,18 @@
+[
+  {
+    "id": 1,
+    "filename": "log_0000_boot_sequence.md",
+    "title": "Boot Sequence (And Why It Took 2 Years to Run)",
+    "date": "2025-07-07",
+    "description": "Why I built this terminal-shaped mirror of my mind. And why you're inside it now. This site didn't take two years to build. It took me two years to become someone who could finish it.",
+    "tags": ["origin", "philosophy", "log", "site build"]
+  },
+  {
+    "id": 2,
+    "filename": "log_0001_md_showcase.md",
+    "title": "Markdown Features Showcase",
+    "date": "2025-07-01",
+    "description": "A showcase of all the advanced Markdown features available on this blog. From code blocks to tables, this post demonstrates the full range of capabilities.",
+    "tags": ["react", "markdown", "webdev", "testing", "log"]
+  }
+]

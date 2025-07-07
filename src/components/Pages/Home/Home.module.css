@@ -1,0 +1,443 @@
+/* --- Universal box-sizing for layout sanity --- */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+/* --- Main container for homepage --- */
+.homeContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    /* vertical center */
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    box-sizing: border-box;
+    gap: calc(var(--spacing-unit) * 3);
+    gap: 0rem;
+}
+
+/* --- Main heading --- */
+.homeContainer h1 {
+    font-family: var(--font-mono);
+    font-size: 4rem;
+    font-weight: 800;
+    margin-bottom: var(--spacing-unit);
+    text-align: center;
+    text-shadow: 0px 0px 16px rgba(255, 255, 255, 0.3);
+    letter-spacing: 1px;
+}
+
+/* --- Subheading --- */
+.homeContainer h2 {
+    font-family: var(--font-mono);
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-align: center;
+}
+
+/* --- Intro paragraph --- */
+.homeContainer p {
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    margin-top: calc(var(--spacing-unit) * 12);
+    letter-spacing: 0px;
+    text-align: center;
+    width: 100%;
+    padding: 1rem;
+}
+
+/* --- Blockquote intro style --- */
+.blockquoteIntro {
+    text-align: center;
+    color: var(--text-color);
+    border-radius: 2px;
+    box-shadow: 0 0 16px 0 #0002;
+    backdrop-filter: blur(48px) saturate(120%);
+    -webkit-backdrop-filter: blur(48px) saturate(120%);
+    margin: 1.5rem 0;
+}
+
+/* --- Glitch effect for headings --- */
+.glitch {
+    position: relative;
+    text-align: center;
+}
+
+.glitch::before,
+.glitch::after {
+    content: attr(data-text);
+    position: absolute;
+    left: 0;
+    width: 100%;
+    overflow: hidden;
+}
+
+.glitch::before {
+    animation: glitchTop 0.05s infinite linear alternate-reverse;
+    color: var(--primary-color);
+    z-index: 1;
+    top: -0.1rem;
+}
+
+.glitch::after {
+    animation: glitchBot 0.05s infinite linear alternate-reverse;
+    color: var(--text-color);
+    z-index: 1;
+    top: 0.1rem;
+}
+
+/* --- Glitch keyframes --- */
+@keyframes glitchTop {
+    0% { left: 0; }
+    20% { left: 1px; }
+    40% { left: -1px; }
+    60% { left: 1px; }
+    80% { left: -0.5px; }
+    100% { left: 0; }
+}
+
+@keyframes glitchBot {
+    0% { left: 0; }
+    20% { left: -1px; }
+    40% { left: 1px; }
+    60% { left: -0.5px; }
+    80% { left: 1px; }
+    100% { left: 0; }
+}
+
+/* --- Neon shadow pulse effect --- */
+.shadowPulse {
+    text-align: center;
+    color: var(--text-color);
+    text-shadow: 0 0 0px var(--primary-color), 0 0 4px #ffffff25;
+    animation: pulseShadow 2s infinite alternate;
+}
+
+@keyframes pulseShadow {
+    0% { text-shadow: 0 0 2px var(--primary-color), 0 0 8px #ffffff25; }
+    100% { text-shadow: 0 0 8px var(--primary-color), 0 0 16px #ffffff25; }
+}
+
+/* --- Neon flicker effect for headings --- */
+.neonFlicker {
+    font-family: var(--font-mono);
+    font-size: 4rem;
+    font-weight: 800;
+    text-align: center;
+    color: var(--primary-color);
+    letter-spacing: 2px;
+    text-shadow:
+        0 0 2px var(--primary-color),
+        0 0 6px var(--primary-color);
+    animation: flicker 1.2s infinite alternate;
+}
+
+@keyframes flicker {
+    0%,
+    100% {
+        opacity: 1;
+        text-shadow:
+            0 0 2px var(--primary-color),
+            0 0 6px var(--primary-color);
+    }
+    80% {
+        opacity: 0.7;
+        text-shadow:
+            0 0 1px var(--primary-color),
+            0 0 2px var(--primary-color);
+    }
+    85% {
+        opacity: 0.5;
+        text-shadow: none;
+    }
+    90% {
+        opacity: 0.8;
+        text-shadow:
+            0 0 2px var(--primary-color);
+    }
+}
+
+/* --- CTA (call-to-action) button container --- */
+.ctaContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+    width: 100%;
+    margin: calc(var(--spacing-unit) * 2) 0;
+}
+
+/* --- CTA button style --- */
+.cta {
+    margin: 0;
+    padding: calc(var(--spacing-unit) * 1.5) calc(var(--spacing-unit) * 4);
+    border: 1px solid var(--text-color);
+    text-decoration: none;
+    color: var(--text-color);
+    font-family: var(--font-mono);
+    font-weight: 400;
+    font-size: 1.05rem;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    white-space: nowrap;
+    min-width: 120px;
+    flex: 1 1 0;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    text-align: center;
+}
+
+/* --- CTA hover effect --- */
+.cta:hover {
+    color: var(--primary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+/* --- CTA shine effect --- */
+.cta::after {
+    background: var(--text-color);
+    content: "";
+    height: 155px;
+    left: -75px;
+    opacity: 0.1;
+    position: absolute;
+    top: -50px;
+    transform: rotate(45deg);
+    transition: all 500ms cubic-bezier(0.19, 1, 0.22, 1);
+    width: 50px;
+    z-index: -1;
+    filter: blur(20px);
+}
+
+.cta:hover::after {
+    left: 120%;
+    opacity: 0.2;
+    transition: all 500ms cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+/* --- CTA button for <button> elements --- */
+button.cta {
+    background: none;
+    border: 1px solid var(--text-color);
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+}
+
+/* --- Latest logs/posts container --- */
+.latestLogs {
+    border-radius: 2px;
+    backdrop-filter: blur(48px) saturate(120%);
+    padding: 2rem 2.5rem 1.5rem 2.5rem;
+    margin: 10rem auto 1rem auto;
+}
+
+/* --- Latest logs heading --- */
+.latestLogs h3 {
+    color: var(--text-color);
+    text-align: left;
+    font-family: var(--font-mono);
+    margin-bottom: 1.2rem;
+    letter-spacing: 1px;
+    transform: translateX(8px);
+}
+
+/* --- Latest logs list --- */
+.latestLogs ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    /* Allows wrapping on small screens */
+    justify-content: center;
+}
+
+/* --- Latest logs list item --- */
+.latestLogs li {
+    margin-bottom: 0.7rem;
+    transition: background 0.2s;
+    display: flex;
+    align-items: center;
+    flex: 1 1 10px;
+}
+
+/* --- Latest logs post title hover --- */
+.latestLogs li:hover .postTitle {
+    background: var(--text-color);
+    color: var(--background-color);
+}
+
+/* --- Latest logs link --- */
+.latestLogs a {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-family: var(--font-mono);
+    color: var(--text-color);
+    text-decoration: none;
+    padding: 0.5em 0.2em;
+    border-radius: 4px;
+    transition: background 0.18s, color 0.18s;
+    background: transparent;
+}
+
+/* --- Latest logs link hover --- */
+.latestLogs a:hover,
+.latestLogs li:hover a {
+    color: var(--text-color);
+}
+
+/* --- Latest logs post title hover (link) --- */
+.latestLogs a:hover .postTitle,
+.latestLogs li:hover .postTitle {
+    color: var(--text-color);
+    text-decoration: none;
+    background: none;
+    transition: color 0.18s, text-decoration 0.18s;
+}
+
+/* --- Latest logs post date hover --- */
+.latestLogs a:hover .postDate,
+.latestLogs li:hover .postDate {
+    color: var(--primary-color);
+    opacity: 1;
+}
+
+/* --- Post date style --- */
+.postDate {
+    color: var(--primary-color);
+    font-size: 0.98rem;
+    opacity: 0.85;
+    font-weight: 600;
+    min-width: 64px;
+    display: inline-block;
+    letter-spacing: 1px;
+}
+
+/* --- Post title style --- */
+.postTitle {
+    color: var(--text-color);
+    font-weight: 400;
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    letter-spacing: 0.5px;
+}
+
+/* --- Mobile styles --- */
+@media (max-width: 600px) {
+    /* --- Home container mobile --- */
+    .homeContainer {
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 0.5rem !important;
+        gap: 0;
+        box-sizing: border-box;
+        overflow-x: hidden;
+    }
+
+    .homeContainer h1 {
+        font-size: 1.7rem;
+        word-break: break-word;
+        padding: 0.5rem 0;
+    }
+
+    .homeContainer h2 {
+        font-size: 0.9rem;
+        padding: 0.25rem 0;
+        word-break: break-word;
+    }
+
+    .homeContainer p,
+    .blockquoteIntro {
+        font-size: 0.8rem;
+    }
+
+    /* --- CTA grid for 2x2 layout --- */
+    .ctaContainer {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        /* 2 columns */
+        gap: 1rem;
+        width: 100%;
+        margin: 1.2rem 0;
+        justify-items: stretch;
+        align-items: stretch;
+    }
+
+    .cta,
+    button.cta {
+        min-width: 0;
+        width: 100%;
+        font-size: 0.98rem;
+        padding: 0.9rem 0.5rem;
+        box-sizing: border-box;
+        margin: 0;
+    }
+
+    /* --- Latest logs mobile --- */
+    .latestLogs {
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 1rem 0.5rem !important;
+        margin: 2.5rem 0 1rem 0;
+        border-radius: 8px;
+        box-sizing: border-box;
+        overflow-x: hidden;
+    }
+
+    .latestLogs h3 {
+        font-size: 1rem;
+        margin-bottom: 0.7rem;
+        transform: none;
+        text-align: left;
+            transform: translateX(8px);
+
+    }
+
+    .latestLogs ul {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .latestLogs li {
+        flex: 1 1 0;
+        margin-bottom: 0.2rem;
+        width: 100%;
+    }
+
+    .latestLogs a {
+        font-size: 0.95rem;
+        padding: 0.5em 0.2em;
+        gap: 0.5rem;
+    }
+
+    .postDate {
+        min-width: 48px;
+        font-size: 0.9rem;
+    }
+
+    .postTitle {
+        font-size: 0.95rem;
+        white-space: wrap;
+        overflow: visible;
+        text-overflow: unset;
+        word-break: break-word;
+        display: block;
+        max-width: 100%;
+    }
+}

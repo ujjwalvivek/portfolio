@@ -1,0 +1,608 @@
+/* Main Container */
+.pageContainer {
+  padding: 1rem 1rem;
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  font-family: 'JetBrains Mono', monospace;
+  line-height: 1.6;
+}
+
+/* Hero Section */
+.heroSection {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 2.5rem;
+  background: none;
+  border-radius: 0;
+  box-shadow: none;
+  border: none;
+  backdrop-filter: none;
+}
+
+.heroText {
+  width: 100%;
+}
+
+.heroTitle {
+  font-family: var(--font-mono);
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: var(--text-color);
+  letter-spacing: -0.04em;
+  text-align: center;
+  margin: 0 auto;
+  padding: 0.8rem 0;
+}
+
+.heroSubtitle {
+  font-size: 1.1rem;
+  color: var(--primary-color);
+  font-family: var(--font-mono);
+  letter-spacing: 0.01em;
+  font-weight: 700;
+  text-align: center;
+  border-top: 4px solid transparent;
+  border-bottom: 4px solid transparent;
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0), var(--background-color), rgba(255, 255, 255, 0)) padding-box,
+    linear-gradient(90deg, rgba(255, 255, 255, 0), var(--primary-color), rgba(255, 255, 255, 0)) border-box;
+  background-origin: border-box;
+  background-clip: content-box, border-box;
+}
+
+.heroArt {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1.5rem;
+  width: 100%;
+}
+
+.avatarImg {
+  width: 100%;
+  height: 500px;
+  object-fit: cover;
+  object-position: 100% 60%;
+  opacity: 1;
+  border: 2px solid var(--text-color);
+  padding: 4px;
+  animation: avatarGlow 4s linear infinite;
+  backdrop-filter: blur(20px);
+}
+
+
+@keyframes avatarGlow {
+  0% {
+    box-shadow: 0 0 0px 0 var(--primary-color), 0 0 0 0px var(--text-color);
+  }
+
+  50% {
+    box-shadow: 0 0 4px 4px var(--text-color), 0 0 0 4px var(--text-color);
+  }
+
+  100% {
+    box-shadow: 0 0 0px 0 var(--primary-color), 0 0 0 0px var(--text-color);
+  }
+}
+
+/* Stack and Statuses */
+/* Skills + Status Side by Side */
+.skillsStatusRow {
+  display: flex;
+  flex-direction: row;
+  gap: 0rem;
+  margin: 2rem 0 0rem 0;
+  justify-content: space-between;
+}
+
+.skillsSection {
+  margin: 0rem 0 2rem 0;
+  background: none;
+  border-radius: 2px;
+  border: none;
+  box-shadow: none;
+  flex: 1 1 0;
+  min-width: 0;
+  margin-right: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Center vertically */
+  padding: 0 2.5rem;
+}
+
+.skillsSection h2 {
+  color: var(--text-color);
+  font-family: var(--font-mono);
+  margin-bottom: 0rem;
+  padding: 1rem;
+  letter-spacing: 0px;
+  font-weight: 500;
+  text-align: center;
+  backdrop-filter: blur(48px);
+}
+
+.spicyHeading {
+  font-size: 1rem;
+  padding: 1rem 2rem;
+  margin: 0 auto 1.5rem auto;
+  border-radius: 2px;
+  backdrop-filter: blur(48px) saturate(180%);
+  display: inline-block;
+  position: relative;
+  z-index: 2;
+  width: 100%;
+}
+
+.skillsGridIcons {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
+  gap: 2.5rem 0.7rem;
+
+  justify-items: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.skillItem {
+  position: relative;
+  /* Ensure stacking context */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(20px);
+  border-radius: 2px;
+  padding: 1rem;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.10);
+  transition: transform 0.18s, box-shadow 0.18s;
+  cursor: cell;
+  height: 60px;
+  width: auto;
+  text-align: center;
+  background: none;
+  overflow: visible;
+  margin: 0.6rem;
+}
+
+.skillItem:hover {
+  transform: translateY(-4px) scale(1.001) rotate(0deg);
+  box-shadow: 0 6px 24px 0 rgba(0, 0, 0, 0.18);
+}
+
+.skillItem::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--text-color);
+  opacity: 0.7;
+  filter: blur(12px) saturate(180%);
+  z-index: 10004;
+  pointer-events: none;
+}
+
+/* Build Status Console */
+.statusConsoleSection {
+  margin: 0rem 0 2rem 0;
+  font-family: 'JetBrains Mono', monospace;
+  border-radius: 2px;
+  box-shadow: 0 2px 16px 0 rgba(0, 0, 0, 0.12);
+  padding: 1.5rem 2.5rem;
+  margin-right: auto;
+  flex: 1 1 0;
+  min-width: 0;
+  margin-left: 0;
+  max-width: 480px;
+  backdrop-filter: blur(20px);
+}
+
+.statusConsoleTitle {
+  color: #7fffd4;
+  font-weight: 400;
+  font-size: 1em;
+  margin-bottom: 1.1rem;
+  letter-spacing: 0px;
+}
+
+.statusConsoleBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  font-size: 1em;
+}
+
+.statusService {
+  color: var(--text-color);
+  min-width: 140px;
+  display: inline-block;
+}
+
+.statusOk {
+  color: #7fffd4;
+  font-weight: 400;
+}
+
+.statusWarn {
+  color: #ffb347;
+  font-weight: 400;
+}
+
+.statusRam {
+  color: #ff5555;
+  font-weight: 400;
+}
+
+.flicker {
+  animation: flickerAnim 1.2s infinite alternate;
+}
+
+@keyframes flickerAnim {
+  0% {
+    opacity: 1;
+  }
+
+  80% {
+    opacity: 0.85;
+  }
+
+  85% {
+    opacity: 0.6;
+  }
+
+  90% {
+    opacity: 0.95;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+.blink {
+  animation: blinkAnim 0.7s steps(1) infinite;
+}
+
+@keyframes blinkAnim {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.2;
+  }
+}
+
+.scrollText {
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  animation: scrollAnim 2.5s linear infinite;
+}
+
+@keyframes scrollAnim {
+  0% {
+    transform: translateX(8px);
+  }
+
+  80% {
+    transform: translateX(0px);
+  }
+
+  100% {
+    transform: translateX(8px);
+  }
+}
+
+/* Terminal section */
+.terminalSection {
+  margin-bottom: 1rem;
+  backdrop-filter: blur(48px);
+}
+
+.terminalBlock {
+  background: none;
+  font-family: var(--font-mono);
+  box-shadow: none;
+  border: none;
+  padding: 1.5rem;
+  border-radius: 2px;
+  font-size: 0.9rem;
+  white-space: pre-wrap;
+}
+
+/* Quick jump row: stack vertically */
+/* Recent Logs and Resume Viewer */
+.quickJumpSection {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.quickJumpRow {
+  display: flex;
+  flex-direction: row;
+  gap: 2.5rem;
+  width: 100%;
+  max-width: 1000px;
+  border-radius: 2px;
+  padding: 2rem 2rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.1rem;
+  backdrop-filter: blur(20px);
+  --webkit-backdrop-filter: blur(20px);
+}
+
+.blogList ul {
+  padding: 0;
+  margin: 0;
+}
+
+.blogList li {
+  margin: 1.5rem 0;
+  font-size: 1.1rem;
+  font-family: var(--font-mono, monospace);
+  color: var(--text-color);
+  background: rgba(255,255,255,0.04);
+  border-radius: 2px;
+  padding: 0.8rem 1.2rem;
+  transition: background 0.2s, transform 0.2s;
+  box-shadow: 0 2px 8px 0 rgba(0,0,0,0.10);
+  position: relative;
+  list-style: none ;
+}
+
+.blogList li:hover {
+  background: rgba(255,255,255,0.10);
+  transform: translateY(-2px) scale(1.01);
+}
+
+.blogList .postDate {
+  color: var(--primary-color);
+  font-weight: bold;
+  margin-right: 0.7em;
+}
+
+.blogList .postTitle {
+  color: var(--text-color);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.blogList a {
+  display: flex;
+  flex-direction: column;
+    text-decoration: none;
+
+}
+
+.recentLogsBox,
+.resumeViewerBox {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  margin: 0 0.5rem;
+}
+
+.recentLogsBox h2 {
+  font-size: 1.4rem;
+  color: var(--text-color);
+  margin-bottom: 0.5rem;
+  letter-spacing: 0.01em;
+  font-weight: 800;
+  text-align: center;
+  width: 100%;
+}
+
+/* Resume Viewer Box */
+.resumeViewerBox {
+  justify-content: center;
+  align-items: center;
+  border: 2px solid var(--text-color);
+  padding: 4px;
+  animation: avatarGlow 2s linear infinite;
+
+}
+
+.resumeViewerOverlay {
+  background: #111;
+  border-radius: 8px;
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 16px 0 rgba(0, 0, 0, 0.12);
+  min-width: 0;
+  cursor: zoom-in;
+  position: relative;
+}
+
+.resumeHoverOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  backdrop-filter: blur(10px);
+  color: var(--text-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  font-family: var(--font-mono, monospace);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s;
+  border-radius: 0px;
+  z-index: 2;
+}
+
+.resumeViewerOverlay:hover .resumeHoverOverlay {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.resumeIframe {
+  border: none;
+  border-radius: 2px;
+}
+
+@media (max-width: 600px) {
+  /* Page container padding and font */
+  .pageContainer {
+    padding: 0.5rem 0.5rem;
+    font-size: 0.97rem;
+    max-width: 100vw;
+  }
+
+  /* Hero section and avatar */
+  .heroSection {
+    gap: 1.2rem;
+    align-items: center;
+  }
+  .heroTitle {
+    font-size: 1.5rem;
+    text-align: center;
+  }
+  .heroSubtitle {
+    font-size: 1rem;
+    text-align: center;
+    padding: 0.2rem 0;
+  }
+  .avatarImg {
+    height: 200px;
+    max-width: 90vw;
+    padding: 2px;
+    border-width: 1px;
+  }
+
+  /* Skills + Status: stack vertically */
+  .skillsStatusRow {
+    flex-direction: column-reverse;
+    gap: 1.5rem;
+    margin: 1.2rem 0 0 0;
+  }
+  .skillsSection,
+  .statusConsoleSection {
+    margin: 0;
+    max-width: 100%;
+    min-width: 0;
+    padding: 0.5rem 0.2rem;
+  }
+
+  /* Skills grid: 4 icons per row, smaller icons */
+  .skillsGridIcons {
+  grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
+  gap: 1rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
+  .skillItem {
+    width: auto;
+    height: 38px;
+    padding: 0.3rem;
+      position: relative;
+  }
+  .skillItem .frostedIcon {
+    font-size: 1.3rem !important;
+  }
+  .spicyHeading {
+    font-size: 0.9rem;;
+  }
+
+  /* Status console */
+  .statusConsoleSection {
+    padding: 1rem 0.5rem;
+    font-size: 0.98rem;
+    box-shadow: none;
+  }
+
+  .quickJumpRow {
+    flex-direction: column;
+    gap: 1.2rem;
+    padding: 0.7rem 0.2rem;
+    max-width: 100vw;
+  }
+  .recentLogsBox,
+  .resumeViewerBox {
+    margin: 0;
+    width: 100%;
+    padding: 0;
+  }
+  .recentLogsBox h2 {
+    font-size: 1.1rem;
+    margin-bottom: 0.3rem;
+  }
+  .resumeIframe {
+    height: 140px;
+  }
+  .resumeViewerBox {
+    padding: 2px;
+  }
+
+  /* Blog list */
+  .blogList {
+    padding: 0 0.2rem;
+  }
+  .blogList li {
+    margin: 1rem 0;
+    font-size: 0.97rem;
+  }
+}
+
+/* Responsive Styles 
+@media (max-width: 900px) {
+  .quickJumpRow {
+    flex-direction: column;
+    gap: 2.5rem;
+    padding: 1.2rem 0.5rem;
+  }
+
+  .recentLogsBox,
+  .resumeViewerBox {
+    margin: 0;
+    width: 100%;
+  }
+
+  .resumeIframe {
+    height: 320px;
+  }
+}
+
+@media (max-width: 900px) {
+  .skillsStatusRow {
+    flex-direction: column;
+    gap: 2.5rem;
+  }
+
+  .skillsSection,
+  .statusConsoleSection {
+    margin: 0;
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 700px) {
+  .terminalFooterReal {
+    max-width: 98vw;
+    font-size: 0.98em;
+  }
+
+  .terminalFooterScroll {
+    padding: 0.7em 0.5em 0.7em 0.7em;
+  }
+}
+  ---------------- */

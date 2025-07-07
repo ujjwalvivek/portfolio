@@ -1,0 +1,105 @@
+/* Easter Egg */
+.easterEgg {
+  margin-top: 2rem;
+  font-size: 0.85rem;
+  color: #555;
+    text-align: center;
+  font-family: 'JetBrains Mono', monospace;
+  user-select: none;
+  width: 100%;
+}
+
+.easterEggIcon {
+  font-size: 1.1em;
+  display: inline-flex;
+  width: 420px;
+  filter: drop-shadow(0 0 8px var(--text-color));
+  margin-right: 0.2em;
+  animation: eggGlow 2s infinite alternate;
+  color: var(--text-color);
+  letter-spacing: 0px;
+  text-align: center;
+  justify-content: center;
+}
+
+@keyframes eggGlow {
+  0% {
+    filter: drop-shadow(0 0 8px #7fffd4cc);
+  }
+
+  100% {
+    filter: drop-shadow(0 0 16px #38bdf8cc);
+  }
+}
+
+.easterEggTooltip {
+  color: var(--text-color);
+  padding: 0.25em 0.7em;
+  border-radius: 2px;
+  font-size: 0.95rem;
+  font-family: var(--font-mono, monospace);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+  white-space: nowrap;
+  opacity: 0.95;
+  transition: opacity 0.15s;
+  pointer-events: none;
+  backdrop-filter: blur(20px);
+}
+
+.flicker {
+  animation: flickerAnim 1.2s infinite alternate;
+}
+
+@keyframes flickerAnim {
+  0% {
+    opacity: 1;
+  }
+
+  80% {
+    opacity: 0.85;
+  }
+
+  85% {
+    opacity: 0.6;
+  }
+
+  90% {
+    opacity: 0.95;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+.blink {
+  animation: blinkAnim 0.7s steps(1) infinite;
+}
+
+@keyframes blinkAnim {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.2;
+  }
+}
+
+@media (max-width: 600px) {
+  /* Easter egg */
+  .easterEgg {
+    font-size: 0.8rem;
+    margin-top: 1.2rem;
+  }
+  .easterEggIcon {
+    width: 100vw;
+    font-size: 1em;
+  }
+  .easterEggTooltip {
+    font-size: 0.85rem;
+    padding: 0.15em 0.5em;
+  }
+}

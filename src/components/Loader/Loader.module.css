@@ -1,0 +1,39 @@
+.Loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #E3DCED;
+    z-index: 9999;
+}
+
+.Loader.dark {
+    background-color: #222222;
+}
+
+.Spinner {
+    border: 5px solid rgba(0, 0, 0, 0.1);
+    border-left-color: #222222;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1.5s linear infinite;
+}
+
+.Spinner.dark {
+    border-left-color: #E3DCED;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}

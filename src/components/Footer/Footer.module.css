@@ -1,0 +1,36 @@
+.Footer {
+    position: static;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    padding: calc(var(--spacing-unit) * 2) 0;
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    color: var(--text-color);
+    border-top: 0px solid var(--text-color);
+    backdrop-filter: blur(48px) saturate(180%);
+    -webkit-backdrop-filter: blur(48px) saturate(180%);
+}
+
+.Footer p {
+    margin: 0;
+    padding: 5px 10px;
+}
+
+.Footer.dark {
+    color: #E3DCED;
+}
+
+/* ------- WEB BREAKPOINTS ------- */
+
+@media (max-width: 768px) {
+    .Footer {
+        font-size: 0.8em;
+    }
+}
+
+@media (max-width: 576px) {
+    .Footer {
+        font-size: 0.6em;
+    }
+}
