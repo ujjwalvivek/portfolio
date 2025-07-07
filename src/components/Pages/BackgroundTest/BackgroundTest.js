@@ -50,12 +50,12 @@ const BackgroundTest = () => {
         updateBackgroundConfig
     ]);
 
-    // Force animation to be enabled by default
-    React.useEffect(() => {
-        if (backgroundConfig.isAnimated === undefined || backgroundConfig.isAnimated === false) {
-            updateLocalAndGlobal({ isAnimated: true });
-        }
-    }, [backgroundConfig.isAnimated, updateLocalAndGlobal]);
+    // // Force animation to be enabled by default
+    // React.useEffect(() => {
+    //     if (backgroundConfig.isAnimated === undefined || backgroundConfig.isAnimated === false) {
+    //         updateLocalAndGlobal({ isAnimated: true });
+    //     }
+    // }, [backgroundConfig.isAnimated, updateLocalAndGlobal]);
 
     // FPS monitoring
     React.useEffect(() => {
@@ -68,8 +68,8 @@ const BackgroundTest = () => {
     }, []);
 
     const backgrounds = [
-        { 
-            id: 'hologram', 
+        {
+            id: 'hologram',
             name: 'Holo Display',
             description: '',
             techStack: 'Holography • 3D Graphics • Sci-Fi UI',
@@ -82,8 +82,8 @@ const BackgroundTest = () => {
             },
             colorModes: ['default', 'cyber', 'terminal', 'fire', 'ocean', 'custom']
         },
-        { 
-            id: 'circuit', 
+        {
+            id: 'circuit',
             name: 'Circuit Flora',
             description: '',
             techStack: 'Bio-Tech • PCB Design • Organic Computing',
@@ -96,8 +96,8 @@ const BackgroundTest = () => {
             },
             colorModes: ['default', 'cyber', 'terminal', 'fire', 'ocean', 'custom']
         },
-        { 
-            id: 'psychedelic', 
+        {
+            id: 'psychedelic',
             name: 'Psych Dream',
             description: '',
             techStack: 'Kaleidoscope • Color Theory • Generative Art',
@@ -110,8 +110,8 @@ const BackgroundTest = () => {
             },
             colorModes: ['default', 'cyber', 'terminal', 'fire', 'ocean', 'custom']
         },
-        { 
-            id: 'vortex', 
+        {
+            id: 'vortex',
             name: 'Quantum Threads',
             description: '',
             techStack: 'Field Dynamics • Emergent Systems',
@@ -126,26 +126,6 @@ const BackgroundTest = () => {
         }
     ];
 
-    const exportConfig = () => {
-        const config = {
-            type: currentBg,
-            opacity,
-            animationSpeed,
-            density,
-            colorMode,
-            customColor,
-            isAnimated,
-        };
-        
-        const blob = new Blob([JSON.stringify(config, null, 2)], { type: 'application/json' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'background-config.json';
-        a.click();
-        URL.revokeObjectURL(url);
-    };
-
     const shareConfig = () => {
         const config = btoa(JSON.stringify({
             bg: currentBg,
@@ -156,7 +136,7 @@ const BackgroundTest = () => {
             cc: customColor,
             a: isAnimated
         }));
-        
+
         const url = `${window.location.origin}${window.location.pathname}?config=${config}`;
         navigator.clipboard.writeText(url);
         alert('Configuration URL copied to clipboard!');
@@ -174,7 +154,7 @@ const BackgroundTest = () => {
                 customColor: '#00ff41',
                 isAnimated: true
             };
-            
+
             // Update local state
             setCurrentBg(defaults.type);
             setOpacity(defaults.opacity);
@@ -183,7 +163,7 @@ const BackgroundTest = () => {
             setColorMode(defaults.colorMode);
             setCustomColor(defaults.customColor);
             setIsAnimated(defaults.isAnimated);
-            
+
             // Reset global state
             resetToDefaults();
         }
@@ -197,20 +177,24 @@ const BackgroundTest = () => {
             {/* The GlobalBackground component will render the canvas based on context */}
             <div className={styles.content}>
                 <div className={styles.header}>
-                    <h1>Background Playground</h1>
+                    <h1>Background Switcher</h1>
                     <p className={styles.subtitle}>Please select a background from the gallery</p>
                 </div>
 
                 <div className={styles.controlGrid}>
                     <div className={styles.backgroundGallery}>
                         <div className={styles.galleryHeader}>
-                            <h3 className={styles.galleryTitle}>Background Gallery</h3>
-                            <span className={styles.galleryCount}>{backgrounds.length} Types</span>
+                            <h3 className={styles.galleryTitle}>Gallery</h3>
+                            <span className={styles.galleryCount}>
+                                <button onClick={shareConfig} className={styles.exportButton}>
+                                    🔗 Share URL
+                                </button>
+                            </span>
                         </div>
                         <div className={styles.backgroundGrid}>
                             {backgrounds.map(bg => (
-                                <div 
-                                    key={bg.id} 
+                                <div
+                                    key={bg.id}
                                     className={`${styles.bgCard} ${currentBg === bg.id ? styles.active : ''}`}
                                     onClick={() => updateLocalAndGlobal({ type: bg.id })}
                                 >
@@ -222,8 +206,8 @@ const BackgroundTest = () => {
                             ))}
                         </div>
                         {/* Current Configuration Display */}
-                <div className={styles.configSection}>
-                    <div className={styles.configDisplay}>
+                        <div className={styles.configSection}>
+                            {/* <div className={styles.configDisplay}>
                         <div className={styles.codeDisplay}>
                             <code>background: "{currentBg}", </code>
                             <code>opacity: {opacity}, </code>
@@ -231,26 +215,9 @@ const BackgroundTest = () => {
                             <code>density: {density}, </code>
                             <code>colorScheme: "{colorMode}"</code>
                         </div>
-                    </div>
-                    <br />
-                    <button onClick={exportConfig} className={styles.exportButton}>
-                            💾 Export Config
-                        </button>
-                        <button onClick={shareConfig} className={styles.exportButton}>
-                            🔗 Share URL
-                        </button>
-                        <button onClick={() => window.print()} className={styles.exportButton}>
-                            🖨️ Print Preview
-                        </button>
-                        <div className={styles.previewHeader}>
-                        {isAnimated && (
-                            <div className={styles.liveIndicator}>
-                                <span className={styles.pulseIndicator}></span>
-                                Procedural Generation Active
-                            </div>
-                        )}
-                    </div>
-                </div>
+                    </div> */}
+                            
+                        </div>
                     </div>
 
                     <div className={styles.controlPanel}>
@@ -261,19 +228,19 @@ const BackgroundTest = () => {
                                     <label className={styles.controlLabel}>
                                         {control.label}: <span className={styles.controlValue}>
                                             {key === 'opacity' ? opacity.toFixed(2) :
-                                             key === 'animationSpeed' ? animationSpeed.toFixed(1) + 'x' :
-                                             key === 'density' ? density.toFixed(1) + 'x' : 
-                                             (controlValues[key] !== undefined ? controlValues[key].toFixed(1) : '')}
+                                                key === 'animationSpeed' ? animationSpeed.toFixed(1) + 'x' :
+                                                    key === 'density' ? density.toFixed(1) + 'x' :
+                                                        (controlValues[key] !== undefined ? controlValues[key].toFixed(1) : '')}
                                         </span>
                                     </label>
-                                    <input 
-                                        type="range" 
-                                        min={control.min} 
-                                        max={control.max} 
-                                        step={control.step} 
-                                        value={controlValues[key]} 
-                                        onChange={(e) => updateLocalAndGlobal({ [key]: parseFloat(e.target.value) })} 
-                                        className={styles.slider} 
+                                    <input
+                                        type="range"
+                                        min={control.min}
+                                        max={control.max}
+                                        step={control.step}
+                                        value={controlValues[key]}
+                                        onChange={(e) => updateLocalAndGlobal({ [key]: parseFloat(e.target.value) })}
+                                        className={styles.slider}
                                     />
                                 </div>
                             ))}
@@ -283,9 +250,9 @@ const BackgroundTest = () => {
                             <h4 className={styles.sectionTitle}>Color Scheme</h4>
                             <div className={styles.selectGroup}>
                                 {(currentBgData?.colorModes || ['default', 'cyber', 'terminal', 'ocean', 'fire', 'custom']).map(mode => (
-                                    <button 
-                                        key={mode} 
-                                        className={`${styles.selectButton} ${colorMode === mode ? styles.active : ''}`} 
+                                    <button
+                                        key={mode}
+                                        className={`${styles.selectButton} ${colorMode === mode ? styles.active : ''}`}
                                         onClick={() => updateLocalAndGlobal({ colorMode: mode })}
                                     >
                                         {mode}
@@ -295,11 +262,12 @@ const BackgroundTest = () => {
                             {colorMode === 'custom' && (
                                 <div className={styles.controlGroup} style={{ marginTop: '1rem' }}>
                                     <label className={styles.controlLabel}>Custom Color</label>
-                                    <input 
-                                        type="color" 
-                                        value={customColor} 
-                                        onChange={(e) => updateLocalAndGlobal({ customColor: e.target.value })} 
-                                        className={styles.colorPicker} 
+                                    <input
+                                        type="color"
+                                        value={customColor}
+                                        onChange={(e) => updateLocalAndGlobal({ customColor: e.target.value })}
+                                        className={styles.colorPicker}
+                                        style={{border: '2px solid var(--primary-color)', borderRadius: '2px'}}
                                     />
                                 </div>
                             )}
@@ -307,34 +275,34 @@ const BackgroundTest = () => {
 
                         <div className={styles.controlSection}>
                             <h4 className={styles.sectionTitle}>Performance</h4>
-                             <div className={styles.selectGroup}>
-                                <button 
-                                    className={`${styles.selectButton} ${isAnimated ? styles.active : ''}`} 
+                            <div className={styles.selectGroup}>
+                                <button
+                                    className={`${styles.selectButton} ${isAnimated ? styles.active : ''}`}
                                     onClick={() => updateLocalAndGlobal({ isAnimated: true })}
                                 >
                                     Animated
                                 </button>
-                                <button 
-                                    className={`${styles.selectButton} ${!isAnimated ? styles.active : ''}`} 
+                                <button
+                                    className={`${styles.selectButton} ${!isAnimated ? styles.active : ''}`}
                                     onClick={() => updateLocalAndGlobal({ isAnimated: false })}
                                 >
                                     Static
                                 </button>
                             </div>
-                            
+
                             {/* FPS Counter */}
                             <div className={styles.fpsCounter}>
                                 <div className={styles.fpsDisplay}>
-                                    <span className={styles.fpsLabel}>FPS:</span>
-                                    <span className={`${styles.fpsValue} ${fps < 15 ? styles.fpsLow : fps < 25 ? styles.fpsMedium : styles.fpsHigh}`}>
-                                        {isAnimated ? fps : 'Static'}
+                                    <span className={styles.fpsTitle}>FPS</span>
+                                    <span className={`${styles.fpsTitle} ${styles.fpsValue} ${fps < 15 ? styles.fpsLow : fps < 25 ? styles.fpsMedium : styles.fpsHigh}`}>
+                                        {isAnimated ? fps : 'Static'} 
                                     </span>
                                 </div>
                                 {isAnimated && fps > 0 && (
                                     <div className={styles.fpsBar}>
-                                        <div 
-                                            className={styles.fpsBarFill} 
-                                            style={{ 
+                                        <div
+                                            className={styles.fpsBarFill}
+                                            style={{
                                                 width: `${Math.min(fps / 60 * 100, 100)}%`,
                                                 backgroundColor: fps < 15 ? '#ff4444' : fps < 25 ? '#ffaa44' : '#44ff44'
                                             }}
@@ -342,11 +310,18 @@ const BackgroundTest = () => {
                                     </div>
                                 )}
                             </div>
+                            <div className={styles.previewHeader}>
+                                {isAnimated && (
+                                    <div className={styles.liveIndicator}>
+                                        <span className={styles.pulseIndicator}></span>
+                                        Procedural Generation Active
+                                    </div>
+                                )}
+                            </div>
                         </div>
-                <button onClick={resetAllSettings} className={`${styles.exportButton} ${styles.resetButton}`} style={{border: '2px solid #ff4444'}}>
+                        <button onClick={resetAllSettings} className={`${styles.exportButton} ${styles.resetButton}`} style={{ border: '2px solid #ff4444' }}>
                             🔄 Reset to Defaults
                         </button>
-
                     </div>
                 </div>
             </div>
