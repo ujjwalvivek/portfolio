@@ -14,6 +14,7 @@ import { LuFigma } from 'react-icons/lu';
 import { IoLogoFirebase } from 'react-icons/io5';
 import { TbSql } from 'react-icons/tb';
 import { IoLogoJavascript } from "react-icons/io";
+import profileImg from '../../../assets/images/profile.jpg';
 
 const About = () => {
   const [resumeOpen, setResumeOpen] = React.useState(false);
@@ -119,7 +120,7 @@ const statusRows = [
             </p>
             <div className={styles.heroArt}>
               <img
-                src="/profile.jpg"
+                src={profileImg}
                 alt="Vivek's avatar"
                 className={styles.avatarImg}
               />
