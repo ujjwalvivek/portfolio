@@ -24,6 +24,7 @@ const DinoGame = () => {
   const dragOffset = React.useRef({ x: 0, y: 0 });
   const draggingRef = React.useRef(false);
   const windowPosRef = React.useRef(windowPos);
+  // eslint-disable-next-line
   const [gameSpeed, setGameSpeed] = React.useState(20); // initial speed in px/sec
   const speedRef = React.useRef(20); // initial speed
 

@@ -1120,6 +1120,3 @@ The platform successfully renders all these features while maintaining performan
 Thank you for reading this comprehensive test post! 🚀
 
 ---
-
-*Written by Vivek*  
-*Crafting code, one line at a time.*

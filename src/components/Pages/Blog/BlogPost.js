@@ -6,16 +6,15 @@ import styles from './Blog.module.css';
 import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { atomDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import { atomDark, oneLight } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import rehypeSlug from 'rehype-slug';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 import remarkDirective from 'remark-directive';
 import { visit } from 'unist-util-visit';
-
 import RelatedPosts from '../../RelatedPosts/RelatedPosts';
-
 import 'katex/dist/katex.min.css';
+import { ThemeContext } from '../../ThemeSwitcher/ThemeContext';
 
 // Simple reading time calculation function
 const calculateReadingTime = (text) => {
@@ -25,10 +24,13 @@ const calculateReadingTime = (text) => {
   return `${minutes} min read`;
 };
 
+// Custom code block component with copy functionality
 const CodeBlock = ({ node, inline, className, children, ...props }) => {
   const [copied, setCopied] = useState(false);
   const match = /language-(\w+)/.exec(className || '');
   const codeString = String(children).replace(/\\n$/, '');
+  const { darkMode } = React.useContext(ThemeContext);
+  const theme = darkMode ? 'dark' : 'light';
 
   const handleCopy = () => {
     navigator.clipboard.writeText(codeString);
@@ -42,7 +44,7 @@ const CodeBlock = ({ node, inline, className, children, ...props }) => {
         {copied ? 'Copied!' : 'Copy'}
       </button>
       <SyntaxHighlighter
-        style={atomDark}
+        style={theme === 'dark' ? atomDark : oneLight}
         language={match[1]}
         PreTag="div"
         {...props}
@@ -57,6 +59,7 @@ const CodeBlock = ({ node, inline, className, children, ...props }) => {
   );
 };
 
+// Custom admonition component for directives
 const Admonition = ({ node, children }) => {
   const type = node.properties.className[1];
   const title = type.charAt(0).toUpperCase() + type.slice(1);
@@ -68,6 +71,7 @@ const Admonition = ({ node, children }) => {
   );
 };
 
+// BlogPost component to render individual blog posts
 const BlogPost = () => {
   const { filename } = useParams();
   const [post, setPost] = useState({ content: '', data: {}, readingTime: '' });
@@ -115,11 +119,9 @@ const BlogPost = () => {
   if (isLoading) {
     return (
       <div className={styles.blogContainer}>
-        <div className={styles.blogPost}>
-          <div className={styles.loadingState}>
+        <div className={styles.loadingState}>
             <p>Loading...</p>
           </div>
-        </div>
       </div>
     );
   }
@@ -199,7 +201,7 @@ const BlogPost = () => {
           </div>
           <div className={styles.authorSignature}>
             <p>Written by Vivek</p>
-            <p>Crafting code, one line at a time.</p>
+            <p>crafting systems, one line at a time.</p>
           </div>
           <RelatedPosts posts={relatedPosts} />
         </div>
