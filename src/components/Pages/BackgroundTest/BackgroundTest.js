@@ -6,12 +6,12 @@ const BackgroundTest = () => {
     const { backgroundConfig, updateBackgroundConfig, resetToDefaults } = useBackground();
 
     // Local state for controls, initialized from backgroundConfig but not synced automatically
-    const [currentBg, setCurrentBg] = useState(backgroundConfig.type || 'hologram');
-    const [opacity, setOpacity] = useState(backgroundConfig.opacity || 0.5);
-    const [animationSpeed, setAnimationSpeed] = useState(backgroundConfig.animationSpeed || 1);
-    const [density, setDensity] = useState(backgroundConfig.density || 1);
+    const [currentBg, setCurrentBg] = useState(backgroundConfig.type || 'psychedelic');
+    const [opacity, setOpacity] = useState(backgroundConfig.opacity || 0.7);
+    const [animationSpeed, setAnimationSpeed] = useState(backgroundConfig.animationSpeed || 10);
+    const [density, setDensity] = useState(backgroundConfig.density || 2.3);
     const [colorMode, setColorMode] = useState(backgroundConfig.colorMode || 'matrix');
-    const [customColor, setCustomColor] = useState(backgroundConfig.customColor || '#00ff41');
+    const [customColor, setCustomColor] = useState(backgroundConfig.customColor || '#d63031');
     const [isAnimated, setIsAnimated] = useState(backgroundConfig.isAnimated !== undefined ? backgroundConfig.isAnimated : true);
     const [fps, setFps] = useState(0);
 
@@ -50,13 +50,6 @@ const BackgroundTest = () => {
         updateBackgroundConfig
     ]);
 
-    // // Force animation to be enabled by default
-    // React.useEffect(() => {
-    //     if (backgroundConfig.isAnimated === undefined || backgroundConfig.isAnimated === false) {
-    //         updateLocalAndGlobal({ isAnimated: true });
-    //     }
-    // }, [backgroundConfig.isAnimated, updateLocalAndGlobal]);
-
     // FPS monitoring
     React.useEffect(() => {
         const handleFpsUpdate = (event) => {
@@ -76,9 +69,9 @@ const BackgroundTest = () => {
             icon: '👁️',
             complexity: '',
             controls: {
-                opacity: { min: 0, max: 1, step: 0.05, label: 'Opacity' },
+                opacity: { min: 0, max: 1, step: 0.1, label: 'Opacity' },
                 animationSpeed: { min: 0.1, max: 3, step: 0.1, label: 'Flow Speed' },
-                density: { min: 0.5, max: 2, step: 0.1, label: 'Pattern Density' }
+                density: { min: 0.5, max: 3, step: 0.1, label: 'Pattern Density' }
             },
             colorModes: ['default', 'cyber', 'terminal', 'fire', 'ocean', 'custom']
         },
@@ -90,9 +83,9 @@ const BackgroundTest = () => {
             icon: '🌿',
             complexity: '',
             controls: {
-                opacity: { min: 0, max: 1, step: 0.05, label: 'Opacity' },
+                opacity: { min: 0, max: 1, step: 0.1, label: 'Opacity' },
                 animationSpeed: { min: 0.1, max: 5, step: 0.1, label: 'Flow Speed' },
-                density: { min: 0.3, max: 3, step: 0.1, label: 'Pattern Density' }
+                density: { min: 0.3, max: 5, step: 0.1, label: 'Pattern Density' }
             },
             colorModes: ['default', 'cyber', 'terminal', 'fire', 'ocean', 'custom']
         },
@@ -118,7 +111,7 @@ const BackgroundTest = () => {
             icon: '⚛️',
             complexity: '',
             controls: {
-                opacity: { min: 0, max: 1, step: 0.02, label: 'Opacity' },
+                opacity: { min: 0, max: 1, step: 0.1, label: 'Opacity' },
                 animationSpeed: { min: 0.1, max: 3, step: 0.1, label: 'Flow Speed' },
                 density: { min: 0.3, max: 2, step: 0.1, label: 'Pattern Density' }
             },

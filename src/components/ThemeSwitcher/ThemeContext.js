@@ -6,10 +6,10 @@ export const ThemeProvider = ({ children }) => {
   const [darkMode, setDarkMode] = useState(() => {
     try {
       const savedMode = localStorage.getItem("darkMode");
-      return savedMode ? JSON.parse(savedMode) : false; // Default to light mode
+      return savedMode ? JSON.parse(savedMode) : true; // Default to dark mode
     } catch (e) {
       console.error("Error accessing localStorage:", e);
-      return false; // Fallback
+      return true; // Fallback
     }
   });
   

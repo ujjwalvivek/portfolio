@@ -192,7 +192,7 @@
   font-size: 1.15rem;
   font-family: var(--font-mono);
   letter-spacing: -1px;
-  opacity: 0.8;
+  opacity: 0.7;
   text-align: justify;
   margin-bottom: 1.2rem;
 }
@@ -254,15 +254,19 @@
 }
 
 .markdown img {
-  max-width: 100%;
-  height: auto;
-  width: auto;
   display: block;
-  margin: 2.5rem auto;
-  border-radius: 12px;
-  box-shadow: 0 4px 32px 0 rgba(var(--primary-rgb), 0.10);
-  cursor: pointer;
-  transition: box-shadow 0.2s, transform 0.2s;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  max-width: 100%;
+  max-height: 50vh;      /* Limit height to 50% of viewport */
+  object-fit: cover;   /* Prevents distortion */
+  object-position: 100% 35%; /* Adjusts image position */
+  border-radius: 2px;
+  box-sizing: border-box;
+  border: 2px solid var(--primary-color);
+  padding: 0.5rem;
+  background: rgba(var(--background-color-rgb), 0.04);
 }
 
 .markdown img:hover {
@@ -432,10 +436,8 @@
 
 /* Blog Post Item Styles */
 .blogPostItem {
-  background: rgba(var(--background-color-rgb), 0.4);
   backdrop-filter: blur(48px) saturate(180%);
   -webkit-backdrop-filter: blur(48px) saturate(180%);
-  border: 1px solid rgba(var(--primary-color-rgb), 0.08);
   border-radius: 2px;
   padding: calc(var(--spacing-unit) * 4);
   margin-bottom: calc(var(--spacing-unit) * 3);
@@ -445,10 +447,7 @@
 }
 
 .blogPostItem:hover {
-  transform: translateY(-4px);
-  border-color: rgba(var(--primary-color-rgb), 0.15);
-  box-shadow: 0 20px 40px rgba(var(--background-color-rgb), 0.08);
-  background: rgba(var(--background-color-rgb), 0.6);
+  transform: translateY(-2px);
 }
 
 .blogPostItem:hover::before {

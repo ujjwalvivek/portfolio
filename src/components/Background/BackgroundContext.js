@@ -15,26 +15,26 @@ export const BackgroundProvider = ({ children }) => {
         try {
             const saved = localStorage.getItem('globalBackgroundConfig');
             return saved ? JSON.parse(saved) : {
-                type: 'hologram',
-                opacity: 0.5,
-                animationSpeed: 1,
-                density: 1,
-                colorMode: 'matrix',
-                customColor: '#00ff41',
+                type: 'psychedelic',
+                opacity: 0.7,
+                animationSpeed: 10,
+                density: 1.8,
+                colorMode: 'custom',
+                customColor: '#d63031',
                 isAnimated: true,
-                particleCount: 100
+                particleCount: 75
             };
         } catch (e) {
             console.error('Error loading background config:', e);
             return {
-                type: 'hologram',
-                opacity: 0.5,
-                animationSpeed: 1,
-                density: 1,
-                colorMode: 'matrix',
-                customColor: '#00ff41',
+                type: 'psychedelic',
+                opacity: 0.7,
+                animationSpeed: 10,
+                density: 1.8,
+                colorMode: 'custom',
+                customColor: '#d63031',
                 isAnimated: true,
-                particleCount: 100
+                particleCount: 75
             };
         }
     });

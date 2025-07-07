@@ -169,7 +169,7 @@ const GlobalBackground = () => {
             const colors = getCurrentColors();
             const speed = backgroundConfig.animationSpeed || 1;
             const density = backgroundConfig.density || 1;
-            const opacity = backgroundConfig.opacity || 0.5;
+            const opacity = backgroundConfig.opacity || 1;
 
             // Holographic projection base field
             const holoGradient = ctx.createRadialGradient(width/2, height/2, 0, width/2, height/2, Math.max(width, height) * 0.7);
@@ -416,7 +416,7 @@ const GlobalBackground = () => {
             const colors = getCurrentColors();
             const speed = backgroundConfig.animationSpeed || 1;
             const density = backgroundConfig.density || 1;
-            const opacity = backgroundConfig.opacity || 0.5;
+            const opacity = backgroundConfig.opacity || 1;
 
             // Organic circuit substrate (bio-electronic background)
             const substrate = ctx.createRadialGradient(width/2, height/2, 0, width/2, height/2, Math.max(width, height));
@@ -700,6 +700,7 @@ const GlobalBackground = () => {
             const adjustedColors = getAlphaAdjustedColors(colors);
             const speed = backgroundConfig.animationSpeed || 1;
             const density = backgroundConfig.density || 1;
+            // const opacity = backgroundConfig.opacity || 1;
 
             const centerX = width / 2;
             const centerY = height / 2;
