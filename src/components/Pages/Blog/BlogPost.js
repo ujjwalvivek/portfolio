@@ -203,6 +203,7 @@ const BlogPost = () => {
             <p>Written by Vivek</p>
             <p>crafting systems, one line at a time.</p>
           </div>
+          <br />
           <RelatedPosts posts={relatedPosts} />
         </div>
         {lightboxImage && (

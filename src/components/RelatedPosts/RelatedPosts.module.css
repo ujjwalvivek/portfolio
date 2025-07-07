@@ -5,13 +5,13 @@
 }
 
 .relatedPostsTitle {
-  margin-bottom: var(--spacing-medium);
+  margin-bottom: calc(var(--spacing-unit) * 3);
 }
 
 .relatedPostsGrid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: var(--spacing-medium);
+  gap: calc(var(--spacing-unit) * 3);
 }
 
 .relatedPostCard {
