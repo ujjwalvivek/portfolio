@@ -200,8 +200,9 @@ const BlogPost = () => {
             </ReactMarkdown>
           </div>
           <div className={styles.authorSignature}>
-            <p>Written by Vivek</p>
-            <p>crafting systems, one line at a time.</p>
+            <p>
+    <strong>Vivek</strong> crafting systems, one line at a time.
+  </p>
           </div>
           <br />
           <RelatedPosts posts={relatedPosts} />

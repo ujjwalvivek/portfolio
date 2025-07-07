@@ -8,7 +8,7 @@ $ boot --system
   [✓] initializing logs/public
   [✓] unlocking experimental mode
 
-# I build, break, and rebuild systems — across code, teams, and products.
+# I build, break, and rebuild systems across code, teams, and products.
 # From VR platforms to Rust game engines, this journey is logged.
 
 $ history --roles
@@ -30,9 +30,9 @@ $ tail -f logs.txt
   → systems that might hold together
 
 $ now
-  → polishing blog
+  → polishing this website
   → testing Rust render loop
-  → writing from Bangalore
+  → writing logs from Bangalore, India
   
 $ echo "Welcome to my builder's log. Let's break some systems together."`;
 
