@@ -75,7 +75,7 @@ const statusRows = [
   },
   {
     service: "uptime",
-    value: <UptimeCounter startDate={new Date('2025-07-01T00:00:00Z')} />,
+    value: <UptimeCounter startDate={new Date('2023-02-04T00:00:00Z')} />,
     valueClass: "statusUptime",
     gap: "6.3rem"
   }
