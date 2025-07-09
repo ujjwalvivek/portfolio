@@ -76,6 +76,14 @@ React.useEffect(() => {
   }
 }, [history]);
 
+React.useEffect(() => {
+  if (crashed) {
+    console.log(
+      "👀 Welcome curious dev. You found the logs under the logs. Just refresh the page and it should restart."
+    );
+  }
+}, [crashed]);
+
   if (crashed) {
     return <CrashOverlay onRestart={() => window.location.reload()} />;
   }
