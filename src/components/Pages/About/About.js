@@ -82,6 +82,10 @@ const statusRows = [
 ];
 
   React.useEffect(() => {
+    if (sessionStorage.getItem('introPlayed')) {
+    setTypedText(terminalText);
+    return;
+  }
     let i = 0;
     setTypedText('');
     const interval = setInterval(() => {
@@ -89,6 +93,7 @@ const statusRows = [
       i++;
       if (i === terminalText.length) {
         clearInterval(interval);
+        sessionStorage.setItem('introPlayed', 'true');
       }
     }, 5);
     return () => clearInterval(interval);
