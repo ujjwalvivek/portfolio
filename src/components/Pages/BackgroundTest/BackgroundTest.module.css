@@ -607,68 +607,24 @@
 }
 
 /* FPS Counter Styles */
-.fpsCounter {
-    margin-top: 1rem;
-    padding: 0.75rem;
-    background: rgba(var(--text-color), 0.03);
-    border: 1px solid rgba(var(--text-color), 0.1);
-    border-radius: 6px;
-}
-
-.fpsDisplay {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 0.5rem;
-}
-
-.fpsTitle {
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: var(--primary-color);
-    margin: 0 0 1rem 0;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.fpsLabel {
-    font-family: var(--font-mono);
-    font-size: 0.9rem;
-    color: var(--text-color);
-    opacity: 0.7;
-}
-
 .fpsValue {
     font-family: var(--font-mono);
     font-size: 1.1rem;
-    font-weight: 600;
+    font-weight: 700;
     text-align: right;
+    letter-spacing: 0px;
 }
 
 .fpsHigh {
-    color: #44ff44;
+    color: #1abc9c;
 }
 
 .fpsMedium {
-    color: #ffaa44;
+    color: #f39c12;
 }
 
 .fpsLow {
-    color: #ff4444;
-}
-
-.fpsBar {
-    height: 4px;
-    background: rgba(var(--text-color), 0.1);
-    border-radius: 2px;
-    overflow: hidden;
-}
-
-.fpsBarFill {
-    height: 100%;
-    transition: width 0.3s ease, background-color 0.3s ease;
-    border-radius: 2px;
+    color: #e74c3c;
 }
 
 /* Responsive Design */
@@ -712,4 +668,11 @@
     .header h1 {
         font-size: 2.2rem;
     }
+}
+
+.sectionHeaderRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
 }

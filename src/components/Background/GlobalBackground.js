@@ -13,6 +13,15 @@ const GlobalBackground = () => {
     const frameCount = useRef(0);
     const lastFpsUpdate = useRef(0);
 
+    const maxOpacity = {
+    hologram: 0.9,
+    circuit: 0.9,
+    psychedelic: 0.8,
+    vortex: 0.9,
+}[backgroundConfig.type] ?? 1;
+
+const maxCanvasOpacity = Math.min(backgroundConfig.opacity ?? 0.8, maxOpacity);
+
     // Adaptive color schemes based on theme mode
     const getThemeColors = () => {
         if (darkMode) {
@@ -88,7 +97,7 @@ const GlobalBackground = () => {
 
     // Helper function to get alpha-adjusted colors based on canvas opacity
     const getAlphaAdjustedColors = (colors) => {
-        const canvasOpacity = backgroundConfig.opacity || 0.5;
+        const canvasOpacity = maxCanvasOpacity;
         
         // Helper function to convert hex to rgb
         const hexToRgb = (hex) => {
@@ -169,7 +178,7 @@ const GlobalBackground = () => {
             const colors = getCurrentColors();
             const speed = backgroundConfig.animationSpeed || 1;
             const density = backgroundConfig.density || 1;
-            const opacity = backgroundConfig.opacity || 1;
+            const opacity = maxCanvasOpacity;
 
             // Holographic projection base field
             const holoGradient = ctx.createRadialGradient(width/2, height/2, 0, width/2, height/2, Math.max(width, height) * 0.7);
@@ -416,7 +425,7 @@ const GlobalBackground = () => {
             const colors = getCurrentColors();
             const speed = backgroundConfig.animationSpeed || 1;
             const density = backgroundConfig.density || 1;
-            const opacity = backgroundConfig.opacity || 1;
+            const opacity = maxCanvasOpacity;
 
             // Organic circuit substrate (bio-electronic background)
             const substrate = ctx.createRadialGradient(width/2, height/2, 0, width/2, height/2, Math.max(width, height));
@@ -700,13 +709,12 @@ const GlobalBackground = () => {
             const adjustedColors = getAlphaAdjustedColors(colors);
             const speed = backgroundConfig.animationSpeed || 1;
             const density = backgroundConfig.density || 1;
-            // const opacity = backgroundConfig.opacity || 1;
 
             const centerX = width / 2;
             const centerY = height / 2;
 
             // Trippy kaleidoscopic background
-            const kaleidoGradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, Math.max(width, height) * 0.8);
+            const kaleidoGradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, Math.max(width, height) * 1);
             kaleidoGradient.addColorStop(0, hexWithAlpha(colors.background, '40'));
             kaleidoGradient.addColorStop(0.3, adjustedColors.primaryAlpha('20'));
             kaleidoGradient.addColorStop(0.6, adjustedColors.secondaryAlpha('15'));
@@ -715,19 +723,19 @@ const GlobalBackground = () => {
             ctx.fillRect(0, 0, width, height);
 
             // Mandala sacred geometry layers
-            const mandalaLayers = Math.floor(8 * density);
+            const mandalaLayers = Math.floor(6 * density); //Psychedelic spikes density control. matching to 30fps max.
             
             for (let layer = 0; layer < mandalaLayers; layer++) {
                 const layerPhase = time * speed * 0.001 + layer * 0.8;
                 const layerRadius = 50 + layer * 30 + Math.sin(layerPhase * 0.7) * 20;
                 const layerRotation = layerPhase * (layer % 2 === 0 ? 1 : -1) * 0.3;
-                const petalCount = 6 + layer * 2;
+                const petalCount = 5 + layer * 2; // More petals for deeper layers
                 
                 // Mandala petals/segments
                 for (let petal = 0; petal < petalCount; petal++) {
                     const petalAngle = (petal / petalCount) * Math.PI * 2 + layerRotation;
                     const petalPhase = layerPhase + petal * 0.2;
-                    const petalScale = 0.7 + Math.sin(petalPhase * 1.5) * 0.4;
+                    const petalScale = 0.7 + Math.sin(petalPhase * 1.5) * 0.5;
                     
                     // Petal geometry
                     const petalRadius = layerRadius * petalScale;
@@ -746,7 +754,7 @@ const GlobalBackground = () => {
                     }
                     
                     // Draw mandala segment
-                    ctx.globalAlpha = 0.6 + Math.sin(petalPhase * 2) * 0.3;
+                    ctx.globalAlpha = 0.6 + Math.sin(petalPhase * 2) * 0.4;
                     
                     // Inner petal geometry
                     const innerRadius = petalRadius * 0.3;
@@ -813,7 +821,7 @@ const GlobalBackground = () => {
                 
                 // Connecting geometric patterns between layers
                 if (layer > 0) {
-                    const connectionCount = petalCount * 2;
+                    const connectionCount = petalCount * 4;
                     for (let conn = 0; conn < connectionCount; conn++) {
                         const connAngle = (conn / connectionCount) * Math.PI * 2 + layerRotation * 0.5;
                         const innerConnRadius = (50 + (layer - 1) * 30) * 0.9;
@@ -849,7 +857,6 @@ const GlobalBackground = () => {
                 
                 // Core sacred symbols
                 const symbolSides = 6 + coreLayer;
-                
                 ctx.globalAlpha = 0.8 - coreLayer * 0.1;
                 
                 for (let side = 0; side < symbolSides; side++) {
@@ -887,7 +894,7 @@ const GlobalBackground = () => {
             for (let particle = 0; particle < particleCount; particle++) {
                 const particlePhase = time * speed * 0.003 + particle * 0.1;
                 const particleAngle = (particle * 2.39998) % (Math.PI * 2) + particlePhase; // Golden angle
-                const particleRadius = 100 + (particle % 200) + Math.sin(particlePhase * 2) * 50;
+                const particleRadius = 200 + (particle % 200) + Math.sin(particlePhase * 2) * 50;
                 
                 const particleX = centerX + Math.cos(particleAngle) * particleRadius;
                 const particleY = centerY + Math.sin(particleAngle) * particleRadius;
@@ -927,7 +934,7 @@ const GlobalBackground = () => {
             }
 
             // Psychedelic energy waves
-            const waveCount = Math.floor(6 * density);
+            const waveCount = Math.floor(4 * density);
             
             for (let wave = 0; wave < waveCount; wave++) {
                 const wavePhase = time * speed * 0.001 + wave * 1.2;
@@ -969,14 +976,15 @@ const GlobalBackground = () => {
         vortex: (ctx, width, height, time = 0) => {
             // QUANTUM THREADS: Visualizing invisible quantum fields through interconnected light filaments
             const colors = getCurrentColors();
-            const t = time * 0.0003 * (backgroundConfig.animationSpeed || 1);
+            const speed = backgroundConfig.animationSpeed || 1;
+            const t = time * 0.3 * speed;
             const density = backgroundConfig.density || 1;
 
             // Quantum field parameters
-            const nodeCount = Math.floor(25 * density);
-            const maxDistance = 180;
-            
-            // Initialize quantum nodes if not exists
+            const nodeCount = Math.floor(1 * density);
+            const maxDistance = 3 * density; // Maximum distance for entanglement connections
+
+            // Always re-create nodes if count changes
             if (!ctx.quantumNodes) {
                 ctx.quantumNodes = [];
                 for (let i = 0; i < nodeCount; i++) {
@@ -1111,8 +1119,8 @@ const GlobalBackground = () => {
                         ctx.moveTo(node.x, node.y);
                         
                         // Quantum fluctuation in the thread
-                        const midX = (node.x + target.x) / 2 + Math.sin(t * 8 + connection.distance * 0.03) * 15;
-                        const midY = (node.y + target.y) / 2 + Math.cos(t * 6 + connection.distance * 0.03) * 15;
+                        const midX = (node.x + target.x) / 2 + Math.sin(t * 8 + connection.distance * 0.03) * 30;
+                        const midY = (node.y + target.y) / 2 + Math.cos(t * 6 + connection.distance * 0.03) * 30;
                         
                         ctx.quadraticCurveTo(midX, midY, target.x, target.y);
                         ctx.stroke();
@@ -1148,59 +1156,42 @@ const GlobalBackground = () => {
                 ctx.restore();
             });
         }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }), [backgroundConfig, darkMode]);
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     const animate = useCallback((timestamp) => {
+        const maxFps = backgroundConfig.maxFps || 30;
+        const frameInterval = 1000 / maxFps;
         const canvas = canvasRef.current;
         if (!canvas || !backgroundConfig.isAnimated) return;
 
-        // Calculate FPS
-        frameCount.current++;
-        if (timestamp - lastFpsUpdate.current >= 1000) { // Update FPS every second
-            fpsRef.current = Math.round(frameCount.current * 1000 / (timestamp - lastFpsUpdate.current));
-            frameCount.current = 0;
-            lastFpsUpdate.current = timestamp;
-            
-            // Dispatch custom event with FPS data
-            window.dispatchEvent(new CustomEvent('fpsUpdate', { detail: fpsRef.current }));
-        }
-
-        // Throttle to 30fps to reduce interference with other animations
         const now = timestamp;
-        if (now - lastFrameTime.current < 33) { // 33ms = ~30fps
-            animationRef.current = requestAnimationFrame(animate);
-            return;
-        }
-        lastFrameTime.current = now;
+        console.log('Frame interval:', now - lastFrameTime.current);
+        const elapsed = now - lastFrameTime.current;
 
-        // Check if canvas is visible
-        const rect = canvas.getBoundingClientRect();
-        const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
-        
-        if (!isVisible) {
-            animationRef.current = requestAnimationFrame(animate);
-            return;
+        if (elapsed >= frameInterval) {
+            lastFrameTime.current = now - (elapsed % frameInterval); // avoid drift
+
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            const generator = generators()[backgroundConfig.type];
+            if (generator) {
+                generator(ctx, canvas.width, canvas.height, now * 0.001);
+            }
+
+            // Update FPS tracking
+            frameCount.current++;
+            if (now - lastFpsUpdate.current >= 1000) {
+                fpsRef.current = Math.round(frameCount.current * 1000 / (now - lastFpsUpdate.current));
+                window.dispatchEvent(new CustomEvent('fpsUpdate', { detail: fpsRef.current }));
+                frameCount.current = 0;
+                lastFpsUpdate.current = now;
+            }
         }
 
-        const ctx = canvas.getContext('2d');
-        // Clear the canvas first
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        
-        const generatorFunctions = generators();
-        const generator = generatorFunctions[backgroundConfig.type];
-        
-        if (generator) {
-            // Pass the raw timestamp - let each generator handle its own speed scaling
-            const timeInSeconds = timestamp * 0.001;
-            generator(ctx, canvas.width, canvas.height, timeInSeconds);
-        }
-        
-        if (backgroundConfig.isAnimated) {
-            animationRef.current = requestAnimationFrame(animate);
-        }
-    }, [backgroundConfig.type, backgroundConfig.isAnimated, generators]); // eslint-disable-line react-hooks/exhaustive-deps
+        animationRef.current = requestAnimationFrame(animate); // always schedule next
+    }, [backgroundConfig.type, backgroundConfig.isAnimated, generators, backgroundConfig.maxFps]);
 
     // Canvas setup and animation control
     useEffect(() => {
@@ -1259,7 +1250,7 @@ const GlobalBackground = () => {
         <canvas
             ref={canvasRef}
             className={styles.globalBackground}
-            style={{ opacity: backgroundConfig.opacity }}
+            style={{ opacity: maxCanvasOpacity }}
         />
     );
 };

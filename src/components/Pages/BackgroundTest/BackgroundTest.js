@@ -1,66 +1,36 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import { useBackground } from '../../Background/BackgroundContext';
 import styles from './BackgroundTest.module.css';
 
 const BackgroundTest = () => {
-    const { backgroundConfig, updateBackgroundConfig, resetToDefaults } = useBackground();
+    const { backgroundConfig, updateBackgroundConfig } = useBackground();
 
     // Local state for controls, initialized from backgroundConfig but not synced automatically
-    const [currentBg, setCurrentBg] = useState(backgroundConfig.type || 'psychedelic');
-    const [opacity, setOpacity] = useState(backgroundConfig.opacity || 0.7);
-    const [animationSpeed, setAnimationSpeed] = useState(backgroundConfig.animationSpeed || 10);
-    const [density, setDensity] = useState(backgroundConfig.density || 2.3);
-    const [colorMode, setColorMode] = useState(backgroundConfig.colorMode || 'matrix');
-    const [customColor, setCustomColor] = useState(backgroundConfig.customColor || '#d63031');
+    const [currentBg, setCurrentBg] = useState(backgroundConfig.type);
+    const [opacity, setOpacity] = useState(backgroundConfig.opacity);
+    const [animationSpeed, setAnimationSpeed] = useState(backgroundConfig.animationSpeed);
+    const [density, setDensity] = useState(backgroundConfig.density);
+    const [colorMode, setColorMode] = useState(backgroundConfig.colorMode);
+    const [customColor, setCustomColor] = useState(backgroundConfig.customColor);
     const [isAnimated, setIsAnimated] = useState(backgroundConfig.isAnimated !== undefined ? backgroundConfig.isAnimated : true);
     const [fps, setFps] = useState(0);
-
-    // Helper function to update both local state and global config
-    const updateLocalAndGlobal = useCallback((updates) => {
-        // Calculate the new config using current state as base
-        const newConfig = {
-            type: updates.type !== undefined ? updates.type : currentBg,
-            opacity: updates.opacity !== undefined ? updates.opacity : opacity,
-            animationSpeed: updates.animationSpeed !== undefined ? updates.animationSpeed : animationSpeed,
-            density: updates.density !== undefined ? updates.density : density,
-            colorMode: updates.colorMode !== undefined ? updates.colorMode : colorMode,
-            customColor: updates.customColor !== undefined ? updates.customColor : customColor,
-            isAnimated: updates.isAnimated !== undefined ? updates.isAnimated : isAnimated,
-        };
-
-        // Update local state
-        if (updates.type !== undefined) setCurrentBg(updates.type);
-        if (updates.opacity !== undefined) setOpacity(updates.opacity);
-        if (updates.animationSpeed !== undefined) setAnimationSpeed(updates.animationSpeed);
-        if (updates.density !== undefined) setDensity(updates.density);
-        if (updates.colorMode !== undefined) setColorMode(updates.colorMode);
-        if (updates.customColor !== undefined) setCustomColor(updates.customColor);
-        if (updates.isAnimated !== undefined) setIsAnimated(updates.isAnimated);
-
-        // Update global config with the complete new state
-        updateBackgroundConfig(newConfig);
-    }, [
-        currentBg,
-        opacity,
-        animationSpeed,
-        density,
-        colorMode,
-        customColor,
-        isAnimated,
-        updateBackgroundConfig
-    ]);
 
     // FPS monitoring
     React.useEffect(() => {
         const handleFpsUpdate = (event) => {
-            setFps(event.detail);
+            setFps(Math.min(event.detail, 30));
         };
 
         window.addEventListener('fpsUpdate', handleFpsUpdate);
         return () => window.removeEventListener('fpsUpdate', handleFpsUpdate);
     }, []);
 
-    const backgrounds = [
+    const isIpad = /iPad/.test(navigator.userAgent) || 
+    (navigator.userAgent.includes('Macintosh') && 'ontouchend' in document);
+    const isMobile = /iPhone|iPod|Android/i.test(navigator.userAgent) && !isIpad;
+    // const isDesktop = !isMobile && !isIpad;
+
+    const backgrounds = useMemo(() => [
         {
             id: 'hologram',
             name: 'Holo Display',
@@ -69,11 +39,11 @@ const BackgroundTest = () => {
             icon: '👁️',
             complexity: '',
             controls: {
-                opacity: { min: 0, max: 1, step: 0.1, label: 'Opacity' },
-                animationSpeed: { min: 0.1, max: 3, step: 0.1, label: 'Flow Speed' },
-                density: { min: 0.5, max: 3, step: 0.1, label: 'Pattern Density' }
+                opacity: { min: 0, max: 0.9, step: 0.1, label: 'Opacity', default: 0.5 },
+                animationSpeed: { min: 0.1, max: 3, step: 0.1, label: 'Flow Speed', default: 1 },
+                density: { min: isMobile ? 0.5 : 0.5, max: isMobile ? 2 : 3, step: 0.1, label: 'Pattern Density', default: isMobile ? 2 : 3 }
             },
-            colorModes: ['default', 'cyber', 'terminal', 'fire', 'ocean', 'custom']
+            colorModes: ['matrix', 'cyber', 'terminal', 'fire', 'ocean', 'custom']
         },
         {
             id: 'circuit',
@@ -83,11 +53,12 @@ const BackgroundTest = () => {
             icon: '🌿',
             complexity: '',
             controls: {
-                opacity: { min: 0, max: 1, step: 0.1, label: 'Opacity' },
-                animationSpeed: { min: 0.1, max: 5, step: 0.1, label: 'Flow Speed' },
-                density: { min: 0.3, max: 5, step: 0.1, label: 'Pattern Density' }
+                opacity: { min: 0, max: 0.9, step: 0.1, label: 'Opacity', default: 0.5 },
+                animationSpeed: { min: 0.1, max: 5, step: 0.1, label: 'Flow Speed', default: 1 },
+                density: { min: isMobile ? 0.3 : 0.3, max: isMobile ? 3 : 5, step: 0.1, label: 'Pattern Density', default: isMobile ? 3 : 5 }
+
             },
-            colorModes: ['default', 'cyber', 'terminal', 'fire', 'ocean', 'custom']
+            colorModes: ['matrix', 'cyber', 'terminal', 'fire', 'ocean', 'custom']
         },
         {
             id: 'psychedelic',
@@ -97,11 +68,12 @@ const BackgroundTest = () => {
             icon: '🌈',
             complexity: '',
             controls: {
-                opacity: { min: 0, max: 0.7, step: 0.1, label: 'Opacity' },
-                animationSpeed: { min: 0.1, max: 10, step: 0.1, label: 'Flow Speed' },
-                density: { min: 0.2, max: 3, step: 0.1, label: 'Pattern Density' }
+                opacity: { min: 0, max: 0.8, step: 0.1, label: 'Opacity', default: 0.5 },
+                animationSpeed: { min: 0.1, max: 10, step: 0.1, label: 'Flow Speed', default: 1 },
+                density: { min: isMobile ? 0.2 : 0.2, max: isMobile ? 2 : 3, step: 0.1, label: 'Pattern Density', default: isMobile ? 1.7 : 2 }
+
             },
-            colorModes: ['default', 'cyber', 'terminal', 'fire', 'ocean', 'custom']
+            colorModes: ['matrix', 'cyber', 'terminal', 'fire', 'ocean', 'custom']
         },
         {
             id: 'vortex',
@@ -111,13 +83,81 @@ const BackgroundTest = () => {
             icon: '⚛️',
             complexity: '',
             controls: {
-                opacity: { min: 0, max: 1, step: 0.1, label: 'Opacity' },
-                animationSpeed: { min: 0.1, max: 3, step: 0.1, label: 'Flow Speed' },
-                density: { min: 0.3, max: 2, step: 0.1, label: 'Pattern Density' }
+                opacity: { min: 0, max: 0.9, step: 0.1, label: 'Opacity', default: 0.5 },
+                animationSpeed: { min: 0.1, max: 3, step: 0.1, label: 'Flow Speed', default: 1 },
+                density: { min: isMobile ? 50 : 50, max: isMobile ? 70 : 100, step: 0.1, label: 'Pattern Density', default: isMobile ? 70 : 80 }
             },
-            colorModes: ['default', 'cyber', 'terminal', 'fire', 'ocean', 'custom']
+            colorModes: ['matrix', 'cyber', 'terminal', 'fire', 'ocean', 'custom']
         }
-    ];
+    ], [isMobile]);
+
+    // State to track wallpaper states (if needed for future use)
+    const [wallpaperStates, setWallpaperStates] = useState({});
+
+    // Helper function to update both local state and global config
+    const updateLocalAndGlobal = useCallback((updates) => {
+        let newType = updates.type !== undefined ? updates.type : currentBg;
+        let newBgData = backgrounds.find(bg => bg.id === newType);
+
+        // Save current state before switching
+        if (updates.type !== undefined) {
+            setWallpaperStates(prev => ({
+                ...prev,
+                [currentBg]: {
+                    opacity,
+                    animationSpeed,
+                    density
+                }
+            }));
+        }
+
+        // Load previous state for new wallpaper, or use defaults
+        let prevState = wallpaperStates[newType] || {};
+        let newOpacity, newAnimationSpeed, newDensity;
+
+        if (updates.type !== undefined && newBgData) {
+            newOpacity = prevState.opacity ?? newBgData.controls.opacity.default ?? newBgData.controls.opacity.min;
+            newAnimationSpeed = prevState.animationSpeed ?? newBgData.controls.animationSpeed.default ?? newBgData.controls.animationSpeed.min;
+            newDensity = prevState.density ?? newBgData.controls.density.default ?? newBgData.controls.density.min;
+        } else {
+            newOpacity = updates.opacity !== undefined ? updates.opacity : opacity;
+            newAnimationSpeed = updates.animationSpeed !== undefined ? updates.animationSpeed : animationSpeed;
+            newDensity = updates.density !== undefined ? updates.density : density;
+        }
+
+        const newConfig = {
+            type: newType,
+            opacity: newOpacity,
+            animationSpeed: newAnimationSpeed,
+            density: newDensity,
+            colorMode: updates.colorMode !== undefined ? updates.colorMode : colorMode,
+            customColor: updates.customColor !== undefined ? updates.customColor : customColor,
+            isAnimated: updates.isAnimated !== undefined ? updates.isAnimated : isAnimated,
+        };
+
+        // Update local state
+        if (updates.type !== undefined) setCurrentBg(newType);
+        setOpacity(newOpacity);
+        setAnimationSpeed(newAnimationSpeed);
+        setDensity(newDensity);
+        if (updates.colorMode !== undefined) setColorMode(updates.colorMode);
+        if (updates.customColor !== undefined) setCustomColor(updates.customColor);
+        if (updates.isAnimated !== undefined) setIsAnimated(updates.isAnimated);
+
+        // Update global config with the complete new state
+        updateBackgroundConfig(newConfig);
+    }, [
+        backgrounds,
+        currentBg,
+        opacity,
+        animationSpeed,
+        density,
+        colorMode,
+        customColor,
+        isAnimated,
+        updateBackgroundConfig,
+        wallpaperStates
+    ]);
 
     const shareConfig = () => {
         const config = btoa(JSON.stringify({
@@ -135,32 +175,34 @@ const BackgroundTest = () => {
         alert('Configuration URL copied to clipboard!');
     };
 
-    const resetAllSettings = () => {
-        if (window.confirm('Reset all background settings to defaults? This will clear your saved preferences.')) {
-            // Reset to default values
-            const defaults = {
-                type: 'hologram',
-                opacity: 0.5,
-                animationSpeed: 1,
-                density: 1,
-                colorMode: 'matrix',
-                customColor: '#00ff41',
-                isAnimated: true
-            };
+const resetAllSettings = () => {
+    if (window.confirm('Reset all background settings to defaults? This will clear your saved preferences.')) {
+        const defaultBgId = 'psychedelic';
+        const defaultBgData = backgrounds.find(bg => bg.id === defaultBgId);
 
-            // Update local state
-            setCurrentBg(defaults.type);
-            setOpacity(defaults.opacity);
-            setAnimationSpeed(defaults.animationSpeed);
-            setDensity(defaults.density);
-            setColorMode(defaults.colorMode);
-            setCustomColor(defaults.customColor);
-            setIsAnimated(defaults.isAnimated);
+        // Always use 'custom' as the color mode
+        const defaults = {
+            type: defaultBgId,
+            opacity: defaultBgData?.controls.opacity.default ?? defaultBgData?.controls.opacity.min,
+            animationSpeed: defaultBgData?.controls.animationSpeed.default ?? defaultBgData?.controls.animationSpeed.min,
+            density: defaultBgData?.controls.density.default ?? defaultBgData?.controls.density.min,
+            colorMode: 'custom', // <-- force 'custom'
+            customColor: '#d63031',
+            isAnimated: true
+        };
 
-            // Reset global state
-            resetToDefaults();
-        }
-    };
+        setCurrentBg(defaultBgId);
+        setOpacity(defaults.opacity);
+        setAnimationSpeed(defaults.animationSpeed);
+        setDensity(defaults.density);
+        setColorMode(defaults.colorMode);
+        setCustomColor(defaults.customColor);
+        setIsAnimated(defaults.isAnimated);
+        setWallpaperStates({});
+
+        updateBackgroundConfig(defaults);
+    }
+};
 
     const currentBgData = backgrounds.find(bg => bg.id === currentBg);
     const controlValues = { opacity, animationSpeed, density };
@@ -198,31 +240,30 @@ const BackgroundTest = () => {
                                 </div>
                             ))}
                         </div>
-                        {/* Current Configuration Display */}
-                        <div className={styles.configSection}>
-                            {/* <div className={styles.configDisplay}>
-                        <div className={styles.codeDisplay}>
-                            <code>background: "{currentBg}", </code>
-                            <code>opacity: {opacity}, </code>
-                            <code>animationSpeed: {animationSpeed}, </code>
-                            <code>density: {density}, </code>
-                            <code>colorScheme: "{colorMode}"</code>
-                        </div>
-                    </div> */}
-                            
-                        </div>
                     </div>
 
                     <div className={styles.controlPanel}>
                         <div className={styles.controlSection}>
-                            <h4 className={styles.sectionTitle}>Visual Controls</h4>
+                            <div className={styles.sectionHeaderRow}>
+                                <h4 className={styles.sectionTitle}>Visual Controls</h4>
+                                <span className={`${styles.sectionTitle} ${styles.fpsValue} ${fps < 15 ? styles.fpsLow : fps < 25 ? styles.fpsMedium : styles.fpsHigh}`}>
+                                    {isAnimated ? `${fps}.fps` : 'static'}
+                                </span>
+                            </div>
                             {currentBgData?.controls && Object.entries(currentBgData.controls).map(([key, control]) => (
                                 <div key={key} className={styles.controlGroup}>
                                     <label className={styles.controlLabel}>
-                                        {control.label}: <span className={styles.controlValue}>
+                                        {control.label}
+                                        {/* <span className={styles.controlValue}>
                                             {key === 'opacity' ? opacity.toFixed(2) :
                                                 key === 'animationSpeed' ? animationSpeed.toFixed(1) + 'x' :
                                                     key === 'density' ? density.toFixed(1) + 'x' :
+                                                        (controlValues[key] !== undefined ? controlValues[key].toFixed(1) : '')}
+                                        </span> */}
+                                        <span className={styles.controlValue}>
+                                            {key === 'opacity' ? '' :
+                                                key === 'animationSpeed' ? '' :
+                                                    key === 'density' ? '' :
                                                         (controlValues[key] !== undefined ? controlValues[key].toFixed(1) : '')}
                                         </span>
                                     </label>
@@ -242,7 +283,7 @@ const BackgroundTest = () => {
                         <div className={styles.controlSection}>
                             <h4 className={styles.sectionTitle}>Color Scheme</h4>
                             <div className={styles.selectGroup}>
-                                {(currentBgData?.colorModes || ['default', 'cyber', 'terminal', 'ocean', 'fire', 'custom']).map(mode => (
+                                {(currentBgData?.colorModes || ['matrix', 'cyber', 'terminal', 'ocean', 'fire', 'custom']).map(mode => (
                                     <button
                                         key={mode}
                                         className={`${styles.selectButton} ${colorMode === mode ? styles.active : ''}`}
@@ -281,27 +322,6 @@ const BackgroundTest = () => {
                                 >
                                     Static
                                 </button>
-                            </div>
-
-                            {/* FPS Counter */}
-                            <div className={styles.fpsCounter}>
-                                <div className={styles.fpsDisplay}>
-                                    <span className={styles.fpsTitle}>FPS</span>
-                                    <span className={`${styles.fpsTitle} ${styles.fpsValue} ${fps < 15 ? styles.fpsLow : fps < 25 ? styles.fpsMedium : styles.fpsHigh}`}>
-                                        {isAnimated ? fps : 'Static'} 
-                                    </span>
-                                </div>
-                                {isAnimated && fps > 0 && (
-                                    <div className={styles.fpsBar}>
-                                        <div
-                                            className={styles.fpsBarFill}
-                                            style={{
-                                                width: `${Math.min(fps / 60 * 100, 100)}%`,
-                                                backgroundColor: fps < 15 ? '#ff4444' : fps < 25 ? '#ffaa44' : '#44ff44'
-                                            }}
-                                        ></div>
-                                    </div>
-                                )}
                             </div>
                             <div className={styles.previewHeader}>
                                 {isAnimated && (

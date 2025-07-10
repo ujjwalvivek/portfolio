@@ -10,6 +10,9 @@ export const useBackground = () => {
     return context;
 };
 
+const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+const defaultMaxFps = isMobile ? 20 : 30;
+
 export const BackgroundProvider = ({ children }) => {
     const [backgroundConfig, setBackgroundConfig] = useState(() => {
         try {
@@ -17,24 +20,24 @@ export const BackgroundProvider = ({ children }) => {
             return saved ? JSON.parse(saved) : {
                 type: 'psychedelic',
                 opacity: 0.7,
-                animationSpeed: 10,
-                density: 1.8,
+                animationSpeed: 1,
+                density: 2.5,
                 colorMode: 'custom',
                 customColor: '#d63031',
                 isAnimated: true,
-                particleCount: 75
+                maxFps: defaultMaxFps // <-- add this line
             };
         } catch (e) {
             console.error('Error loading background config:', e);
             return {
                 type: 'psychedelic',
                 opacity: 0.7,
-                animationSpeed: 10,
-                density: 1.8,
+                animationSpeed: 1,
+                density: 2.5,
                 colorMode: 'custom',
                 customColor: '#d63031',
                 isAnimated: true,
-                particleCount: 75
+                maxFps: defaultMaxFps // <-- add this line
             };
         }
     });
@@ -92,24 +95,24 @@ export const BackgroundProvider = ({ children }) => {
         }
     };
 
-    const resetToDefaults = () => {
-        const defaultConfig = {
-            type: 'hologram',
-            opacity: 0.5,
-            animationSpeed: 1,
-            density: 1,
-            colorMode: 'matrix',
-            customColor: '#00ff41',
-            isAnimated: true,
-            particleCount: 100
-        };
-        setBackgroundConfig(defaultConfig);
-        try {
-            localStorage.setItem('globalBackgroundConfig', JSON.stringify(defaultConfig));
-        } catch (e) {
-            console.error('Error saving default background config:', e);
-        }
-    };
+    // const resetToDefaults = () => {
+    //     const defaultConfig = {
+    //         type: 'hologram',
+    //         opacity: 0.5,
+    //         animationSpeed: 1,
+    //         density: 1,
+    //         colorMode: 'matrix',
+    //         customColor: '#00ff41',
+    //         isAnimated: true,
+    //         particleCount: 100
+    //     };
+    //     setBackgroundConfig(defaultConfig);
+    //     try {
+    //         localStorage.setItem('globalBackgroundConfig', JSON.stringify(defaultConfig));
+    //     } catch (e) {
+    //         console.error('Error saving default background config:', e);
+    //     }
+    // };
 
     const clearStoredConfig = () => {
         try {
@@ -124,7 +127,6 @@ export const BackgroundProvider = ({ children }) => {
             backgroundConfig,
             updateBackgroundConfig,
             toggleBackground,
-            resetToDefaults,
             clearStoredConfig
         }}>
             {children}
