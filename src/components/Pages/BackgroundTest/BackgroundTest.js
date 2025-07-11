@@ -322,14 +322,14 @@ const resetAllSettings = () => {
                             <h4 className={styles.sectionTitle}>Performance</h4>
                             <div className={styles.selectGroup}>
                                 <button
-                                    className={`${styles.selectButton} ${isAnimated ? styles.active : ''}`}
-                                    onClick={() => updateLocalAndGlobal({ isAnimated: true })}
+                                    className={`${styles.selectButton} ${backgroundConfig.isAnimated ? styles.active : ''}`}
+onClick={() => updateLocalAndGlobal({ isAnimated: true })}
                                 >
                                     Animated
                                 </button>
                                 <button
-                                    className={`${styles.selectButton} ${!isAnimated ? styles.active : ''}`}
-                                    onClick={() => updateLocalAndGlobal({ isAnimated: false })}
+                                    className={`${styles.selectButton} ${!backgroundConfig.isAnimated ? styles.active : ''}`}
+onClick={() => updateLocalAndGlobal({ isAnimated: false })}
                                 >
                                     Static
                                 </button>

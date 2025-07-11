@@ -1,4 +1,6 @@
-import React, { createContext, useState, useContext, useMemo } from 'react';
+import React, { createContext, useState, useContext, useMemo, useEffect } from 'react';
+import { usePrefersReducedMotion } from '../A11y/UsePrefersReducedMotion';
+
 
 const BackgroundContext = createContext();
 
@@ -11,6 +13,10 @@ export const useBackground = () => {
 };
 
 export const BackgroundProvider = ({ children }) => {
+
+    // --- Use prefersReducedMotion for animations ---
+    const prefersReducedMotion = usePrefersReducedMotion();
+
 
     // --- Add isMobile logic ---
     const isMobile = useMemo(() => {
@@ -103,6 +109,23 @@ export const BackgroundProvider = ({ children }) => {
             updateBackgroundConfig({ ...backgroundConfig, type: 'none' });
         }
     };
+
+        // If prefersReducedMotion is true, disable animations globally
+    useEffect(() => {
+        if (prefersReducedMotion && backgroundConfig.type !== 'none') {
+            setBackgroundConfig(prev => ({
+                ...prev,
+                type: backgroundConfig.type,
+                isAnimated: false,
+            }));
+        }
+        else {
+            setBackgroundConfig(prev => ({
+                ...prev,
+                isAnimated: true,
+            }));
+        }
+    }, [prefersReducedMotion, backgroundConfig.type]);
 
     const clearStoredConfig = () => {
         try {

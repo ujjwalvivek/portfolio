@@ -43,7 +43,7 @@ const LandingPage = ({ onEnter }) => {
             density: isMobile ? 1.7 : 2,
             colorMode: 'cyber',
             customColor: '#d63031',
-            isAnimated: true,
+            isAnimated: !prefersReducedMotion,
         },
         hologram: {
             type: 'hologram',
@@ -52,7 +52,7 @@ const LandingPage = ({ onEnter }) => {
             density: isMobile ? 0.5 : 1,
             colorMode: 'fire',
             customColor: '#00b894',
-            isAnimated: true,
+            isAnimated: !prefersReducedMotion,
         },
         circuit: {
             type: 'circuit',
@@ -61,7 +61,7 @@ const LandingPage = ({ onEnter }) => {
             density: isMobile ? 1 : 1.5,
             colorMode: 'ocean',
             customColor: '#0984e3',
-            isAnimated: true,
+            isAnimated: !prefersReducedMotion,
         },
         vortex: {
             type: 'vortex',
@@ -70,14 +70,14 @@ const LandingPage = ({ onEnter }) => {
             density: isMobile ? 20 : 40,
             colorMode: 'terminal',
             customColor: '#d63031',
-            isAnimated: true,
+            isAnimated: !prefersReducedMotion,
         },
         low: {
             type: 'none'
         }
-    }), [isMobile]);
+    }), [isMobile, prefersReducedMotion]);
 
-    const mainPresets = {
+    const mainPresets = useMemo(() => ({
         psychedelic: {
             type: 'psychedelic',
             opacity: 0.8,
@@ -85,7 +85,7 @@ const LandingPage = ({ onEnter }) => {
             density: isMobile ? 2 : 2.5,
             colorMode: 'cyber',
             customColor: '#d63031',
-            isAnimated: true,
+            isAnimated: !prefersReducedMotion,
         },
         hologram: {
             type: 'hologram',
@@ -94,7 +94,7 @@ const LandingPage = ({ onEnter }) => {
             density: isMobile ? 1 : 2,
             colorMode: 'fire',
             customColor: '#00b894',
-            isAnimated: true,
+            isAnimated: !prefersReducedMotion,
         },
         circuit: {
             type: 'circuit',
@@ -103,7 +103,7 @@ const LandingPage = ({ onEnter }) => {
             density: isMobile ? 1.5 : 2.5,
             colorMode: 'ocean',
             customColor: '#0984e3',
-            isAnimated: true,
+            isAnimated: !prefersReducedMotion,
         },
         vortex: {
             type: 'vortex',
@@ -112,12 +112,12 @@ const LandingPage = ({ onEnter }) => {
             density: isMobile ? 40 : 80,
             colorMode: 'terminal',
             customColor: '#d63031',
-            isAnimated: true,
+            isAnimated: !prefersReducedMotion,
         },
         low: {
             type: 'none'
         }
-    };
+    }), [isMobile, prefersReducedMotion]);
 
     const handleEnter = (type) => {
         updateBackgroundConfig(mainPresets[type]);
