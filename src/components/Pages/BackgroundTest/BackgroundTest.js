@@ -145,7 +145,7 @@ const BackgroundTest = () => {
             customColor: updates.customColor !== undefined ? updates.customColor : customColor,
             isAnimated: updates.isAnimated !== undefined ? updates.isAnimated : isAnimated,
         };
-
+        
         // Update local state
         if (updates.type !== undefined) setCurrentBg(newType);
         setOpacity(newOpacity);
@@ -335,7 +335,7 @@ onClick={() => updateLocalAndGlobal({ isAnimated: false })}
                                 </button>
                             </div>
                             <div className={styles.previewHeader}>
-                                {isAnimated && (
+                                {backgroundConfig.isAnimated && (
                                     <div className={styles.liveIndicator}>
                                         <span className={styles.pulseIndicator}></span>
                                         Procedural Generation Active

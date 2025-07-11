@@ -119,12 +119,6 @@ export const BackgroundProvider = ({ children }) => {
                 isAnimated: false,
             }));
         }
-        else {
-            setBackgroundConfig(prev => ({
-                ...prev,
-                isAnimated: true,
-            }));
-        }
     }, [prefersReducedMotion, backgroundConfig.type]);
 
     const clearStoredConfig = () => {
