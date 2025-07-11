@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from '../ThemeSwitcher/ThemeContext';
 import { BackgroundProvider, useBackground } from '../Background/BackgroundContext';
@@ -10,7 +11,8 @@ import Blog from '../Pages/Blog/Blog';
 import Footer from '../Footer/Footer';
 import TopBar from '../TopBar/TopBar';
 import LoadingSpinner from '../Loader/LoadingSpinner';
-import BackgroundTest from '../Pages/BackgroundTest/BackgroundTest'; // Updated import path
+import BackgroundTest from '../Pages/BackgroundTest/BackgroundTest';
+import LandingPage from '../Pages/Landing/LandingPage';
 
 function AppContent() {
   const { backgroundConfig } = useBackground();
@@ -39,12 +41,25 @@ function AppContent() {
 }
 
 function App() {
+  const [showLanding, setShowLanding] = useState(() => {
+    return localStorage.getItem('hasVisitedLanding') !== 'true';
+  });
+
+  const handleEnter = () => {
+    localStorage.setItem('hasVisitedLanding', 'true');
+    setShowLanding(false);
+  };
+
   return (
     <ThemeProvider>
       <BackgroundProvider>
         <Router>
           <LoadingSpinner>
-            <AppContent />
+            {showLanding ? (
+              <LandingPage onEnter={handleEnter} />
+            ) : (
+              <AppContent />
+            )}
           </LoadingSpinner>
         </Router>
       </BackgroundProvider>

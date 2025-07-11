@@ -38,6 +38,14 @@
   font-style: italic;
 }
 
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('./assets/fonts/JetBrainsMono/woff2/JetBrainsMono-Medium-Italic.woff2') format('woff2'),
+       url('./assets/fonts/JetBrainsMono/woff/JetBrainsMono-Medium-Italic.woff') format('woff');
+  font-weight: 500;
+  font-style: italic;
+}
+
 :root {
   --background-color: rgb(240, 240, 240);
   --background-color-rgb: 240, 240, 240;
@@ -93,7 +101,7 @@ code {
 /* CTA Link Spans - Function Syntax Styling */
 .cta-link-span {
   color: var(--primary-color);
-  font-weight: 400;
+  font-weight: 700;
   opacity: 0.7;
   transition: opacity 0.3s ease, color 0.3s ease;
 }
@@ -102,5 +110,5 @@ code {
 a:hover .cta-link-span,
 button:hover .cta-link-span {
   opacity: 1;
-  color: var(--text-color);
+  color: rgba(var(--text-color-rgb), 0.8);
 }

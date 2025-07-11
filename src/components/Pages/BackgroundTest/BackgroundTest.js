@@ -25,10 +25,21 @@ const BackgroundTest = () => {
         return () => window.removeEventListener('fpsUpdate', handleFpsUpdate);
     }, []);
 
-    const isIpad = /iPad/.test(navigator.userAgent) || 
-    (navigator.userAgent.includes('Macintosh') && 'ontouchend' in document);
-    const isMobile = /iPhone|iPod|Android/i.test(navigator.userAgent) && !isIpad;
-    // const isDesktop = !isMobile && !isIpad;
+    React.useEffect(() => {
+        setCurrentBg(backgroundConfig.type);
+    }, [backgroundConfig.type]);
+
+    const isMobile = useMemo(() => {
+        if (typeof navigator === "undefined" || typeof window === "undefined") return false;
+        const ua = navigator.userAgent;
+        // iPadOS 13+ masquerades as Mac, but has touch events and a small screen
+        const isIpad = (
+            /iPad/.test(ua) ||
+            (ua.includes("Macintosh") && ('ontouchstart' in window || navigator.maxTouchPoints > 1))
+        );
+        const isIphoneOrAndroid = /iPhone|iPod|Android/i.test(ua);
+        return isIphoneOrAndroid || isIpad;
+    }, []);
 
     const backgrounds = useMemo(() => [
         {
@@ -68,9 +79,9 @@ const BackgroundTest = () => {
             icon: '🌈',
             complexity: '',
             controls: {
-                opacity: { min: 0, max: 0.8, step: 0.1, label: 'Opacity', default: 0.5 },
+                opacity: { min: 0, max: 0.8, step: 0.1, label: 'Opacity', default: 0.6 },
                 animationSpeed: { min: 0.1, max: 10, step: 0.1, label: 'Flow Speed', default: 1 },
-                density: { min: isMobile ? 0.2 : 0.2, max: isMobile ? 2 : 3, step: 0.1, label: 'Pattern Density', default: isMobile ? 1.7 : 2 }
+                density: { min: isMobile ? 0.2 : 0.2, max: isMobile ? 2 : 2.9, step: 0.1, label: 'Pattern Density', default: isMobile ? 1.7 : 2 }
 
             },
             colorModes: ['matrix', 'cyber', 'terminal', 'fire', 'ocean', 'custom']
@@ -247,7 +258,7 @@ const resetAllSettings = () => {
                             <div className={styles.sectionHeaderRow}>
                                 <h4 className={styles.sectionTitle}>Visual Controls</h4>
                                 <span className={`${styles.sectionTitle} ${styles.fpsValue} ${fps < 15 ? styles.fpsLow : fps < 25 ? styles.fpsMedium : styles.fpsHigh}`}>
-                                    {isAnimated ? `${fps}.fps` : 'static'}
+                                    {currentBg === 'none' ? 'OFF' : (isAnimated ? `${fps}.fps` : 'static')}
                                 </span>
                             </div>
                             {currentBgData?.controls && Object.entries(currentBgData.controls).map(([key, control]) => (

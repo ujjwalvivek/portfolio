@@ -5,6 +5,13 @@
     box-sizing: border-box;
 }
 
+.noBackdrop,
+.noBackdrop * {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    background: none !important;
+}
+
 /* --- Main container for homepage --- */
 .homeContainer {
     display: flex;
@@ -54,13 +61,39 @@
 
 /* --- Blockquote intro style --- */
 .blockquoteIntro {
-    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 1.12rem;
     color: var(--text-color);
+    background: rgba(var(--background-color-rgb), 0.3);
+    backdrop-filter: blur(32px) saturate(180%);
+    -webkit-backdrop-filter: blur(32px) saturate(180%);
     border-radius: 2px;
-    box-shadow: 0 0 16px 0 #0002;
-    backdrop-filter: blur(48px) saturate(120%);
-    -webkit-backdrop-filter: blur(48px) saturate(120%);
-    margin: 1.5rem 0;
+    letter-spacing: 0px;
+    line-height: 1.5;
+    position: relative;
+    font-weight: 500;
+    margin: 4rem auto 1rem auto;
+    padding: 1.5rem 2rem;
+    max-width: 1000px;
+    text-align: left;
+
+    overflow-x: auto;
+}
+
+.blockquotePrompt {
+    color: var(--text-color);
+    font-weight: 500;
+    font-size: 1.2em;
+    margin-right: 0.7em;
+    letter-spacing: 0.05em;
+    user-select: none;
+}
+
+.introAccent {
+    color: var(--text-color);
+    font-style: italic;
+    font-weight: 500;
+    letter-spacing: 0.03em;
 }
 
 /* --- Glitch effect for headings --- */
@@ -79,14 +112,43 @@
 }
 
 .glitch::before {
-    animation: glitchTop 0.05s infinite linear alternate-reverse;
+    animation: glitchTop 0.5s infinite linear alternate-reverse;
     color: var(--primary-color);
     z-index: 1;
     top: -0.1rem;
 }
 
 .glitch::after {
-    animation: glitchBot 0.05s infinite linear alternate-reverse;
+    animation: glitchBot 0.5s infinite linear alternate-reverse;
+    color: var(--text-color);
+    z-index: 1;
+    top: 0.1rem;
+}
+
+/* --- Glitch effect for headings --- */
+.glitch {
+    position: relative;
+    text-align: center;
+}
+
+.glitch::before,
+.glitch::after {
+    content: attr(data-text);
+    position: absolute;
+    left: 0;
+    width: 100%;
+    overflow: hidden;
+}
+
+.glitch::before {
+    animation: glitchTop 2s infinite linear alternate-reverse;
+    color: var(--primary-color);
+    z-index: 1;
+    top: -0.1rem;
+}
+
+.glitch::after {
+    animation: glitchBot 2s infinite linear alternate-reverse;
     color: var(--text-color);
     z-index: 1;
     top: 0.1rem;
@@ -95,19 +157,19 @@
 /* --- Glitch keyframes --- */
 @keyframes glitchTop {
     0% { left: 0; }
-    20% { left: 1px; }
-    40% { left: -1px; }
-    60% { left: 1px; }
-    80% { left: -0.5px; }
+    20% { left: 0.5px; }
+    40% { left: -0.5px; }
+    60% { left: 0.5px; }
+    80% { left: -0.25px; }
     100% { left: 0; }
 }
 
 @keyframes glitchBot {
     0% { left: 0; }
-    20% { left: -1px; }
-    40% { left: 1px; }
-    60% { left: -0.5px; }
-    80% { left: 1px; }
+    20% { left: -0.5px; }
+    40% { left: 0.5px; }
+    60% { left: -0.25px; }
+    80% { left: 0.5px; }
     100% { left: 0; }
 }
 
@@ -116,7 +178,7 @@
     text-align: center;
     color: var(--text-color);
     text-shadow: 0 0 0px var(--primary-color), 0 0 4px #ffffff25;
-    animation: pulseShadow 2s infinite alternate;
+    animation: pulseShadow 4s infinite alternate;
 }
 
 @keyframes pulseShadow {
@@ -135,7 +197,7 @@
     text-shadow:
         0 0 2px var(--primary-color),
         0 0 6px var(--primary-color);
-    animation: flicker 1.2s infinite alternate;
+    animation: flicker 3s infinite alternate;
 }
 
 @keyframes flicker {
@@ -172,17 +234,18 @@
     gap: 1.5rem;
     width: 100%;
     margin: calc(var(--spacing-unit) * 2) 0;
+    border: 2px solid transparent;
 }
 
 /* --- CTA button style --- */
 .cta {
     margin: 0;
     padding: calc(var(--spacing-unit) * 1.5) calc(var(--spacing-unit) * 4);
-    border: 1px solid var(--text-color);
+    border: 2px solid var(--text-color);
     text-decoration: none;
     color: var(--text-color);
     font-family: var(--font-mono);
-    font-weight: 400;
+    font-weight: 500;
     font-size: 1.05rem;
     letter-spacing: 1px;
     transition: all 0.3s ease;
@@ -191,14 +254,16 @@
     white-space: nowrap;
     min-width: 120px;
     flex: 1 1 0;
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    background: rgba(var(--background-color-rgb), 0.3);
     text-align: center;
+    border-radius: 2px;
 }
 
 /* --- CTA hover effect --- */
 .cta:hover {
-    color: var(--primary-color);
+    color: var(--text-color);
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     backdrop-filter: blur(10px);
@@ -229,8 +294,10 @@
 
 /* --- CTA button for <button> elements --- */
 button.cta {
-    background: none;
-    border: 1px solid var(--text-color);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    background: rgba(var(--background-color-rgb), 0.3);
+    border: 2px solid var(--text-color);
     cursor: pointer;
     display: flex;
     justify-content: center;
@@ -239,9 +306,17 @@ button.cta {
 /* --- Latest logs/posts container --- */
 .latestLogs {
     border-radius: 2px;
-    backdrop-filter: blur(48px) saturate(120%);
-    padding: 2rem 2.5rem 1.5rem 2.5rem;
-    margin: 10rem auto 1rem auto;
+    background: rgba(var(--background-color-rgb), 0.3);
+    backdrop-filter: blur(32px) saturate(180%);
+    -webkit-backdrop-filter: blur(32px) saturate(180%);
+    margin: 8.5rem auto 1rem auto;
+    width: 100%;
+    letter-spacing: 0px;
+    font-family: var(--font-mono);
+    font-size: 1rem;
+    color: var(--text-color);
+    line-height: 1.5;
+    padding: 1.5rem 2rem;
 }
 
 /* --- Latest logs heading --- */
@@ -250,7 +325,7 @@ button.cta {
     text-align: left;
     font-family: var(--font-mono);
     margin-bottom: 1.2rem;
-    letter-spacing: 1px;
+    letter-spacing: 0px;
     transform: translateX(8px);
 }
 
@@ -260,18 +335,22 @@ button.cta {
     padding: 0;
     margin: 0;
     display: flex;
-    flex-wrap: wrap;
-    /* Allows wrapping on small screens */
+    flex-direction: row;
+    gap: 2rem;   
+    flex-wrap: nowrap;
     justify-content: center;
+    width: 100%;
 }
 
-/* --- Latest logs list item --- */
 .latestLogs li {
-    margin-bottom: 0.7rem;
+    flex: 1 1 0;
+    min-width: 0;
+    margin-bottom: 0;
     transition: background 0.2s;
     display: flex;
     align-items: center;
-    flex: 1 1 10px;
+    max-width: 50%;
+    box-sizing: border-box;
 }
 
 /* --- Latest logs post title hover --- */
@@ -364,7 +443,7 @@ button.cta {
 
     .homeContainer p,
     .blockquoteIntro {
-        font-size: 0.8rem;
+        font-size: 0.85rem;
     }
 
     /* --- CTA grid for 2x2 layout --- */

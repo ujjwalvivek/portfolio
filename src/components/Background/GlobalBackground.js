@@ -1,10 +1,14 @@
-import React, { useRef, useEffect, useCallback, useContext } from 'react';
+import React, { useRef, useEffect, useCallback, useContext, useMemo } from 'react';
 import { useBackground } from './BackgroundContext';
 import { ThemeContext } from '../ThemeSwitcher/ThemeContext';
 import styles from './GlobalBackground.module.css';
 
-const GlobalBackground = () => {
-    const { backgroundConfig } = useBackground();
+const GlobalBackground = ({ previewConfig }) => {
+
+    
+    const { backgroundConfig: globalConfig } = useBackground();
+    // Use previewConfig if present, otherwise global config
+    const backgroundConfig = previewConfig || globalConfig;
     const { darkMode } = useContext(ThemeContext);
     const canvasRef = useRef(null);
     const animationRef = useRef(null);
@@ -14,28 +18,30 @@ const GlobalBackground = () => {
     const lastFpsUpdate = useRef(0);
 
     const maxOpacity = {
-    hologram: 0.9,
-    circuit: 0.9,
-    psychedelic: 0.8,
-    vortex: 0.9,
-}[backgroundConfig.type] ?? 1;
+        hologram: 0.9,
+        circuit: 0.9,
+        psychedelic: 0.8,
+        vortex: 0.9,
+    }[backgroundConfig.type] ?? 1;
 
-const maxCanvasOpacity = Math.min(backgroundConfig.opacity ?? 0.8, maxOpacity);
+
+
+    const maxCanvasOpacity = Math.min(backgroundConfig.opacity ?? 0.8, maxOpacity);
 
     // Adaptive color schemes based on theme mode
     const getThemeColors = () => {
         if (darkMode) {
             // Dark mode colors
             return {
-                quantum: { 
-                    primary: '#00ffff', 
-                    secondary: '#ff00ff', 
+                quantum: {
+                    primary: '#00ffff',
+                    secondary: '#ff00ff',
                     accent: '#ffff00',
                     background: '#0a0a0a'
                 },
-                datastream: { 
-                    primary: '#00ff41', 
-                    secondary: '#0080ff', 
+                datastream: {
+                    primary: '#00ff41',
+                    secondary: '#0080ff',
                     accent: '#ff4500',
                     background: '#0d0d0d'
                 }
@@ -43,9 +49,9 @@ const maxCanvasOpacity = Math.min(backgroundConfig.opacity ?? 0.8, maxOpacity);
         } else {
             // Light mode colors
             return {
-                quantum: { 
-                    primary: '#4a90e2', 
-                    secondary: '#7b68ee', 
+                quantum: {
+                    primary: '#4a90e2',
+                    secondary: '#7b68ee',
                     accent: '#ff6b6b',
                     background: '#f8f9fa'
                 },
@@ -1158,29 +1164,43 @@ const maxCanvasOpacity = Math.min(backgroundConfig.opacity ?? 0.8, maxOpacity);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }), [backgroundConfig, darkMode]);
+    
+    // Use smaller FPS for preview
+    const isPreview = !!previewConfig;
+    const defaultFps = useMemo(() => {
+    if (typeof navigator === "undefined" || typeof window === "undefined") return 30;
+    const ua = navigator.userAgent;
+    const isIpad = (
+        /iPad/.test(ua) ||
+        (ua.includes("Macintosh") && ('ontouchstart' in window || navigator.maxTouchPoints > 1))
+    );
+    const isIphoneOrAndroid = /iPhone|iPod|Android/i.test(ua);
+    return (isIphoneOrAndroid || isIpad) ? 20 : 30;
+}, []);
 
     const animate = useCallback((timestamp) => {
-        const maxFps = backgroundConfig.maxFps || 30;
-        const frameInterval = 1000 / maxFps;
-        const canvas = canvasRef.current;
-        if (!canvas || !backgroundConfig.isAnimated) return;
+    // Use lower FPS for preview, otherwise use config or default
+    const maxFps = isPreview ? 20 : (defaultFps || 30);
+    const frameInterval = 1000 / maxFps;
+    const canvas = canvasRef.current;
+    if (!canvas || !backgroundConfig.isAnimated) return;
 
-        const now = timestamp;
-        console.log('Frame interval:', now - lastFrameTime.current);
-        const elapsed = now - lastFrameTime.current;
+    const now = timestamp;
+    const elapsed = now - lastFrameTime.current;
 
-        if (elapsed >= frameInterval) {
-            lastFrameTime.current = now - (elapsed % frameInterval); // avoid drift
+    if (elapsed >= frameInterval) {
+        lastFrameTime.current = now - (elapsed % frameInterval); // avoid drift
 
-            const ctx = canvas.getContext('2d');
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        const ctx = canvas.getContext('2d');
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            const generator = generators()[backgroundConfig.type];
-            if (generator) {
-                generator(ctx, canvas.width, canvas.height, now * 0.001);
-            }
+        const generator = generators()[backgroundConfig.type];
+        if (generator) {
+            generator(ctx, canvas.width, canvas.height, now * 0.001);
+        }
 
-            // Update FPS tracking
+        // Update FPS tracking
+        if (typeof frameCount !== "undefined" && frameCount.current !== undefined) {
             frameCount.current++;
             if (now - lastFpsUpdate.current >= 1000) {
                 fpsRef.current = Math.round(frameCount.current * 1000 / (now - lastFpsUpdate.current));
@@ -1189,68 +1209,101 @@ const maxCanvasOpacity = Math.min(backgroundConfig.opacity ?? 0.8, maxOpacity);
                 lastFpsUpdate.current = now;
             }
         }
+    }
 
-        animationRef.current = requestAnimationFrame(animate); // always schedule next
-    }, [backgroundConfig.type, backgroundConfig.isAnimated, generators, backgroundConfig.maxFps]);
+    animationRef.current = requestAnimationFrame(animate); // always schedule next
+}, [
+    isPreview,
+    backgroundConfig.type,
+    backgroundConfig.isAnimated,
+    defaultFps,
+    generators
+]);
 
-    // Canvas setup and animation control
     useEffect(() => {
-        if (backgroundConfig.type === 'none') {
-            return;
+        const canvas = canvasRef.current;
+        if (!canvas || backgroundConfig.type === 'none') return;
+
+        // For preview, use parent size; for fullscreen, use window size
+        if (isPreview) {
+            const parent = canvas.parentNode;
+            canvas.width = parent.offsetWidth;
+            canvas.height = parent.offsetHeight;
+        } else {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
         }
 
-        const canvas = canvasRef.current;
-        if (!canvas) return;
-
-        // Setup canvas
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-
-        // Clear any existing animation
         if (animationRef.current) {
             cancelAnimationFrame(animationRef.current);
             animationRef.current = null;
         }
 
         if (backgroundConfig.isAnimated) {
-            // Start animation
             animationRef.current = requestAnimationFrame(animate);
         } else {
-            // Render static frame
             const ctx = canvas.getContext('2d');
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            const generatorFunctions = generators();
-            const generator = generatorFunctions[backgroundConfig.type];
+            const generator = generators()[backgroundConfig.type];
             if (generator) {
                 generator(ctx, canvas.width, canvas.height, 0);
             }
         }
 
-        // Handle resize
-        const handleResize = () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        };
-        window.addEventListener('resize', handleResize);
+        // For preview, update on parent resize
+        let resizeObserver;
+        if (isPreview && window.ResizeObserver) {
+            resizeObserver = new ResizeObserver(() => {
+                const parent = canvas.parentNode;
+                canvas.width = parent.offsetWidth;
+                canvas.height = parent.offsetHeight;
+                // Redraw static frame if not animated
+                if (!backgroundConfig.isAnimated) {
+                    const ctx = canvas.getContext('2d');
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    const generator = generators()[backgroundConfig.type];
+                    if (generator) {
+                        generator(ctx, canvas.width, canvas.height, 0);
+                    }
+                }
+            });
+            resizeObserver.observe(canvas.parentNode);
+        } else if (!isPreview) {
+            // For fullscreen, update on window resize
+            const handleResize = () => {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            };
+            window.addEventListener('resize', handleResize);
+            return () => window.removeEventListener('resize', handleResize);
+        }
 
         return () => {
-            window.removeEventListener('resize', handleResize);
             if (animationRef.current) {
                 cancelAnimationFrame(animationRef.current);
                 animationRef.current = null;
             }
+            if (resizeObserver) {
+                resizeObserver.disconnect();
+            }
         };
-    }, [backgroundConfig.type, backgroundConfig.isAnimated, animate, generators]); // Only restart on type or animation state change
+    }, [backgroundConfig, animate, isPreview, generators]);
 
     if (backgroundConfig.type === 'none') {
-        return null;
+        // For preview, show a blank area; for fullscreen, render nothing
+        return isPreview ? <div style={{ width: '100%', height: '100%', background: darkMode ? '#18181c' : '#fff' }} /> : null;
     }
 
     return (
         <canvas
             ref={canvasRef}
-            className={styles.globalBackground}
-            style={{ opacity: maxCanvasOpacity }}
+            className={isPreview ? styles.previewBackground : styles.globalBackground}
+            style={{
+                opacity: backgroundConfig.opacity ?? 0.8,
+                width: '100%',
+                height: '100%',
+                display: 'block',
+            }}
         />
     );
 };

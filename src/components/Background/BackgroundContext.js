@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext } from 'react';
+import React, { createContext, useState, useContext, useMemo } from 'react';
 
 const BackgroundContext = createContext();
 
@@ -10,10 +10,21 @@ export const useBackground = () => {
     return context;
 };
 
-const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-const defaultMaxFps = isMobile ? 20 : 30;
-
 export const BackgroundProvider = ({ children }) => {
+
+    // --- Add isMobile logic ---
+    const isMobile = useMemo(() => {
+        if (typeof navigator === "undefined" || typeof window === "undefined") return false;
+        const ua = navigator.userAgent;
+        const isIpad = (
+            /iPad/.test(ua) ||
+            (ua.includes("Macintosh") && ('ontouchstart' in window || navigator.maxTouchPoints > 1))
+        );
+        const isIphoneOrAndroid = /iPhone|iPod|Android/i.test(ua);
+        return isIphoneOrAndroid || isIpad;
+    }, []);
+
+    // --- Use isMobile for defaults ---
     const [backgroundConfig, setBackgroundConfig] = useState(() => {
         try {
             const saved = localStorage.getItem('globalBackgroundConfig');
@@ -21,11 +32,10 @@ export const BackgroundProvider = ({ children }) => {
                 type: 'psychedelic',
                 opacity: 0.7,
                 animationSpeed: 1,
-                density: 2.5,
+                density: isMobile ? 2 : 2.5, // <-- use isMobile here
                 colorMode: 'custom',
                 customColor: '#d63031',
                 isAnimated: true,
-                maxFps: defaultMaxFps // <-- add this line
             };
         } catch (e) {
             console.error('Error loading background config:', e);
@@ -33,11 +43,10 @@ export const BackgroundProvider = ({ children }) => {
                 type: 'psychedelic',
                 opacity: 0.7,
                 animationSpeed: 1,
-                density: 2.5,
+                density: isMobile ? 2 : 2.5, // <-- use isMobile here
                 colorMode: 'custom',
                 customColor: '#d63031',
                 isAnimated: true,
-                maxFps: defaultMaxFps // <-- add this line
             };
         }
     });
@@ -69,14 +78,14 @@ export const BackgroundProvider = ({ children }) => {
                     updateBackgroundConfig(lastConfig);
                 } else {
                     // Fallback to default hologram if no saved wallpaper
-                    updateBackgroundConfig({ 
-                        type: 'hologram',
-                        opacity: 0.5,
+                    updateBackgroundConfig({
+                        type: 'psychedelic',
+                        opacity: 0.7,
                         animationSpeed: 1,
-                        density: 1,
-                        colorMode: 'matrix',
-                        customColor: '#00ff41',
-                        isAnimated: true
+                        density: isMobile ? 2 : 2.5,
+                        colorMode: 'custom',
+                        customColor: '#d63031',
+                        isAnimated: true,
                     });
                 }
             } catch (e) {
@@ -94,25 +103,6 @@ export const BackgroundProvider = ({ children }) => {
             updateBackgroundConfig({ ...backgroundConfig, type: 'none' });
         }
     };
-
-    // const resetToDefaults = () => {
-    //     const defaultConfig = {
-    //         type: 'hologram',
-    //         opacity: 0.5,
-    //         animationSpeed: 1,
-    //         density: 1,
-    //         colorMode: 'matrix',
-    //         customColor: '#00ff41',
-    //         isAnimated: true,
-    //         particleCount: 100
-    //     };
-    //     setBackgroundConfig(defaultConfig);
-    //     try {
-    //         localStorage.setItem('globalBackgroundConfig', JSON.stringify(defaultConfig));
-    //     } catch (e) {
-    //         console.error('Error saving default background config:', e);
-    //     }
-    // };
 
     const clearStoredConfig = () => {
         try {

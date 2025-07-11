@@ -1,11 +1,19 @@
 import { useState, useEffect } from "react";
 import { Link } from 'react-router-dom';
 import styles from './Home.module.css';
+import { useBackground } from '../../Background/BackgroundContext';
 
 const Home = () => {
     // State for latest posts and toggling social links
     const [latestPosts, setLatestPosts] = useState([]);
     const [showSocialLinks, setShowSocialLinks] = useState(false);
+
+    const { backgroundConfig } = useBackground();
+
+    // Only add glitch/pulse/flicker if background is not "none"
+    const glitchyClasses = backgroundConfig.type !== 'none'
+        ? `${styles.glitch} ${styles.shadowPulse} ${styles.neonFlicker}`
+        : '';
 
     // Fetch posts on mount
     useEffect(() => {
@@ -21,19 +29,23 @@ const Home = () => {
     }, []);
 
     return (
-        <div className={styles.homeContainer}>
+        <div className={`${styles.homeContainer} ${backgroundConfig.type === 'none' ? styles.noBackdrop : ''}`}>
             {/* Main glitchy heading */}
-            <h1 className={styles.glitch + ' ' + styles.shadowPulse + ' ' + styles.neonFlicker} data-text="TECH ISN'T THE HARD PART">
+            <h1 className={glitchyClasses} data-text="TECH ISN'T THE HARD PART">
                 TECH ISN'T THE HARD PART
             </h1>
             {/* Subheading */}
-            <h2 className={styles.glitch + ' ' + styles.shadowPulse + ' ' + styles.neonFlicker} data-text="SYSTEMS, BEHAVIOUR, & QUESTIONS ARE">
+            <h2 className={glitchyClasses} data-text="SYSTEMS, BEHAVIOUR, & QUESTIONS ARE">
                 SYSTEMS, BEHAVIOUR, & QUESTIONS ARE
             </h2>
             {/* Intro blockquote */}
-            <p className={styles.blockquoteIntro}>
-                Welcome to my corner where I try to explore & build weird shit and fail at it wonderfully; Till I don't.
-            </p>
+            <blockquote className={styles.blockquoteIntro}>
+                <span className={styles.blockquotePrompt}>$</span>
+                <span>
+                    Welcome to my corner where I try to <span className={styles.introAccent}>explore</span> &amp; <span className={styles.introAccent}>build</span> weird shit and <span className={styles.introAccent}>fail</span> at it wonderfully;
+                    <span className={styles.introAccent}> Till I don't.</span>
+                </span>
+            </blockquote>
             {/* CTA buttons */}
             <div className={styles.ctaContainer}>
                 {showSocialLinks ? (
@@ -73,7 +85,7 @@ const Home = () => {
             {/* Latest blog posts */}
             <div className={styles.latestLogs}>
                 <h3>
-                    Unfinished Thoughts <span style={{ color: 'var(--primary-color)' }}>[NEW]</span>
+                    check out my recent logs <span style={{ color: 'var(--primary-color)' }}>[NEW]</span>
                 </h3>
                 <ul>
                     {latestPosts.map((post, idx) => {
