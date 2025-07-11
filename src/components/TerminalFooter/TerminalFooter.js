@@ -2,26 +2,35 @@ import React from "react";
 import CrashOverlay from "../SystemError/CrashOverlay";
 import styles from "./TerminalFooter.module.css";
 import { terminalCommands } from "./TerminalCommands";
+import { useBackground, toggleBackground } from '../Background/BackgroundContext';
 
-const TerminalFooter = ({showTerminal}) => {
-  
+const TerminalFooter = ({ showTerminal }) => {
+
   const greetings = [
-  "Welcome to the Terminal! Type 'help'.",
-  "Terminal ready. What will you 'help' create today?",
-  "Magic happens here. 'help' yourself out with a command.",
-  "Seek and you shall find 'help'.",
-  "Hint: Not all commands are listed. 'help' yourself. "
-];
+    "Welcome to the Terminal! Type 'help'.",
+    "Terminal ready. What will you 'help' create today?",
+    "Magic happens here. 'help' yourself out with a command.",
+    "Seek and you shall find 'help'.",
+    "Hint: Not all commands are listed. 'help' yourself. "
+  ];
 
 
   const [input, setInput] = React.useState("");
   const [crashed, setCrashed] = React.useState(false);
-const [history, setHistory] = React.useState([
-  { type: 'output', text: greetings[Math.floor(Math.random() * greetings.length)] }
-]);
+  const [history, setHistory] = React.useState([
+    { type: 'output', text: greetings[Math.floor(Math.random() * greetings.length)] }
+  ]);
   const [historyIndex, setHistoryIndex] = React.useState(-1);
   const inputRef = React.useRef(null);
   const scrollRef = React.useRef(null);
+
+  const { backgroundConfig } = useBackground();
+  const { toggleBackground } = useBackground();
+  // Only add glitch/pulse/flicker if background is not "none"
+  const flicker = backgroundConfig.type !== 'none' ? styles.flicker : '';
+  const dimmed = backgroundConfig.type !== 'none' ? styles.dimmed : '';
+  const alert = backgroundConfig.type !== 'none' ? styles.alert : '';
+  const glitch = backgroundConfig.type !== 'none' ? styles.glitch : '';
 
   const handleCommand = (cmd) => {
     if (cmd.trim().toLowerCase() === "run exit") {
@@ -29,6 +38,61 @@ const [history, setHistory] = React.useState([
       return;
     }
     let output = '';
+
+    // Context-aware "hint"
+    if (cmd.trim() === "hint") {
+      let output = `Psst! Here's one especially for you :)\n\n>> Type 'start' to begin the journey.`;
+      if (backgroundConfig.type === "none") {
+        output += `\n\n(Psst! This journey is more fun when chaos is cracked up to the max. Type 'maximumfun' to turn up the heat!)`;
+      }
+      output += `\n\n[Accessibility]: Some effects may be visually intense. For a calmer vibe, keep it cool or use 'minimumfun'. Use these commands anytime to switch your vibe!`;
+      setHistory((h) => [
+        ...h,
+        { type: "input", text: cmd },
+        { type: "output", text: output }
+      ]);
+      return;
+    }
+
+    // Context-aware "maximumfun"
+    if (cmd.trim() === "maximumfun") {
+      if (backgroundConfig.type === "none") {
+        toggleBackground();
+        setHistory((h) => [
+          ...h,
+          { type: "input", text: cmd },
+          { type: "output", text: "Madness 100.\n\n>> Type 'start' to begin the journey. Good Luck!" }
+        ]);
+      } else {
+        setHistory((h) => [
+          ...h,
+          { type: "input", text: cmd },
+          { type: "output", text: "Madness Detected Already.\n\n>> Type 'start' to begin the journey. Good Luck!" }
+        ]);
+      }
+      return;
+    }
+
+    // Context-aware "minimumfun"
+    if (cmd.trim() === "minimumfun") {
+      if (backgroundConfig.type !== "none") {
+        toggleBackground();
+        setHistory((h) => [
+          ...h,
+          { type: "input", text: cmd },
+          { type: "output", text: "Calm 100.\n\n>> Type 'start' to begin the journey. Good Luck!" }
+        ]);
+      } else {
+        setHistory((h) => [
+          ...h,
+          { type: "input", text: cmd },
+          { type: "output", text: "Calmness Detected Already.\n\n>> Type 'start' to begin the journey. Good Luck!" }
+        ]);
+      }
+      return;
+    }
+
+    // Handle other commands
     if (cmd.trim() === "help") {
       output = 'Available commands: whoami, clear, hint';
     } else if (cmd.trim() === "whoami") {
@@ -89,7 +153,7 @@ React.useEffect(() => {
   }
 
   return (
-    <div className={styles.terminalFooterReal + ' ' + styles.flicker} onClick={() => inputRef.current && inputRef.current.focus()} >
+    <div className={styles.terminalFooterReal + ' ' + flicker} onClick={() => inputRef.current && inputRef.current.focus()} >
       <div className={styles.terminalFooterWindowBar}>
         <span className={styles.terminalDot} style={{ background: '#ff5f56' }} />
         <span className={styles.terminalDot} style={{ background: '#ffbd2e' }} />
@@ -104,21 +168,21 @@ React.useEffect(() => {
             item.text.includes("silence grows louder") ||
             item.text.includes("You turn away")
           ) {
-            extraClass = styles.dimmed;
+            extraClass = dimmed;
           }
           if (
             item.text.includes("INTRUDER DETECTED") ||
             item.text.includes("System override denied") ||
             item.text.includes("Override failed")
           ) {
-            extraClass = styles.alert;
+            extraClass = alert;
           }
           if (
             item.text.includes("glitches") ||
             item.text.includes("glitch") ||
             item.text.includes("system glitches")
           ) {
-            extraClass = styles.glitch;
+            extraClass = glitch;
           }
           return (
             <div
@@ -142,10 +206,10 @@ React.useEffect(() => {
           );
         })}
         <div className={styles.terminalInputLine}>
-          <span className={styles.terminalPromptReal + ' ' + styles.flicker}>&gt; </span>
+          <span className={styles.terminalPromptReal + ' ' + flicker}>&gt; </span>
           <input
             ref={inputRef}
-            className={styles.terminalInputReal + ' ' + styles.flicker}
+            className={styles.terminalInputReal + ' ' + flicker}
             type="text"
             value={input}
             placeholder="try out a command"

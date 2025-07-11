@@ -57,11 +57,16 @@
   --cta-bg-color-rgb: 240, 240, 240;
   --cta-text-color: rgb(12, 12, 12);
   --cta-text-color-rgb: 12, 12, 12;
+  --status-ok-color: #2c5a4b;
+  --status-warn-color: #61431a;
+  --status-ram-color: #8d2e2e;
+  --status-info-color: #006e7a;
+  --terminal-input-color: #2c5a4b;
+  --terminal-output-color: #2c5a4b;
   --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
-
   --spacing-unit: 8px;
   --main-content-width: 1000px;
 }
@@ -77,6 +82,12 @@ body.dark-mode {
   --cta-bg-color-rgb: 51, 51, 51;
   --cta-text-color: rgb(255, 255, 255);
   --cta-text-color-rgb: 255, 255, 255;
+  --status-ok-color: #7fffd4;
+  --status-warn-color: #ffb347;
+  --status-ram-color: #ff5555;
+  --status-info-color: #00e6ff;
+  --terminal-input-color: #7fffd4;
+  --terminal-output-color: #7fffd4;
 }
 
 body {

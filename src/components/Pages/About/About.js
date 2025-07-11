@@ -15,6 +15,8 @@ import { IoLogoFirebase } from 'react-icons/io5';
 import { TbSql } from 'react-icons/tb';
 import { IoLogoJavascript } from "react-icons/io";
 import profileImg from '../../../assets/images/profile.jpg';
+import { useBackground } from '../../Background/BackgroundContext';
+
 
 const About = () => {
   const [resumeOpen, setResumeOpen] = React.useState(false);
@@ -24,12 +26,19 @@ const About = () => {
   const theme = darkMode ? 'dark' : 'light';
   const pdfTheme = darkMode ? 'dark' : 'light';
 
+  const { backgroundConfig } = useBackground();
+  // Only add glitch/pulse/flicker if background is not "none"
+  const blink = backgroundConfig.type !== 'none' ? styles.blink : '';
+  const flicker = backgroundConfig.type !== 'none' ? styles.flicker : '';
+  const scrollText = backgroundConfig.type !== 'none' ? styles.scrollText : '';
+
+
   const icons = [
-  { title: "Rust", icon: <SiRust size={36} opacity={0.8} /> },
-  { title: "wGPU", icon: <SiWgpu size={36} opacity={0.8} /> },
-  { title: "Markdown", icon: <FaMarkdown size={36} opacity={0.8} /> },
-  { title: "Confluence", icon: <FaConfluence size={36} opacity={0.8} /> },
-  { title: "Jira", icon: <FaJira size={36} opacity={0.8} /> },
+    { title: "Rust", icon: <SiRust size={36} opacity={0.8} /> },
+    { title: "wGPU", icon: <SiWgpu size={36} opacity={0.8} /> },
+    { title: "Markdown", icon: <FaMarkdown size={36} opacity={0.8} /> },
+    { title: "Confluence", icon: <FaConfluence size={36} opacity={0.8} /> },
+    { title: "Jira", icon: <FaJira size={36} opacity={0.8} /> },
   { title: "Mixpanel", icon: <SiMixpanel size={36} opacity={0.8} /> },
   { title: "Git", icon: <FaGit size={36} opacity={0.8} /> },
   { title: "Unity", icon: <FaUnity size={36} opacity={0.8} /> },
@@ -40,45 +49,6 @@ const About = () => {
   { title: "Firebase", icon: <IoLogoFirebase size={36} opacity={0.8} /> },
   { title: "SQL", icon: <TbSql size={36} opacity={0.8} /> },
   { title: "NodeJs", icon: <FaNodeJs size={36} opacity={0.8} /> },
-];
-
-const statusRows = [
-  {
-    service: "rust.game.engine",
-    value: "△ wip",
-    valueClass: "statusWarn flicker",
-    gap: "5rem"
-  },
-  {
-    service: "blog.pipeline",
-    value: "✓ active",
-    valueClass: "statusOk flicker",
-    gap: "6rem"
-  },
-  {
-    service: "curiosity.chaos",
-    value: "! unstable",
-    valueClass: "statusWarn blink",
-    gap: "5.8rem"
-  },
-  {
-    service: "ram.usage",
-    value: "98%",
-    valueClass: "statusRam scrollText",
-    gap: "6rem"
-  },
-  {
-    service: "motivation.core",
-    value: "rebooted hourly",
-    valueClass: "statusOk flicker",
-    gap: "6rem"
-  },
-  {
-    service: "uptime",
-    value: <UptimeCounter startDate={new Date('2023-02-04T00:00:00Z')} />,
-    valueClass: "statusUptime",
-    gap: "6.3rem"
-  }
 ];
 
   React.useEffect(() => {
@@ -138,9 +108,8 @@ const statusRows = [
           {/* Skills Section */}
           <section className={styles.skillsSection}>
             <h2 className={styles.spicyHeading}>
-  tech stack; failures until they aren't 
-</h2>
-            <p></p>
+                tech stack; failures until they aren't 
+            </h2>
             <div className={styles.skillsGridIcons}>
               {icons.map(({ title, icon }) => (
                 <div className={styles.skillItem} title={title} key={title}>
@@ -151,31 +120,35 @@ const statusRows = [
           </section>
 
           {/* Build Status Console */}
-          <section className={styles.statusConsoleSection}>
+          <div className={styles.statusConsoleSection}>
             <div className={styles.statusConsoleTitle}># /status</div>
             <div className={styles.statusConsoleBlock}>
-              {statusRows.map(({ service, value, valueClass, gap }, i) => (
-                <div
-                  key={service}
-                  style={{ display: 'flex', flexDirection: 'row', gap }}
-                >
-                  <span className={styles.statusService}>{service}</span>
-                  <span className={valueClass.split(' ').map(cls => styles[cls]).join(' ')}>
-                    {value}
-                  </span>
-                </div>
-              ))}
-              <br />
-              <div style={{ display: 'flex', flexDirection: 'row', gap: '6.3rem' }}>
-                <span
-                  className={styles.statusService}
-                  style={{ fontStyle: 'italic', opacity: 0.8 }}
-                >
-                  "Don't optimize systems you don't really understand." - ofc me :)
-                </span>
+              <div className={styles.statusRow}>
+                <span className={styles.statusService}>rust.game.engine</span>
+                <span className={`${styles.statusServiceKey} ${styles.statusWarn} ${flicker}`}>△ wip</span>
+              </div>
+              <div className={styles.statusRow}>
+                <span className={styles.statusService}>blog.pipeline</span>
+                <span className={`${styles.statusServiceKey} ${styles.statusOk} ${blink}`}>✓ active</span>
+              </div>
+              <div className={styles.statusRow}>
+                <span className={styles.statusService}>curiosity.chaos</span>
+                <span className={`${styles.statusServiceKey} ${styles.statusWarn} ${blink}`}>! unstable</span>
+              </div>
+              <div className={styles.statusRow}>
+                <span className={styles.statusService}>ram.usage</span>
+                <span className={`${styles.statusServiceKey} ${styles.statusRam} ${scrollText}`}>98%</span>
+              </div>
+              <div className={styles.statusRow}>
+                <span className={styles.statusService}>motivation.core</span>
+                <span className={`${styles.statusServiceKey} ${styles.statusOk} ${flicker}`}>rebooted hourly</span>
+              </div>
+              <div className={styles.statusRow}>
+                <span className={styles.statusService}>uptime</span>
+                <span className={`${styles.statusServiceKey} ${styles.statusUptime} ${styles.statusInfo}`}>{<UptimeCounter startDate={new Date('2023-02-04T00:00:00Z')} />}</span>
               </div>
             </div>
-          </section>
+          </div>
         </div>
 
         {/* Intro Section */}
@@ -219,6 +192,18 @@ const statusRows = [
                             {shortTitle}
                           </span>
                         </a>
+                        <p className={styles.postDescription}>
+                          {post.description && post.description.length > 100
+                            ? post.description.slice(0, 100) + '...'
+                            : post.description}
+                        </p>
+                        {post.tags && post.tags.length > 0 && (
+                          <div className={styles.tagRow}>
+                            {post.tags.map(tag => (
+                              <span className={styles.tag} key={tag}>{tag}</span>
+                            ))}
+                          </div>
+                        )}
                       </li>
                     );
                   })}

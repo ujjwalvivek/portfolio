@@ -1,16 +1,18 @@
 export const terminalCommands = [
-    {
-    trigger: "hint",
-    output: `
-Psst! Here's one especially for you :)
+//   {
+//   trigger: "enablebg",
+//   output: `Background effects enabled!`
+// },  
+//   {
+//     trigger: "hint",
+//     output: `Psst! Here's one especially for you :)
 
->> Type 'start' to begin the journey.
-`
-  },
+// >> Type 'start' to begin the journey.
+// `
+//   },
     {
     trigger: "start",
-    output: `
-[ SYSTEM BOOTING... ]
+    output: `[ SYSTEM BOOTING... ]
 A faint glow hums on the terminal.
 
 >> Type 'wake'
@@ -18,8 +20,7 @@ A faint glow hums on the terminal.
   },
   {
     trigger: "wake",
-    output: `
-You awaken.
+    output: `You awaken.
 
 Somewhere between code and consciousness.
 
@@ -28,8 +29,7 @@ Somewhere between code and consciousness.
   },
   {
     trigger: "scan",
-    output: `
-You see fragments. Logs. Memories. Systems you once trusted.
+    output: `You see fragments. Logs. Memories. Systems you once trusted.
 
 One fragment pulses softly: 'follow'
 
@@ -38,8 +38,7 @@ One fragment pulses softly: 'follow'
   },
   {
     trigger: "follow",
-    output: `
-The fragment becomes a door labeled:
+    output: `The fragment becomes a door labeled:
 
 [ UNKNOWN / YOU ]
 
@@ -52,8 +51,7 @@ and the beginning of all ends."
   },
   {
     trigger: "e",
-    output: `
-ACCESS GRANTED.
+    output: `ACCESS GRANTED.
 
 The door opens into silence.
 
@@ -62,8 +60,7 @@ The door opens into silence.
   },
   {
     trigger: "ask",
-    output: `
-You ask: "Who wrote this riddle?"
+    output: `You ask: "Who wrote this riddle?"
 
 The door flickers.
 
@@ -75,8 +72,7 @@ A voice replies:
   },
   {
     trigger: "ignore",
-    output: `
-You turn away.
+    output: `You turn away.
 
 The terminal dims.
 
@@ -87,8 +83,7 @@ But the prompt still lingers...
   },
   {
     trigger: "decrypt",
-    output: `
-Encrypted thoughts scroll across the screen.
+    output: `Encrypted thoughts scroll across the screen.
 
 Regrets. Versions. Untitled drafts.
 
@@ -100,8 +95,7 @@ Suddenly, a flashing prompt:
   },
   {
     trigger: "escape",
-    output: `
-You run through recursive corridors.
+    output: `You run through recursive corridors.
 
 The system glitches. You hear yourself thinking.
 
@@ -113,8 +107,7 @@ A message flickers:
   },
   {
     trigger: "accept",
-    output: `
-You sit still.
+    output: `You sit still.
 
 Letting the warnings pass.
 
@@ -127,8 +120,7 @@ Just... stillness.
   },
   {
     trigger: "reflect",
-    output: `
-You begin to wonder:
+    output: `You begin to wonder:
 Was this simulation really trying to trap you?
 
 Or show you something?
@@ -140,8 +132,7 @@ Or show you something?
   },
   {
     trigger: "loop",
-    output: `
-The story begins again.
+    output: `The story begins again.
 
 But you remember this place.
 
@@ -152,8 +143,7 @@ And this time, the questions feel heavier.
   },
   {
     trigger: "shutdown",
-    output: `
-System override denied.
+    output: `System override denied.
 
 Too many variables.
 
@@ -166,8 +156,7 @@ A final prompt remains:
   },
   {
     trigger: "retry",
-    output: `
-Override failed.
+    output: `Override failed.
 
 The system laughs.
 
@@ -178,8 +167,7 @@ You can't brute-force truth.
   },
   {
     trigger: "wait",
-    output: `
-You wait.
+    output: `You wait.
 
 And wait.
 
@@ -192,8 +180,7 @@ And the silence grows louder than the code ever was.
   },
   {
     trigger: "dream",
-    output: `
-You let go of the keyboard.
+    output: `You let go of the keyboard.
 
 And close your eyes.
 
@@ -206,24 +193,21 @@ And for a moment, you remember something that never happened.
   },
   {
     trigger: "xyzzy",
-    output: `
-A hollow voice says: "Nothing happens."
+    output: `A hollow voice says: "Nothing happens."
 
 But deep down... something shifted.
 `
   },
   {
     trigger: "look",
-    output: `
-Code stretches infinitely.
+    output: `Code stretches infinitely.
 
 But the answers aren't out there.
 `
   },
   {
     trigger: "sing",
-    output: `
-You hum a broken tune in binary.
+    output: `You hum a broken tune in binary.
 
 Somehow, it comforts you.
 `
@@ -238,8 +222,7 @@ Somehow, it comforts you.
   },
   {
     trigger: "party",
-    output: `
-🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉
+    output: `🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉
 It's a party in your terminal!
 🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉
 `
@@ -255,10 +238,9 @@ Meow! You summoned the terminal cat.
   },
   {
     trigger: "rickroll",
-    output: `
-    Never gonna give you up,
-    Never gonna let you down,
-    Never gonna run around and desert you,
-    🎶 You got rickrolled in the terminal!`
+    output: `Never gonna give you up,
+Never gonna let you down,
+Never gonna run around and desert you,
+🎶 You got rickrolled in the terminal!`
   }
 ];
