@@ -8,8 +8,8 @@
     font-size: 0.9rem;
     color: var(--text-color);
     border-top: 0px solid var(--text-color);
-    backdrop-filter: blur(48px) saturate(180%);
-    -webkit-backdrop-filter: blur(48px) saturate(180%);
+    backdrop-filter: blur(32px) saturate(180%);
+    -webkit-backdrop-filter: blur(32px) saturate(180%);
 }
 
 .Footer p {

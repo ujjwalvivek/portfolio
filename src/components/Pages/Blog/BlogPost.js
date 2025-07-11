@@ -201,7 +201,9 @@ const BlogPost = () => {
           </div>
           <div className={styles.authorSignature}>
             <p>
-    <strong>Vivek</strong> crafting systems, one line at a time.
+    <strong>Vivek</strong> crafting systems,
+    <br />
+    one line at a time.
   </p>
           </div>
           <br />

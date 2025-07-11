@@ -29,26 +29,37 @@
 /* Header Section */
 .header {
     text-align: center;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
     padding: 1.5rem;
     border: 1px solid rgba(var(--text-color), 0.08);
     border-radius: 12px;
 }
 
 .header h1 {
-    font-family: var(--font-mono);
-    font-size: 2.8rem;
-    font-weight: 800;
-    margin-bottom: 0.5rem;
-    color: var(--text-color);
-    letter-spacing: -1px;
+  font-family: var(--font-mono);
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: var(--text-color);
+  letter-spacing: -0.04em;
+  text-align: center;
+  margin: 0 auto;
+  padding: 0rem 0rem;
 }
 
-.header .subtitle {
-    font-size: 1.1rem;
-    opacity: 0.8;
-    margin-bottom: 1rem;
-    color: var(--text-color);
+.subtitle {
+  font-size: 1.1rem;
+  color: var(--primary-color);
+  font-family: var(--font-mono);
+  letter-spacing: 0.01em;
+  font-weight: 700;
+  text-align: center;
+  border-top: 4px solid transparent;
+  border-bottom: 4px solid transparent;
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0), var(--background-color), rgba(255, 255, 255, 0)) padding-box,
+    linear-gradient(90deg, rgba(255, 255, 255, 0), var(--primary-color), rgba(255, 255, 255, 0)) border-box;
+  background-origin: border-box;
+  background-clip: content-box, border-box;
 }
 
 .header .description {
@@ -80,14 +91,14 @@
     border: 1px solid rgba(var(--text-color), 0.1);
     border-radius: 2px;
     padding: 2rem;
-    background: rgba(var(--text-color), 0.02);
-                backdrop-filter: blur(48px);
+    backdrop-filter: blur(32px) saturate(180%);
+    -webkit-backdrop-filter: blur(32px) saturate(180%);
+    background: rgba(var(--background-color-rgb), 0.3);
 }
 
 .galleryHeader {
     display: flex;
     justify-content: space-between;
-    align-items: center;
     margin-bottom: 1.5rem;
     padding-bottom: 1rem;
     border-bottom: 1px solid rgba(var(--text-color), 0.1);
@@ -105,12 +116,9 @@
     color: var(--text-color);
     opacity: 0.6;
     background: rgba(var(--primary-color), 0.1);
-    padding: 0.3rem 0.8rem;
     border-radius: 20px;
     display: flex;
     flex-direction: row;
-    align-items: center;
-    transform: translateY(2px);
 }
 
 .backgroundGrid {
@@ -208,7 +216,9 @@
     position: sticky;
     top: 2rem;
     background: rgba(var(--text-color), 0.02);
-    backdrop-filter: blur(48px);
+        backdrop-filter: blur(32px) saturate(180%);
+    -webkit-backdrop-filter: blur(32px) saturate(180%);
+    background: rgba(var(--background-color-rgb), 0.3);
 }
 
 .controlSection {
@@ -399,7 +409,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 3rem;
+    margin-top: 2rem;
+    margin-bottom: 3rem;
     padding-bottom: 1.5rem;
     border-bottom: 1px solid rgba(var(--text-color), 0.1);
 }
@@ -409,10 +420,10 @@
     align-items: center;
     gap: 0.5rem;
     font-size: 0.85rem;
-    color: #00ff00;
-    background: rgba(0, 255, 0, 0.1);
+    color: var(--terminal-input-color);
+    background: rgba(var(--terminal-input-color-rgb), 0.5);
     padding: 0.5rem 1rem;
-    border: 1px solid rgba(0, 255, 0, 0.3);
+    border: 1px solid rgba(var(--terminal-input-color-rgb), 0.3);
     width: 100%; /* Make it full width */
     justify-content: center;
 }
@@ -420,7 +431,7 @@
 .pulseIndicator {
     width: 8px;
     height: 8px;
-    background: #00ff00;
+    background: var(--terminal-input-color);
     border-radius: 50%;
     animation: pulse 2s infinite;
 }
@@ -518,23 +529,16 @@
 
 /* Export Panel */
 
-.exportButtons {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    align-items: center;
-}
-
 .exportButton {
     font-family: var(--font-mono);
-    font-size: 0.9rem;
-    padding: 0.7rem 1rem;
+    font-size: 1rem;
     background: rgba(var(--text-color), 0.05);
     border: 1px solid rgba(var(--text-color), 0.2);
     border-radius: 6px;
     color: var(--text-color);
     cursor: pointer;
     transition: all 0.3s ease;
+    font-weight: 700;
 }
 
 .exportButton:hover {
@@ -552,16 +556,6 @@
     padding: 0.4rem 1rem;
     justify-content: center;
     font-size: 1rem;
-}
-
-.liveIndicator {
-    display: flex;
-    align-items: center;
-    padding: 0.5rem 1rem;
-    color: #00ff00;
-    background: rgba(0, 255, 0, 0.1);
-    border: 1px solid rgba(0, 255, 0, 0.3);
-    width: 100%; /* Make it full width */
 }
 
 .resetButton:hover {

@@ -233,7 +233,7 @@ const resetAllSettings = () => {
                             <h3 className={styles.galleryTitle}>Gallery</h3>
                             <span className={styles.galleryCount}>
                                 <button onClick={shareConfig} className={styles.exportButton}>
-                                    🔗 Share URL
+                                    share(url)
                                 </button>
                             </span>
                         </div>

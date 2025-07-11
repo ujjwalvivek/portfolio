@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Viewer, Worker, SpecialZoomLevel } from '@react-pdf-viewer/core';
 import { defaultLayoutPlugin } from '@react-pdf-viewer/default-layout';
 import '@react-pdf-viewer/core/lib/styles/index.css';
 import '@react-pdf-viewer/default-layout/lib/styles/index.css';
-import styles from './ResumeOverlay.module.css'; // adjust based on your path
+import styles from './ResumeOverlay.module.css'; 
+import { ThemeContext } from '../ThemeSwitcher/ThemeContext';
 
 export default function ResumeOverlay({ open, onClose }) {
   const currentTheme = document.body.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+  const { darkMode, toggleDarkMode } = useContext(ThemeContext);
 
   const [pdfTheme, setPdfTheme] = useState('light'); // 'light' | 'dark' | 'auto'
 
@@ -34,7 +36,14 @@ export default function ResumeOverlay({ open, onClose }) {
   };
 
  const togglePdfTheme = () => {
-  setPdfTheme(prev => (prev === 'light' ? 'dark' : 'light'));
+  setPdfTheme(prev => {
+    const nextTheme = prev === 'light' ? 'dark' : 'light';
+    // Reverse: if switching to 'dark' PDF, set site to 'light', and vice versa
+    if ((nextTheme === 'dark' && !darkMode) || (nextTheme === 'light' && darkMode)) {
+      toggleDarkMode();
+    }
+    return nextTheme;
+  });
 };
 
 
@@ -48,14 +57,14 @@ export default function ResumeOverlay({ open, onClose }) {
           className={styles.resumeOverlayThemeSwitch}
           aria-label="Switch PDF viewer theme"
         >
-          Switch to {pdfTheme === 'light' ? 'Dark' : 'Light'} Theme
+          switchTheme({pdfTheme === 'light' ? 'Dark' : 'Light'})
         </button>
         <button
           className={styles.resumeOverlayTopRightClose}
           onClick={onClose}
           aria-label="Close resume overlay"
         >
-          ✕ <span>Close Resume</span>
+          close(resume)
         </button>
       </div>
 

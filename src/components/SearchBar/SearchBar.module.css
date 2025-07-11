@@ -1,5 +1,5 @@
 .searchContainer {
-  margin-bottom: calc(var(--spacing-unit) * 3);
+  margin-bottom: calc(var(--spacing-unit) * 6);
 }
 
 .searchWrapper {
@@ -13,9 +13,9 @@
   padding-right: calc(var(--spacing-unit) * 5);
   border: 1px solid var(--text-color);
   border-radius: 2px;
-  background: rgba(var(--background-rgb), 0.7);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(32px) saturate(180%);
+  -webkit-backdrop-filter: blur(32px) saturate(180%);
+  background: rgba(var(--background-color-rgb), 0.3);
   color: var(--text-color);
   font-size: 1rem;
   font-family: var(--font-mono);

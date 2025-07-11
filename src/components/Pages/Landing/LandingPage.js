@@ -1,12 +1,27 @@
-import React, { useContext, useMemo } from 'react';
+import React, { useContext, useMemo, useEffect, useState } from 'react';
 import GlobalBackground from '../../Background/GlobalBackground';
 import { ThemeContext } from '../../ThemeSwitcher/ThemeContext';
 import { useBackground } from '../../Background/BackgroundContext';
 import styles from './LandingPage.module.css';
+import { usePrefersReducedMotion } from '../../A11y/UsePrefersReducedMotion';
 
 const LandingPage = ({ onEnter }) => {
     const { darkMode, toggleDarkMode } = useContext(ThemeContext);
     const { updateBackgroundConfig } = useBackground();
+    const prefersReducedMotion = usePrefersReducedMotion();
+    const [showPrompt, setShowPrompt] = useState(false);
+
+    useEffect(() => {
+        if (
+            prefersReducedMotion &&
+            !showPrompt
+        ) {
+            window.alert(
+                "Accessibility Notice:\n\nWe detected your system prefers reduced motion. Some backgrounds and animations may cause discomfort. For a calmer experience, consider enabling Low Chaos Mode."
+            );
+            setShowPrompt(true);
+        }
+    }, [prefersReducedMotion, showPrompt]);
 
     // For mobile/desktop density
     const isMobile = useMemo(() => {

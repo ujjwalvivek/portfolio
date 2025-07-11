@@ -10,6 +10,7 @@
   justify-content: center;
   backdrop-filter: blur(20px) saturate(180%);
   animation: resumeOverlayFadeIn 0.25s cubic-bezier(.4, 0, .2, 1);
+  font-family: var(--font-mono);
 }
 
 @keyframes resumeOverlayFadeIn {
@@ -47,7 +48,7 @@
 
 .resumeOverlayTopRightClose {
   background: transparent;
-  color: #f8fafc;
+  color: var(--text-color);
   border: none;
   font-size: 1.1rem;
   font-weight: 500;
@@ -55,9 +56,14 @@
   align-items: center;
   gap: 6px;
   cursor: pointer;
-  padding: 6px 14px;
+  padding: 6px 12px;
   transition: background 0.2s, color 0.2s;
   white-space: nowrap;
+  border: 2px solid var(--primary-color);
+    font-family: var(--font-mono);
+        letter-spacing: -0.5px;
+
+
 }
 
 .resumeOverlayTopRightClose:hover {
@@ -104,7 +110,7 @@
 
 .resumeOverlayThemeSwitch {
   background: transparent;
-  color: #f8fafc;
+  color: var(--primary-color);
   border: none;
   font-size: 1.1rem;
   font-weight: 500;
@@ -115,9 +121,43 @@
   padding: 6px 12px;
   transition: background 0.2s ease, color 0.2s ease;
   position: static; /* Not absolute! */
+  border: 2px solid var(--primary-color);
+    font-family: var(--font-mono);
+    letter-spacing: -0.5px;
+
 }
 
 .resumeOverlayThemeSwitch:hover {
   background: rgba(255, 255, 255, 0.1);
-  color: #38bdf8;
+  color: var(--text-color);
+}
+
+@media (max-width: 600px) {
+  .resumeOverlayTopRightButtons {
+    top: 8px;
+    right: 8px;
+    gap: 16px;
+    flex-direction: row;
+    align-items: flex-end;
+    z-index: 20;
+  }
+  .resumeOverlayTopRightClose,
+  .resumeOverlayThemeSwitch {
+    font-size: 0.98rem;
+    padding: 4px 8px;
+    min-width: 0;
+    max-width: 90vw;
+    white-space: normal;
+  }
+  .resumeOverlayViewer {
+    width: 90vw;
+    height: 70vh;
+    min-width: 0;
+    min-height: 0;
+  }
+  .resumeOverlayModal {
+    max-width: 100vw;
+    max-height: 100vh;
+    padding: 0;
+  }
 }

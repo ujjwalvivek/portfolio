@@ -10,7 +10,7 @@
   {
     "id": 2,
     "filename": "log_0001_md_showcase.md",
-    "title": "Markdown Features Showcase Playground",
+    "title": "Markdown Playground (Kinda Features Showcase, Not Really)",
     "date": "2025-07-01",
     "description": "A showcase of all the advanced Markdown features available on this blog. From code blocks to tables, this post demonstrates the full range of capabilities.",
     "tags": ["react", "markdown", "webdev", "testing", "log"]

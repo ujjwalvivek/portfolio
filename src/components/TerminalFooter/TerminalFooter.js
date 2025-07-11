@@ -2,7 +2,7 @@ import React from "react";
 import CrashOverlay from "../SystemError/CrashOverlay";
 import styles from "./TerminalFooter.module.css";
 import { terminalCommands } from "./TerminalCommands";
-import { useBackground, toggleBackground } from '../Background/BackgroundContext';
+import { useBackground } from '../Background/BackgroundContext';
 
 const TerminalFooter = ({ showTerminal }) => {
 

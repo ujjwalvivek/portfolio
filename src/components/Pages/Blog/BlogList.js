@@ -108,11 +108,13 @@ const BlogList = () => {
     <div className={styles.blogContainer}>
       <div className={styles.blogList}>
         <div className={styles.blogHeader}>
-          <h1>Code & Beyond</h1>
+          <h1 className={styles.blogTitle}>Code & Beyond</h1>
           <p className={styles.blogSubtitle}>
             Thoughts, tutorials, and explorations
           </p>
         </div>
+
+
         <SearchBar onSearch={handleSearch} placeholder="Search posts, tags, or content..." />
 
         {filteredPosts.length === 0 && searchQuery ? (
