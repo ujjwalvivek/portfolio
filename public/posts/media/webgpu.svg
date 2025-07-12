@@ -1,0 +1,86 @@
+<svg width="700" height="200" viewBox="0 0 700 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Background gradient -->
+    <linearGradient id="bg" x1="0" y1="0" x2="700" y2="200" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#181A20"/>
+      <stop offset="1" stop-color="#232946"/>
+    </linearGradient>
+    <!-- Neon lines -->
+    <linearGradient id="neon1" x1="0" y1="0" x2="700" y2="0" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFD166" stop-opacity="0.7"/>
+      <stop offset="0.5" stop-color="#46C2FF" stop-opacity="0.5"/>
+      <stop offset="1" stop-color="#FF6B6B" stop-opacity="0.7"/>
+    </linearGradient>
+    <linearGradient id="neon2" x1="0" y1="200" x2="700" y2="200" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#46C2FF" stop-opacity="0.5"/>
+      <stop offset="1" stop-color="#FFD166" stop-opacity="0.5"/>
+    </linearGradient>
+    <!-- Glitch effect -->
+    <filter id="glitch" x="0" y="0" width="700" height="200" filterUnits="userSpaceOnUse">
+      <feTurbulence type="turbulence" baseFrequency="0.012 0.04" numOctaves="2" seed="42" result="turb"/>
+      <feDisplacementMap in2="turb" in="SourceGraphic" scale="8" xChannelSelector="R" yChannelSelector="B"/>
+    </filter>
+    <!-- Shadow for text -->
+    <filter id="shadow" x="0" y="0" width="700" height="200">
+      <feDropShadow dx="0" dy="0" stdDeviation="8" flood-color="#FFD166" flood-opacity="0.5"/>
+      <feDropShadow dx="0" dy="0" stdDeviation="16" flood-color="#46C2FF" flood-opacity="0.3"/>
+    </filter>
+    <defs>
+  <filter id="textDropShadow" x="-20%" y="-20%" width="140%" height="140%">
+    <feDropShadow dx="2" dy="2" stdDeviation="2" flood-color="#fff" flood-opacity="0.5"/>
+  </filter>
+  <filter id="textGlow" x="-20%" y="-20%" width="140%" height="140%">
+    <feGaussianBlur in="SourceAlpha" stdDeviation="3" result="blur"/>
+    <feFlood flood-color="#FFD166" result="color"/>
+    <feComposite in2="blur" operator="in" result="shadow"/>
+    <feMerge>
+      <feMergeNode in="shadow"/>
+      <feMergeNode in="SourceGraphic"/>
+    </feMerge>
+  </filter>
+</defs>
+  </defs>
+  <!-- Background -->
+  <rect width="700" height="200" fill="url(#bg)"/>
+  <!-- Neon lines top and bottom -->
+  <rect y="0" width="700" height="6" fill="url(#neon1)"/>
+  <rect y="194" width="700" height="6" fill="url(#neon2)"/>
+  <!-- Subtle grid lines -->
+  <g opacity="0.08">
+    <rect x="100" y="0" width="2" height="200" fill="#FFD166"/>
+    <rect x="350" y="0" width="2" height="200" fill="#46C2FF"/>
+    <rect x="600" y="0" width="2" height="200" fill="#FF6B6B"/>
+    <rect x="0" y="50" width="700" height="1.5" fill="#FFD166"/>
+    <rect x="0" y="150" width="700" height="1.5" fill="#46C2FF"/>
+  </g>
+  <!-- Glitchy, bold WebGPU text -->
+  <g filter="url(#glitch)">
+    <text x="50%" y="54%" text-anchor="middle" font-family="Fira Mono, monospace" font-size="72" font-weight="bold"
+      fill="#fff" letter-spacing="4" filter="url(#shadow)">
+      webGPU
+    </text>
+    <!-- Glitch shadow layers -->
+    <text x="50%" y="54%" text-anchor="middle" font-family="Fira Mono, monospace" font-size="72" font-weight="bold"
+      fill="#FFD166" letter-spacing="4" opacity="0.22" dx="4" dy="2">
+      webGPU
+    </text>
+    <text x="50%" y="54%" text-anchor="middle" font-family="Fira Mono, monospace" font-size="72" font-weight="bold"
+      fill="#46C2FF" letter-spacing="4" opacity="0.18" dx="-3" dy="-2">
+      webGPU
+    </text>
+  </g>
+  <!-- Tagline -->
+  <text x="50%" y="78%" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="20" font-weight="bold"
+    fill="#f1f2f6" opacity="0.92" filter="url(#textGlow)" letter-spacing="0">
+    I will get you one day, for sure
+  </text>
+  <text x="90%" y="90%" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" font-weight="bold"
+    fill="#f1f2f6" opacity="0.92" filter="url(#textGlow)" letter-spacing="0">
+    ujjwal.vivek
+  </text>
+  <!-- Classy accent shapes -->
+  <rect x="40" y="40" width="32" height="32" fill="#FFD166" opacity="0.12" transform="rotate(8 56 56)"/>
+  <rect x="628" y="140" width="24" height="24" fill="#46C2FF" opacity="0.13" transform="rotate(-12 640 152)"/>
+  <circle cx="120" cy="160" r="18" fill="#FF6B6B" opacity="0.14"/>
+  <circle cx="580" cy="60" r="14" fill="#FFD166" opacity="0.11"/>
+</svg>
