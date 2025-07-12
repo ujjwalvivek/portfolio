@@ -139,7 +139,7 @@ const LandingPage = ({ onEnter }) => {
                 </p>
                 <div className={styles.a11yDisclaimer} role="alert" style={{ background: darkMode ? 'none' : 'rgba(var(--text-color-rgb), 0.9)' }}>
                     <strong>Accessibility Notice:</strong><br />
-                    Some backgrounds and animations may cause discomfort or reduce accessibility for sensitive users. <br />
+                    Some backgrounds and animations may cause discomfort or reduce accessibility for sensitive users. Please consider using Low Chaos Mode™.<br />
                     <span className={styles.a11yAction}>
                         <button
                             className={styles.lowChaosButton}

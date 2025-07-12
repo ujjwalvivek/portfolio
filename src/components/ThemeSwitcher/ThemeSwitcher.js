@@ -22,7 +22,7 @@ const ThemeSwitcher = () => {
 
   return (
     <div className={styles.ThemeSwitcherContainer} onClick={toggleDarkMode} role="button" tabIndex="0" title={darkMode ? "Switch to light mode" : "Switch to dark mode"}>
-      <p>{`switchTheme(${darkMode ? 'light' : 'dark'});`}</p>
+      <p>{`switchTheme(${darkMode ? 'light' : 'dark'})`}</p>
     </div>
   );
 };

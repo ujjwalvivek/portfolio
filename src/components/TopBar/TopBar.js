@@ -27,7 +27,7 @@ const TopBar = () => {
         )}
         {/* Playground/test page */}
         <Link to="/bg-test" className={styles.testButton}>
-          playground
+          bg(playground)
         </Link>
         {/* Theme switcher */}
         <ThemeSwitcher />

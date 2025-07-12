@@ -349,7 +349,6 @@ button.cta {
     transition: background 0.2s;
     display: flex;
     align-items: center;
-    max-width: 50%;
     box-sizing: border-box;
 }
 
@@ -468,54 +467,39 @@ button.cta {
         margin: 0;
     }
 
-    /* --- Latest logs mobile --- */
-    .latestLogs {
-        width: 100% !important;
-        max-width: 100% !important;
-        padding: 1rem 0.5rem !important;
-        margin: 2.5rem 0 1rem 0;
-        border-radius: 8px;
-        box-sizing: border-box;
-        overflow-x: hidden;
-    }
-
-    .latestLogs h3 {
-        font-size: 1rem;
-        margin-bottom: 0.7rem;
-        transform: none;
-        text-align: left;
-            transform: translateX(8px);
-
-    }
-
     .latestLogs ul {
         flex-direction: column;
         gap: 0.5rem;
-    }
-
-    .latestLogs li {
-        flex: 1 1 0;
-        margin-bottom: 0.2rem;
         width: 100%;
     }
 
+    .latestLogs li {
+        flex: none;
+        margin-bottom: 0.2rem;
+        width: 100%;
+        display: flex;
+        align-items: center;
+    }
+
     .latestLogs a {
-        font-size: 0.95rem;
-        padding: 0.5em 0.2em;
+        display: flex;
+        align-items: center;
         gap: 0.5rem;
+        width: 100%;
     }
 
     .postDate {
         min-width: 48px;
         font-size: 0.9rem;
+        flex-shrink: 0;
     }
 
     .postTitle {
         font-size: 0.95rem;
-        white-space: wrap;
-        overflow: visible;
-        text-overflow: unset;
-        word-break: break-word;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        word-break: normal;
         display: block;
         max-width: 100%;
     }
