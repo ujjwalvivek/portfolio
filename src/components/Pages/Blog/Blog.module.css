@@ -194,7 +194,7 @@
   font-family: var(--font-mono);
   letter-spacing: -1px;
   opacity: 0.9;
-  text-align: justify;
+  text-align: left;
   margin-bottom: 1.2rem;
   line-height: 1.8;
 }

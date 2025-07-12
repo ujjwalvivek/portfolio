@@ -17,42 +17,29 @@ slug: "log_0002_midnight_patchdrop"
 
 ## Building My Site Was The Real Rollercoaster
 
-If you've ever tried to make your website look "cool" with animated backgrounds, you know the pain. I started with a simple goal: make my site pop. What followed was a wild ride through browser quirks, overheating phones, the bleeding edge of web graphics, and an insightful launch. Not that I was any stranger to web graphics, but `webGPU` still intimidated me.
+If you've ever tried to make your website look "cool" with animated backgrounds, you know the pain. I started with a simple goal: make my site pop. What followed was a wild ride through browser quirks, overheating phones, the bleeding edge of web graphics, and an insightful launch.<br><br>Not that I was any stranger to web graphics, but `webGPU` still intimidated me.
 
 ---
 
 ## Enter Social Platforms
 
-**Deployed v1.0** <br>
-Dropped it on a few subs, dev.to, x (Twittwer) <br>
-People showed up. <br>
-Didn't hold back. 
+**Deployed v1.0** <br>Dropped it on a few subs, dev.to, x (Twittwer) <br>People showed up. <br><br>Didn't hold back. 
 
-> "The animation gave me a headache." <br> <br>
-> "Why is my browser screaming?" <br> <br>
-> "Animations resets every visit. Please. My eyes." <br> <br>
-> "Cool idea but it's cooking my phone." <br> <br>
-> "Cant see shit, navigation is weird"
+> "The animation gave me a headache." <br> <br>"Why is my browser screaming?" <br> <br>"Animations resets every visit. Please. My eyes." <br> <br>"Cool idea but it's cooking my phone." <br> <br>"Cant see shit, navigation is weird"
 
-And... Thank you really! <br>
-Because this was the first time anyone actually ***used*** it.
+And... Thank you really! <br>Because this was the first time anyone actually ***used*** it.
 
 ---
 
 ## So I Planned For v1.1 Release On A Friday Midnight
 
-So that I self sabotage my weekend plans? <br>
-Human brain is weird. <br>
-Not really. <br>
-But out of **respect** for the people who showed up; I patched.
+So that I self sabotage my weekend plans? <br>Human brain is weird. <br>Not really. <br>But out of **respect** for the people who showed up; I patched.
 
 ### Here's Some Highlights 
 
 #### Performance Improvements
 
-I had recently discovered WebGPU, the new graphics API that lets you use the power of your graphics card. It was like opening another secret door. The other one being webGL. That piece of tech still amazes me. <br>
-Trust me, I did not know what I was getting myself into. <br>
-The catch? WebGPU is new, and the documentation is… let's say "adventurous". I couldnt rewrite my generator logic as shaders, yet.<br>
+I had recently discovered WebGPU, the new graphics API that lets you use the power of your graphics card.<br><br>It was like opening another secret door. The other one being webGL. That piece of tech still amazes me. <br><br>Trust me, I did not know what I was getting myself into. <br>The catch? WebGPU is new, and the documentation is… let's say "adventurous".<br><br>I couldnt rewrite my generator logic as shaders, yet.<br>
 
 ````javascript
 I tried:
@@ -69,18 +56,12 @@ Sources:
 After a lot of trial and error (and a few existential crises), I got it working. My generators now run ~~buttery~~ smooth, even on mobile. It pulses, it moves, and my phone doesn't melt. Probably yours wont too. 
 
 ::::note
-FPS capped at ~20/~30, enough for a smooth viewing experience <br>
-No resource hogging. No random heatups. Probably. <br>
-All while still being CPU-bound. For now. <br>
-WebGPU is something to look forward to. **A great success!**
+FPS capped at ~20/~30, enough for a smooth viewing experience <br><br>No resource hogging. No random heatups. Probably. <br><br>All while still being CPU-bound. For now. <br><br>WebGPU is something to look forward to. **A great success!**
 ::::
 
 #### Low Chaos Mode™
 
-What about folks who get dizzy from motion? <br>
-Some users need less motion, more contrast, or just a calmer vibe.  <br>
-So I reduced motion detection accompanied by a zen-like **Low Chaos Mode™**. <br>
-No animations. No glitchiness. Just pure calm.
+What about folks who get dizzy from motion? <br>Some users need less motion, more contrast, or just a calmer vibe.  <br><br>So I reduced motion detection accompanied by a zen-like **Low Chaos Mode™**. <br>No animations. No glitchiness. Just pure calm.
 
 ````javascript
 useEffect(() => {
@@ -106,11 +87,7 @@ Reads `prefers-reduced-motion`, shows a low chaos mode™ prompt. Accessibility 
     }, [prefersReducedMotion, backgroundConfig.isAnimated]);
 ````
 
-Accessibility isn't optional. <br>
-A simple prompt can make a big difference. <br>
-Respect your users. If they want less motion, give them less motion. <br>
-And **Low Chaos Mode™** is now my favorite button.   <br>
-*(Also, don't test animated backgrounds on a 2015 laptop.or do. and pls let me know how that goes.)*
+Accessibility isn't optional. <br>A simple prompt can make a big difference. <br>Respect your users. If they want less motion, give them less motion. <br><br>And **Low Chaos Mode™** is now my favorite button.   <br><br>*(Also, don't test animated backgrounds on a 2015 laptop.or do. and pls let me know how that goes.)*
 
 #### Less chaos on load, more chaos by design
 
@@ -132,10 +109,7 @@ getting that smooth 30fps was a PITA.
 
 #### iPads reporting as Macintosh on safari
 
-How ironical. <br> 
-Always combine user agent checks with feature detection (like 'ontouchstart' in window or navigator.maxTouchPoints > 1). This way, you can reliably identify iPads even when they lie about being a Mac. <br>
-**In short:** <br>
-Don’t trust the user agent alone. Check for touch capability too!
+How ironical. <br><br>Always combine user agent checks with feature detection (like 'ontouchstart' in window or navigator.maxTouchPoints > 1).<br><br>This way, you can reliably identify iPads even when they lie about being a Mac. <br><br>**In short:** <br>Don’t trust the user agent alone. Check for touch capability too!
 
 ````javascript
 const isMobile = useMemo(() => {
@@ -165,22 +139,17 @@ return isIphoneOrAndroid || isIpad;
 
 ### So What's Next?
 
-\-- v1.0 was chaos unleashed. <br>
-\-- v1.1 is chaos *tamed*; juust a little. <br>
-\-- v1.2? v2.0? <br>
-\-- No roadmap yet, but definetely migration to **webGPU** would be my next thing to crack.
+\-- v1.0 was chaos unleashed. <br>\-- v1.1 is chaos *tamed*; juust a little. <br>\-- v1.2? v2.0? <br>\-- No roadmap yet, but definetely migration to **webGPU** would be my next thing to crack.
 
 ---
 
 ::::note
-**Try exploring around.<br>
-It still glitches. It still talks back.<br>
-But now? It listens a little too.**
+**Try exploring around.<br>It still glitches. It still talks back.<br><br>But now? It listens a little too.**
 ::::
 
 ---
 
-Want more code? More stories? Drop a mail.  
+Want more code? More stories? Drop a [mail](mailto:hello@ujjwalvivek.com).  
 
 ````bash
 git commit -m "try again"

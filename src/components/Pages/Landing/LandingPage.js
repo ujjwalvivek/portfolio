@@ -4,12 +4,16 @@ import { ThemeContext } from '../../ThemeSwitcher/ThemeContext';
 import { useBackground } from '../../Background/BackgroundContext';
 import styles from './LandingPage.module.css';
 import { usePrefersReducedMotion } from '../../A11y/UsePrefersReducedMotion';
+import { useNavigate } from 'react-router-dom';
+
 
 const LandingPage = ({ onEnter }) => {
     const { darkMode, toggleDarkMode } = useContext(ThemeContext);
     const { updateBackgroundConfig } = useBackground();
     const prefersReducedMotion = usePrefersReducedMotion();
     const [showPrompt, setShowPrompt] = useState(false);
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (
@@ -122,6 +126,7 @@ const LandingPage = ({ onEnter }) => {
     const handleEnter = (type) => {
         updateBackgroundConfig(mainPresets[type]);
         onEnter();
+        navigate('/');
     };
 
     return (
