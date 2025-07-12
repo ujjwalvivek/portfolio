@@ -47,7 +47,6 @@ function App() {
 
   const handleEnter = () => {
     localStorage.setItem('hasVisitedLanding', 'true');
-    window.location.reload(); // This will reload and mount Home at scroll 0
     setShowLanding(false);
   };
 
