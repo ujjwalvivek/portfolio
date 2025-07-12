@@ -50,10 +50,10 @@
     font-size: 1rem;
     text-decoration: none;
     padding: 0.25rem 0rem;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.03);
     display: flex;
     align-items: center;
     letter-spacing: 0px;
+    background: none;
 }
 
 .backButton:hover {
@@ -152,7 +152,7 @@
 
   .testButton,
   .backButton {
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     min-width: 36px;
     min-height: 20px;
   }

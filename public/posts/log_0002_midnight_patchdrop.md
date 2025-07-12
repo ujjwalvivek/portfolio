@@ -40,6 +40,7 @@ So that I self sabotage my weekend plans? <br>Human brain is weird. <br>Not real
 #### Performance Improvements
 
 ![webGPU](/posts/media/webgpu.svg)
+`{the above svg is a prime example of how webkit doesnt play nice with anything.}`
 
 
 I had recently discovered WebGPU, the new graphics API that lets you use the power of your graphics card.<br><br>It was like opening another secret door. The other one being webGL. That piece of tech still amazes me. <br><br>Trust me, I did not know what I was getting myself into. <br>The catch? WebGPU is new, and the documentation is… let's say "adventurous".<br><br>I couldnt rewrite my generator logic as shaders, yet.<br>
