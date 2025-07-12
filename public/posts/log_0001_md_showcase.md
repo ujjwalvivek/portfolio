@@ -2,7 +2,7 @@
 title: "Markdown Playground"
 date: "2025-07-06"
 slug: "log_0001_md_showcase"
-summary: "This wasn't supposed to be a post. It was just a sandbox. But it works, so I’m keeping it."
+summary: "This wasn't supposed to be a post. It was just a sandbox. But it works, so I'm keeping it."
 tags: ["debug", "engine", "components", "infra"]
 ---
 
@@ -17,7 +17,7 @@ You are now inside the markdown engine.
 ## Diagnostic Log
 
 This post started as a markdown stress test.  
-What you’re seeing isn’t a blog. It's **evidence**.  
+What you're seeing isn't a blog. It's **evidence**.  
 That the engine boots. That the markdown renders.  
 That chaos compiles. Again mostly. 
 
@@ -114,8 +114,8 @@ Some parts might break. Good. Let them.
 ## Closing Log
 
 This post was never meant to be seen.  
-But now that the system renders, I’m logging it.  
-Because sometimes a “test” turns out to be the first real thing you ship.
+But now that the system renders, I'm logging it.  
+Because sometimes a "test" turns out to be the first real thing you ship.
 
 ```terminalblock
 > commit -m "engine booted"  

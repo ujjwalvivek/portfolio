@@ -6,14 +6,14 @@ From VR platforms to Rust game engines, this journey is logged.
 
 ## Philosophy
 
-- **Tech isn’t the hard part.**  
+- **Tech isn't the hard part.**  
   Systems, behaviour, and questions are.
 - **Transparency > Perfection.**  
-  You’ll find unfinished thoughts, failed experiments, and the occasional breakthrough.
+  You'll find unfinished thoughts, failed experiments, and the occasional breakthrough.
 - **Source ≠ Product.**  
   This repo is public, not open. Steal ideas, not identity.
 
-## What’s Inside
+## What's Inside
 
 - ✍️ **Blog:** Deep dives, war stories, and technical rants.  
 - 🖥️ **Terminal Footer:** The site talks back. Try typing `run exit` or `cat` in the footer.
@@ -41,11 +41,11 @@ But if you spot a bug or want to say hi, open an issue or drop a message.
 ## License
 
 Source-available.  
-Read, learn, remix — but don’t clone the soul.
+Read, learn, remix — but don't clone the soul.
 
 ---
 
-> “Don’t optimize systems you don’t really understand.”  
+> “Don't optimize systems you don't really understand.”  
 > — ofc me :)
 
 Happy building.  

@@ -64,6 +64,10 @@ const BlogList = () => {
         })
       );
 
+      // Sort posts by date (newest first)
+      postsWithContent.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+      // Set initial posts and filtered posts
       setPosts(postsWithContent);
       setFilteredPosts(postsWithContent);
     };

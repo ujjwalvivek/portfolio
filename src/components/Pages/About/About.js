@@ -76,7 +76,7 @@ const About = () => {
             const postsData = await response.json();
             // Sort posts by date, newest first
             postsData.sort((a, b) => new Date(b.date) - new Date(a.date));
-            setLatestPosts(postsData.slice(0, 4)); // Only show 4 latest
+            setLatestPosts(postsData.slice(0, 2)); // Only show 4 latest
         };
 
         fetchPosts();

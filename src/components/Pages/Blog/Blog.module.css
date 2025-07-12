@@ -142,8 +142,7 @@
 .blogPost p {
   font-family: var(--font-mono);
   line-height: 1.6;
-  color: var(--text-color);
-  opacity: 0.8;
+  color: rgba(var(--text-color-rgb), 0.9);
   margin-bottom: calc(var(--spacing-unit) * 2);
   font-weight: 400;
 }
@@ -194,9 +193,10 @@
   font-size: 1.15rem;
   font-family: var(--font-mono);
   letter-spacing: -1px;
-  opacity: 0.7;
+  opacity: 0.9;
   text-align: justify;
   margin-bottom: 1.2rem;
+  line-height: 1.8;
 }
 
 .markdown h2, .markdown h3, .markdown h4 {
@@ -253,6 +253,7 @@
   border-radius: 0 2px 2px 0;
   opacity: 0.95;
   box-shadow: 0 2px 8px 0 rgba(var(--primary-color-rgb), 0.04);
+  word-wrap: pre-line;
 }
 
 .markdown img {

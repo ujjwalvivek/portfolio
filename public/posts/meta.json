@@ -14,5 +14,13 @@
     "date": "2025-07-01",
     "description": "A showcase of all the advanced Markdown features available on this blog. From code blocks to tables, this post demonstrates the full range of capabilities.",
     "tags": ["react", "markdown", "webdev", "testing", "log"]
+  },
+  {
+    "id": 3,
+    "filename": "log_0002_midnight_patchdrop.md",
+    "title": "Patch Notes v1.1 on a Friday Midnight",
+    "date": "2025-07-13",
+    "description": "I launched. Got rekt. Didn’t cry. Just patched the damn thing. Building something beautiful on the web is never as easy as it looks. But every bug, every crash, and every “why is this so slow?!” moment taught me something new.",
+    "tags": ["log", "patch", "accessibility", "dev meltdown"]
   }
 ]

@@ -88,7 +88,7 @@ const Home = () => {
                     check out my recent logs <span style={{ color: 'var(--primary-color)' }}>[NEW]</span>
                 </h3>
                 <ul>
-                    {latestPosts.map((post, idx) => {
+                    {latestPosts.slice(0, 2).map((post, idx) => {
                         const maxLen = 30;
                         // Truncate long titles
                         const shortTitle = post.title.length > maxLen ? post.title.slice(0, maxLen) + '...' : post.title; 
