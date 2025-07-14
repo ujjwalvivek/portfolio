@@ -200,9 +200,7 @@
     min-height: 0;
     overflow-y: auto;
   }
-  .crashOverlay {
-    /* ...other overlay styles... */
-  }
+
   .crashWindow {
     border-radius: 0;
     box-sizing: border-box;

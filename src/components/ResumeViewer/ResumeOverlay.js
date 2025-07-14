@@ -3,23 +3,126 @@ import { Viewer, Worker, SpecialZoomLevel } from '@react-pdf-viewer/core';
 import { defaultLayoutPlugin } from '@react-pdf-viewer/default-layout';
 import '@react-pdf-viewer/core/lib/styles/index.css';
 import '@react-pdf-viewer/default-layout/lib/styles/index.css';
-import styles from './ResumeOverlay.module.css'; 
+import styles from './ResumeOverlay.module.css';
 import { ThemeContext } from '../ThemeSwitcher/ThemeContext';
+
 
 export default function ResumeOverlay({ open, onClose }) {
   const currentTheme = document.body.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
   const { darkMode, toggleDarkMode } = useContext(ThemeContext);
-
-  const [pdfTheme, setPdfTheme] = useState('light'); // 'light' | 'dark' | 'auto'
-
-
-  const defaultLayoutPluginInstance = defaultLayoutPlugin({
-    setInitialTab: 0,
-    theme: currentTheme, // ⬅️ sync to site
-  });
-
+  const [pdfTheme, setPdfTheme] = useState(currentTheme); // 'light' | 'dark' | 'auto'
   const [theme, setTheme] = React.useState(document.body.getAttribute('data-theme') || 'light');
   const modalRef = React.useRef();
+
+React.useEffect(() => {
+  setPdfTheme(pdfTheme);
+}, [pdfTheme, open]);
+
+  const renderToolbar = (Toolbar) => (
+    <Toolbar>
+      {(slots) => {
+        const {
+          CurrentScale,
+          ZoomIn,
+          ZoomOut,
+        } = slots;
+        return (
+          <div
+            style={{
+              alignItems: 'center',
+              display: 'flex',
+              gap: '0.5rem',
+              padding: '0rem 0.5rem',
+            }}
+          >
+            <div style={{ padding: '0px 2px' }}>
+              <ZoomOut>
+                {(props) => (
+                  <button
+                    style={{
+                      backdropFilter: 'blur(16px) Saturate(180%)',
+                      border: '2px solid var(--primary-color)',
+                      borderRadius: '2px',
+                      color: 'var(--text-color)',
+                      cursor: 'pointer',
+                      padding: '5px',
+                      fontFamily: 'var(--font-mono)',
+                      fontWeight: '400',
+                      fontSize: '12px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      width: '100%',
+                      height: '30px',
+                      background: 'none',
+                    }}
+                    onClick={props.onClick}
+                  >
+                    Zoom Out
+                  </button>
+                )}
+              </ZoomOut>
+            </div>
+            <div 
+            style={{ 
+              padding: '0px 2px',
+              fontFamily: 'var(--font-mono)',
+              color: 'var(--background-color)',
+              fontSize: '14px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: '50px',
+              height: '30px',
+              backgroundColor: 'var(--primary-color)',
+              borderRadius: '2px',
+              backdropFilter: 'blur(8px)',
+              border: '2px solid var(--text-color)',
+              margin: '0 2px',
+              textAlign: 'center',
+              fontWeight: '500',
+              }}>
+              <CurrentScale>{(props) => <span>{`${Math.round(props.scale * 100)}%`}</span>}</CurrentScale>
+            </div>
+            <div style={{ padding: '0px 2px' }}>
+              <ZoomIn>
+                {(props) => (
+                  <button
+                    style={{
+                      backdropFilter: 'blur(16px) Saturate(180%)',
+                      border: '2px solid var(--primary-color)',
+                      borderRadius: '2px',
+                      color: 'var(--text-color)',
+                      cursor: 'pointer',
+                      padding: '5px',
+                      fontFamily: 'var(--font-mono)',
+                      fontWeight: '400',
+                      fontSize: '12px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      width: '100%',
+                      height: '30px',
+                      background: 'none',
+                    }}
+                    onClick={props.onClick}
+                  >
+                    Zoom In
+                  </button>
+                )}
+              </ZoomIn>
+            </div>
+          </div>
+        );
+      }}
+    </Toolbar>
+  );
+
+  const defaultLayoutPluginInstance = defaultLayoutPlugin({
+    renderToolbar,
+    sidebarTabs: (defaultTabs) => [],
+    theme: currentTheme,
+  });
 
   React.useEffect(() => {
     const observer = new MutationObserver(() => {
@@ -35,16 +138,16 @@ export default function ResumeOverlay({ open, onClose }) {
     }
   };
 
- const togglePdfTheme = () => {
-  setPdfTheme(prev => {
-    const nextTheme = prev === 'light' ? 'dark' : 'light';
-    // Reverse: if switching to 'dark' PDF, set site to 'light', and vice versa
-    if ((nextTheme === 'dark' && !darkMode) || (nextTheme === 'light' && darkMode)) {
-      toggleDarkMode();
-    }
-    return nextTheme;
-  });
-};
+  const togglePdfTheme = () => {
+    setPdfTheme(prev => {
+      const nextTheme = prev === 'light' ? 'dark' : 'light';
+      // Reverse: if switching to 'dark' PDF, set site to 'light', and vice versa
+      if ((nextTheme === 'dark' && !darkMode) || (nextTheme === 'light' && darkMode)) {
+        toggleDarkMode();
+      }
+      return nextTheme;
+    });
+  };
 
 
   if (!open) return null;
@@ -81,8 +184,7 @@ export default function ResumeOverlay({ open, onClose }) {
               fileUrl={pdfTheme === 'dark' ? '/resume-dark.pdf' : '/resume-light.pdf'}
               defaultScale={SpecialZoomLevel.PageWidth}
             />
-          </Worker>
-        </div>
+          </Worker>    </div>
       </div>
     </div>
   );

@@ -47,6 +47,7 @@
   padding: 1.2rem 1.5rem;
   background: none;
   min-height: 120px;
+  flex: 1 1 auto; /* Add this line */
 }
 
 /* Input prompt that YOU type into */
@@ -202,13 +203,14 @@
   /* Terminal footer */
   .terminalFooterReal {
     max-width: 99vw;
+    height: 300px;;
     font-size: 0.93em;
     margin: 1.2rem auto 0 auto;
   }
   .terminalFooterScroll {
     padding: 0.5em 0.2em 0.5em 0.4em;
     min-height: 80px;
-    max-height: 120px;
+    max-height: 300px;
   }
   .terminalFooterWindowBar {
     height: 1.5em;

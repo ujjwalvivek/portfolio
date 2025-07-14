@@ -134,8 +134,8 @@
 
 @media (max-width: 600px) {
   .resumeOverlayTopRightButtons {
-    top: 8px;
-    right: 8px;
+    top: 16px;
+    right: 16px;
     gap: 16px;
     flex-direction: row;
     align-items: flex-end;
