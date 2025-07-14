@@ -53,7 +53,11 @@ function App() {
   return (
     <ThemeProvider>
       <BackgroundProvider>
-        <Router>
+        <Router
+          future={{
+            v7_startTransition: true,
+            v7_relativeSplatPath: true,
+          }}>
           <LoadingSpinner>
             {showLanding ? (
               <LandingPage onEnter={handleEnter} />

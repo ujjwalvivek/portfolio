@@ -6,17 +6,21 @@ import '@react-pdf-viewer/default-layout/lib/styles/index.css';
 import styles from './ResumeOverlay.module.css';
 import { ThemeContext } from '../ThemeSwitcher/ThemeContext';
 
-
 export default function ResumeOverlay({ open, onClose }) {
-  const currentTheme = document.body.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+  const currentTheme = document.body.getAttribute('data-theme');
   const { darkMode, toggleDarkMode } = useContext(ThemeContext);
-  const [pdfTheme, setPdfTheme] = useState(currentTheme); // 'light' | 'dark' | 'auto'
-  const [theme, setTheme] = React.useState(document.body.getAttribute('data-theme') || 'light');
+  console.log('Dark mode:', darkMode);
   const modalRef = React.useRef();
+  const [pdfTheme, setPdfTheme] = useState(darkMode ? 'dark' : 'light');
+  console.log('PDF theme:', pdfTheme);
 
-React.useEffect(() => {
-  setPdfTheme(pdfTheme);
-}, [pdfTheme, open]);
+  React.useEffect(() => {
+    if (open) {
+      const currentTheme = darkMode ? 'dark' : 'light';
+      console.log('Setting PDF theme based on current theme:', currentTheme);
+      setPdfTheme(currentTheme);
+    }
+  }, [open, darkMode, currentTheme]);
 
   const renderToolbar = (Toolbar) => (
     <Toolbar>
@@ -63,24 +67,24 @@ React.useEffect(() => {
                 )}
               </ZoomOut>
             </div>
-            <div 
-            style={{ 
-              padding: '0px 2px',
-              fontFamily: 'var(--font-mono)',
-              color: 'var(--background-color)',
-              fontSize: '14px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              width: '50px',
-              height: '30px',
-              backgroundColor: 'var(--primary-color)',
-              borderRadius: '2px',
-              backdropFilter: 'blur(8px)',
-              border: '2px solid var(--text-color)',
-              margin: '0 2px',
-              textAlign: 'center',
-              fontWeight: '500',
+            <div
+              style={{
+                padding: '0px 2px',
+                fontFamily: 'var(--font-mono)',
+                color: 'var(--background-color)',
+                fontSize: '14px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: '50px',
+                height: '30px',
+                backgroundColor: 'var(--primary-color)',
+                borderRadius: '2px',
+                backdropFilter: 'blur(8px)',
+                border: '2px solid var(--text-color)',
+                margin: '0 2px',
+                textAlign: 'center',
+                fontWeight: '500',
               }}>
               <CurrentScale>{(props) => <span>{`${Math.round(props.scale * 100)}%`}</span>}</CurrentScale>
             </div>
@@ -121,16 +125,17 @@ React.useEffect(() => {
   const defaultLayoutPluginInstance = defaultLayoutPlugin({
     renderToolbar,
     sidebarTabs: (defaultTabs) => [],
-    theme: currentTheme,
+    theme: pdfTheme,
   });
+  console.log('Default layout plugin instance:', defaultLayoutPluginInstance.theme);
 
   React.useEffect(() => {
     const observer = new MutationObserver(() => {
-      setTheme(document.body.getAttribute('data-theme') || 'light');
+      setPdfTheme(pdfTheme);
     });
     observer.observe(document.body, { attributes: true, attributeFilter: ['data-theme'] });
     return () => observer.disconnect();
-  }, []);
+  }, [pdfTheme]);
 
   const handleOverlayClick = (e) => {
     if (modalRef.current && !modalRef.current.contains(e.target)) {
@@ -172,7 +177,7 @@ React.useEffect(() => {
       </div>
 
       <div
-        className={`${styles.resumeOverlayModal} ${theme === 'dark' ? ' pdfViewerDark' : ''}`}
+        className={`${styles.resumeOverlayModal} ${currentTheme === 'dark' ? ' pdfViewerDark' : ''}`}
         ref={modalRef}
         onClick={e => e.stopPropagation()}
       >
@@ -184,7 +189,8 @@ React.useEffect(() => {
               fileUrl={pdfTheme === 'dark' ? '/resume-dark.pdf' : '/resume-light.pdf'}
               defaultScale={SpecialZoomLevel.PageWidth}
             />
-          </Worker>    </div>
+          </Worker>
+        </div>
       </div>
     </div>
   );
