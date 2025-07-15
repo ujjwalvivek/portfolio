@@ -9,15 +9,12 @@ import { ThemeContext } from '../ThemeSwitcher/ThemeContext';
 export default function ResumeOverlay({ open, onClose }) {
   const currentTheme = document.body.getAttribute('data-theme');
   const { darkMode, toggleDarkMode } = useContext(ThemeContext);
-  console.log('Dark mode:', darkMode);
   const modalRef = React.useRef();
   const [pdfTheme, setPdfTheme] = useState(darkMode ? 'dark' : 'light');
-  console.log('PDF theme:', pdfTheme);
 
   React.useEffect(() => {
     if (open) {
       const currentTheme = darkMode ? 'dark' : 'light';
-      console.log('Setting PDF theme based on current theme:', currentTheme);
       setPdfTheme(currentTheme);
     }
   }, [open, darkMode, currentTheme]);
@@ -127,7 +124,6 @@ export default function ResumeOverlay({ open, onClose }) {
     sidebarTabs: (defaultTabs) => [],
     theme: pdfTheme,
   });
-  console.log('Default layout plugin instance:', defaultLayoutPluginInstance.theme);
 
   React.useEffect(() => {
     const observer = new MutationObserver(() => {

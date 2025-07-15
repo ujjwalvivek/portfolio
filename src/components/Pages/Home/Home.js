@@ -73,7 +73,7 @@ const Home = () => {
                         <Link to="/about" className={styles.cta}>
                             <span className="cta-link-span">fn(</span>About<span className="cta-link-span">)</span>
                         </Link>
-                        <Link to="/" className={styles.cta}>
+                        <Link to="/projects" className={styles.cta}>
                             <span className="cta-link-span">fn(</span>Projects<span className="cta-link-span">)</span>
                         </Link>
                         <button className={styles.cta} onClick={() => setShowSocialLinks(true)}>

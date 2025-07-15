@@ -453,6 +453,13 @@
   width: 100%;
 }
 
+@media (max-width: 1100px) {
+  .recentLogsBox h2 {
+    font-size: 1.3rem;
+    margin-bottom: 0.3rem;
+  }
+}
+
 /* Resume Viewer Box */
 .resumeViewerBox {
   justify-content: center;
@@ -603,6 +610,14 @@
   }
 }
 
+@media (max-width: 1100px) {
+  /* Blog list */
+  .blogList li {
+    margin: 1rem 0;
+    font-size: 0.8rem;
+  }
+}
+
 .tagRow {
   margin-top: 0.5rem;
   display: flex;
@@ -625,6 +640,14 @@
   line-height: 1.5;
 }
 
+@media (max-width: 1100px) {
+  .tag {
+    font-size: 0.5rem;
+    padding: 0.15rem 0.3rem;
+    max-width: 100px;
+  }
+}
+
 .postDescription {
   font-size: 0.9rem;
   color: rgba(var(--text-color-rgb), 0.8);
@@ -633,11 +656,19 @@
   letter-spacing: 0px;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 1100px) {
   .postDescription {
-    font-size: 0.85rem;
+    font-size: 0.9rem;
   }
 }
+
+@media (max-width: 900px) {
+  .postDescription {
+    font-size: 0.75rem;
+  }
+}
+
+
 
 /* Responsive Styles 
 @media (max-width: 900px) {
