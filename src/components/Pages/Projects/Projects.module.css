@@ -1,17 +1,375 @@
-.pageContainer {
-  padding: calc(var(--spacing-unit) * 2) 0;
+.halfWidthBtn {
+  width: 50%;
+  min-width: 0;
+  box-sizing: border-box;
+  margin: 0.3rem;
+}
+/* --- Mobile Card Layout for Projects --- */
+@media (max-width: 800px) {
+  .projectsTable, .tableHeader {
+    display: none !important;
+  }
+
+.projectCard {
+  display: flex;
+  flex-direction: column;
+  padding: 1.2rem 1.5rem 1.2rem 1.5rem;
+  width: 100%;
+  backdrop-filter: blur(32px) saturate(180%);
+  -webkit-backdrop-filter: blur(32px) saturate(180%);
+  border-radius: 2px;
+  margin-bottom: 1.2rem;
+  position: relative;
+  overflow: visible;
+  z-index: 1;
+  border: 2px solid transparent;
 }
 
-.pageContainer h1 {
+.projectCard .buttonContainer {
+  flex-direction: row;
+  gap: 0.5rem;
+  margin-top: 0.7rem;
+    justify-content: flex-start;
+  }
+
+  .projectCard .cell,
+  .projectCard .titleCell {
+    padding: 0.2rem 0;
+    font-size: 1rem;
+    background: none;
+    border: none;
+    text-align: left;
+  }
+
+  .projectCard .ellipses {
+    position: static;
+    margin-left: 0.2rem;
+    z-index: 10;
+    align-self: center;
+    background: rgba(var(--status-warn-color-rgb), 0.9);
+  }
+
+  .projectCard .tagContainer {
+    margin-bottom: 0.5rem;
+  }
+}
+
+/* --- Desktop Table Layout for Projects --- */
+.projectsRoot {
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
   font-family: var(--font-mono);
-  font-size: 2.5rem;
-  margin-bottom: calc(var(--spacing-unit) * 4);
-  border-bottom: 1px solid var(--text-color);
-  padding-bottom: calc(var(--spacing-unit) * 2);
+  max-width: 1000px;
+  margin-bottom: 8rem;
+  padding: 0rem 1rem;
 }
 
-.pageContainer p {
-    font-family: var(--font-sans);
-    font-size: 1.1rem;
-    line-height: 1.7;
+.heroSection {
+  width: 100%;
+  padding: 0rem 5rem;
+  text-align: center;
+}
+
+.heroTitle {
+  font-size: 2.5rem;
+  font-family: var(--font-mono);
+  font-weight: 800;
+  margin-bottom: 2.5rem;
+  letter-spacing: -0.04px;
+  color: var(--text-color);
+  /* filter: drop-shadow(0 0 8px var(--status-info-color)); */
+}
+
+.heroSubtitle {
+font-size: 1.1rem;
+  color: var(--primary-color);
+  font-family: var(--font-mono);
+  letter-spacing: 0.01em;
+  font-weight: 700;
+  text-align: center;
+  border-top: 4px solid transparent;
+  border-bottom: 4px solid transparent;
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0), var(--background-color), rgba(255, 255, 255, 0)) padding-box,
+    linear-gradient(90deg, rgba(255, 255, 255, 0), var(--primary-color), rgba(255, 255, 255, 0)) border-box;
+  background-origin: border-box;
+  background-clip: content-box, border-box;
+}
+
+@media (max-width: 900px) {
+  .heroTitle { font-size: 2.2rem; }
+}
+
+@media (max-width: 600px) {
+  .heroSection { padding: 2rem 0.5rem 1rem 0.5rem; }
+  .heroTitle { font-size: 1.5rem; }
+  .heroSubtitle { font-size: 1rem; }
+}
+
+.tableWrapper {
+  width: 100%;
+  margin: 3rem auto 0 auto;
+  padding: 0 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.projectsTable {
+  border-spacing: 0 1.2rem;
+  background: none;
+}
+
+.tableHeader th {
+  color: var(--primary-color);
+  font-size: 1.13rem;
+  font-weight: 500;
+  letter-spacing: 0px;
+  padding: 1.2rem 1rem;
+  border-bottom: 2px dashed var(--primary-color);
+  border-top: 2px dashed var(--primary-color);
+}
+
+.tableHeader {
+  border-radius: 2px;
+  overflow: hidden;
+  backdrop-filter: blur(32px) saturate(180%);
+  -webkit-backdrop-filter: blur(32px) saturate(180%);
+  background: rgba(var(--background-color-rgb), 0.2);
+  text-align: left;
+}
+
+.sectionSubtitle {
+  font-family: var(--font-mono);
+  backdrop-filter: blur(32px) saturate(180%);
+  -webkit-backdrop-filter: blur(32px) saturate(180%);
+  background: rgba(var(--background-color-rgb), 0.6);
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-size: 1rem;
+  color: var(--terminal-output-color);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+@media (max-width: 800px) {
+  .sectionSubtitle {
+    font-size: 0.9rem;
+    padding: 0.4rem 0.8rem;
+    margin-bottom: 1rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .sectionSubtitle {
+    font-size: 0.8rem;
+    padding: 0.3rem 0.6rem;
+    margin-bottom: 1rem;
+  }
+}
+
+.glassRow {
+  backdrop-filter: blur(32px) saturate(180%);
+  -webkit-backdrop-filter: blur(32px) saturate(180%);
+  border-radius: 2px;
+  margin-bottom: 2rem;
+  transition: box-shadow 0.2s, background 0.2s, transform 0.2s;
+    position: relative;      /* Add this */
+  overflow: visible;       /* Add this */
+  z-index: 1; 
+  border: 2px solid transparent;
+}
+
+.glassRow:hover {
+  transform: scale(1.012) translateY(-2px);
+}
+
+.glassRow:hover td:first-child {
+  background: var(--text-color);
+  box-shadow: 0 0 0 2px var(--background-color);
+  color: var(--background-color);
+  transition: box-shadow 0.2s, color 0.2s, background 0.2s;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.cell {
+  padding: 1.2rem 1rem;
+  font-size: 1.05rem;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  background: none;
+  border: none;
+  vertical-align: middle;
+}
+
+.titleCell {
+  font-weight: 400;
+  color: var(--text-color);
+  font-size: 1rem;
+}
+
+.descTooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.portalTooltip {
+  font-family: var(--font-mono);
+  position: fixed;
+  min-width: 300px;
+  max-width: 400px;
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  background: rgba(var(--background-color-rgb), 0.8);
+  color: var(--text-color);
+  text-align: left;
+  border-radius: 0.25rem;
+  border: 2px solid var(--primary-color);
+  padding: 1rem 1.2rem;
+  z-index: 9999;
+  box-shadow: 0 2px 16px 0 rgba(var(--status-info-color-rgb), 0.18);
+  font-size: 0.9rem;
+  font-weight: 400;
+  pointer-events: auto;
+  opacity: 1;
+  transition: opacity 0.2s;
+}
+
+.descHoverText {
+  cursor: help;
+  color: var(--text-color);
+  font-weight: 600;
+  font-size: 1rem;
+  letter-spacing: 0px;
+  transition: color 0.2s;
+}
+
+.descTooltip:hover .descHoverText {
+  color: var(--text-color);
+}
+
+.tagContainer {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.tag {
+  font-size: 0.8rem;
+  font-weight: 400;
+  padding: 0.3rem 0.3rem;
+  border: 1px solid var(--primary-color);
+  background: rgba(var(--primary-color-rgb), 0.5);
+  letter-spacing: 0px;
+}
+
+.buttonContainer {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+}
+
+.openAppBtn {
+  /* background: rgba(var(--text-color-rgb), 0.8); */
+  background: rgba(var(--text-color-rgb), 0.3);
+  /* color: var(--background-color); */
+  color: var(--text-color);
+  border-radius: 0.25rem;
+  /* border: none; */
+  border: 2px solid var(--text-color);
+  padding: 0.5rem 1rem;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  text-decoration: none;
+  letter-spacing: 0px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.openAppBtn:hover {
+  background: rgba(var(--background-color-rgb), 0.7);
+  color: var(--text-color);
+  border: 2px solid var(--background-color);
+
+}
+
+.notionOverlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(var(--background-color-rgb), 0.4);
+  backdrop-filter: blur(32px) saturate(180%);
+  -webkit-backdrop-filter: blur(32px) saturate(180%);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeInGlow 0.3s;
+}
+
+.notionEmbedContainer {
+  position: relative;
+  width: 90vw;
+  max-width: 900px;
+  height: 80vh;
+  background: rgba(var(--background-color-rgb), 0.9);
+  border-radius: 0.25rem;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.closeBtnContainer {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100%;
+  min-height: 2rem; /* or padding: 0.5rem 1rem; */
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 0.3rem 1rem;
+  background: rgb(25, 25, 25);
+}
+
+.closeBtn {
+  /* Remove position: absolute; top, right */
+  font-family: var(--font-mono);
+  color: var(--primary-color);
+  width: auto;
+  height: 1.1rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  z-index: 10;
+  transition: background 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: right;
+  background: transparent;
+  border: 2px solid transparent;
+  border-radius: 0.25rem;
+  padding: 1rem 0.7rem;
+}
+
+.closeBtn:hover {
+  border: 2px solid #dbdbdb;
+  color: #dbdbdb;
+}
+
+.notionIframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  border-radius: 0.25rem;
+  background: transparent;
+}
+
+@keyframes fadeInGlow {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
