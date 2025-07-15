@@ -161,3 +161,42 @@
     font-size: 1rem;
   }
 }
+
+@media (max-width: 900px) {
+  .topBar {
+    display: flex;
+    flex-direction: column; /* Stack logo and controls */
+    align-items: center;
+    padding: var(--spacing-unit) var(--spacing-unit);
+    gap: 0rem;
+  }
+
+  .controls {
+    display: inline-flex;
+    gap: 0rem;
+    text-align: center;
+    align-items: center;
+  }
+
+  .logoSection {
+    justify-content: center;
+  }
+
+  .logoLink {
+    font-size: 1.2rem;
+    letter-spacing: 0.5px;
+    text-align: center;
+    word-break: break-all;
+  }
+
+  .testButton,
+  .backButton {
+    font-size: 0.8rem;
+    min-width: 30px;
+    min-height: 20px;
+  }
+
+  .bgToggleButton {
+    font-size: 1.1rem;
+  }
+}
