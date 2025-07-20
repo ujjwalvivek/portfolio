@@ -13,7 +13,7 @@ function PortalTooltip({ show, mousePos, children, parentRef }) {
 
   if (isMobile) {
     // Clamp to screen edge on mobile
-    const min = padding + tooltipWidth / 2 + 96; // 96px for scrollbar and padding
+    const min = padding + tooltipWidth / 2 + 44; // 48px for scrollbar and padding
     const max = window.innerWidth - padding - tooltipWidth / 2;
     left = Math.max(min, Math.min(mousePos.x, max));
   } else if (parentRef && parentRef.current) {

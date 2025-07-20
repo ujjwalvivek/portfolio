@@ -27,7 +27,7 @@ const PdfViewer = ({ fileUrl, showToolbar = true, onClose }) => {
                         style={{
                             alignItems: 'center',
                             display: 'flex',
-                            gap: '0.5rem',
+                            gap: '0.3rem',
                             padding: '0rem 0.5rem',
                         }}
                     >

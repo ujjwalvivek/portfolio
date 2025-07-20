@@ -34,7 +34,7 @@
 
   .projectCard .cell,
   .projectCard .titleCell {
-    padding: 0.2rem 0;
+    padding: 1rem 0rem;
     font-size: 1rem;
     background: none;
     border: none;
@@ -63,7 +63,7 @@
   justify-content: flex-start;
   font-family: var(--font-mono);
   max-width: 1000px;
-  margin-bottom: 8rem;
+  margin-bottom: 2.5rem;
   padding: 0rem 1rem;
 }
 
@@ -128,8 +128,8 @@ font-size: 1.1rem;
   font-weight: 500;
   letter-spacing: 0px;
   padding: 1.2rem 1rem;
-  border-bottom: 2px dashed var(--primary-color);
-  border-top: 2px dashed var(--primary-color);
+  border-bottom: 2px solid var(--primary-color);
+  border-top: 2px solid var(--primary-color);
 }
 
 .tableHeader {
@@ -205,6 +205,10 @@ font-size: 1.1rem;
   vertical-align: middle;
 }
 
+.glassRow > td:not(:last-child) {
+  margin-top: 2.5rem; /* or whatever gap you want */
+}
+
 .titleCell {
   font-weight: 400;
   color: var(--text-color);
@@ -252,6 +256,7 @@ font-size: 1.1rem;
 }
 
 .tagContainer {
+  position: relative;
   display: flex;
   gap: 0.5rem;
 }
@@ -264,6 +269,7 @@ font-size: 1.1rem;
   background: rgba(var(--primary-color-rgb), 0.5);
   letter-spacing: 0px;
 }
+
 
 .buttonContainer {
   display: flex;
@@ -372,4 +378,357 @@ font-size: 1.1rem;
 @keyframes fadeInGlow {
   from { opacity: 0; }
   to { opacity: 1; }
+}
+
+
+/* Experimental CSS */
+
+/* Glassmorphism Effect for Project Rows */
+.glassRow {
+  animation: slideInUp 0.6s ease forwards;
+  opacity: 0;
+}
+.glassRow:nth-child(1) { animation-delay: 0.1s; }
+.glassRow:nth-child(2) { animation-delay: 0.2s; }
+.glassRow:nth-child(3) { animation-delay: 0.3s; }
+.glassRow:nth-child(4) { animation-delay: 0.4s; }
+.glassRow:nth-child(5) { animation-delay: 0.5s; }
+.glassRow:nth-child(6) { animation-delay: 0.6s; }
+.glassRow:nth-child(7) { animation-delay: 0.7s; }
+.glassRow:nth-child(8) { animation-delay: 0.8s; }
+.glassRow:nth-child(9) { animation-delay: 0.9s; }
+.glassRow:nth-child(10) { animation-delay: 1s; }
+@keyframes slideInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+}
+
+/* Glassmorphism Effect for Project Rows */
+.glassRow::after {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.glassRow:hover::after {
+background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='1' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' fill='black' opacity='0.4'/%3E%3C/svg%3E");  
+opacity: 1;
+}
+.projectCard::after {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.projectCard:hover::after {
+background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='1' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' fill='black' opacity='0.4'/%3E%3C/svg%3E");  
+opacity: 1;
+}
+
+/* Tag Styles */
+.tag {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+.tag::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: left 0.5s ease;
+}
+.tag:hover::before {
+  left: 100%;
+}
+.tag:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(var(--primary-color-rgb), 0.3);
+}
+
+/* Open App Button Styles */
+.openAppBtn {
+  box-shadow: 
+    0 0 5px var(--primary-color),
+    inset 0 0 5px rgba(var(--primary-color-rgb), 0.2);
+  transition: all 0.3s ease;
+}
+.openAppBtn:hover {
+  box-shadow: 
+    0 0 20px var(--primary-color),
+    0 0 30px var(--primary-color),
+    inset 0 0 10px rgba(var(--primary-color-rgb), 0.4);
+  text-shadow: 0 0 10px var(--primary-color);
+  animation: neonFlicker 0.1s infinite alternate;
+}
+@keyframes neonFlicker {
+  0% { opacity: 1; }
+  100% { opacity: 0.9; }
+}
+.openAppBtn:hover::after, .glassRow:hover td:first-child {
+  animation: loadingPulse 1s ease infinite;
+}
+@keyframes loadingPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* Title Cell Animation */
+.titleCell {
+  transition: all 0.3s ease;
+}
+.glassRow:hover .titleCell {
+  text-shadow: 
+    -1px 0 #ff0040,
+    1px 0 #00ff41;
+  animation: rgbSplit 0.4s ease-in-out;
+}
+@keyframes rgbSplit {
+  0% { transform: translate(0); }
+  25% { transform: translate(-2px, 0); }
+  75% { transform: translate(2px, 0); }
+  100% { transform: translate(0); }
+}
+
+/* Section Subtitle Animation */
+.sectionSubtitle::after {
+  content: '█';
+  color: var(--terminal-output-color);
+  animation: blink 1s infinite;
+  margin-left: 8px; 
+}
+.sectionSubtitle::before {
+  content: 'ONLINE ';
+  font-family: monospace;
+  color: var(--status-warn-color);
+}
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+.terminalCommand {
+  overflow: hidden;
+  white-space: nowrap;
+  animation: typing 2s steps(40) forwards;
+}
+@keyframes typing {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+/* Terminal Button Styles */
+.filterWrapper {
+  position: relative;
+  backdrop-filter: blur(32px) saturate(180%);
+  -webkit-backdrop-filter: blur(32px) saturate(180%);
+  background: rgba(var(--background-color-rgb), 0.3);
+  border: 2px solid var(--primary-color);
+  border-radius: 4px;
+  padding: 1rem;
+  margin: 0;
+  margin-bottom: 2.5rem;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+.filterButtons {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+@media (max-width: 600px) {
+  .filterWrapper {
+    flex-direction: column;
+  }
+}
+.filterWrapper::before {
+  content: 'FILTER_INTERFACE_v1.2.1';
+  position: absolute;
+  top: -0.69rem;
+  left: 1rem;
+  font-weight: 500;
+  background: var(--terminal-output-color);
+  padding: 0 10px;
+  color: var(--background-color);
+  font-size: 0.7rem;
+  border: 2px solid var(--terminal-input-color);
+  border-radius: 2px;
+}
+.terminalBtn {
+  position: relative;
+  background: transparent;
+  border: 1px solid var(--primary-color);
+  color: var(--primary-color);
+  padding: 0.5rem 1rem;
+  font-family: var(--font-mono);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+  border-radius: 4px;
+}
+.terminalBtn:hover {
+  box-shadow: 
+    0 0 10px var(--primary-color),
+    inset 0 0 10px rgba(var(--primary-color-rgb), 0.1);
+  text-shadow: 0 0 5px var(--primary-color);
+}
+.terminalBtn.active {
+  background: rgba(var(--primary-color-rgb), 0.1);
+  box-shadow: 
+    0 0 15px var(--primary-color),
+    inset 0 0 15px rgba(var(--primary-color-rgb), 0.2);
+}
+
+/* Status Bar Styles */
+.statusBar {
+  padding: 0.3rem 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--primary-color);
+  margin-top: 0.5rem;
+  position: absolute;
+  bottom: 0.5rem;
+  right: 0rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.statusBar::before {
+  content: '[OK]';
+  color: var(--status-info-color);
+  margin-right: 0.5rem;
+}
+.statusBar .activeFilter {
+  color: var(--status-warn-color);
+  text-transform: uppercase;
+}
+.statusBar .projectCount {
+  color: var(--text-color);
+}
+@media (max-width: 800px) {
+  .statusBar {
+    display: none;
+  }
+}
+
+/* Table End Styles */
+.tableEnd {
+  text-align: center;
+  padding: 1rem 0;
+  font-family: var(--font-mono);
+  position: relative;
+}
+.tableEnd::before {
+  content: '──────────────────── EOF ────────────────────';
+  color: var(--primary-color);
+  font-size: 0.9rem;
+  display: block;
+  margin-bottom: 1rem;
+  opacity: 0;
+  animation: eofAppear 1s ease-in 1s forwards;
+}
+@media (max-width: 500px) {
+  .tableEnd::before {
+    content: '────────────────── EOF ──────────────────';
+    font-size: 0.8rem;
+  }
+}
+@media (max-width: 500px) {
+  .tableEnd::before {
+    content: '─────────────── EOF ───────────────';
+    font-size: 0.8rem;
+  }
+}
+.tableEnd::after {
+  padding: 0.5rem;
+  border-radius: 4px;
+  content: 'console.log() ⇒ PASSED. entries_loaded(' attr(data-count) ')';
+  color: var(--text-color);
+  font-size: 0.8rem;
+  display: block;
+  opacity: 0;
+  animation: statusAppear 1s ease-in 2s forwards;
+  text-shadow: 0 0 5px var(--text-color);
+}
+@keyframes eofAppear {
+  to { opacity: 0.6; }
+}
+@keyframes statusAppear {
+  to { opacity: 1; }
+}
+
+/* System Stats Styles */
+.systemStats {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+  flex-wrap: wrap;
+  padding: 1rem 0.5rem;
+  gap: 2rem;
+  background: rgba(var(--background-color-rgb), 0.8);
+  border: 2px solid var(--terminal-output-color);
+  border-radius: 4px;
+  margin-top: 2rem;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  opacity: 0;
+  animation: statsAppear 1s ease-in 3s forwards;
+}
+@media (max-width: 630px) {
+  .systemStats {
+    justify-content: center;
+  }
+}
+.systemStats .stat {
+  color: var(--primary-color);
+}
+.systemStats .stat::before {
+  content: '[';
+  color: var(--status-info-color);
+}
+.systemStats .stat::after {
+  content: ']';
+  color: var(--status-info-color);
+}
+.systemStats .value {
+  color: var(--status-warn-color);
+  margin-left: 5px;
+}
+@keyframes statsAppear {
+  to { opacity: 1; }
+}
+
+/* Tag Container Styles */
+.tagContainer:first-child::before {
+  content: 'TAGS';
+  font-size: 0.6rem;
+  left: 0;
+  top: -1.1rem;
+  position: absolute;
+  letter-spacing: 1px;
+  font-weight: 800;
+  font-family: var(--font-mono);
+  color: var(--terminal-output-color);
 }

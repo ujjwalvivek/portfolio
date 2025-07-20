@@ -13,7 +13,7 @@ function PortalTooltip({ show, mousePos, children }) {
 
   if (isMobile) {
     // Clamp to screen edge on mobile
-    const min = padding + tooltipWidth / 2 + 48;
+    const min = padding + tooltipWidth / 2 + 44;
     const max = window.innerWidth - padding - tooltipWidth / 2;
     left = Math.max(min, Math.min(mousePos.x, max));
   } else {

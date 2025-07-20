@@ -6,6 +6,7 @@ import { VscVscode, VscGithubInverted } from "react-icons/vsc";
 import { FaWindowClose } from "react-icons/fa";
 import PdfViewer from "./PDFViewer/PdfViewer";
 import { ProjectsData } from './ProjectsData';
+// import { ThemeContext } from '../../ThemeSwitcher/ThemeContext';
 
 const Projects = () => {
   const [activeWindow, setActiveWindow] = useState(null);
@@ -20,6 +21,11 @@ const Projects = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  //   // Only add glitch/pulse/flicker if background is not "none"
+  // const glitchyClasses = backgroundConfig.type !== 'none'
+  //     ? `${styles.glitch} ${styles.shadowPulse} ${styles.neonFlicker}`
+  //     : '';
+
 
   // Filter state: 'all', 'pm', 'dev'
   const [projectFilter, setProjectFilter] = useState('all');
@@ -32,18 +38,20 @@ const Projects = () => {
   let filteredSections = [];
   if (projectFilter === 'pm') {
     filteredSections = [
-      { title: 'ujjwalvivek@chroot ~ > sudo pacman -Syu "pm-projects"', projects: pmProjects, section: 'pm' }
+      { title: 'uv@chroot ~ ⪢ eza --PM "pm-projects"', projects: pmProjects, section: 'pm' }
     ];
   } else if (projectFilter === 'dev') {
     filteredSections = [
-      { title: 'ujjwalvivek@chroot ~ > sudo pacman -Syu "dev-projects"', projects: devProjects, section: 'dev' }
+      { title: 'uv@chroot ~ ⪢ eza --DEV "dev-projects"', projects: devProjects, section: 'dev' }
     ];
   } else {
     filteredSections = [
-      { title: 'ujjwalvivek@chroot ~ > sudo pacman -Syu "pm-projects"', projects: pmProjects, section: 'pm' },
-      { title: 'ujjwalvivek@chroot ~ > sudo pacman -Syu "dev-projects"', projects: devProjects, section: 'dev' }
+      { title: 'uv@chroot ~ ⪢ eza --PM "pm-projects"', projects: pmProjects, section: 'pm' },
+      { title: 'uv@chroot ~ ⪢ eza --DEV "dev-projects"', projects: devProjects, section: 'dev' }
     ];
   }
+
+  // const { darkMode } = React.useContext(ThemeContext);
 
   return (
     <div className={styles.projectsRoot}>
@@ -53,72 +61,62 @@ const Projects = () => {
       </div>
       <div className={styles.tableWrapper}>
         {/* Filter Controls (only render once above table/card list) */}
-        <div style={{ margin: '1rem', display: 'flex', gap: '1rem', alignItems: 'center' }}>
-          <span style={{ fontWeight: 500 }}>Filter:</span>
-          <button
+        <div className={styles.filterWrapper}>
+          <span style={{ fontWeight: 500 }}>{'filter@uv ~ ⪢ eza'}</span>
+          <div className={styles.filterButtons}>
+            <button
+            className={`${styles.terminalBtn} ${projectFilter === 'all' ? styles.active : ''}`}
             onClick={() => setProjectFilter('all')}
             style={{
-              fontWeight: projectFilter === 'all' ? 'bold' : 'normal',
+              fontWeight: projectFilter === 'all' ? '800' : '400',
               background: projectFilter === 'all' ? 'var(--text-color)' : 'transparent',
               color: projectFilter === 'all' ? 'var(--background-color)' : 'var(--text-color)',
-              border: '1px solid var(--text-color)',
-              borderRadius: '4px',
-              padding: '0.3rem 0.8rem',
-              cursor: 'pointer',
-              outline: 'none',
             }}
           >
-            All
+            --All
           </button>
           <button
+            className={`${styles.terminalBtn} ${projectFilter === 'pm' ? styles.active : ''}`}
             onClick={() => setProjectFilter('pm')}
             style={{
-              fontWeight: projectFilter === 'pm' ? 'bold' : 'normal',
+              fontWeight: projectFilter === 'pm' ? '800' : '400',
               background: projectFilter === 'pm' ? 'var(--text-color)' : 'transparent',
               color: projectFilter === 'pm' ? 'var(--background-color)' : 'var(--text-color)',
-              border: '1px solid var(--text-color)',
-              borderRadius: '4px',
-              padding: '0.3rem 0.8rem',
-              cursor: 'pointer',
-              outline: 'none',
             }}
           >
-            PM
+            --PM
           </button>
           <button
+            className={`${styles.terminalBtn} ${projectFilter === 'dev' ? styles.active : ''}`}
             onClick={() => setProjectFilter('dev')}
             style={{
-              fontWeight: projectFilter === 'dev' ? 'bold' : 'normal',
+              fontWeight: projectFilter === 'dev' ? '800' : '400',
               background: projectFilter === 'dev' ? 'var(--text-color)' : 'transparent',
               color: projectFilter === 'dev' ? 'var(--background-color)' : 'var(--text-color)',
-              border: '1px solid var(--text-color)',
-              borderRadius: '4px',
-              padding: '0.3rem 0.8rem',
-              cursor: 'pointer',
-              outline: 'none',
             }}
           >
-            Dev
+            --Dev
           </button>
+          </div>
+          <div className={styles.statusBar}>
+            <span>
+              Active filter: <span className={styles.activeFilter}>{projectFilter}</span>
+            </span>
+            <span className={styles.projectCount}>
+              {projectFilter === 'all' ? ProjectsData.length :
+                projectFilter === 'pm' ? pmProjects.length : devProjects.length} entries found
+            </span>
+          </div>
         </div>
         {!isMobile ? (
           <table className={styles.projectsTable}>
-            <thead>
-              <tr className={styles.tableHeader}>
-                <th>#</th>
-                <th>title(project)</th>
-                <th>(tags)</th>
-                <th>(links)</th>
-                <th></th>
-              </tr>
-            </thead>
             <tbody>
               {filteredSections.map(section => (
                 <React.Fragment key={section.title}>
                   {section.projects.length > 0 && (
                     <tr>
-                      <td colSpan={5}>
-                        <div className={styles.sectionSubtitle}>
+                      <td colSpan={4}>
+                        <div className={styles.sectionSubtitle + ' ' + styles.terminalCommand}>
                           {section.title}
                         </div>
                       </td>
@@ -207,12 +205,12 @@ const Projects = () => {
               <React.Fragment key={section.title}>
                 {section.projects.length > 0 && (
                   <div className={styles.sectionSubtitle}>
-                          {section.title}
-                        </div>
+                    {section.title}
+                  </div>
                 )}
                 {section.projects.map((win, idx) => (
                   <div key={win.id} className={styles.projectCard} id={`project-card-${section.section}-${idx}`}>
-                    <div className={styles.cell} style={{ fontWeight: 700, fontSize: '1.1rem', marginBottom: '0.2rem' }}>#{idx + 1}</div>
+                    <div className={styles.cell} style={{ fontWeight: 700, fontSize: '1.1rem', marginBottom: '0.2rem' }}>Entry #{idx + 1}</div>
                     <div className={styles.cell + ' ' + styles.titleCell} style={{ marginBottom: '0.3rem' }}>
                       <DescriptionCell description={win.content}>
                         {win.title}
@@ -231,7 +229,7 @@ const Projects = () => {
                             title="Open in VSCode.dev"
                             style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', justifyContent: 'center', width: 'auto' }}
                           >
-                            <VscVscode size={'1.2rem'} /> <span>Open in VSCode.dev ↗</span> 
+                            <VscVscode size={'1.2rem'} /> <span>Open in VSCode.dev ↗</span>
                           </button>
                           <button
                             className={styles.openAppBtn + ' ' + styles.halfWidthBtn}
@@ -285,6 +283,24 @@ const Projects = () => {
             ))}
           </div>
         )}
+      </div>
+      <div className={styles.stats} style={{ width: '100%', padding: '1rem' }}>
+        <div className={styles.tableEnd} data-count={projectFilter === 'all' ? ProjectsData.length :
+          projectFilter === 'pm' ? pmProjects.length : devProjects.length}></div>
+        <div className={styles.systemStats}>
+          <span className={styles.stat}>
+            TOTAL_PROJECTS<span className={styles.value}>{ProjectsData.length}</span>
+          </span>
+          <span className={styles.stat}>
+            PM_PROJECTS<span className={styles.value}>{pmProjects.length}</span>
+          </span>
+          <span className={styles.stat}>
+            DEV_PROJECTS<span className={styles.value}>{devProjects.length}</span>
+          </span>
+          <span className={styles.stat}>
+            STATUS<span className={styles.value}>ONLINE</span>
+          </span>
+        </div>
       </div>
       {/* Notion Embeds overlays (excluding VSCode.dev/github projects) */}
       {ProjectsData.filter(win => win.notionEmbed && !win.notionEmbed.startsWith('https://vscode.dev/github/')).map(win => (
