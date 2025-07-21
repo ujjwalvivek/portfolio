@@ -8,7 +8,7 @@ slug: "log_0002_midnight_patchdrop"
 
 ````javascript
 > deploy  
-[ WARN ] you might get ignored again  Y/n
+[ WARN ] you might get ignored again  y/N
 [ CONTINUE? ] Y  
 [ PATCHING... ]
 ````

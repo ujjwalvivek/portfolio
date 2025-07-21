@@ -11,4 +11,9 @@
 * [x] Toggle: Low Chaos Mode (reduced glitchiness, reduced motions, and increased contrast)
          `we anyway disable background on background toggle. we could pivot this button for a low chaos mode, polite mode`
 * [x] Add subtle Easter Egg hint - bottom most text on the about page (optional) 
-* [ ] Add upcoming blog posts timeline view (optional)
+* [ ] Add upcoming blog posts / dev journey / devlogs timeline view (optional)
+* [ ] Contact form as terminal input on Homepage
+         `Make it feel like sending a message through a shell (how to embed subject and body in mailto?)`
+* [ ] Project sorting and search 'grep' functionality (optional) 
+* [ ] Link related posts with proper tags, possibly forming a narrative.
+* [ ] Terminal command palette - Ctrl+K style navigation across your whole site

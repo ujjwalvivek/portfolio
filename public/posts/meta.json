@@ -22,5 +22,13 @@
     "date": "2025-07-13",
     "description": "I launched. Got rekt. Didn’t cry. Just patched the damn thing. Building something beautiful on the web is never as easy as it looks. But every bug, every crash, and every “why is this so slow?!” moment taught me something new.",
     "tags": ["log", "patch", "accessibility", "dev meltdown"]
+  },
+  {
+    "id": 4,
+    "filename": "proj_0000_the_reckoning.md",
+    "title": "The Reckoning",
+    "date": "2025-07-21",
+    "description": "A deep dive into the challenges faced during the development process and the lessons learned along the way.",
+    "tags": ["project", "development", "challenges", "lessons learned"]
   }
 ]

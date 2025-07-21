@@ -1,63 +1,154 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import styles from './Projects.module.css';
 import { DescriptionCell } from "./ToolTip/DescriptionCell";
 import { TagCell } from "./ToolTip/TagCell";
-import { VscVscode, VscGithubInverted } from "react-icons/vsc";
+import { VscGithubInverted } from "react-icons/vsc";
 import { FaWindowClose } from "react-icons/fa";
 import PdfViewer from "./PDFViewer/PdfViewer";
 import { ProjectsData } from './ProjectsData';
 import { useBackground } from '../../Background/BackgroundContext';
+import { BsJournalText } from 'react-icons/bs';
+import { SiFigma, SiNotion } from "react-icons/si";
+import { PiFilePdfFill } from "react-icons/pi";
+import { TbWorldWww } from "react-icons/tb";
 
 const Projects = () => {
   const [activeWindow, setActiveWindow] = useState(null);
+  const [projectFilter, setProjectFilter] = useState('all');
+  
+  // Responsive: show table on desktop, cards on mobile
+  const [isMobile, setIsMobile] = useState(() => 
+    typeof window !== 'undefined' && window.innerWidth <= 800
+  );
 
-  // Responsive: show table on desktop, cards on mobile (live on resize)
-  const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' && window.innerWidth <= 800);
   useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth <= 800);
-    };
+    const handleResize = () => setIsMobile(window.innerWidth <= 800);
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-    const { backgroundConfig } = useBackground();
-  
+  // Background-dependent styling (like your original)
+  const { backgroundConfig } = useBackground();
+  const glitchyClasses = backgroundConfig.type !== 'none' ? styles.titleCell : '';
+  const noBlinkCursor = backgroundConfig.type !== 'none' ? '' : styles.noBlinkCursor;
 
-    // Only add glitch/pulse/flicker if background is not "none"
-  const glitchyClasses = backgroundConfig.type !== 'none'
-      ? `${styles.titleCell}`
-      : '';
+  // Memoize expensive calculations (this is good optimization)
+  const { pmProjects, devProjects } = useMemo(() => ({
+    pmProjects: ProjectsData.filter(project => project.id.startsWith('pm-')),
+    devProjects: ProjectsData.filter(project => project.id.startsWith('dev-'))
+  }), []);
 
-      const noBlinkCursor = backgroundConfig.type !== 'none'
-      ? ''
-      : styles.noBlinkCursor;
+  const filteredSections = useMemo(() => {
+    if (projectFilter === 'pm') {
+      return [{ title: 'uv@chroot ~ ⪢ eza --PM "pm-projects"', projects: pmProjects, section: 'pm' }];
+    } else if (projectFilter === 'dev') {
+      return [{ title: 'uv@chroot ~ ⪢ eza --DEV "dev-projects"', projects: devProjects, section: 'dev' }];
+    } else {
+      return [
+        { title: 'uv@chroot ~ ⪢ eza --PM "pm-projects"', projects: pmProjects, section: 'pm' },
+        { title: 'uv@chroot ~ ⪢ eza --DEV "dev-projects"', projects: devProjects, section: 'dev' }
+      ];
+    }
+  }, [projectFilter, pmProjects, devProjects]);
 
-  // Filter state: 'all', 'pm', 'dev'
-  const [projectFilter, setProjectFilter] = useState('all');
+  const projectCount = useMemo(() => {
+    const counts = { all: ProjectsData.length, pm: pmProjects.length, dev: devProjects.length };
+    return counts[projectFilter];
+  }, [projectFilter, pmProjects.length, devProjects.length]);
 
-  // Split projects into PM and Dev based on id prefix
-  const pmProjects = ProjectsData.filter(win => win.id.startsWith('pm-'));
-  const devProjects = ProjectsData.filter(win => win.id.startsWith('dev-'));
+  // Memoize button layout function
+  const getButtonLayout = useCallback((project) => {
+    const { contentLinks } = project;
 
-  // Filtered projects for rendering
-  let filteredSections = [];
-  if (projectFilter === 'pm') {
-    filteredSections = [
-      { title: 'uv@chroot ~ ⪢ eza --PM "pm-projects"', projects: pmProjects, section: 'pm' }
-    ];
-  } else if (projectFilter === 'dev') {
-    filteredSections = [
-      { title: 'uv@chroot ~ ⪢ eza --DEV "dev-projects"', projects: devProjects, section: 'dev' }
-    ];
-  } else {
-    filteredSections = [
-      { title: 'uv@chroot ~ ⪢ eza --PM "pm-projects"', projects: pmProjects, section: 'pm' },
-      { title: 'uv@chroot ~ ⪢ eza --DEV "dev-projects"', projects: devProjects, section: 'dev' }
-    ];
-  }
+    const primary = contentLinks?.blogPost ? {
+      type: 'primary',
+      label: 'Blog',
+      icon: <BsJournalText className={styles.journeyIcon} />,
+      action: () => window.open(contentLinks.blogPost, '_blank'),
+      className: 'openAppBtn'
+    } : null;
 
-  // const { darkMode } = React.useContext(ThemeContext);
+    const secondary = [];
+
+    if (contentLinks?.notionEmbed) {
+      secondary.push({
+        type: 'secondary',
+        label: 'Details',
+        icon: <SiNotion className={styles.journeyIcon} />,
+        action: () => setActiveWindow(project.id + '-embed'),
+        className: 'openAppBtn'
+      });
+    }
+    if (contentLinks?.pdfDocument) {
+      secondary.push({
+        type: 'secondary',
+        label: 'Docs',
+        icon: <PiFilePdfFill className={styles.journeyIcon} />,
+        action: () => setActiveWindow(project.id + '-embed'),
+        className: 'openAppBtn'
+      });
+    }
+    if (contentLinks?.figmaDesign) {
+      secondary.push({
+        type: 'secondary',
+        label: 'Design',
+        icon: <SiFigma className={styles.journeyIcon} />,
+        action: () => window.open(contentLinks.figmaDesign, '_blank'),
+        className: 'openAppBtn'
+      });
+    }
+    if (contentLinks?.githubRepo) {
+      secondary.push({
+        type: 'secondary',
+        label: 'Code',
+        icon: <VscGithubInverted className={styles.journeyIcon} />,
+        action: () => window.open(contentLinks.githubRepo, '_blank'),
+        className: 'openAppBtn'
+      });
+    }
+    if (contentLinks?.websiteLink) {
+      secondary.push({
+        type: 'secondary',
+        label: 'Web',
+        icon: <TbWorldWww className={styles.journeyIcon} />,
+        action: () => window.open(contentLinks.websiteLink, '_blank'),
+        className: 'openAppBtn'
+      });
+    }
+
+    // Layout logic
+    if (primary && secondary.length > 0) {
+      return { layout: 'split', buttons: [primary, secondary[0]] };
+    } else if (primary && secondary.length === 0) {
+      return { layout: 'fullPrimary', buttons: [primary] };
+    } else if (!primary && secondary.length === 1) {
+      return { layout: 'fullSecondary', buttons: [secondary[0]] };
+    } else if (!primary && secondary.length >= 2) {
+      return { layout: 'splitSecondary', buttons: [secondary[0], secondary[1]] };
+    }
+    
+    return { layout: 'empty', buttons: [] };
+  }, []); // setActiveWindow is stable
+
+  // NO React.memo - just regular component functions
+  const ButtonGroup = ({ project }) => {
+    const { layout, buttons } = getButtonLayout(project);
+    if (buttons.length === 0) return null;
+    
+    return (
+      <div className={`${styles.buttonContainer} ${styles[layout]}`}>
+        {buttons.map((button, index) => (
+          <button
+            key={index}
+            className={styles[button.className]}
+            onClick={button.action}
+          >
+            {button.icon} {" "} {button.label}
+          </button>
+        ))}
+      </div>
+    );
+  };
 
   return (
     <div className={styles.projectsRoot}>
@@ -65,55 +156,36 @@ const Projects = () => {
         <h1 className={styles.heroTitle}>Projects Directory</h1>
         <p className={styles.heroSubtitle}>Projects. Failures. Successes. Learnings. Insights.</p>
       </div>
+      
       <div className={styles.tableWrapper}>
-        {/* Filter Controls (only render once above table/card list) */}
         <div className={styles.filterWrapper}>
           <span style={{ fontWeight: 500 }}>{'filter@uv ~ ⪢ eza'}</span>
           <div className={styles.filterButtons}>
-            <button
-            className={`${styles.terminalBtn} ${projectFilter === 'all' ? styles.active : ''}`}
-            onClick={() => setProjectFilter('all')}
-            style={{
-              fontWeight: projectFilter === 'all' ? '800' : '400',
-              background: projectFilter === 'all' ? 'var(--text-color)' : 'transparent',
-              color: projectFilter === 'all' ? 'var(--background-color)' : 'var(--text-color)',
-            }}
-          >
-            --All
-          </button>
-          <button
-            className={`${styles.terminalBtn} ${projectFilter === 'pm' ? styles.active : ''}`}
-            onClick={() => setProjectFilter('pm')}
-            style={{
-              fontWeight: projectFilter === 'pm' ? '800' : '400',
-              background: projectFilter === 'pm' ? 'var(--text-color)' : 'transparent',
-              color: projectFilter === 'pm' ? 'var(--background-color)' : 'var(--text-color)',
-            }}
-          >
-            --PM
-          </button>
-          <button
-            className={`${styles.terminalBtn} ${projectFilter === 'dev' ? styles.active : ''}`}
-            onClick={() => setProjectFilter('dev')}
-            style={{
-              fontWeight: projectFilter === 'dev' ? '800' : '400',
-              background: projectFilter === 'dev' ? 'var(--text-color)' : 'transparent',
-              color: projectFilter === 'dev' ? 'var(--background-color)' : 'var(--text-color)',
-            }}
-          >
-            --Dev
-          </button>
+            {['all', 'pm', 'dev'].map((filter) => (
+              <button
+                key={filter}
+                className={`${styles.terminalBtn} ${projectFilter === filter ? styles.active : ''}`}
+                onClick={() => setProjectFilter(filter)}
+                style={{
+                  fontWeight: projectFilter === filter ? '800' : '400',
+                  background: projectFilter === filter ? 'var(--text-color)' : 'transparent',
+                  color: projectFilter === filter ? 'var(--background-color)' : 'var(--text-color)',
+                }}
+              >
+                --{filter.charAt(0).toUpperCase() + filter.slice(1)}
+              </button>
+            ))}
           </div>
           <div className={styles.statusBar}>
             <span>
               Active filter: <span className={styles.activeFilter}>{projectFilter}</span>
             </span>
             <span className={styles.projectCount}>
-              {projectFilter === 'all' ? ProjectsData.length :
-                projectFilter === 'pm' ? pmProjects.length : devProjects.length} entries found
+              {projectCount} entries found
             </span>
           </div>
         </div>
+
         {!isMobile ? (
           <table className={styles.projectsTable}>
             <tbody>
@@ -128,76 +200,19 @@ const Projects = () => {
                       </td>
                     </tr>
                   )}
-                  {section.projects.map((win, idx) => (
-                    <tr key={win.id} className={styles.glassRow} id={`project-card-${section.section}-${idx}`}>
+                  {section.projects.map((project, idx) => (
+                    <tr key={project.id} className={styles.glassRow} id={`project-card-${section.section}-${idx}`}>
                       <td className={styles.cell}>{idx + 1}</td>
                       <td className={styles.cell + ' ' + glitchyClasses}>
-                        <DescriptionCell description={win.content}>
-                          {win.title}
+                        <DescriptionCell description={project.content}>
+                          {project.title}
                         </DescriptionCell>
                       </td>
                       <td className={styles.cell}>
-                        <TagCell tags={win.tags} />
+                        <TagCell tags={project.tags} />
                       </td>
                       <td className={styles.cell}>
-                        <div className={styles.buttonContainer}>
-                          {/* VSCode.dev and GitHub buttons for github projects */}
-                          {win.notionEmbed && win.notionEmbed.startsWith('https://vscode.dev/github/') ? (
-                            <div style={{ display: 'flex', width: '100%' }}>
-                              <button
-                                className={styles.openAppBtn + ' ' + styles.halfWidthBtn}
-                                onClick={() => window.open(win.notionEmbed, '_blank', 'noopener,noreferrer')}
-                                title="Open in VSCode.dev"
-                                style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', justifyContent: 'center' }}
-                              >
-                                <VscVscode size={'1.2rem'} />
-                              </button>
-                              <button
-                                className={styles.openAppBtn + ' ' + styles.halfWidthBtn}
-                                onClick={() => window.open(win.notionEmbed.replace('https://vscode.dev/github/', 'https://github.com/'), '_blank', 'noopener,noreferrer')}
-                                title="Open in GitHub"
-                                style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', justifyContent: 'center' }}
-                              >
-                                <VscGithubInverted size={'1.2rem'} />
-                              </button>
-                            </div>
-                          ) : win.notionEmbed ? (
-                            win.notionEmbed.startsWith('https://www.figma.com/') ? (
-                              <button
-                                className={styles.openAppBtn}
-                                onClick={e => {
-                                  e.stopPropagation();
-                                  window.open(win.notionEmbed, '_blank', 'noopener,noreferrer');
-                                }}
-                                style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.4rem' }}
-                              >
-                                Project Details ↗
-                              </button>
-                            ) : win.notionEmbed.endsWith('.pdf') || win.notionEmbed.includes('notion.site') ? (
-                              <button
-                                className={styles.openAppBtn}
-                                onClick={e => {
-                                  e.stopPropagation();
-                                  setActiveWindow(win.id + '-embed');
-                                }}
-                              >
-                                Project Details ↗
-                              </button>
-                            ) : (
-                              // Generic external links
-                              <button
-                                className={styles.openAppBtn}
-                                onClick={e => {
-                                  e.stopPropagation();
-                                  window.open(win.notionEmbed, '_blank', 'noopener,noreferrer');
-                                }}
-                                style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.4rem' }}
-                              >
-                                Project Details ↗
-                              </button>
-                            )
-                          ) : null}
-                        </div>
+                        <ButtonGroup project={project} />
                       </td>
                     </tr>
                   ))}
@@ -210,79 +225,24 @@ const Projects = () => {
             {filteredSections.map(section => (
               <React.Fragment key={section.title}>
                 {section.projects.length > 0 && (
-                  <div className={styles.sectionSubtitle}>
+                  <div className={`${styles.sectionSubtitle} ${noBlinkCursor}`}>
                     {section.title}
                   </div>
                 )}
-                {section.projects.map((win, idx) => (
-                  <div key={win.id} className={styles.projectCard} id={`project-card-${section.section}-${idx}`}>
-                    <div className={styles.cell} style={{ fontWeight: 700, fontSize: '1.1rem', marginBottom: '0.2rem' }}>Entry #{idx + 1}</div>
+                {section.projects.map((project, idx) => (
+                  <div key={project.id} className={styles.projectCard} id={`project-card-${section.section}-${idx}`}>
+                    <div className={styles.cell} style={{ fontWeight: 700, fontSize: '1.1rem', marginBottom: '0.2rem' }}>
+                      Entry #{idx + 1}
+                    </div>
                     <div className={styles.cell + ' ' + glitchyClasses} style={{ marginBottom: '0.3rem' }}>
-                      <DescriptionCell description={win.content}>
-                        {win.title}
+                      <DescriptionCell description={project.content}>
+                        {project.title}
                       </DescriptionCell>
                     </div>
                     <div className={styles.cell}>
-                      <TagCell tags={win.tags} />
+                      <TagCell tags={project.tags} />
                     </div>
-                    <div className={styles.buttonContainer} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                      {/* VSCode.dev and GitHub buttons for github projects */}
-                      {win.notionEmbed && win.notionEmbed.startsWith('https://vscode.dev/github/') ? (
-                        <>
-                          <button
-                            className={styles.openAppBtn + ' ' + styles.halfWidthBtn}
-                            onClick={() => window.open(win.notionEmbed, '_blank', 'noopener,noreferrer')}
-                            title="Open in VSCode.dev"
-                            style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', justifyContent: 'center', width: 'auto' }}
-                          >
-                            <VscVscode size={'1.2rem'} /> <span>Open in VSCode.dev ↗</span>
-                          </button>
-                          <button
-                            className={styles.openAppBtn + ' ' + styles.halfWidthBtn}
-                            onClick={() => window.open(win.notionEmbed.replace('https://vscode.dev/github/', 'https://github.com/'), '_blank', 'noopener,noreferrer')}
-                            title="Open in GitHub"
-                            style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', justifyContent: 'center', width: 'auto' }}
-                          >
-                            <VscGithubInverted size={'1.2rem'} /> <span>Open in GitHub ↗</span>
-                          </button>
-                        </>
-                      ) : win.notionEmbed ? (
-                        win.notionEmbed.startsWith('https://www.figma.com/') ? (
-                          <button
-                            className={styles.openAppBtn}
-                            onClick={e => {
-                              e.stopPropagation();
-                              window.open(win.notionEmbed, '_blank', 'noopener,noreferrer');
-                            }}
-                            style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.4rem' }}
-                          >
-                            Project Details ↗
-                          </button>
-                        ) : win.notionEmbed.endsWith('.pdf') || win.notionEmbed.includes('notion.site') ? (
-                          <button
-                            className={styles.openAppBtn}
-                            onClick={e => {
-                              e.stopPropagation();
-                              setActiveWindow(win.id + '-embed');
-                            }}
-                          >
-                            Project Details ↗
-                          </button>
-                        ) : (
-                          // Generic external links
-                          <button
-                            className={styles.openAppBtn}
-                            onClick={e => {
-                              e.stopPropagation();
-                              window.open(win.notionEmbed, '_blank', 'noopener,noreferrer');
-                            }}
-                            style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.4rem' }}
-                          >
-                            Project Details ↗
-                          </button>
-                        )
-                      ) : null}
-                    </div>
+                    <ButtonGroup project={project} />
                   </div>
                 ))}
               </React.Fragment>
@@ -290,9 +250,9 @@ const Projects = () => {
           </div>
         )}
       </div>
+
       <div className={styles.stats} style={{ width: '100%', padding: '1rem' }}>
-        <div className={styles.tableEnd} data-count={projectFilter === 'all' ? ProjectsData.length :
-          projectFilter === 'pm' ? pmProjects.length : devProjects.length}></div>
+        <div className={styles.tableEnd} data-count={projectCount}></div>
         <div className={styles.systemStats}>
           <span className={styles.stat}>
             TOTAL_PROJECTS<span className={styles.value}>{ProjectsData.length}</span>
@@ -308,15 +268,20 @@ const Projects = () => {
           </span>
         </div>
       </div>
-      {/* Notion Embeds overlays (excluding VSCode.dev/github projects) */}
-      {ProjectsData.filter(win => win.notionEmbed && !win.notionEmbed.startsWith('https://vscode.dev/github/')).map(win => (
-        activeWindow === win.id + '-embed' && (
-          <div className={styles.notionOverlay} key={win.id + '-embed'}>
+
+      {/* Overlay rendering */}
+      {ProjectsData.filter(project => 
+        project.contentLinks?.notionEmbed || project.contentLinks?.pdfDocument
+      ).map(project => (
+        activeWindow === project.id + '-embed' && (
+          <div className={styles.notionOverlay} key={project.id + '-embed'}>
             <div className={styles.notionEmbedContainer}>
-              {/* Use PdfViewer for PDFs, iframe for Notion links */}
-              {win.notionEmbed.endsWith('.pdf') ? (
-                <PdfViewer fileUrl={win.notionEmbed} onClose={() => setActiveWindow(null)} />
-              ) : (
+              {project.contentLinks?.pdfDocument ? (
+                <PdfViewer 
+                  fileUrl={project.contentLinks.pdfDocument} 
+                  onClose={() => setActiveWindow(null)} 
+                />
+              ) : project.contentLinks?.notionEmbed ? (
                 <>
                   <div className={styles.closeBtnContainer}>
                     <button
@@ -329,8 +294,8 @@ const Projects = () => {
                     </button>
                   </div>
                   <iframe
-                    title={win.title}
-                    src={win.notionEmbed}
+                    title={project.title}
+                    src={project.contentLinks.notionEmbed}
                     width="100%"
                     height="100%"
                     frameBorder="0"
@@ -338,7 +303,7 @@ const Projects = () => {
                     className={styles.notionIframe}
                   />
                 </>
-              )}
+              ) : null}
             </div>
           </div>
         )

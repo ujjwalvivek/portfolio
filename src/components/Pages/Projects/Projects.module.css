@@ -270,24 +270,59 @@ font-size: 1.1rem;
   letter-spacing: 0px;
 }
 
-
+/* Button container improvements */
 .buttonContainer {
   display: flex;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-  align-items: center;
+  gap: 0.6rem;
+  width: 100%;
+  font-family: var(--font-mono);
+}
+
+/* Layout: Primary + Secondary (50/50 split) */
+.buttonContainer.split {
+  justify-content: space-between;
+}
+
+.buttonContainer.split .openAppBtn {
+  flex: 1;
+  max-width: calc(50% - 0.25rem);
+}
+
+/* Layout: Full width single button */
+.buttonContainer.fullPrimary,
+.buttonContainer.fullSecondary {
   justify-content: center;
 }
 
+.buttonContainer.fullPrimary .openAppBtn,
+.buttonContainer.fullSecondary .openAppBtn {
+  flex: 1;
+  max-width: 100%;
+}
+
+/* Layout: Two secondary buttons */
+.buttonContainer.splitSecondary {
+  justify-content: space-between;
+}
+
+.buttonContainer.splitSecondary .openAppBtn {
+  flex: 1;
+  max-width: calc(50% - 0.25rem);
+}
+
+/* Icon for journey button */
+.journeyIcon {
+  font-size: 1rem;
+  flex-shrink: 0; /* Prevent icons from shrinking */
+}
+
+/* Open App Button Styles */
 .openAppBtn {
-  /* background: rgba(var(--text-color-rgb), 0.8); */
   background: rgba(var(--text-color-rgb), 0.3);
-  /* color: var(--background-color); */
   color: var(--text-color);
   border-radius: 0.25rem;
-  /* border: none; */
   border: 2px solid var(--text-color);
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 1.2rem;
   font-weight: 700;
   font-size: 0.9rem;
   cursor: pointer;
@@ -295,13 +330,70 @@ font-size: 1.1rem;
   letter-spacing: 0px;
   text-align: center;
   white-space: nowrap;
+  flex: 1; /* Default to full width */
+  min-width: 0; /* Prevent overflow */
+    /* Key fixes for alignment */
+  display: flex; /* Essential for proper alignment */
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem; /* Space between icon and text */
+  font-family: inherit;
+  box-shadow: 
+    0 0 5px var(--primary-color),
+    inset 0 0 5px rgba(var(--primary-color-rgb), 0.2);
+  transition: all 0.3s ease;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .openAppBtn:hover {
   background: rgba(var(--background-color-rgb), 0.7);
   color: var(--text-color);
   border: 2px solid var(--background-color);
+  box-shadow: 
+    0 0 20px var(--primary-color),
+    0 0 30px var(--primary-color),
+    inset 0 0 10px rgba(var(--primary-color-rgb), 0.4);
+  text-shadow: 0 0 10px var(--primary-color);
+  animation: neonFlicker 0.1s infinite alternate;
+}
 
+.openAppBtn:hover::after, .glassRow:hover td:first-child {
+  animation: loadingPulse 1s ease infinite;
+}
+
+@keyframes neonFlicker {
+  0% { opacity: 1; }
+  100% { opacity: 0.9; }
+}
+
+@keyframes loadingPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* Mobile improvements */
+@media (max-width: 800px) {
+  .openAppBtn {
+    padding: 0.7rem 1.2rem;
+    font-size: 0.9rem;
+  }
+  
+  .openAppBtn svg {
+    font-size: 1.1rem;
+  }
+}
+
+/* Very small screens - icon only */
+@media (max-width: 480px) {
+  .buttonContainer.split .openAppBtn,
+  .buttonContainer.splitSecondary .openAppBtn {
+    padding: 0.6rem 0.8rem;
+    font-size: 0.8rem;
+  }
 }
 
 .notionOverlay {
@@ -380,9 +472,6 @@ font-size: 1.1rem;
   from { opacity: 0; }
   to { opacity: 1; }
 }
-
-
-/* Experimental CSS */
 
 /* Glassmorphism Effect for Project Rows */
 .glassRow {
@@ -464,33 +553,6 @@ opacity: 1;
 .tag:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(var(--primary-color-rgb), 0.3);
-}
-
-/* Open App Button Styles */
-.openAppBtn {
-  box-shadow: 
-    0 0 5px var(--primary-color),
-    inset 0 0 5px rgba(var(--primary-color-rgb), 0.2);
-  transition: all 0.3s ease;
-}
-.openAppBtn:hover {
-  box-shadow: 
-    0 0 20px var(--primary-color),
-    0 0 30px var(--primary-color),
-    inset 0 0 10px rgba(var(--primary-color-rgb), 0.4);
-  text-shadow: 0 0 10px var(--primary-color);
-  animation: neonFlicker 0.1s infinite alternate;
-}
-@keyframes neonFlicker {
-  0% { opacity: 1; }
-  100% { opacity: 0.9; }
-}
-.openAppBtn:hover::after, .glassRow:hover td:first-child {
-  animation: loadingPulse 1s ease infinite;
-}
-@keyframes loadingPulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.5; }
 }
 
 /* Title Cell Animation */
@@ -742,3 +804,4 @@ opacity: 1;
   font-family: var(--font-mono);
   color: var(--terminal-output-color);
 }
+
