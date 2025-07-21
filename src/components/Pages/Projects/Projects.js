@@ -6,7 +6,7 @@ import { VscVscode, VscGithubInverted } from "react-icons/vsc";
 import { FaWindowClose } from "react-icons/fa";
 import PdfViewer from "./PDFViewer/PdfViewer";
 import { ProjectsData } from './ProjectsData';
-// import { ThemeContext } from '../../ThemeSwitcher/ThemeContext';
+import { useBackground } from '../../Background/BackgroundContext';
 
 const Projects = () => {
   const [activeWindow, setActiveWindow] = useState(null);
@@ -21,11 +21,17 @@ const Projects = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  //   // Only add glitch/pulse/flicker if background is not "none"
-  // const glitchyClasses = backgroundConfig.type !== 'none'
-  //     ? `${styles.glitch} ${styles.shadowPulse} ${styles.neonFlicker}`
-  //     : '';
+    const { backgroundConfig } = useBackground();
+  
 
+    // Only add glitch/pulse/flicker if background is not "none"
+  const glitchyClasses = backgroundConfig.type !== 'none'
+      ? `${styles.titleCell}`
+      : '';
+
+      const noBlinkCursor = backgroundConfig.type !== 'none'
+      ? ''
+      : styles.noBlinkCursor;
 
   // Filter state: 'all', 'pm', 'dev'
   const [projectFilter, setProjectFilter] = useState('all');
@@ -116,7 +122,7 @@ const Projects = () => {
                   {section.projects.length > 0 && (
                     <tr>
                       <td colSpan={4}>
-                        <div className={styles.sectionSubtitle + ' ' + styles.terminalCommand}>
+                        <div className={`${styles.sectionSubtitle} ${styles.terminalCommand} ${noBlinkCursor}`}>
                           {section.title}
                         </div>
                       </td>
@@ -125,7 +131,7 @@ const Projects = () => {
                   {section.projects.map((win, idx) => (
                     <tr key={win.id} className={styles.glassRow} id={`project-card-${section.section}-${idx}`}>
                       <td className={styles.cell}>{idx + 1}</td>
-                      <td className={styles.cell + ' ' + styles.titleCell}>
+                      <td className={styles.cell + ' ' + glitchyClasses}>
                         <DescriptionCell description={win.content}>
                           {win.title}
                         </DescriptionCell>
@@ -211,7 +217,7 @@ const Projects = () => {
                 {section.projects.map((win, idx) => (
                   <div key={win.id} className={styles.projectCard} id={`project-card-${section.section}-${idx}`}>
                     <div className={styles.cell} style={{ fontWeight: 700, fontSize: '1.1rem', marginBottom: '0.2rem' }}>Entry #{idx + 1}</div>
-                    <div className={styles.cell + ' ' + styles.titleCell} style={{ marginBottom: '0.3rem' }}>
+                    <div className={styles.cell + ' ' + glitchyClasses} style={{ marginBottom: '0.3rem' }}>
                       <DescriptionCell description={win.content}>
                         {win.title}
                       </DescriptionCell>
