@@ -11,8 +11,34 @@ import { BsJournalText } from 'react-icons/bs';
 import { SiFigma, SiNotion } from "react-icons/si";
 import { PiFilePdfFill } from "react-icons/pi";
 import { TbWorldWww } from "react-icons/tb";
+import { BsHourglassSplit } from 'react-icons/bs';
 
 const Projects = () => {
+
+  const sortProjectsById = (projects) => {
+  return projects.sort((a, b) => {
+    // Extract prefix and number from IDs like 'pm-1', 'dev-2'
+    const aMatch = a.id.match(/([a-z]+)-(\d+)/);
+    const bMatch = b.id.match(/([a-z]+)-(\d+)/);
+    
+    if (aMatch && bMatch) {
+      const [, aPrefix, aNum] = aMatch;
+      const [, bPrefix, bNum] = bMatch;
+      
+      // First sort by prefix (pm vs dev)
+      if (aPrefix !== bPrefix) {
+        return aPrefix.localeCompare(bPrefix);
+      }
+      
+      // Then sort by number (1, 2, 3... not string sort)
+      return parseInt(aNum) - parseInt(bNum);
+    }
+    
+    // Fallback for any non-matching IDs
+    return a.id.localeCompare(b.id);
+  });
+};
+
   const [activeWindow, setActiveWindow] = useState(null);
   const [projectFilter, setProjectFilter] = useState('all');
   
@@ -33,10 +59,14 @@ const Projects = () => {
   const noBlinkCursor = backgroundConfig.type !== 'none' ? '' : styles.noBlinkCursor;
 
   // Memoize expensive calculations (this is good optimization)
-  const { pmProjects, devProjects } = useMemo(() => ({
-    pmProjects: ProjectsData.filter(project => project.id.startsWith('pm-')),
-    devProjects: ProjectsData.filter(project => project.id.startsWith('dev-'))
-  }), []);
+const { pmProjects, devProjects } = useMemo(() => ({
+  pmProjects: sortProjectsById(
+    ProjectsData.filter(project => project.id.startsWith('pm-'))
+  ),
+  devProjects: sortProjectsById(
+    ProjectsData.filter(project => project.id.startsWith('dev-'))
+  )
+}), []);
 
   const filteredSections = useMemo(() => {
     if (projectFilter === 'pm') {
@@ -45,8 +75,8 @@ const Projects = () => {
       return [{ title: 'uv@chroot ~ ⪢ eza --DEV "dev-projects"', projects: devProjects, section: 'dev' }];
     } else {
       return [
+        { title: 'uv@chroot ~ ⪢ eza --DEV "dev-projects"', projects: devProjects, section: 'dev' },
         { title: 'uv@chroot ~ ⪢ eza --PM "pm-projects"', projects: pmProjects, section: 'pm' },
-        { title: 'uv@chroot ~ ⪢ eza --DEV "dev-projects"', projects: devProjects, section: 'dev' }
       ];
     }
   }, [projectFilter, pmProjects, devProjects]);
@@ -126,15 +156,24 @@ const Projects = () => {
     } else if (!primary && secondary.length >= 2) {
       return { layout: 'splitSecondary', buttons: [secondary[0], secondary[1]] };
     }
-    
-    return { layout: 'empty', buttons: [] };
+
+    return {
+      layout: 'wip',
+      buttons: [{
+        type: 'wip',
+        label: 'WIP. Devlog Soon.',
+        icon: <BsHourglassSplit />,
+        action: () => { }, // No action, it's disabled
+        className: 'wipBtn'
+      }]
+    };
   }, []); // setActiveWindow is stable
 
   // NO React.memo - just regular component functions
   const ButtonGroup = ({ project }) => {
     const { layout, buttons } = getButtonLayout(project);
     if (buttons.length === 0) return null;
-    
+
     return (
       <div className={`${styles.buttonContainer} ${styles[layout]}`}>
         {buttons.map((button, index) => (

@@ -17,3 +17,4 @@
 * [ ] Project sorting and search 'grep' functionality (optional) 
 * [ ] Link related posts with proper tags, possibly forming a narrative.
 * [ ] Terminal command palette - Ctrl+K style navigation across your whole site
+* [ ] Responsiveness broken on ipad mini, air - portrait modes, even on fold phones. (~800px width)

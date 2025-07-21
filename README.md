@@ -1,8 +1,13 @@
-# Stepping Stones — Ujjwal Vivek's Portfolio & Builder's Log
+# The Terminal That Talks Back
 
-Welcome to my corner of the web.  
-I build, break, and rebuild systems — across code, teams, and products.  
+Welcome, wanderer.
+
+You’ve booted into a system built from fragments, logs, code, and questions.  
+This isn’t a portfolio. It’s a ritual.  
+I build, break, and rebuild systems, across code, teams, and products.  
 From VR platforms to Rust game engines, this journey is logged.
+Every page, a prompt. Every glitch, a memory.  
+
 
 ## Philosophy
 
@@ -11,41 +16,52 @@ From VR platforms to Rust game engines, this journey is logged.
 - **Transparency > Perfection.**  
   You'll find unfinished thoughts, failed experiments, and the occasional breakthrough.
 - **Source ≠ Product.**  
-  This repo is public, not open. Steal ideas, not identity.
+  This repo is public and open. *Steal* ideas, not identity.
 
 ## What's Inside
 
-- ✍️ **Blog:** Deep dives, war stories, and technical rants.  
-- 🖥️ **Terminal Footer:** The site talks back. Try typing `run exit` or `cat` in the footer.
-- 📄 **Resume:** PDF viewer with light/dark mode.
+- ✍️ **Blog:** A markdown engine that renders thoughts as commands..  
+- 🖥️ **Easter Egg:** The site talks back. Try out some commands when you come across it.
+- 💃 **Vibe:** Procedural backgrounds, born from chaos and tamed for clarity..
 - 🛠️ **Stack:** React, Rust, Markdown, custom CSS, and a sprinkle of terminal magic.
+
+> Logs of failures, launches, and the silence between.
+
+No analytics. No popups. No noise.  
+Just a builder’s log, still compiling.
 
 ## Running Locally
 
 ```sh
+cd $Home_Folder
 npm install
 npm run start
 ```
 
 ## Folder Structure
 
-- `/src` — React components, pages, and terminal logic
-- `/public/posts` — Markdown blog posts
-- `/public/ideas.md` — Future logs and drafts
+- `/src` — React components, pages, and everything logic
+- `/public/posts` — Markdown blog posts, raw
+- `/public/ideas.md` and `/public/_dump.md` — Future logs and drafts, and mostly dumps
 
 ## Contributing
 
 This is a personal log, not a community project.  
 But if you spot a bug or want to say hi, open an issue or drop a message.
+[Mail Me!](mailto:hello@ujjwalvivek.com)
 
 ## License
 
-Source-available.  
-Read, learn, remix — but don't clone the soul.
+MIT License
+
+
+
+Read, learn, remix.
+But remember,
+
+
+> Don't optimize systems you don't really understand. :)
 
 ---
-
-> “Don't optimize systems you don't really understand.”  
-> — ofc me :)
 
 Happy building.  

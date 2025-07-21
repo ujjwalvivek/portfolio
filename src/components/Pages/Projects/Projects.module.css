@@ -805,3 +805,34 @@ opacity: 1;
   color: var(--terminal-output-color);
 }
 
+/*Experimental Features */
+.wipBtn {
+  background: rgba(var(--text-color-rgb), 0.1);
+  color: var(--text-color);
+  border-radius: 0.25rem;
+  border: 2px solid rgba(var(--text-color-rgb), 0.3);
+  padding: 0.6rem 1rem;
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: not-allowed;
+  text-decoration: none;
+  letter-spacing: 0px;
+  text-align: center;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  opacity: 0.5;
+  flex: 1;
+  min-width: 0;
+  font-family: inherit;
+  transition: none; /* No hover effects */
+}
+
+/* Layout for WIP button */
+.buttonContainer.wip .wipBtn {
+  flex: 1;
+  max-width: 100%;
+}
+

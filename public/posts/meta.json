@@ -13,7 +13,7 @@
     "title": "Markdown Playground (Kinda Features Showcase, Not Really)",
     "date": "2025-07-01",
     "description": "A showcase of all the advanced Markdown features available on this blog. From code blocks to tables, this post demonstrates the full range of capabilities.",
-    "tags": ["react", "markdown", "webdev", "testing", "log"]
+    "tags": ["react", "markdown", "webdev", "testing"]
   },
   {
     "id": 3,
@@ -27,8 +27,48 @@
     "id": 4,
     "filename": "proj_0000_the_reckoning.md",
     "title": "The Reckoning",
-    "date": "2025-07-21",
+    "date": "2025-07-17",
     "description": "A deep dive into the challenges faced during the development process and the lessons learned along the way.",
     "tags": ["project", "development", "challenges", "lessons learned"]
+  },
+    {
+    "id": 5,
+    "filename": "proj_0001_cement_ary_journey.md",
+    "title": "Cementing the Future: A Journey Through VR Training",
+    "date": "2025-07-18",
+    "description": "Exploring the innovative use of virtual reality in training for the cement industry, and the lessons learned from this groundbreaking project.",
+    "tags": ["project", "VR", "training", "cement", "innovation"]
+  },
+    {
+    "id": 6,
+    "filename": "proj_0002_greedysnek.md",
+    "title": "GreedySnek: A 3D Multiplayer Revisit of the Classic Snake Game",
+    "date": "2025-07-19",
+    "description": "A modern take on the classic Snake game, GreedySnek brings multiplayer fun to a 3D environment, showcasing the evolution of game design and player interaction.",
+    "tags": ["project", "game", "3D", "multiplayer", "snake"]
+  },
+    {
+    "id": 7,
+    "filename": "proj_0003_kill_bad_guys.md",
+    "title": "Kill Bad Guys: A Game Jam Experience",
+    "date": "2025-07-20",
+    "description": "A behind-the-scenes look at the development that pushed the limits of creativity under tight deadlines.",
+    "tags": ["project", "game jam", "development", "creativity", "deadline"]
+  },
+    {
+    "id": 8,
+    "filename": "proj_0004_rust_game_engine.md",
+    "title": "Rust Game Engine: Building a Game from Scratch",
+    "date": "2025-07-21",
+    "description": "An exploration of the process of building a game engine in Rust, highlighting the challenges and triumphs of creating a robust gaming framework.",
+    "tags": ["project", "Rust", "game engine", "development", "framework"]
+  },
+  {
+    "id": 9,
+    "filename": "proj_0005_the_synclippy.md",
+    "title": "The SyncLippy: A Universal Clipboard for All Your Devices",
+    "date": "2025-07-22",
+    "description": "An exploration of the process of building a universal clipboard application that syncs across all devices, highlighting the challenges and triumphs of creating a seamless user experience.",
+    "tags": ["project", "clipboard", "sync", "development", "cross-platform"]
   }
 ]
