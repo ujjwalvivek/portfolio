@@ -23,7 +23,7 @@ Every page, a prompt. Every glitch, a memory.
 - ✍️ **Blog:** A markdown engine that renders thoughts as commands..  
 - 🖥️ **Easter Egg:** The site talks back. Try out some commands when you come across it.
 - 💃 **Vibe:** Procedural backgrounds, born from chaos and tamed for clarity..
-- 🛠️ **Stack:** React, Rust, Markdown, custom CSS, and a sprinkle of terminal magic.
+- 🛠️ **Stack:** React, Markdown, custom CSS, and a sprinkle of terminal magic.
 
 > Logs of failures, launches, and the silence between.
 
@@ -42,7 +42,7 @@ npm run start
 
 - `/src` — React components, pages, and everything logic
 - `/public/posts` — Markdown blog posts, raw
-- `/public/ideas.md` and `/public/_dump.md` — Future logs and drafts, and mostly dumps
+- `/public/_dump.md` — Future logs and drafts, and mostly dumps
 
 ## Contributing
 

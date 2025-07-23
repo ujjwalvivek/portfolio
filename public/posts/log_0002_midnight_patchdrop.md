@@ -2,7 +2,6 @@
 title: "Patch Notes v1.1 on a Friday midnight"
 date: "2025-07-13"
 summary: "I launched. Got rekt. Didn't cry. Just patched the damn thing. Building something beautiful on the web is never as easy as it looks. But every bug, every crash, and every \"why is this so slow?!\" moment taught me something new."
-tags: ["chaoslog", "patch", "canvas crimes", "accessibility", "dev meltdown"]
 slug: "log_0002_midnight_patchdrop"   
 ---
 

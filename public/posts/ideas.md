@@ -1,80 +1,21 @@
-log_0001_darknet.md
-Title: What the Darknet Taught Me
+## 📅 v1.1 Target Changelog (WIP)
 
-Not a tutorial — a shift in perspective.
-How going in curious led to realizations about freedom, identity, and how the real world is just as masked as the dark one.
-
-log_0002_fired_three_times.md
-Title: Build > Politics: How I Got Fired Three Times and Still Ship
-
-No fluff. Own the badge. Why you don't fit in the box. What it taught you about systems, people, and the cost of honesty.
-
-log_0003_terminalstory.md
-Title: “run exit" and the Terminal That Talks Back
-
-Origin of your site's story. Why you made it. How it became a mirror.
-Reflections on building something that confronts, not just showcases.
-
-log_0004_blur_bug.md
-Title: The Case of the Missing Blur (iPad Saga)
-
-A short war story. How you debugged backdrop-filter across platforms.
-Use it as a metaphor for “some effects only appear when the background is just right."
-
-log_0005_source-available.md
-Title: Why My Code is Public, Not Open
-
-You're okay being seen. Just not cloned.
-Explain your philosophy. Source ≠ product. Transparency ≠ servitude.
-
-log_0006_fps_project_dust.md
-Title: My Final Year Game Project… Lost in Bits
-
-Built an FPS. It got big. It got forgotten. It got corrupted.
-What it taught you about versioning, backups, and letting go.
-
-log_0007_building_this_site.md
-Title: How I Built This Terminal Site
-
-Stack. Problems. Architecture. From idea to ritual.
-A peek under the hood. Could even be multiple parts.
-
-log_0008_rust_engine.md
-Title: Why I Started Writing My Own Game Engine
-
-After the FPS project died, a void. Rust filled it.
-A devlog that's more about emotional ripple effects than tech.
-
-log_0009_privacy.md
-Title: Privacy Isn't a Setting. It's a State of Mind.
-
-You uninstalled analytics. You run Tailscale. You understand the stakes.
-Talk about your journey from convenience to awareness.
-
-log_0010_home_network.md
-Title: I Wired My Walls. And My World.
-
-Your full home server + cabling setup.
-But also how it changed your thinking around latency, control, and physical infrastructure.
-
-log_0011_piracy.md
-Title: Piracy Saved Me
-
-Sounds clickbaity. Is actually profound.
-Talk about access, empathy, learning. Why piracy isn't evil — it's a signal.
-
-log_0012_darknet_tools.md
-Title: Tools of the Hidden Web
-
-Companion to 0001. Less reflective, more technical.
-Focused on what you learned, used, and respected.
-
-Turn these into logs:
-- “Blur Layers vs WebKit: The Real Boss Fight”
-- “Should I Respect prefers-reduced-motion? (Yes. Here's How.)”
-- “I Wrote My Posts Like Commits. Here’s What Broke.”
-- “Designing for Chaos — and Then Dialing It Back”
-
-Shipped v1.1 — made it less dizzy, more real.
-“Y’all gave feedback. Some roasted. Some helped. I listened. Here's what changed.”
-“v1.1 Patch Notes: What 71,000 devs taught me about chaos, motion sickness, and building too close to the sun.”
+* [x] Add `prefers-reduced-motion` support, A11y violation.
+* [ ] shift procedural computing to webGPU
+      `keep the generators same and only shift computing? makes sense?`
+* [x] Cap FPS of background to 30/48
+* [x] Background toggle on header should have a better UX and visibility.
+* [x] Improve text contrast and blur clarity
+* [x] Fix PDF viewer theme/style overrides
+* [x] Fix about page intro typewriting loop replay on every navigation
+* [x] Toggle: Low Chaos Mode (reduced glitchiness, reduced motions, and increased contrast)
+         `we anyway disable background on background toggle. we could pivot this button for a low chaos mode, polite mode`
+* [x] Add subtle Easter Egg hint - bottom most text on the about page (optional) 
+* [ ] Add upcoming blog posts / dev journey / devlogs timeline view (optional)
+* [ ] Contact form as terminal input on Homepage
+         `Make it feel like sending a message through a shell (how to embed subject and body in mailto?)`
+* [ ] Project sorting and search 'grep' functionality (optional) 
+* [ ] Link related posts with proper tags, possibly forming a narrative.
+* [ ] Terminal command palette - Ctrl+K style navigation across your whole site
+* [ ] Responsiveness broken on ipad mini, air - portrait modes, even on fold phones. (~800px width)
+* [ ] **Add The Reckoning Entry to Projects and Blog.**

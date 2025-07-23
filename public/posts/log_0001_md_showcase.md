@@ -3,7 +3,6 @@ title: "Markdown Playground"
 date: "2025-07-06"
 slug: "log_0001_md_showcase"
 summary: "This wasn't supposed to be a post. It was just a sandbox. But it works, so I'm keeping it."
-tags: ["debug", "engine", "components", "infra"]
 ---
 
 ```terminalblock

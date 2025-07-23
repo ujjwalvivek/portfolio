@@ -1,4 +1,3 @@
-// src/hooks/usePrefersReducedMotion.js
 import { useEffect, useState } from 'react';
 
 export function usePrefersReducedMotion() {

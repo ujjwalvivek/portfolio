@@ -15,6 +15,11 @@ import { visit } from 'unist-util-visit';
 import RelatedPosts from '../../RelatedPosts/RelatedPosts';
 import 'katex/dist/katex.min.css';
 import { ThemeContext } from '../../ThemeSwitcher/ThemeContext';
+import { MdTipsAndUpdates } from "react-icons/md";
+import { IoIosWarning } from "react-icons/io";
+import { BsFillPencilFill, BsFillInfoSquareFill } from "react-icons/bs";
+import { MdDangerous } from "react-icons/md";
+import { AiTwotoneStar } from "react-icons/ai";
 
 // Simple reading time calculation function
 const calculateReadingTime = (text) => {
@@ -59,16 +64,72 @@ const CodeBlock = ({ node, inline, className, children, ...props }) => {
   );
 };
 
-// Custom admonition component for directives
+// Enhanced admonition component with custom title support
 const Admonition = ({ node, children }) => {
-  const type = node.properties.className[1];
-  const title = type.charAt(0).toUpperCase() + type.slice(1);
+  const type = node.properties.className[1]; // note, warning, tip, danger
+  let title = type.charAt(0).toUpperCase() + type.slice(1); // Default title
+  let content = children;
+    
+  // Check for custom title in node attributes first
+  if (node.attributes && node.attributes.title) {
+    title = node.attributes.title;
+  }
+  // Check if first paragraph contains the title
+  else if (
+    Array.isArray(children) &&
+    children[0] &&
+    children[0].props &&
+    children[0].props.children
+  ) {
+    const firstChild = children[0].props.children;
+    
+    // Handle different content structures
+    let firstText = '';
+    if (typeof firstChild === 'string') {
+      firstText = firstChild;
+    } else if (Array.isArray(firstChild) && typeof firstChild[0] === 'string') {
+      firstText = firstChild[0];
+    }
+        
+    // If first text looks like a title (short line, followed by more content)
+    if (
+      firstText &&
+      firstText.length > 0 && 
+      firstText.length < 60 && // Reasonable title length
+      !firstText.includes('\n') && // Single line
+      children.length > 1 // Has content after title
+    ) {
+      title = firstText.trim();
+      content = children.slice(1);
+    }
+  }
+
   return (
     <div className={`${styles.admonition} ${styles[type]}`}>
-      <p className={styles.admonitionTitle}>{title}</p>
-      {children}
+      <div className={styles.admonitionTitle}>
+        <span className={styles.admonitionIcon}>
+          {getAdmonitionIcon(type)}
+        </span>
+        <span>{title}</span>
+      </div>
+      <div className={styles.admonitionContent}>
+        {content}
+      </div>
     </div>
   );
+};
+
+
+// Helper function for icons
+const getAdmonitionIcon = (type) => {
+  const icons = {
+    note: <MdTipsAndUpdates />,
+    warning: <IoIosWarning />,
+    tip: <BsFillPencilFill />,
+    danger: <MdDangerous />,
+    info: <BsFillInfoSquareFill />
+  };
+  return icons[type] || <AiTwotoneStar />;
 };
 
 // BlogPost component to render individual blog posts

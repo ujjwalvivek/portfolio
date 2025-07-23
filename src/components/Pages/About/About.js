@@ -217,7 +217,7 @@ const About = () => {
                 <Worker workerUrl={`https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js`}>
                   <Viewer
                     theme={pdfTheme}
-                    fileUrl={pdfTheme === 'dark' ? '/resume-dark.pdf' : '/resume-light.pdf'}
+                    fileUrl={pdfTheme === 'dark' ? '/docs/resume-dark.pdf' : '/docs/resume-light.pdf'}
                     defaultScale={SpecialZoomLevel.PageWidth}
                     open={true}
                     className={styles.resumeIframe}

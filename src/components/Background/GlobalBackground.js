@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useCallback, useContext, useMemo } from 'react';
+import { useRef, useEffect, useCallback, useContext, useMemo } from 'react';
 import { useBackground } from './BackgroundContext';
 import { ThemeContext } from '../ThemeSwitcher/ThemeContext';
 import styles from './GlobalBackground.module.css';

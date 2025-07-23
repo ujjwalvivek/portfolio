@@ -182,7 +182,7 @@ export default function ResumeOverlay({ open, onClose }) {
             <Viewer
               theme={pdfTheme}
               plugins={[defaultLayoutPluginInstance]}
-              fileUrl={pdfTheme === 'dark' ? '/resume-dark.pdf' : '/resume-light.pdf'}
+              fileUrl={pdfTheme === 'dark' ? '/docs/resume-dark.pdf' : '/docs/resume-light.pdf'}
               defaultScale={SpecialZoomLevel.PageWidth}
             />
           </Worker>

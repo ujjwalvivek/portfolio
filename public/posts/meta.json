@@ -5,7 +5,13 @@
     "title": "Boot Sequence (And Why It Took 2 Years to Run)",
     "date": "2025-07-07",
     "description": "Why I built this terminal-shaped mirror of my mind. And why you're inside it now. This site didn't take two years to build. It took me two years to become someone who could finish it.",
-    "tags": ["origin", "philosophy", "log", "site build"]
+    "tags": [
+      "Javascript",
+      "Vanilla CSS",
+      "Origin",
+      "Site Build",
+      "Portfolio"
+    ]
   },
   {
     "id": 2,
@@ -13,62 +19,102 @@
     "title": "Markdown Playground (Kinda Features Showcase, Not Really)",
     "date": "2025-07-01",
     "description": "A showcase of all the advanced Markdown features available on this blog. From code blocks to tables, this post demonstrates the full range of capabilities.",
-    "tags": ["react", "markdown", "webdev", "testing"]
+    "tags": [
+      "Markdown",
+      "Testing",
+      "Playground",
+      "Features"
+    ]
   },
   {
     "id": 3,
     "filename": "log_0002_midnight_patchdrop.md",
     "title": "Patch Notes v1.1 on a Friday Midnight",
     "date": "2025-07-13",
-    "description": "I launched. Got rekt. Didn’t cry. Just patched the damn thing. Building something beautiful on the web is never as easy as it looks. But every bug, every crash, and every “why is this so slow?!” moment taught me something new.",
-    "tags": ["log", "patch", "accessibility", "dev meltdown"]
+    "description": "I launched. Got rekt. Didn't cry. Just patched the damn thing. Building something beautiful on the web is never as easy as it looks. But every bug, every crash, and every “why is this so slow?!” moment taught me something new.",
+    "tags": [
+      "Javascript",
+      "Vanilla CSS",
+      "Portfolio",
+      "Patch",
+      "Accessibility",
+      "Meltdown"
+    ]
   },
   {
     "id": 4,
-    "filename": "proj_0000_the_reckoning.md",
-    "title": "The Reckoning",
-    "date": "2025-07-17",
-    "description": "A deep dive into the challenges faced during the development process and the lessons learned along the way.",
-    "tags": ["project", "development", "challenges", "lessons learned"]
-  },
-    {
-    "id": 5,
-    "filename": "proj_0001_cement_ary_journey.md",
-    "title": "Cementing the Future: A Journey Through VR Training",
-    "date": "2025-07-18",
-    "description": "Exploring the innovative use of virtual reality in training for the cement industry, and the lessons learned from this groundbreaking project.",
-    "tags": ["project", "VR", "training", "cement", "innovation"]
-  },
-    {
-    "id": 6,
-    "filename": "proj_0002_greedysnek.md",
-    "title": "GreedySnek: A 3D Multiplayer Revisit of the Classic Snake Game",
-    "date": "2025-07-19",
-    "description": "A modern take on the classic Snake game, GreedySnek brings multiplayer fun to a 3D environment, showcasing the evolution of game design and player interaction.",
-    "tags": ["project", "game", "3D", "multiplayer", "snake"]
-  },
-    {
-    "id": 7,
-    "filename": "proj_0003_kill_bad_guys.md",
-    "title": "Kill Bad Guys: A Game Jam Experience",
-    "date": "2025-07-20",
-    "description": "A behind-the-scenes look at the development that pushed the limits of creativity under tight deadlines.",
-    "tags": ["project", "game jam", "development", "creativity", "deadline"]
-  },
-    {
-    "id": 8,
-    "filename": "proj_0004_rust_game_engine.md",
-    "title": "Rust Game Engine: Building a Game from Scratch",
-    "date": "2025-07-21",
-    "description": "An exploration of the process of building a game engine in Rust, highlighting the challenges and triumphs of creating a robust gaming framework.",
-    "tags": ["project", "Rust", "game engine", "development", "framework"]
+    "filename": "",
+    "title": "The Game That Never Released",
+    "date": "2025-09-21",
+    "description": "I lost a 35GB Unity Game project to corruption, but discovered something amazing: the 44+ scripts that survived contain more value than the game ever would have. Here's how I turned a devastating loss into multiple learnings.",
+    "tags": [
+      "C#",
+      "Photon",
+      "Unity",
+      "Multiplayer",
+      "FPS",
+      "Networking",
+      "Corrupted",
+      "Archived"
+    ],
+    "thumbnail": "/posts/media/soon.png"
   },
   {
-    "id": 9,
+    "id": 5,
+    "filename": "",
+    "title": "Cementing the Future: A Journey Through VR Training",
+    "date": "2025-07-30",
+    "description": "Exploring the innovative use of virtual reality in training for the cement industry, and the lessons learned by leading this groundbreaking project.",
+    "tags": [
+      "project",
+      "VR",
+      "training",
+      "cement",
+      "innovation"
+    ],
+    "thumbnail": "/posts/media/logs_soon.png"
+  },
+  {
+    "id": 6,
+    "filename": "proj_0002_greedysnek.md",
+    "title": "GreedySnek: A 3D Snake Game",
+    "date": "2025-07-21",
+    "description": "Sometimes the simplest concepts lead to the most complex solutions. This project is now archived, but the lessons it taught me about game development, networking, and knowing when to stop are still very much alive.",
+    "tags": [
+      "C#",
+      "Mirror",
+      "Unity",
+      "multiplayer",
+      "snake"
+    ]
+  },
+  {
+    "id": 7,
+    "filename": "proj_0003_kill_bad_guys.md",
+    "title": "Inside the Unity Coordination Framework",
+    "date": "2025-07-23",
+    "description": "Deterministic input-lockstep can make a singleplayer Unity scene feel like a LAN match while sending only a handful of bytes per frame. Read on to find out what's up.",
+    "tags": [
+      "C#",
+      "Inventory",
+      "Simulation",
+      "Networking",
+      "Prototype",
+      "Unity"
+    ]
+  },
+  {
+    "id": 8,
     "filename": "proj_0005_the_synclippy.md",
-    "title": "The SyncLippy: A Universal Clipboard for All Your Devices",
+    "title": "From Web to Native: The Synclippy Architecture Pivot",
     "date": "2025-07-22",
-    "description": "An exploration of the process of building a universal clipboard application that syncs across all devices, highlighting the challenges and triumphs of creating a seamless user experience.",
-    "tags": ["project", "clipboard", "sync", "development", "cross-platform"]
+    "description": "Why I'm Rebuilding My Clipboard Sync Tool (And Why Web APIs Aren't Enough)",
+    "tags": [
+      "Rust",
+      "Go",
+      "Javascript",
+      "cross-platform",
+      "Meltdown"
+    ]
   }
 ]

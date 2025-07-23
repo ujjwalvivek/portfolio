@@ -104,7 +104,9 @@ Because my brain needed a space that *felt* like how it thinks.
 old screenshot. still haunts me. this was the state of this website for a little over two summer. it took me two summers to become someone who could finish it.
 
 :::warning
-**⚠️ This site is still booting**: Things will glitch. Some commands won't work.  That's part of the ritual.
+This site is still booting
+
+Things will glitch. Some commands won't work.  That's part of the ritual.
 :::
 
 ---

@@ -2,9 +2,8 @@ import React from "react";
 import styles from "./DinoGame.module.css";
 import dino from '../../assets/images/dino.svg'
 
-// Get width from CSS or set a default (match your CSS max-width)
-const GAME_WIDTH = Math.min(window.innerWidth * 0.98, 400); // 98vw or 400px max
-const GAME_HEIGHT = 150; // or whatever your height is
+const GAME_WIDTH = Math.min(window.innerWidth * 0.98, 400); 
+const GAME_HEIGHT = 150; 
 
 const DinoGame = () => {
   const [dinoY, setDinoY] = React.useState(0);
@@ -105,7 +104,7 @@ const DinoGame = () => {
       setJumpStart(Date.now());
       setIsJumping(true);
       // Instantly set jump power for mouse click
-    const power = 1; // or whatever default you want for a click
+    const power = 1;
     setJumpPower(power);
     setJumpStart(null);
     }
