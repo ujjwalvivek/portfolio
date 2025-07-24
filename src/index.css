@@ -148,3 +148,82 @@ button:hover .cta-link-span {
     scroll-behavior: auto !important;
   }
 }
+
+/* === MINIMAL TERMINAL MATH === */
+
+.katex {
+
+  color: var(--terminal-input-color) !important;
+  font-family: var(--font-mono) !important;
+  font-size: 1.2rem !important;
+}
+
+@media (max-width: 900px) {
+  .katex {
+    font-size: 1rem !important; /* Adjust font size for smaller screens */
+  }
+}
+
+@media (max-width: 600px) {
+  .katex {
+    font-size: 0.8rem !important; /* Further adjust for very small screens */
+  }
+}
+
+.katex-display {
+  padding: 5rem !important;
+  margin: 2rem 0 !important;
+  border-radius: 2px !important;
+}
+
+.katex .mbin,
+.katex .mrel {
+  color: var(--status-info-color) !important;
+}
+
+.katex .mop {
+  color: var(--status-ram-color) !important;
+}
+
+.katex .mopen,
+.katex .mclose {
+  color: var(--status-warn-color) !important;
+}
+
+.katex-html {
+        margin-top: 1rem !important;
+display: block !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+    border: 3px solid var(--terminal-input-color) !important;
+  padding: 1rem 1rem !important;
+  border-radius: 2px !important;
+  text-align: center !important;
+}
+
+.katex .katex-html,
+.katex .katex-html .base,
+.katex .katex-html .strut,
+.katex .mord,
+.katex .mbin,
+.katex .mrel,
+.katex .mop,
+.katex .mopen,
+.katex .mclose {
+  font-family: var(--font-mono) !important;
+  color: var(--terminal-input-color) !important;
+  font-style: normal !important;
+  letter-spacing: 0px !important;
+}
+
+/* For display math, be even more specific */
+.katex-display .katex,
+.katex-display .katex *,
+.katex-display .katex-html,
+.katex-display .katex-html * {
+  font-family: var(--font-mono) !important;
+  color: var(--terminal-input-color) !important;
+    font-style: normal !important;
+      letter-spacing: 0px !important;
+
+}
