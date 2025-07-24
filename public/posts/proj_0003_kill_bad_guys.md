@@ -1,6 +1,6 @@
 ---
 title: Inside the Unity Coordination Framework
-date: 2025-07-21
+date: 2025-07-23
 summary: Deterministic input-lockstep can make a singleplayer Unity scene feel like a LAN match while sending only a handful of bytes per frame. Read on to find out what's up.
 slug: proj_0003_kill_bad_guys
 ---

@@ -29,5 +29,3 @@
 * [x] Responsiveness broken on ipad mini, air - portrait modes, even on fold phones. (~800px width)
 * [x] Link related posts with proper tags, possibly forming a narrative.
 * [x] Open Source Release Blog - How did i make this website.
-
-

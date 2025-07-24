@@ -1,6 +1,6 @@
 ---
 title: How Did I Build My Website
-date: 2025-07-13
+date: 2025-07-25
 summary: Unlisted
 slug: log_0003_going_open_source
 ---
