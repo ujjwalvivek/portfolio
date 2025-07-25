@@ -6,7 +6,6 @@
 * [ ] **Add The Reckoning Entry to Projects and Blog.**
 
 #### Optional
-* [ ] Add upcoming blog posts / dev journey / devlogs timeline view (optional)
 * [ ] Terminal command palette - Ctrl+K style navigation across your whole site (optional)
 
 #### Future Plans
@@ -29,3 +28,5 @@
 * [x] Link related posts with proper tags, possibly forming a narrative.
 * [x] Open Source Release Blog - How did i make this website.
 * [x] **Move hosting to cloudflare pages and storage to R2.**
+* [x] Add upcoming blog posts / dev journey / devlogs timeline view (optional)
+

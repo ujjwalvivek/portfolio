@@ -7,7 +7,7 @@ const Mermaid = ({ chart }) => {
     const [mermaid, setMermaid] = useState(null);
     const [isClient, setIsClient] = useState(false);
     const { darkMode } = useContext(ThemeContext);
-    
+
     // Stable instance ID that doesn't change on re-renders
     const instanceIdRef = useRef(`mermaid-${Math.random().toString(36).substr(2, 9)}`);
     const renderCountRef = useRef(0);
@@ -21,7 +21,7 @@ const Mermaid = ({ chart }) => {
         if (isClient) {
             import('mermaid').then((mermaidModule) => {
                 const mermaidInstance = mermaidModule.default;
-                
+
                 mermaidInstance.initialize({
                     startOnLoad: false,
                     theme: darkMode ? 'dark' : 'default',
@@ -45,7 +45,7 @@ const Mermaid = ({ chart }) => {
                         mirrorActors: true,
                     },
                 });
-                
+
                 setMermaid(mermaidInstance);
             });
         }
@@ -54,19 +54,19 @@ const Mermaid = ({ chart }) => {
     // Memoized render function to prevent recreation on every render
     const renderDiagram = useCallback(async () => {
         if (!mermaid || !ref.current || !chart) return;
-        
+
         try {
             // Increment render count for unique ID
             renderCountRef.current += 1;
             const diagramId = `${instanceIdRef.current}-${renderCountRef.current}`;
-            
+
             // Clear and render
             ref.current.innerHTML = '';
             const { svg } = await mermaid.render(diagramId, chart.trim());
-            
+
             if (ref.current) {
                 ref.current.innerHTML = svg;
-                
+
                 // Simple post-render styling
                 const svgElement = ref.current.querySelector('svg');
                 if (svgElement) {

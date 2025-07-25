@@ -1,8 +1,8 @@
 import React from "react";
 import styles from "./DinoGame.module.css";
 
-const GAME_WIDTH = Math.min(window.innerWidth * 0.98, 400); 
-const GAME_HEIGHT = 150; 
+const GAME_WIDTH = Math.min(window.innerWidth * 0.98, 400);
+const GAME_HEIGHT = 150;
 
 const DinoGame = () => {
   const [dinoY, setDinoY] = React.useState(0);
@@ -103,9 +103,9 @@ const DinoGame = () => {
       setJumpStart(Date.now());
       setIsJumping(true);
       // Instantly set jump power for mouse click
-    const power = 1;
-    setJumpPower(power);
-    setJumpStart(null);
+      const power = 1;
+      setJumpPower(power);
+      setJumpStart(null);
     }
     if (gameOver) {
       setObstacles([{ x: 400, height: 32, passed: false }]);
@@ -124,13 +124,13 @@ const DinoGame = () => {
   };
 
   const handleMouseUp = () => {
-  if (isJumping && jumpStart !== null) {
-    const duration = Math.min(Date.now() - jumpStart, 350);
-    const power = duration / 350;
-    setJumpPower(power);
-    setJumpStart(null);
-  }
-};
+    if (isJumping && jumpStart !== null) {
+      const duration = Math.min(Date.now() - jumpStart, 350);
+      const power = duration / 350;
+      setJumpPower(power);
+      setJumpStart(null);
+    }
+  };
 
   const handleBarMouseDown = (e) => {
     setDragging(true);
@@ -283,22 +283,22 @@ const DinoGame = () => {
   }, [gameOver, gameStarted, score]); // <-- do NOT add gameSpeed here!
 
   return (
-    <div 
-    className={styles.dinoGameWrapper}
-    style={{
-      position: "fixed",
-      left: windowPos.x,
-      top: windowPos.y,
-      zIndex: 10000,
-      userSelect: dragging ? "none" : "auto",
-    }}
+    <div
+      className={styles.dinoGameWrapper}
+      style={{
+        position: "fixed",
+        left: windowPos.x,
+        top: windowPos.y,
+        zIndex: 10000,
+        userSelect: dragging ? "none" : "auto",
+      }}
     >
       {/* Draggable Window Bar */}
-      <div 
-      className={styles.gameWindowBar}
-      style={{ cursor: dragging ? "grabbing" : "grab" }}
-      onMouseDown={handleBarMouseDown}
-      onTouchStart={handleBarTouchStart}
+      <div
+        className={styles.gameWindowBar}
+        style={{ cursor: dragging ? "grabbing" : "grab" }}
+        onMouseDown={handleBarMouseDown}
+        onTouchStart={handleBarTouchStart}
       >
         <span className={styles.gameWindowBarDot} style={{ background: '#ff5f56' }} onClick={() => { }} />
         <span className={styles.gameWindowBarDot} style={{ background: '#ffbd2e' }} onClick={() => { }} />
@@ -306,9 +306,9 @@ const DinoGame = () => {
         <span className={styles.gameStartTitle}>DINO BLINK GAME</span>
         <span className={styles.crashDotTooltip}>
           <div className={styles.gameStartMeme}>
-              {"// dev was too lazy to animate, so we blink now"}<br />
-              {"// blink mains only. titans and hunters, cope"}
-            </div>
+            {"// dev was too lazy to animate, so we blink now"}<br />
+            {"// blink mains only. titans and hunters, cope"}
+          </div>
         </span>
       </div>
 
@@ -323,7 +323,7 @@ const DinoGame = () => {
               <span className={styles.blink}>{">"}</span> {"press "}<span style={{ textDecoration: "underline" }}>space</span> {" or tap to start."}<br />
             </div>
             <div className={styles.gameStartMeme}>
-              
+
             </div>
           </div>
         )}

@@ -7,7 +7,7 @@ const RelatedPosts = ({ posts }) => {
     return null;
   }
 
-    // Only show up to 2 posts
+  // Only show up to 2 posts
   const limitedPosts = posts.slice(0, 2);
 
   return (

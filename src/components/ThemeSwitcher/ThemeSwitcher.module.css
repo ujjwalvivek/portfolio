@@ -22,9 +22,22 @@
   color: var(--primary-color);
 }
 
+@media (max-width: 900px) {
+  .ThemeSwitcherContainer p {
+    font-size: 1rem;
+    letter-spacing: 1px;
+  }
+}
+
 @media (max-width: 600px) {
   .ThemeSwitcherContainer p {
     font-size: 0.8rem;
     letter-spacing: 1px;
+  }
+}
+
+@media (max-width: 400px) {
+  .ThemeSwitcherContainer {
+    padding-left: 0.5rem;
   }
 }

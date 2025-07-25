@@ -1,16 +1,16 @@
 export const terminalCommands = [
-//   {
-//   trigger: "enablebg",
-//   output: `Background effects enabled!`
-// },  
-//   {
-//     trigger: "hint",
-//     output: `Psst! Here's one especially for you :)
+  //   {
+  //   trigger: "enablebg",
+  //   output: `Background effects enabled!`
+  // },  
+  //   {
+  //     trigger: "hint",
+  //     output: `Psst! Here's one especially for you :)
 
-// >> Type 'start' to begin the journey.
-// `
-//   },
-    {
+  // >> Type 'start' to begin the journey.
+  // `
+  //   },
+  {
     trigger: "start",
     output: `[ SYSTEM BOOTING... ]
 A faint glow hums on the terminal.

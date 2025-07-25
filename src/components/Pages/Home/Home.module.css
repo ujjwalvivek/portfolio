@@ -156,21 +156,55 @@
 
 /* --- Glitch keyframes --- */
 @keyframes glitchTop {
-    0% { left: 0; }
-    20% { left: 0.5px; }
-    40% { left: -0.5px; }
-    60% { left: 0.5px; }
-    80% { left: -0.25px; }
-    100% { left: 0; }
+    0% {
+        left: 0;
+    }
+
+    20% {
+        left: 0.5px;
+    }
+
+    40% {
+        left: -0.5px;
+    }
+
+    60% {
+        left: 0.5px;
+    }
+
+    80% {
+        left: -0.25px;
+    }
+
+    100% {
+        left: 0;
+    }
 }
 
 @keyframes glitchBot {
-    0% { left: 0; }
-    20% { left: -0.5px; }
-    40% { left: 0.5px; }
-    60% { left: -0.25px; }
-    80% { left: 0.5px; }
-    100% { left: 0; }
+    0% {
+        left: 0;
+    }
+
+    20% {
+        left: -0.5px;
+    }
+
+    40% {
+        left: 0.5px;
+    }
+
+    60% {
+        left: -0.25px;
+    }
+
+    80% {
+        left: 0.5px;
+    }
+
+    100% {
+        left: 0;
+    }
 }
 
 /* --- Neon shadow pulse effect --- */
@@ -182,8 +216,13 @@
 }
 
 @keyframes pulseShadow {
-    0% { text-shadow: 0 0 2px var(--primary-color), 0 0 8px #ffffff25; }
-    100% { text-shadow: 0 0 8px var(--primary-color), 0 0 16px #ffffff25; }
+    0% {
+        text-shadow: 0 0 2px var(--primary-color), 0 0 8px #ffffff25;
+    }
+
+    100% {
+        text-shadow: 0 0 8px var(--primary-color), 0 0 16px #ffffff25;
+    }
 }
 
 /* --- Neon flicker effect for headings --- */
@@ -201,6 +240,7 @@
 }
 
 @keyframes flicker {
+
     0%,
     100% {
         opacity: 1;
@@ -208,16 +248,19 @@
             0 0 2px var(--primary-color),
             0 0 6px var(--primary-color);
     }
+
     80% {
         opacity: 0.7;
         text-shadow:
             0 0 1px var(--primary-color),
             0 0 2px var(--primary-color);
     }
+
     85% {
         opacity: 0.5;
         text-shadow: none;
     }
+
     90% {
         opacity: 0.8;
         text-shadow:
@@ -336,7 +379,7 @@ button.cta {
     margin: 0;
     display: flex;
     flex-direction: row;
-    gap: 2rem;   
+    gap: 2rem;
     flex-wrap: nowrap;
     justify-content: center;
     width: 100%;
@@ -418,6 +461,7 @@ button.cta {
 
 /* --- Mobile styles --- */
 @media (max-width: 600px) {
+
     /* --- Home container mobile --- */
     .homeContainer {
         width: 100% !important;
@@ -502,5 +546,20 @@ button.cta {
         word-break: normal;
         display: block;
         max-width: 100%;
+    }
+}
+
+@media (max-width: 900px) {
+
+    /* --- CTA grid for 2x2 layout --- */
+    .ctaContainer {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        /* 2 columns */
+        gap: 1rem;
+        width: 100%;
+        margin: 1.2rem 0;
+        justify-items: stretch;
+        align-items: stretch;
     }
 }

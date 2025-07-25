@@ -10,7 +10,7 @@
 
 .heroSection {
   width: 100%;
-  padding: 1rem 1rem ;
+  padding: 1rem 1rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -34,21 +34,23 @@
 }
 
 @media (max-width: 900px) {
-    .heroTitle {
-        font-size: 2rem;
-    }
-    .heroSubtitle {
-        font-size: 0.9rem;
-    }
+  .heroTitle {
+    font-size: 2rem;
+  }
+
+  .heroSubtitle {
+    font-size: 0.9rem;
+  }
 }
 
 @media (max-width: 600px) {
-    .heroTitle {
-        font-size: 1.6rem;
-    }
-    .heroSubtitle {
-        font-size: 0.8rem;
-    }
+  .heroTitle {
+    font-size: 1.6rem;
+  }
+
+  .heroSubtitle {
+    font-size: 0.8rem;
+  }
 }
 
 .cardsWrapper {
@@ -97,7 +99,7 @@
   pointer-events: none;
 }
 
-.bgFullPreview > * {
+.bgFullPreview>* {
   width: 100% !important;
   height: 100% !important;
   display: block;
@@ -127,8 +129,8 @@
   box-shadow: 0 2px 16px #0008;
   letter-spacing: 0.5px;
   text-shadow: 0 1px 8px #ff008033;
-  background: rgba(24,24,28,0.3);
-  transition: transform 0.18s cubic-bezier(.4,0,.2,1), opacity 0.18s cubic-bezier(.4,0,.2,1);
+  background: rgba(24, 24, 28, 0.3);
+  transition: transform 0.18s cubic-bezier(.4, 0, .2, 1), opacity 0.18s cubic-bezier(.4, 0, .2, 1);
 }
 
 .bgCard:hover .bgLabel,
@@ -161,9 +163,10 @@
 }
 
 @media (max-width: 600px) {
-    .a11yDisclaimer {
+  .a11yDisclaimer {
     font-size: 0.8rem;
-    }
+  }
+
   .a11yAction {
     flex-direction: column;
     align-items: stretch;
@@ -184,14 +187,15 @@
   transition: background 0.15s, color 0.15s, border 0.15s;
 }
 
-.lowChaosButton:hover, .lowChaosButton:focus {
+.lowChaosButton:hover,
+.lowChaosButton:focus {
   background: #ffb300;
   color: #23232b;
 }
 
 @media (max-width: 600px) {
   .lowChaosButton {
-      font-size: 0.9rem;
+    font-size: 0.9rem;
 
   }
 }
@@ -203,20 +207,24 @@
     min-height: 0;
     gap: 0;
   }
+
   .bgCard {
     min-height: 120px;
     height: 22vh;
     max-height: 200px;
     border-right: none;
   }
+
   .bgCard:last-child {
     border-bottom: none;
   }
+
   .bgLabel {
     font-size: 1.1rem;
     padding: 0.7rem 1.2rem 0.5rem 1.2rem;
     margin-bottom: 1.2rem;
   }
+
   .bottomBar {
     padding: 1rem 0 1rem 0;
   }
@@ -232,19 +240,21 @@
   font-family: var(--font-mono);
   flex-shrink: 0;
 }
+
 .footer a {
   color: var(--primary-color);
   text-decoration: none;
   font-weight: 400;
 }
+
 .footer a:hover,
 .footer a:focus {
   color: var(--text-color);
   text-decoration: none;
 }
+
 @media (max-width: 600px) {
   .footer {
     font-size: 0.7rem;
   }
 }
-

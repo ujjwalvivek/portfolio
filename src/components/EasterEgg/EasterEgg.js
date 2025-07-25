@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import TerminalFooter from "../TerminalFooter/TerminalFooter";
 import styles from "./EasterEgg.module.css";
-import { useBackground } from "../Background/BackgroundContext"; 
+import { useBackground } from "../Background/BackgroundContext";
 
 const EasterEgg = () => {
   const [easterEggText, setEasterEggText] = useState("Ħəʏʏʏ þššʈ‼ Ŧøʉɴɗ ʈʜɛ ɭɸɠş, ɧħųʜ‽⸘");
@@ -15,13 +15,13 @@ const EasterEgg = () => {
   // Only add glitch/pulse/flicker if background is not "none"
   const glitchyClasses = backgroundConfig.type !== 'none' ? `${styles.blink} ${styles.flicker}` : '';
 
-useEffect(() => {
-  if (showTerminal && terminalRef.current) {
-    requestAnimationFrame(() => {
-      terminalRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    });
-  }
-}, [showTerminal]);
+  useEffect(() => {
+    if (showTerminal && terminalRef.current) {
+      requestAnimationFrame(() => {
+        terminalRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      });
+    }
+  }, [showTerminal]);
 
   return (
     <>

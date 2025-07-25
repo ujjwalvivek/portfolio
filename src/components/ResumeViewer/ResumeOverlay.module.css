@@ -14,8 +14,13 @@
 }
 
 @keyframes resumeOverlayFadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 .resumeOverlayModal {
@@ -33,8 +38,15 @@
 }
 
 @keyframes resumeModalPopIn {
-  from { transform: scale(0.97) translateY(30px); opacity: 0; }
-  to { transform: scale(1) translateY(0); opacity: 1; }
+  from {
+    transform: scale(0.97) translateY(30px);
+    opacity: 0;
+  }
+
+  to {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
 }
 
 .resumeOverlayViewer {
@@ -60,8 +72,8 @@
   transition: background 0.2s, color 0.2s;
   white-space: nowrap;
   border: 2px solid var(--primary-color);
-    font-family: var(--font-mono);
-        letter-spacing: -0.5px;
+  font-family: var(--font-mono);
+  letter-spacing: -0.5px;
 
 
 }
@@ -120,10 +132,11 @@
   cursor: pointer;
   padding: 6px 12px;
   transition: background 0.2s ease, color 0.2s ease;
-  position: static; /* Not absolute! */
+  position: static;
+  /* Not absolute! */
   border: 2px solid var(--primary-color);
-    font-family: var(--font-mono);
-    letter-spacing: -0.5px;
+  font-family: var(--font-mono);
+  letter-spacing: -0.5px;
 
 }
 
@@ -141,6 +154,7 @@
     align-items: flex-end;
     z-index: 20;
   }
+
   .resumeOverlayTopRightClose,
   .resumeOverlayThemeSwitch {
     font-size: 0.98rem;
@@ -149,12 +163,14 @@
     max-width: 90vw;
     white-space: normal;
   }
+
   .resumeOverlayViewer {
     width: 90vw;
     height: 70vh;
     min-width: 0;
     min-height: 0;
   }
+
   .resumeOverlayModal {
     max-width: 100vw;
     max-height: 100vh;

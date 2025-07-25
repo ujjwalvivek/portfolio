@@ -25,7 +25,13 @@
   "background_color": "#181818",
   "lang": "en-US",
   "orientation": "portrait",
-  "categories": ["portfolio", "developer", "blog", "creative", "PM"],
+  "categories": [
+    "portfolio",
+    "developer",
+    "blog",
+    "creative",
+    "PM"
+  ],
   "shortcuts": [
     {
       "name": "Home",

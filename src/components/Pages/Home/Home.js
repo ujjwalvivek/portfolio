@@ -54,8 +54,8 @@ const Home = () => {
                         <a href="https://linkedin.com/in/ujjwalvivek" target="_blank" rel="noopener noreferrer" className={styles.cta}>
                             <span className="cta-link-span">fn(</span>LinkedIn<span className="cta-link-span">)</span>
                         </a>
-                        <a href="https://x.com/ujjwalvivekx" target="_blank" rel="noopener noreferrer" className={styles.cta}>
-                            <span className="cta-link-span">fn(</span>X<span className="cta-link-span">)</span>
+                        <a href="https://dev.to/ujjwalvivek" target="_blank" rel="noopener noreferrer" className={styles.cta}>
+                            <span className="cta-link-span">fn(</span>Dev.to<span className="cta-link-span">)</span>
                         </a>
                         <a href="https://github.com/ujjwalvivek" target="_blank" rel="noopener noreferrer" className={styles.cta}>
                             <span className="cta-link-span">fn(</span>GitHub<span className="cta-link-span">)</span>
@@ -91,7 +91,7 @@ const Home = () => {
                     {latestPosts.slice(0, 2).map((post, idx) => {
                         const maxLen = 30;
                         // Truncate long titles
-                        const shortTitle = post.title.length > maxLen ? post.title.slice(0, maxLen) + '...' : post.title; 
+                        const shortTitle = post.title.length > maxLen ? post.title.slice(0, maxLen) + '...' : post.title;
                         return (
                             <li key={post.slug || post.filename || idx}>
                                 <Link to={`/blog/${post.filename}`}>

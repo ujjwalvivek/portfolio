@@ -36,14 +36,14 @@ const TopBar = () => {
       <div className={styles.logoSection}>
         <Link to="/" className={styles.logoLink}>U J J W A L V I V E K</Link>
         <span className={styles.bgToggleButtonContainer}>
-        {/* Toggle background visuals */}
-        <button
-          className={`${styles.bgToggleButton} ${backgroundConfig.type !== 'none' ? styles.bgToggleButtonactive : ''}`}
-          onClick={toggleBackground}
-          title={`Background: ${backgroundConfig.type === 'none' ? 'Off' : backgroundConfig.type}`}
-        >
-          {backgroundConfig.type === 'none' ? '' : ''}
-        </button>
+          {/* Toggle background visuals */}
+          <button
+            className={`${styles.bgToggleButton} ${backgroundConfig.type !== 'none' ? styles.bgToggleButtonactive : ''}`}
+            onClick={toggleBackground}
+            title={`Background: ${backgroundConfig.type === 'none' ? 'Off' : backgroundConfig.type}`}
+          >
+            {backgroundConfig.type === 'none' ? '' : ''}
+          </button>
         </span>
       </div>
     </div>

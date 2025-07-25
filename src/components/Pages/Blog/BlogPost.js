@@ -69,7 +69,7 @@ const Admonition = ({ node, children }) => {
   const type = node.properties.className[1]; // note, warning, tip, danger
   let title = type.charAt(0).toUpperCase() + type.slice(1); // Default title
   let content = children;
-    
+
   // Check for custom title in node attributes first
   if (node.attributes && node.attributes.title) {
     title = node.attributes.title;
@@ -82,7 +82,7 @@ const Admonition = ({ node, children }) => {
     children[0].props.children
   ) {
     const firstChild = children[0].props.children;
-    
+
     // Handle different content structures
     let firstText = '';
     if (typeof firstChild === 'string') {
@@ -90,11 +90,11 @@ const Admonition = ({ node, children }) => {
     } else if (Array.isArray(firstChild) && typeof firstChild[0] === 'string') {
       firstText = firstChild[0];
     }
-        
+
     // If first text looks like a title (short line, followed by more content)
     if (
       firstText &&
-      firstText.length > 0 && 
+      firstText.length > 0 &&
       firstText.length < 60 && // Reasonable title length
       !firstText.includes('\n') && // Single line
       children.length > 1 // Has content after title
@@ -148,7 +148,7 @@ const BlogPost = () => {
         // Fetch all posts metadata
         const allPostsRes = await fetch('/posts/meta.json');
         const allPosts = await allPostsRes.json();
-        
+
         const currentPostMeta = allPosts.find(p => p.filename === filename);
 
         if (currentPostMeta) {
@@ -160,8 +160,8 @@ const BlogPost = () => {
           setPost({ content, data, readingTime: readingTimeText });
 
           // Find related posts (by tags)
-          const related = allPosts.filter(p => 
-            p.id !== currentPostMeta.id && 
+          const related = allPosts.filter(p =>
+            p.id !== currentPostMeta.id &&
             p.tags.some(tag => currentPostMeta.tags.includes(tag))
           ).slice(0, 3); // Get top 3 related posts
           setRelatedPosts(related);
@@ -181,8 +181,8 @@ const BlogPost = () => {
     return (
       <div className={styles.blogContainer}>
         <div className={styles.loadingState}>
-            <p>Loading...</p>
-          </div>
+          <p>Loading...</p>
+        </div>
       </div>
     );
   }
@@ -212,11 +212,11 @@ const BlogPost = () => {
   const components = {
     code: CodeBlock,
     img: ({ src, alt }) => (
-      <img 
-        src={src} 
-        alt={alt} 
-        onClick={() => setLightboxImage(src)} 
-        style={{cursor: 'pointer'}}
+      <img
+        src={src}
+        alt={alt}
+        onClick={() => setLightboxImage(src)}
+        style={{ cursor: 'pointer' }}
       />
     ),
     div: (props) => {
@@ -252,8 +252,8 @@ const BlogPost = () => {
             <span className={styles.readingTime}>{post.readingTime}</span>
           </div>
           <div className={styles.markdown}>
-            <ReactMarkdown 
-              remarkPlugins={remarkPlugins} 
+            <ReactMarkdown
+              remarkPlugins={remarkPlugins}
               rehypePlugins={[rehypeRaw, rehypeSlug, rehypeKatex]}
               components={components}
             >
@@ -262,10 +262,10 @@ const BlogPost = () => {
           </div>
           <div className={styles.authorSignature}>
             <p>
-    <strong>Vivek</strong> crafting systems,
-    <br />
-    one line at a time.
-  </p>
+              <strong>Vivek</strong> crafting systems,
+              <br />
+              one line at a time.
+            </p>
           </div>
           <br />
           <RelatedPosts posts={relatedPosts} />

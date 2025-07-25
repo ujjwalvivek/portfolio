@@ -1,7 +1,7 @@
 @font-face {
   font-family: 'JetBrains Mono';
   src: url('./assets/fonts/JetBrainsMono/woff2/JetBrainsMono-Regular.woff2') format('woff2'),
-       url('./assets/fonts/JetBrainsMono/woff/JetBrainsMono-Regular.woff') format('woff');
+    url('./assets/fonts/JetBrainsMono/woff/JetBrainsMono-Regular.woff') format('woff');
   font-weight: 400;
   font-style: normal;
 }
@@ -9,7 +9,7 @@
 @font-face {
   font-family: 'JetBrains Mono';
   src: url('./assets/fonts/JetBrainsMono/woff2/JetBrainsMono-Bold.woff2') format('woff2'),
-       url('./assets/fonts/JetBrainsMono/woff/JetBrainsMono-Bold.woff') format('woff');
+    url('./assets/fonts/JetBrainsMono/woff/JetBrainsMono-Bold.woff') format('woff');
   font-weight: 700;
   font-style: normal;
 }
@@ -17,7 +17,7 @@
 @font-face {
   font-family: 'JetBrains Mono';
   src: url('./assets/fonts/JetBrainsMono/woff2/JetBrainsMono-ExtraBold.woff2') format('woff2'),
-       url('./assets/fonts/JetBrainsMono/woff/JetBrainsMono-ExtraBold.woff') format('woff');
+    url('./assets/fonts/JetBrainsMono/woff/JetBrainsMono-ExtraBold.woff') format('woff');
   font-weight: 800;
   font-style: normal;
 }
@@ -25,7 +25,7 @@
 @font-face {
   font-family: 'JetBrains Mono';
   src: url('./assets/fonts/JetBrainsMono/woff2/JetBrainsMono-Medium.woff2') format('woff2'),
-       url('./assets/fonts/JetBrainsMono/woff/JetBrainsMono-Medium.woff') format('woff');
+    url('./assets/fonts/JetBrainsMono/woff/JetBrainsMono-Medium.woff') format('woff');
   font-weight: 500;
   font-style: normal;
 }
@@ -33,7 +33,7 @@
 @font-face {
   font-family: 'JetBrains Mono';
   src: url('./assets/fonts/JetBrainsMono/woff2/JetBrainsMono-Italic.woff2') format('woff2'),
-       url('./assets/fonts/JetBrainsMono/woff/JetBrainsMono-Italic.woff') format('woff');
+    url('./assets/fonts/JetBrainsMono/woff/JetBrainsMono-Italic.woff') format('woff');
   font-weight: 400;
   font-style: italic;
 }
@@ -41,7 +41,7 @@
 @font-face {
   font-family: 'JetBrains Mono';
   src: url('./assets/fonts/JetBrainsMono/woff2/JetBrainsMono-Medium-Italic.woff2') format('woff2'),
-       url('./assets/fonts/JetBrainsMono/woff/JetBrainsMono-Medium-Italic.woff') format('woff');
+    url('./assets/fonts/JetBrainsMono/woff/JetBrainsMono-Medium-Italic.woff') format('woff');
   font-weight: 500;
   font-style: italic;
 }
@@ -115,10 +115,14 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-html, body {
-  width: 100%; /* Default to full viewport width */
-  max-width: 100%; /* Prevent exceeding the device width */
-  overflow-x: hidden; /* Disable horizontal scrolling */
+html,
+body {
+  width: 100%;
+  /* Default to full viewport width */
+  max-width: 100%;
+  /* Prevent exceeding the device width */
+  overflow-x: hidden;
+  /* Disable horizontal scrolling */
 }
 
 code {
@@ -141,7 +145,10 @@ button:hover .cta-link-span {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
+
+  *,
+  *::before,
+  *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
@@ -160,13 +167,15 @@ button:hover .cta-link-span {
 
 @media (max-width: 900px) {
   .katex {
-    font-size: 1rem !important; /* Adjust font size for smaller screens */
+    font-size: 1rem !important;
+    /* Adjust font size for smaller screens */
   }
 }
 
 @media (max-width: 600px) {
   .katex {
-    font-size: 0.8rem !important; /* Further adjust for very small screens */
+    font-size: 0.8rem !important;
+    /* Further adjust for very small screens */
   }
 }
 
@@ -191,11 +200,11 @@ button:hover .cta-link-span {
 }
 
 .katex-html {
-        margin-top: 1rem !important;
-display: block !important;
+  margin-top: 1rem !important;
+  display: block !important;
   width: 100% !important;
   box-sizing: border-box !important;
-    border: 3px solid var(--terminal-input-color) !important;
+  border: 3px solid var(--terminal-input-color) !important;
   padding: 1rem 1rem !important;
   border-radius: 2px !important;
   text-align: center !important;
@@ -223,10 +232,10 @@ display: block !important;
 .katex-display .katex-html * {
   font-family: var(--font-mono) !important;
   color: var(--terminal-input-color) !important;
-    font-style: normal !important;
-      letter-spacing: 0px !important;
+  font-style: normal !important;
+  letter-spacing: 0px !important;
 }
 
 .rpv-core__inner-page {
-    background: rgba(var(--background-color-rgb), 1) !important;
+  background: rgba(var(--background-color-rgb), 1) !important;
 }

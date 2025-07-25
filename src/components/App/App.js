@@ -16,9 +16,9 @@ import LandingPage from '../Pages/Landing/LandingPage';
 
 function AppContent() {
   const { backgroundConfig } = useBackground();
-  
+
   return (
-    <div 
+    <div
       className={styles.App}
       style={{
         backgroundColor: backgroundConfig.type === 'none' ? 'var(--background-color)' : 'transparent'

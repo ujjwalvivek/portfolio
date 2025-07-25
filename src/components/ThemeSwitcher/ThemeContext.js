@@ -12,7 +12,7 @@ export const ThemeProvider = ({ children }) => {
       return true; // Fallback
     }
   });
-  
+
   useEffect(() => {
     // Add or remove the dark mode class from the body
     if (darkMode) {

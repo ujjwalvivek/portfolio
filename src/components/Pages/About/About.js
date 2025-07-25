@@ -37,23 +37,23 @@ const About = () => {
     { title: "Markdown", icon: <FaMarkdown size={36} opacity={0.8} /> },
     { title: "Confluence", icon: <FaConfluence size={36} opacity={0.8} /> },
     { title: "Jira", icon: <FaJira size={36} opacity={0.8} /> },
-  { title: "Mixpanel", icon: <SiMixpanel size={36} opacity={0.8} /> },
-  { title: "Git", icon: <FaGit size={36} opacity={0.8} /> },
-  { title: "Unity", icon: <FaUnity size={36} opacity={0.8} /> },
-  { title: "Unreal Engine", icon: <SiUnrealengine size={36} opacity={0.8} /> },
-  { title: "Linear", icon: <SiLinear size={36} opacity={0.8} /> },
-  { title: "JavaScript", icon: <IoLogoJavascript size={36} opacity={0.8} /> },
-  { title: "Figma", icon: <LuFigma size={36} opacity={0.8} /> },
-  { title: "Firebase", icon: <IoLogoFirebase size={36} opacity={0.8} /> },
-  { title: "SQL", icon: <TbSql size={36} opacity={0.8} /> },
-  { title: "NodeJs", icon: <FaNodeJs size={36} opacity={0.8} /> },
-];
+    { title: "Mixpanel", icon: <SiMixpanel size={36} opacity={0.8} /> },
+    { title: "Git", icon: <FaGit size={36} opacity={0.8} /> },
+    { title: "Unity", icon: <FaUnity size={36} opacity={0.8} /> },
+    { title: "Unreal Engine", icon: <SiUnrealengine size={36} opacity={0.8} /> },
+    { title: "Linear", icon: <SiLinear size={36} opacity={0.8} /> },
+    { title: "JavaScript", icon: <IoLogoJavascript size={36} opacity={0.8} /> },
+    { title: "Figma", icon: <LuFigma size={36} opacity={0.8} /> },
+    { title: "Firebase", icon: <IoLogoFirebase size={36} opacity={0.8} /> },
+    { title: "SQL", icon: <TbSql size={36} opacity={0.8} /> },
+    { title: "NodeJs", icon: <FaNodeJs size={36} opacity={0.8} /> },
+  ];
 
   React.useEffect(() => {
     if (sessionStorage.getItem('introPlayed')) {
-    setTypedText(terminalText);
-    return;
-  }
+      setTypedText(terminalText);
+      return;
+    }
     let i = 0;
     setTypedText('');
     const interval = setInterval(() => {
@@ -67,18 +67,18 @@ const About = () => {
     return () => clearInterval(interval);
   }, []);
 
-// Fetch posts on mount
-    useEffect(() => {
-        const fetchPosts = async () => {
-            const response = await fetch('/posts/meta.json');
-            const postsData = await response.json();
-            // Sort posts by date, newest first
-            postsData.sort((a, b) => new Date(b.date) - new Date(a.date));
-            setLatestPosts(postsData.slice(0, 2)); // Only show 4 latest
-        };
+  // Fetch posts on mount
+  useEffect(() => {
+    const fetchPosts = async () => {
+      const response = await fetch('/posts/meta.json');
+      const postsData = await response.json();
+      // Sort posts by date, newest first
+      postsData.sort((a, b) => new Date(b.date) - new Date(a.date));
+      setLatestPosts(postsData.slice(0, 2)); // Only show 4 latest
+    };
 
-        fetchPosts();
-    }, []);
+    fetchPosts();
+  }, []);
 
   return (
     <>
@@ -106,7 +106,7 @@ const About = () => {
           {/* Skills Section */}
           <section className={styles.skillsSection}>
             <h2 className={styles.spicyHeading}>
-                tech stack; failures until they aren't 
+              tech stack; failures until they aren't
             </h2>
             <div className={styles.skillsGridIcons}>
               {icons.map(({ title, icon }) => (

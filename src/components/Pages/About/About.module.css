@@ -123,8 +123,8 @@
   font-weight: 500;
   text-align: center;
   backdrop-filter: blur(32px) saturate(180%);
-    -webkit-backdrop-filter: blur(32px) saturate(180%);
-    background: rgba(var(--background-color-rgb), 0.3);
+  -webkit-backdrop-filter: blur(32px) saturate(180%);
+  background: rgba(var(--background-color-rgb), 0.3);
 }
 
 .spicyHeading {
@@ -133,8 +133,8 @@
   margin: 0 auto 1.5rem auto;
   border-radius: 2px;
   backdrop-filter: blur(32px) saturate(180%);
-    -webkit-backdrop-filter: blur(32px) saturate(180%);
-    background: rgba(var(--background-color-rgb), 0.2);
+  -webkit-backdrop-filter: blur(32px) saturate(180%);
+  background: rgba(var(--background-color-rgb), 0.2);
   display: inline-block;
   position: relative;
   z-index: 2;
@@ -158,8 +158,8 @@
   align-items: center;
   justify-content: center;
   backdrop-filter: blur(32px) saturate(180%);
-      -webkit-backdrop-filter: blur(32px) saturate(180%);
-    background: rgba(var(--background-color-rgb), 0.3);
+  -webkit-backdrop-filter: blur(32px) saturate(180%);
+  background: rgba(var(--background-color-rgb), 0.3);
   border-radius: 2px;
   padding: 1rem;
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.10);
@@ -200,13 +200,13 @@
   margin: 0 0 2rem 0;
   font-family: 'JetBrains Mono', monospace;
   border-radius: 2px;
-  box-shadow: 0 2px 16px 0 rgba(0,0,0,0.10);
+  box-shadow: 0 2px 16px 0 rgba(0, 0, 0, 0.10);
   padding: 1.5rem 1.5rem;
   width: 50%;
   max-width: 100%;
   backdrop-filter: blur(32px) saturate(180%);
   -webkit-backdrop-filter: blur(32px) saturate(180%);
-    background: rgba(var(--background-color-rgb), 0.3);
+  background: rgba(var(--background-color-rgb), 0.3);
 }
 
 .statusConsoleTitle {
@@ -250,7 +250,7 @@
   margin-left: 0.5rem;
   border-radius: 2px;
   border: 1.5px solid #7fffd4;
-  background: rgba(24,24,28,0.18);
+  background: rgba(24, 24, 28, 0.18);
   font-size: 0.85em;
   font-family: inherit;
   font-weight: 600;
@@ -267,41 +267,68 @@
 .statusOk {
   color: var(--status-ok-color);
   border-color: var(--status-ok-color);
-  background: rgba(127,255,212,0.07);
+  background: rgba(127, 255, 212, 0.07);
 }
+
 .statusWarn {
   color: var(--status-warn-color);
   border-color: var(--status-warn-color);
-  background: rgba(255,179,71,0.07);
+  background: rgba(255, 179, 71, 0.07);
 }
+
 .statusRam {
   color: var(--status-ram-color);
   border-color: var(--status-ram-color);
-  background: rgba(255,85,85,0.07);
+  background: rgba(255, 85, 85, 0.07);
 }
+
 .statusInfo {
   color: var(--status-info-color);
   border-color: var(--status-info-color);
-  background: rgba(0,230,255,0.07);
+  background: rgba(0, 230, 255, 0.07);
 }
 
 /* Flicker and blink effects (optional) */
 .flicker {
   animation: flickerAnim 1.2s infinite alternate;
 }
+
 @keyframes flickerAnim {
-  0% { opacity: 1; }
-  80% { opacity: 0.85; }
-  85% { opacity: 0.6; }
-  90% { opacity: 0.95; }
-  100% { opacity: 1; }
+  0% {
+    opacity: 1;
+  }
+
+  80% {
+    opacity: 0.85;
+  }
+
+  85% {
+    opacity: 0.6;
+  }
+
+  90% {
+    opacity: 0.95;
+  }
+
+  100% {
+    opacity: 1;
+  }
 }
+
 .blink {
   animation: blinkAnim 0.7s steps(1) infinite;
 }
+
 @keyframes blinkAnim {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.2; }
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.2;
+  }
 }
 
 /* Responsive */
@@ -311,6 +338,10 @@
     padding: 1rem 1rem;
     margin-left: 1rem;
   }
+
+  .statusService {
+    font-size: 0.9em;
+  }
 }
 
 @media (max-width: 600px) {
@@ -319,10 +350,12 @@
     min-width: 80px;
     font-size: 0.8em;
   }
+
   .statusService {
     padding-right: 0.3rem;
     font-size: 0.9em;
   }
+
   .statusConsoleSection {
     width: 100%;
     padding: 1rem 1rem;
@@ -404,17 +437,17 @@
   font-size: 1.1rem;
   font-family: var(--font-mono, monospace);
   color: var(--text-color);
-  background: rgba(255,255,255,0.04);
+  background: rgba(255, 255, 255, 0.04);
   border-radius: 2px;
   padding: 0.8rem 1.2rem;
   transition: background 0.2s, transform 0.2s;
-  box-shadow: 0 2px 8px 0 rgba(0,0,0,0.10);
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.10);
   position: relative;
-  list-style: none ;
+  list-style: none;
 }
 
 .blogList li:hover {
-  background: rgba(255,255,255,0.10);
+  background: rgba(255, 255, 255, 0.10);
   transform: translateY(-2px) scale(1.01);
 }
 
@@ -434,7 +467,7 @@
 .blogList a {
   display: flex;
   flex-direction: column;
-    text-decoration: none;
+  text-decoration: none;
 
 }
 
@@ -448,10 +481,6 @@
   justify-content: flex-start;
   margin: 0 0.5rem;
   padding: 0rem 1rem;
-}
-
-.resumeViewerBox {
-    background: rgba(var(--pdf-bg-rgb), 0.1) !important;
 }
 
 .recentLogsBox h2 {
@@ -478,7 +507,7 @@
   border: 2px solid var(--text-color);
   padding: 0.5rem;
   animation: avatarGlow 2s linear infinite;
-
+  background: rgba(var(--background-color-rgb), 1) !important;
 }
 
 .resumeViewerOverlay {
@@ -534,7 +563,22 @@
   }
 }
 
+@media (max-width: 720px) {
+  .skillsStatusRow {
+    flex-direction: column-reverse;
+    gap: 1.5rem;
+    margin: 1.2rem 0 0 0;
+  }
+
+  .statusConsoleSection {
+    width: 100%;
+    padding: 1rem 1rem;
+    margin: 0;
+  }
+}
+
 @media (max-width: 600px) {
+
   /* Page container padding and font */
   .pageContainer {
     padding: 0.5rem 1rem;
@@ -547,15 +591,18 @@
     gap: 1.2rem;
     align-items: center;
   }
+
   .heroTitle {
     font-size: 1.5rem;
     text-align: center;
   }
+
   .heroSubtitle {
     font-size: 1rem;
     text-align: center;
     padding: 0.2rem 0;
   }
+
   .avatarImg {
     height: 200px;
     max-width: 90vw;
@@ -569,6 +616,7 @@
     gap: 1.5rem;
     margin: 1.2rem 0 0 0;
   }
+
   .skillsSection {
     margin: 0;
     max-width: 100%;
@@ -578,22 +626,25 @@
 
   /* Skills grid: 5 icons per row, smaller icons */
   .skillsGridIcons {
-  grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
-  gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
+    gap: 1rem;
     margin-top: 1rem;
     margin-bottom: 1rem;
   }
+
   .skillItem {
     width: auto;
     height: 50px;
     padding: 0.7rem;
-      position: relative;
+    position: relative;
   }
+
   .skillItem .frostedIcon {
     font-size: 1rem !important;
   }
+
   .spicyHeading {
-    font-size: 1rem;;
+    font-size: 1rem;
   }
 
   .quickJumpRow {
@@ -602,19 +653,23 @@
     padding: 0.5rem 0.5rem;
     max-width: 100vw;
   }
+
   .recentLogsBox,
   .resumeViewerBox {
     margin: 0;
     width: 100%;
     padding: 0.5rem;
   }
+
   .recentLogsBox h2 {
     font-size: 1.1rem;
     margin-bottom: 0.3rem;
   }
+
   .resumeIframe {
     height: 140px;
   }
+
   .resumeViewerBox {
     padding: 0.25rem;
   }
@@ -623,6 +678,7 @@
   .blogList {
     padding: 0 0.2rem;
   }
+
   .blogList li {
     margin: 1rem 0;
     font-size: 0.97rem;
@@ -630,6 +686,7 @@
 }
 
 @media (max-width: 1100px) {
+
   /* Blog list */
   .blogList li {
     margin: 1rem 0;
@@ -686,47 +743,3 @@
     font-size: 0.75rem;
   }
 }
-
-/* Responsive Styles 
-@media (max-width: 900px) {
-  .quickJumpRow {
-    flex-direction: column;
-    gap: 2.5rem;
-    padding: 1.2rem 0.5rem;
-  }
-
-  .recentLogsBox,
-  .resumeViewerBox {
-    margin: 0;
-    width: 100%;
-  }
-
-  .resumeIframe {
-    height: 320px;
-  }
-}
-
-@media (max-width: 900px) {
-  .skillsStatusRow {
-    flex-direction: column;
-    gap: 2.5rem;
-  }
-
-  .skillsSection,
-  .statusConsoleSection {
-    margin: 0;
-    max-width: 100%;
-  }
-}
-
-@media (max-width: 700px) {
-  .terminalFooterReal {
-    max-width: 98vw;
-    font-size: 0.98em;
-  }
-
-  .terminalFooterScroll {
-    padding: 0.7em 0.5em 0.7em 0.7em;
-  }
-}
-  ---------------- */

@@ -36,30 +36,30 @@
 }
 
 .header h1 {
-  font-family: var(--font-mono);
-  font-size: 2.5rem;
-  font-weight: 800;
-  color: var(--text-color);
-  letter-spacing: -0.04em;
-  text-align: center;
-  margin: 0 auto;
-  padding: 0rem 0rem;
+    font-family: var(--font-mono);
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--text-color);
+    letter-spacing: -0.04em;
+    text-align: center;
+    margin: 0 auto;
+    padding: 0rem 0rem;
 }
 
 .subtitle {
-  font-size: 1.1rem;
-  color: var(--primary-color);
-  font-family: var(--font-mono);
-  letter-spacing: 0.01em;
-  font-weight: 700;
-  text-align: center;
-  border-top: 4px solid transparent;
-  border-bottom: 4px solid transparent;
-  background:
-    linear-gradient(90deg, rgba(255, 255, 255, 0), var(--background-color), rgba(255, 255, 255, 0)) padding-box,
-    linear-gradient(90deg, rgba(255, 255, 255, 0), var(--primary-color), rgba(255, 255, 255, 0)) border-box;
-  background-origin: border-box;
-  background-clip: content-box, border-box;
+    font-size: 1.1rem;
+    color: var(--primary-color);
+    font-family: var(--font-mono);
+    letter-spacing: 0.01em;
+    font-weight: 700;
+    text-align: center;
+    border-top: 4px solid transparent;
+    border-bottom: 4px solid transparent;
+    background:
+        linear-gradient(90deg, rgba(255, 255, 255, 0), var(--background-color), rgba(255, 255, 255, 0)) padding-box,
+        linear-gradient(90deg, rgba(255, 255, 255, 0), var(--primary-color), rgba(255, 255, 255, 0)) border-box;
+    background-origin: border-box;
+    background-clip: content-box, border-box;
 }
 
 .header .description {
@@ -216,7 +216,7 @@
     position: sticky;
     top: 2rem;
     background: rgba(var(--text-color), 0.02);
-        backdrop-filter: blur(32px) saturate(180%);
+    backdrop-filter: blur(32px) saturate(180%);
     -webkit-backdrop-filter: blur(32px) saturate(180%);
     background: rgba(var(--background-color-rgb), 0.3);
 }
@@ -293,7 +293,7 @@
     background: var(--primary-color);
     cursor: pointer;
     border: 2px solid var(--background-color);
-    box-shadow: 
+    box-shadow:
         0 0 0 1px var(--primary-color),
         0 2px 8px rgba(var(--primary-color), 0.4),
         0 0 12px rgba(var(--primary-color), 0.2);
@@ -302,7 +302,7 @@
 
 .slider::-webkit-slider-thumb:hover {
     transform: scale(1.2);
-    box-shadow: 
+    box-shadow:
         0 0 0 2px var(--primary-color),
         0 4px 12px rgba(var(--primary-color), 0.6),
         0 0 20px rgba(var(--primary-color), 0.4);
@@ -315,7 +315,7 @@
     cursor: pointer;
     border: 2px solid var(--background-color);
     border-radius: 50%;
-    box-shadow: 
+    box-shadow:
         0 0 0 1px var(--primary-color),
         0 2px 8px rgba(var(--primary-color), 0.4);
 }
@@ -341,7 +341,7 @@
 .selectButton:hover {
     background: rgba(var(--text-color), 0.1);
     border-color: var(--primary-color);
-        color: var(--text-color);
+    color: var(--text-color);
 
 }
 
@@ -354,7 +354,7 @@
 .colorPicker {
     width: 100%;
     height: 40px;
-    border-radius: 2px;;
+    border-radius: 2px;
     border: 2px solid rgba(var(--text-color), 0.2);
     cursor: pointer;
     appearance: none;
@@ -424,7 +424,8 @@
     background: rgba(var(--terminal-input-color-rgb), 0.5);
     padding: 0.5rem 1rem;
     border: 1px solid rgba(var(--terminal-input-color-rgb), 0.3);
-    width: 100%; /* Make it full width */
+    width: 100%;
+    /* Make it full width */
     justify-content: center;
 }
 
@@ -437,8 +438,15 @@
 }
 
 @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.3; }
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.3;
+    }
 }
 
 .previewContent {
@@ -551,7 +559,8 @@
     background: rgba(255, 69, 58, 0.1) !important;
     border-color: rgba(255, 69, 58, 0.3) !important;
     color: #ff453a !important;
-    width: 100%; /* Make it full width */
+    width: 100%;
+    /* Make it full width */
     border-radius: 0px;
     padding: 0.4rem 1rem;
     justify-content: center;
@@ -626,7 +635,7 @@
     .controlGrid {
         grid-template-columns: 1fr;
     }
-    
+
     .controlPanel {
         position: static;
     }
@@ -636,29 +645,29 @@
     .content {
         padding: 1rem;
     }
-    
+
     .backgroundGrid {
         grid-template-columns: 1fr;
     }
-    
+
     .statusGrid {
         grid-template-columns: 1fr;
     }
-    
+
     .actionButtons {
         flex-direction: column;
         align-items: center;
     }
-    
+
     .exportButtons {
         flex-direction: column;
         align-items: center;
     }
-    
+
     .previewContent h1 {
         font-size: 2rem;
     }
-    
+
     .header h1 {
         font-size: 2.2rem;
     }

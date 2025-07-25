@@ -26,7 +26,7 @@ const SearchBar = ({ onSearch, placeholder = "Search posts..." }) => {
           onChange={handleInputChange}
         />
         {query && (
-          <button 
+          <button
             className={styles.clearButton}
             onClick={handleClear}
             aria-label="Clear search"

@@ -118,24 +118,24 @@ const PdfViewer = ({ fileUrl, showToolbar = true, onClose }) => {
                                     aria-label="Close PDF viewer"
                                     style={{
                                         fontFamily: 'var(--font-mono)',
-                                            color: '#dbdbdb',
-                                            background: 'transparent',
-                                            width: 'auto',
-                                            height: '0.9rem',
-                                            fontSize: '0.8rem',
-                                            fontWeight: 400,
-                                            cursor: 'pointer',
-                                            zIndex: 10,
-                                            transition: 'background 0.2s',
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            justifyContent: 'right',
-                                            border: '2px solid #dbdbdb',
-                                            borderRadius: '4px',
-                                            padding: '0.8rem 0.8rem',
+                                        color: '#dbdbdb',
+                                        background: 'transparent',
+                                        width: 'auto',
+                                        height: '0.9rem',
+                                        fontSize: '0.8rem',
+                                        fontWeight: 400,
+                                        cursor: 'pointer',
+                                        zIndex: 10,
+                                        transition: 'background 0.2s',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'right',
+                                        border: '2px solid #dbdbdb',
+                                        borderRadius: '4px',
+                                        padding: '0.8rem 0.8rem',
                                     }}
                                 >
-                                    <FaWindowClose style={{ marginRight: '0.5rem'}} size={'1.2rem'} /> Close
+                                    <FaWindowClose style={{ marginRight: '0.5rem' }} size={'1.2rem'} /> Close
                                 </button>
                             )}
                         </div>

@@ -1,24 +1,30 @@
 .pdfViewerRoot {
-    width: 90vw;
-    height: 90vh;
-    max-width: 900px;
-    max-height: 90vh;
-    display: flex;
-    flex-direction: column;
-    background: rgba(30, 34, 44, 0.98);
-    border-radius: 0.25rem;
-    overflow: auto;
+  width: 90vw;
+  height: 90vh;
+  max-width: 900px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  background: rgba(30, 34, 44, 0.98);
+  border-radius: 0.25rem;
+  overflow: auto;
 }
 
 @keyframes pdfOverlayFadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 .pdfOverlayModal {
   background: rgba(var(--background-color-rgb), 0.4);
   backdrop-filter: blur(32px) saturate(180%);
-  -webkit-backdrop-filter: blur(32px) saturate(180%);  max-width: 90vw;
+  -webkit-backdrop-filter: blur(32px) saturate(180%);
+  max-width: 90vw;
   max-height: 90vh;
   position: relative;
   overflow: hidden;
@@ -29,8 +35,15 @@
 }
 
 @keyframes pdfModalPopIn {
-  from { transform: scale(0.97) translateY(30px); opacity: 0; }
-  to { transform: scale(1) translateY(0); opacity: 1; }
+  from {
+    transform: scale(0.97) translateY(30px);
+    opacity: 0;
+  }
+
+  to {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
 }
 
 .pdfOverlayCloseBtn {

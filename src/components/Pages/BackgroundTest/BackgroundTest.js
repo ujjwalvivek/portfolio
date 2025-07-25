@@ -145,7 +145,7 @@ const BackgroundTest = () => {
             customColor: updates.customColor !== undefined ? updates.customColor : customColor,
             isAnimated: updates.isAnimated !== undefined ? updates.isAnimated : isAnimated,
         };
-        
+
         // Update local state
         if (updates.type !== undefined) setCurrentBg(newType);
         setOpacity(newOpacity);
@@ -186,34 +186,34 @@ const BackgroundTest = () => {
         alert('Configuration URL copied to clipboard!');
     };
 
-const resetAllSettings = () => {
-    if (window.confirm('Reset all background settings to defaults? This will clear your saved preferences.')) {
-        const defaultBgId = 'psychedelic';
-        const defaultBgData = backgrounds.find(bg => bg.id === defaultBgId);
+    const resetAllSettings = () => {
+        if (window.confirm('Reset all background settings to defaults? This will clear your saved preferences.')) {
+            const defaultBgId = 'psychedelic';
+            const defaultBgData = backgrounds.find(bg => bg.id === defaultBgId);
 
-        // Always use 'custom' as the color mode
-        const defaults = {
-            type: defaultBgId,
-            opacity: defaultBgData?.controls.opacity.default ?? defaultBgData?.controls.opacity.min,
-            animationSpeed: defaultBgData?.controls.animationSpeed.default ?? defaultBgData?.controls.animationSpeed.min,
-            density: defaultBgData?.controls.density.default ?? defaultBgData?.controls.density.min,
-            colorMode: 'custom', // <-- force 'custom'
-            customColor: '#d63031',
-            isAnimated: true
-        };
+            // Always use 'custom' as the color mode
+            const defaults = {
+                type: defaultBgId,
+                opacity: defaultBgData?.controls.opacity.default ?? defaultBgData?.controls.opacity.min,
+                animationSpeed: defaultBgData?.controls.animationSpeed.default ?? defaultBgData?.controls.animationSpeed.min,
+                density: defaultBgData?.controls.density.default ?? defaultBgData?.controls.density.min,
+                colorMode: 'custom', // <-- force 'custom'
+                customColor: '#d63031',
+                isAnimated: true
+            };
 
-        setCurrentBg(defaultBgId);
-        setOpacity(defaults.opacity);
-        setAnimationSpeed(defaults.animationSpeed);
-        setDensity(defaults.density);
-        setColorMode(defaults.colorMode);
-        setCustomColor(defaults.customColor);
-        setIsAnimated(defaults.isAnimated);
-        setWallpaperStates({});
+            setCurrentBg(defaultBgId);
+            setOpacity(defaults.opacity);
+            setAnimationSpeed(defaults.animationSpeed);
+            setDensity(defaults.density);
+            setColorMode(defaults.colorMode);
+            setCustomColor(defaults.customColor);
+            setIsAnimated(defaults.isAnimated);
+            setWallpaperStates({});
 
-        updateBackgroundConfig(defaults);
-    }
-};
+            updateBackgroundConfig(defaults);
+        }
+    };
 
     const currentBgData = backgrounds.find(bg => bg.id === currentBg);
     const controlValues = { opacity, animationSpeed, density };
@@ -312,7 +312,7 @@ const resetAllSettings = () => {
                                         value={customColor}
                                         onChange={(e) => updateLocalAndGlobal({ customColor: e.target.value })}
                                         className={styles.colorPicker}
-                                        style={{border: '2px solid var(--primary-color)', borderRadius: '2px'}}
+                                        style={{ border: '2px solid var(--primary-color)', borderRadius: '2px' }}
                                     />
                                 </div>
                             )}
@@ -323,13 +323,13 @@ const resetAllSettings = () => {
                             <div className={styles.selectGroup}>
                                 <button
                                     className={`${styles.selectButton} ${backgroundConfig.isAnimated ? styles.active : ''}`}
-onClick={() => updateLocalAndGlobal({ isAnimated: true })}
+                                    onClick={() => updateLocalAndGlobal({ isAnimated: true })}
                                 >
                                     Animated
                                 </button>
                                 <button
                                     className={`${styles.selectButton} ${!backgroundConfig.isAnimated ? styles.active : ''}`}
-onClick={() => updateLocalAndGlobal({ isAnimated: false })}
+                                    onClick={() => updateLocalAndGlobal({ isAnimated: false })}
                                 >
                                     Static
                                 </button>

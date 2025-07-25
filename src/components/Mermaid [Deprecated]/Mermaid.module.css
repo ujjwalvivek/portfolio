@@ -5,8 +5,10 @@
   margin-right: auto;
   width: 100%;
   max-width: 100%;
-  object-fit: cover;   /* Prevents distortion */
-  object-position: 100% 35%; /* Adjusts image position */
+  object-fit: cover;
+  /* Prevents distortion */
+  object-position: 100% 35%;
+  /* Adjusts image position */
   border-radius: 2px;
   box-sizing: border-box;
   border: 2px solid var(--primary-color);
@@ -105,15 +107,15 @@
     padding: 1rem;
     margin: 1rem 0;
   }
-  
+
   .mermaid svg text {
     font-size: 13px !important;
   }
-  
+
   .mermaid svg .actor-text {
     font-size: 14px !important;
   }
-  
+
   .mermaid svg .messageText {
     font-size: 12px !important;
   }

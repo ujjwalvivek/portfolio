@@ -16,34 +16,34 @@ import { BsHourglassSplit } from 'react-icons/bs';
 const Projects = () => {
 
   const sortProjectsById = (projects) => {
-  return projects.sort((a, b) => {
-    // Extract prefix and number from IDs like 'pm-1', 'dev-2'
-    const aMatch = a.id.match(/([a-z]+)-(\d+)/);
-    const bMatch = b.id.match(/([a-z]+)-(\d+)/);
-    
-    if (aMatch && bMatch) {
-      const [, aPrefix, aNum] = aMatch;
-      const [, bPrefix, bNum] = bMatch;
-      
-      // First sort by prefix (pm vs dev)
-      if (aPrefix !== bPrefix) {
-        return aPrefix.localeCompare(bPrefix);
+    return projects.sort((a, b) => {
+      // Extract prefix and number from IDs like 'pm-1', 'dev-2'
+      const aMatch = a.id.match(/([a-z]+)-(\d+)/);
+      const bMatch = b.id.match(/([a-z]+)-(\d+)/);
+
+      if (aMatch && bMatch) {
+        const [, aPrefix, aNum] = aMatch;
+        const [, bPrefix, bNum] = bMatch;
+
+        // First sort by prefix (pm vs dev)
+        if (aPrefix !== bPrefix) {
+          return aPrefix.localeCompare(bPrefix);
+        }
+
+        // Then sort by number (1, 2, 3... not string sort)
+        return parseInt(aNum) - parseInt(bNum);
       }
-      
-      // Then sort by number (1, 2, 3... not string sort)
-      return parseInt(aNum) - parseInt(bNum);
-    }
-    
-    // Fallback for any non-matching IDs
-    return a.id.localeCompare(b.id);
-  });
-};
+
+      // Fallback for any non-matching IDs
+      return a.id.localeCompare(b.id);
+    });
+  };
 
   const [activeWindow, setActiveWindow] = useState(null);
   const [projectFilter, setProjectFilter] = useState('all');
-  
+
   // Responsive: show table on desktop, cards on mobile
-  const [isMobile, setIsMobile] = useState(() => 
+  const [isMobile, setIsMobile] = useState(() =>
     typeof window !== 'undefined' && window.innerWidth <= 800
   );
 
@@ -59,14 +59,14 @@ const Projects = () => {
   const noBlinkCursor = backgroundConfig.type !== 'none' ? '' : styles.noBlinkCursor;
 
   // Memoize expensive calculations (this is good optimization)
-const { pmProjects, devProjects } = useMemo(() => ({
-  pmProjects: sortProjectsById(
-    ProjectsData.filter(project => project.id.startsWith('pm-'))
-  ),
-  devProjects: sortProjectsById(
-    ProjectsData.filter(project => project.id.startsWith('dev-'))
-  )
-}), []);
+  const { pmProjects, devProjects } = useMemo(() => ({
+    pmProjects: sortProjectsById(
+      ProjectsData.filter(project => project.id.startsWith('pm-'))
+    ),
+    devProjects: sortProjectsById(
+      ProjectsData.filter(project => project.id.startsWith('dev-'))
+    )
+  }), []);
 
   const filteredSections = useMemo(() => {
     if (projectFilter === 'pm') {
@@ -195,7 +195,7 @@ const { pmProjects, devProjects } = useMemo(() => ({
         <h1 className={styles.heroTitle}>Projects Directory</h1>
         <p className={styles.heroSubtitle}>Projects. Failures. Successes. Learnings. Insights.</p>
       </div>
-      
+
       <div className={styles.tableWrapper}>
         <div className={styles.filterWrapper}>
           <span style={{ fontWeight: 500 }}>{'filter@uv ~ ⪢ eza'}</span>
@@ -309,16 +309,16 @@ const { pmProjects, devProjects } = useMemo(() => ({
       </div>
 
       {/* Overlay rendering */}
-      {ProjectsData.filter(project => 
+      {ProjectsData.filter(project =>
         project.contentLinks?.notionEmbed || project.contentLinks?.pdfDocument
       ).map(project => (
         activeWindow === project.id + '-embed' && (
           <div className={styles.notionOverlay} key={project.id + '-embed'}>
             <div className={styles.notionEmbedContainer}>
               {project.contentLinks?.pdfDocument ? (
-                <PdfViewer 
-                  fileUrl={project.contentLinks.pdfDocument} 
-                  onClose={() => setActiveWindow(null)} 
+                <PdfViewer
+                  fileUrl={project.contentLinks.pdfDocument}
+                  onClose={() => setActiveWindow(null)}
                 />
               ) : project.contentLinks?.notionEmbed ? (
                 <>

@@ -2,9 +2,9 @@
 .terminalFooterReal {
   margin: 2.5rem auto 0 auto;
   width: 100%;
-    backdrop-filter: blur(32px) saturate(180%);
-    -webkit-backdrop-filter: blur(32px) saturate(180%);
-    background: rgba(var(--background-color-rgb), 0.3);
+  backdrop-filter: blur(32px) saturate(180%);
+  -webkit-backdrop-filter: blur(32px) saturate(180%);
+  background: rgba(var(--background-color-rgb), 0.3);
   border-radius: 2px;
   box-shadow: 0 4px 32px 0 rgba(0, 0, 0, 0.22);
   font-family: var(--font-mono);
@@ -27,9 +27,9 @@
   padding: 0.3em 1.2em;
   height: 1.5rem;
   width: 100%;
-      backdrop-filter: blur(32px) saturate(180%);
-    -webkit-backdrop-filter: blur(32px) saturate(180%);
-    background: rgba(var(--text-color-rgb), 0.5);
+  backdrop-filter: blur(32px) saturate(180%);
+  -webkit-backdrop-filter: blur(32px) saturate(180%);
+  background: rgba(var(--text-color-rgb), 0.5);
 }
 
 .terminalDot {
@@ -47,7 +47,7 @@
   padding: 1.2rem 1.5rem;
   background: none;
   min-height: 120px;
-  flex: 1 1 auto; /* Add this line */
+  flex: 1 1 auto;
 }
 
 /* Input prompt that YOU type into */
@@ -78,7 +78,8 @@
   padding: 0.1em 0.3em;
   transition: border-color 0.2s;
   color: var(--terminal-input-color);
-  caret-color: var(--terminal-input-color);  /* Cursor color */
+  caret-color: var(--terminal-input-color);
+  /* Cursor color */
 }
 
 .terminalInputReal:focus {
@@ -90,7 +91,8 @@
   color: var(--terminal-output-color);
   font-family: inherit;
   margin-bottom: 0.1rem;
-  white-space: pre-wrap; /* Preserve whitespace and line breaks */
+  white-space: pre-wrap;
+  /* Preserve whitespace and line breaks */
   text-shadow: #707070 0 0 0px;
 }
 
@@ -200,22 +202,26 @@
 }
 
 @media (max-width: 600px) {
+
   /* Terminal footer */
   .terminalFooterReal {
     max-width: 99vw;
-    height: 300px;;
+    height: 300px;
     font-size: 0.93em;
     margin: 1.2rem auto 0 auto;
   }
+
   .terminalFooterScroll {
     padding: 0.5em 0.2em 0.5em 0.4em;
     min-height: 80px;
     max-height: 300px;
   }
+
   .terminalFooterWindowBar {
     height: 1.5em;
     padding: 0.1em 0.5em;
   }
+
   .terminalDot {
     width: 0.7em;
     height: 0.7em;

@@ -149,12 +149,12 @@ const LandingPage = ({ onEnter }) => {
                             enter(lowChaosMode)
                         </button>
                         <button
-                    className={styles.lowChaosButton}
-                    aria-label={`Switch to ${darkMode ? 'light' : 'dark'} mode`}
-                    onClick={toggleDarkMode}
-                >
-                    {darkMode ? 'switchTheme(light)' : 'switchTheme(dark)'}
-                </button>
+                            className={styles.lowChaosButton}
+                            aria-label={`Switch to ${darkMode ? 'light' : 'dark'} mode`}
+                            onClick={toggleDarkMode}
+                        >
+                            {darkMode ? 'switchTheme(light)' : 'switchTheme(dark)'}
+                        </button>
                     </span>
                 </div>
             </header>

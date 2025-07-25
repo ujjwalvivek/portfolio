@@ -1,100 +1,20 @@
 [
   {
-    "id": 1,
-    "filename": "log_0000_boot_sequence.md",
-    "title": "Boot Sequence (And Why It Took 2 Years to Run)",
-    "date": "2025-07-07",
-    "description": "Why I built this terminal-shaped mirror of my mind. And why you're inside it now. This site didn't take two years to build. It took me two years to become someone who could finish it.",
+    "id": 9,
+    "filename": "log_0003_going_open_source.md",
+    "title": "Going Open Source: The Journey",
+    "date": "2025-07-25",
+    "description": "Documenting the process of making my projects open source, the challenges faced, and the lessons learned along the way.",
     "tags": [
       "Javascript",
       "Vanilla CSS",
       "Origin",
       "Site Build",
-      "Portfolio"
-    ],
-    "readingTime": "5 min read",
-    "thumbnail": "https://cdn.ujjwalvivek.com/posts/media/old_website_haunted.webp"
-  },
-  {
-    "id": 2,
-    "filename": "log_0001_md_showcase.md",
-    "title": "Markdown Playground (Kinda Features Showcase, Not Really)",
-    "date": "2025-07-01",
-    "description": "A showcase of all the advanced Markdown features available on this blog. From code blocks to tables, this post demonstrates the full range of capabilities.",
-    "tags": [
-      "Markdown",
-      "Testing",
-      "Playground",
-      "Features"
-    ],
-    "readingTime": "2 min read",
-    "thumbnail": "https://images.unsplash.com/photo-1635830510445-7c0edf90c468?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8bWFya2Rvd258ZW58MHx8MHx8fDA%3D"
-  },
-  {
-    "id": 3,
-    "filename": "log_0002_midnight_patchdrop.md",
-    "title": "Patch Notes v1.1 on a Friday Midnight",
-    "date": "2025-07-13",
-    "description": "I launched. Got rekt. Didn't cry. Just patched the damn thing. Building something beautiful on the web is never as easy as it looks. But every bug, every crash, and every “why is this so slow?!” moment taught me something new.",
-    "tags": [
-      "Javascript",
-      "Vanilla CSS",
       "Portfolio",
-      "Patch",
-      "Accessibility",
-      "Meltdown"
+      "Open Source"
     ],
-    "readingTime": "5 min read",
-    "thumbnail": "https://cdn.ujjwalvivek.com/posts/media/webgpu.svg"
-  },
-  {
-    "id": 4,
-    "filename": "",
-    "title": "The Game That Never Released",
-    "date": "2024-09-21",
-    "description": "I lost a 35GB Unity Game project to corruption, but discovered something amazing: the 44+ scripts that survived contain more value than the game ever would have. Here's how I turned a devastating loss into multiple learnings.",
-    "tags": [
-      "C#",
-      "Photon",
-      "Unity",
-      "Multiplayer",
-      "FPS",
-      "Networking",
-      "Corrupted",
-      "Archived"
-    ],
-    "thumbnail": "https://cdn.ujjwalvivek.com/posts/media/soon.webp"
-  },
-  {
-    "id": 5,
-    "filename": "",
-    "title": "Cementing the Future: A Journey Through VR Training",
-    "date": "2024-07-30",
-    "description": "Exploring the innovative use of virtual reality in training for the cement industry, and the lessons learned by leading this groundbreaking project.",
-    "tags": [
-      "project",
-      "VR",
-      "training",
-      "cement",
-      "innovation"
-    ],
-    "thumbnail": "https://cdn.ujjwalvivek.com/posts/media/logs_soon.webp"
-  },
-  {
-    "id": 6,
-    "filename": "proj_0002_greedysnek.md",
-    "title": "GreedySnek: A 3D Snake Game",
-    "date": "2025-07-21",
-    "description": "Sometimes the simplest concepts lead to the most complex solutions. This project is now archived, but the lessons it taught me about game development, networking, and knowing when to stop are still very much alive.",
-    "tags": [
-      "C#",
-      "Mirror",
-      "Unity",
-      "multiplayer",
-      "snake"
-    ],
-    "readingTime": "12 min read",
-    "thumbnail": "https://cdn.ujjwalvivek.com/posts/media/greedysnek.webp"
+    "readingTime": "30 min read",
+    "thumbnail": "https://cdn.ujjwalvivek.com/posts/media/very_nice.webp"
   },
   {
     "id": 7,
@@ -130,20 +50,100 @@
     "thumbnail": "https://cdn.ujjwalvivek.com/posts/media/tech_stack.webp"
   },
   {
-    "id": 9,
-    "filename": "log_0003_going_open_source.md",
-    "title": "Going Open Source: The Journey",
-    "date": "2025-07-25",
-    "description": "Documenting the process of making my projects open source, the challenges faced, and the lessons learned along the way.",
+    "id": 6,
+    "filename": "proj_0002_greedysnek.md",
+    "title": "GreedySnek: A 3D Snake Game",
+    "date": "2025-07-21",
+    "description": "Sometimes the simplest concepts lead to the most complex solutions. This project is now archived, but the lessons it taught me about game development, networking, and knowing when to stop are still very much alive.",
+    "tags": [
+      "C#",
+      "Mirror",
+      "Unity",
+      "multiplayer",
+      "snake"
+    ],
+    "readingTime": "12 min read",
+    "thumbnail": "https://cdn.ujjwalvivek.com/posts/media/greedysnek.webp"
+  },
+  {
+    "id": 3,
+    "filename": "log_0002_midnight_patchdrop.md",
+    "title": "Patch Notes v1.1 on a Friday Midnight",
+    "date": "2025-07-13",
+    "description": "I launched. Got rekt. Didn't cry. Just patched the damn thing. Building something beautiful on the web is never as easy as it looks. But every bug, every crash, and every “why is this so slow?!” moment taught me something new.",
+    "tags": [
+      "Javascript",
+      "Vanilla CSS",
+      "Portfolio",
+      "Patch",
+      "Accessibility",
+      "Meltdown"
+    ],
+    "readingTime": "5 min read",
+    "thumbnail": "https://cdn.ujjwalvivek.com/posts/media/webgpu.svg"
+  },
+  {
+    "id": 1,
+    "filename": "log_0000_boot_sequence.md",
+    "title": "Boot Sequence (And Why It Took 2 Years to Run)",
+    "date": "2025-07-07",
+    "description": "Why I built this terminal-shaped mirror of my mind. And why you're inside it now. This site didn't take two years to build. It took me two years to become someone who could finish it.",
     "tags": [
       "Javascript",
       "Vanilla CSS",
       "Origin",
       "Site Build",
-      "Portfolio",
-      "Open Source"
+      "Portfolio"
     ],
-    "readingTime": "30 min read",
-    "thumbnail": "https://cdn.ujjwalvivek.com/posts/media/very_nice.webp"
+    "readingTime": "5 min read",
+    "thumbnail": "https://cdn.ujjwalvivek.com/posts/media/old_website_haunted.webp"
+  },
+  {
+    "id": 2,
+    "filename": "log_0001_md_showcase.md",
+    "title": "Markdown Playground (Kinda Features Showcase, Not Really)",
+    "date": "2025-07-01",
+    "description": "A showcase of all the advanced Markdown features available on this blog. From code blocks to tables, this post demonstrates the full range of capabilities.",
+    "tags": [
+      "Markdown",
+      "Testing",
+      "Playground",
+      "Features"
+    ],
+    "readingTime": "2 min read",
+    "thumbnail": "https://images.unsplash.com/photo-1635830510445-7c0edf90c468?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8bWFya2Rvd258ZW58MHx8MHx8fDA%3D"
+  },
+  {
+    "id": 4,
+    "filename": "",
+    "title": "The Game That Never Released",
+    "date": "2024-09-21",
+    "description": "I lost a 35GB Unity Game project to corruption, but discovered something amazing: the 44+ scripts that survived contain more value than the game ever would have. Here's how I turned a devastating loss into multiple learnings.",
+    "tags": [
+      "C#",
+      "Photon",
+      "Unity",
+      "Multiplayer",
+      "FPS",
+      "Networking",
+      "Corrupted",
+      "Archived"
+    ],
+    "thumbnail": "https://cdn.ujjwalvivek.com/posts/media/soon.webp"
+  },
+  {
+    "id": 5,
+    "filename": "",
+    "title": "Cementing the Future: A Journey Through VR Training",
+    "date": "2024-07-30",
+    "description": "Exploring the innovative use of virtual reality in training for the cement industry, and the lessons learned by leading this groundbreaking project.",
+    "tags": [
+      "project",
+      "VR",
+      "training",
+      "cement",
+      "innovation"
+    ],
+    "thumbnail": "https://cdn.ujjwalvivek.com/posts/media/logs_soon.webp"
   }
 ]

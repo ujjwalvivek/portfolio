@@ -67,7 +67,7 @@ export const ProjectsData = [
       githubRepo: 'https://github.com/ujjwalvivek/GreedySnek',
     },
   },
-    {
+  {
     id: 'dev-6',
     title: 'Nine Years… and Still Kicking: My Old IEEE Site',
     content: ['Built in college for IEEE Manipal. Still running. Still serving students. Still proving that well-structured code and thoughtful architecture outlast flashy frameworks. A testament to building things that last. Originally a template flip, but it has stayed visually and functionally the same for 9 years and counting. Sometimes, reliability is the best feature.'],
@@ -83,7 +83,7 @@ export const ProjectsData = [
     content: ['Advanced inventory management with simulated networking mechanics. Proof that good architecture can make single-player systems feel multiplayer, and complex problems often have elegant solutions.'],
     tags: ['C#', 'Simulation', 'Multiplayer', 'Networking', 'Inventory Management'],
     contentLinks: {
-      blogPost: '/blog/proj_0003_kill_bad_guys.md', 
+      blogPost: '/blog/proj_0003_kill_bad_guys.md',
       githubRepo: 'https://github.com/ujjwalvivek/UnityCoordinationFramework',
     },
   },
@@ -97,7 +97,7 @@ export const ProjectsData = [
       githubRepo: 'https://github.com/ujjwalvivek/TheReckoning',
     },
   },
-    {
+  {
     id: 'pm-1',
     title: 'Training 65,000 Workers in Virtual Reality [MegaProject]',
     content: ['Led enterprise VR training deployment across 55+ cement plants for UltraTech. When safety training can mean the difference between life and death, virtual reality becomes more than innovation, it becomes responsibility.'],

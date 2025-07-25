@@ -62,7 +62,7 @@ export const BackgroundProvider = ({ children }) => {
             const updated = { ...prev, ...newConfig };
             try {
                 localStorage.setItem('globalBackgroundConfig', JSON.stringify(updated));
-                
+
                 // If we're setting a wallpaper (not 'none'), save it as last wallpaper
                 if (updated.type && updated.type !== 'none') {
                     localStorage.setItem('lastWallpaperConfig', JSON.stringify(updated));
@@ -110,7 +110,7 @@ export const BackgroundProvider = ({ children }) => {
         }
     };
 
-        // If prefersReducedMotion is true, disable animations globally
+    // If prefersReducedMotion is true, disable animations globally
     useEffect(() => {
         if (prefersReducedMotion && backgroundConfig.type !== 'none') {
             setBackgroundConfig(prev => ({
