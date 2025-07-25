@@ -228,5 +228,5 @@ display: block !important;
 }
 
 .rpv-core__inner-page {
-    background: rgba(var(--pdf-bg-rgb), 0.1) !important;
+    background: rgba(var(--background-color-rgb), 1) !important;
 }

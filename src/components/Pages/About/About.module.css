@@ -476,7 +476,7 @@
   justify-content: center;
   align-items: center;
   border: 2px solid var(--text-color);
-  padding: 0;
+  padding: 0.5rem;
   animation: avatarGlow 2s linear infinite;
 
 }

@@ -84,6 +84,20 @@ const BlogList = () => {
     }
   }, [searchQuery, posts]);
 
+    useEffect(() => {
+  if (posts.length > 0) {
+    posts.forEach(post => {
+      if (post.filename) {
+        fetch(`/posts/${post.filename}`);
+      }
+    });
+  }
+}, [posts]);
+
+const handlePostLinkHover = (filename) => {
+  fetch(`/posts/${filename}`);
+};
+
   const handleSearch = (query) => {
     setSearchQuery(query);
   };
@@ -122,7 +136,7 @@ const BlogList = () => {
         <ul>
           {filteredPosts.slice(0, visibleCount).map((post, index) => (
             <li key={post.id + '-' + index} className={styles.blogPostItem}>
-              <Link to={`/blog/${post.filename}`} className={styles.blogPostLink}>
+              <Link to={`/blog/${post.filename}`} className={styles.blogPostLink} onMouseEnter={() => handlePostLinkHover(post.filename)}>
                 <div className={styles.postCardContent}>
                   <div className={styles.postMain}>
                     <div className={styles.postNumber}>
