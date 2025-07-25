@@ -647,7 +647,7 @@
   background: linear-gradient(135deg, var(--primary-color), #fff 80%);
   margin-right: 1rem;
   box-shadow: 0 2px 8px 0 rgba(var(--primary-color-rgb), 0.10);
-  background-image: url('https://cdn.ujjwalvivek.com/images/profile.jpg');
+  background-image: url('https://cdn.ujjwalvivek.com/images/profile.webp');
   background-size: cover;
   background-position: center;
 }

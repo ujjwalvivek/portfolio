@@ -93,7 +93,7 @@ const About = () => {
             </p>
             <div className={styles.heroArt}>
               <img
-                src="https://cdn.ujjwalvivek.com/images/profile.jpg"
+                src="https://cdn.ujjwalvivek.com/images/profile.webp"
                 alt=""
                 className={styles.avatarImg}
               />
