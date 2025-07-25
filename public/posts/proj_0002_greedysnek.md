@@ -446,7 +446,7 @@ GreedySnek taught me that **shipping something functional beats perfecting somet
 
 The code shows the evolution of a developer learning Unity networking - from the basic single-player controller to the more complex networked version with Mirror. `It's honest code that represents a specific moment in my learning journey.`
 
-![Screenshot](https://cdn.ujjwalvivek.com/posts/media/greedysnek.png)
+![Screenshot](https://cdn.ujjwalvivek.com/posts/media/greedysnek.webp)
 
 The code is public because broken projects teach more than perfect ones. If you're building your first networked Unity game, GreedySnek shows you exactly what happens when you don't plan for scale, don't optimize early, and definitely don't know when to stop adding features.
 

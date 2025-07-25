@@ -99,7 +99,7 @@ Because my brain needed a space that *felt* like how it thinks.
 
 ### Ghost from the past
 
-![Sample Image](https://cdn.ujjwalvivek.com/posts/media/old_website_haunted.png)
+![Sample Image](https://cdn.ujjwalvivek.com/posts/media/old_website_haunted.webp)
 
 old screenshot. still haunts me. this was the state of this website for a little over two summer. it took me two summers to become someone who could finish it.
 

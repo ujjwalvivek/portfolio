@@ -45,7 +45,7 @@
     "id": 4,
     "filename": "",
     "title": "The Game That Never Released",
-    "date": "2025-09-21",
+    "date": "2024-09-21",
     "description": "I lost a 35GB Unity Game project to corruption, but discovered something amazing: the 44+ scripts that survived contain more value than the game ever would have. Here's how I turned a devastating loss into multiple learnings.",
     "tags": [
       "C#",
@@ -57,13 +57,13 @@
       "Corrupted",
       "Archived"
     ],
-    "thumbnail": "https://cdn.ujjwalvivek.com/posts/media/soon.png"
+    "thumbnail": "https://cdn.ujjwalvivek.com/posts/media/soon.webp"
   },
   {
     "id": 5,
     "filename": "",
     "title": "Cementing the Future: A Journey Through VR Training",
-    "date": "2025-07-30",
+    "date": "2024-07-30",
     "description": "Exploring the innovative use of virtual reality in training for the cement industry, and the lessons learned by leading this groundbreaking project.",
     "tags": [
       "project",
@@ -72,7 +72,7 @@
       "cement",
       "innovation"
     ],
-    "thumbnail": "https://cdn.ujjwalvivek.com/posts/media/logs_soon.png"
+    "thumbnail": "https://cdn.ujjwalvivek.com/posts/media/logs_soon.webp"
   },
   {
     "id": 6,

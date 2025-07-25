@@ -802,7 +802,7 @@ In JS, I set it up like this:
 
 Toggling the PDF viewer’s theme also toggles the entire site’s theme and vice versa. That way, if you switch to dark mode on the PDF, the website goes dark too. Meaning, no blinding white-on-black mismatch. Great Success!
 
-![thumbnail](https://cdn.ujjwalvivek.com/posts/media/very_nice.jpg)
+![thumbnail](https://cdn.ujjwalvivek.com/posts/media/very_nice.webp)
 
 
 ## Terminal Footer (Command Core)

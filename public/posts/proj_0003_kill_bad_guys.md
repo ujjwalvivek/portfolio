@@ -10,7 +10,7 @@ Open with
 **Unity 2020.3 LTS or newer**
 :::
 
-![Thumbnail](https://cdn.ujjwalvivek.com/posts/media/fake_mp.png)
+![Thumbnail](https://cdn.ujjwalvivek.com/posts/media/fake_mp.webp)
 
 ## Fake Multiplayer, Real Lessons 
 
