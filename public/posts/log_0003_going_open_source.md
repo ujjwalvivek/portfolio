@@ -1,7 +1,7 @@
 ---
 title: How Did I Build My Website
 date: 2025-07-25
-summary: Unlisted
+summary: I'll guide you through the guts of this thing, chatty road trip diary style. Expect snark, a few ASCII blueprints, and plenty of code confessions. Its a LONG read, but I swear it’ll be worth your time.
 slug: log_0003_going_open_source
 ---
 
