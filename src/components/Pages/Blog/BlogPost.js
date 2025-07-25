@@ -176,6 +176,20 @@ const BlogPost = () => {
     fetchPost();
   }, [filename]);
 
+  useEffect(() => {
+  if (post.length > 0) {
+    post.forEach(post => {
+      if (post.filename) {
+        fetch(`/posts/${post.filename}`);
+      }
+    });
+  }
+}, [post]);
+
+const handlePostLinkHover = (filename) => {
+  fetch(`/posts/${filename}`);
+};
+
   // Show loading state
   if (isLoading) {
     return (
@@ -245,7 +259,7 @@ const BlogPost = () => {
   return (
     <>
       <div className={styles.blogContainer}>
-        <div className={styles.blogPost} ref={blogPostRef}>
+        <div className={styles.blogPost} ref={blogPostRef} onMouseEnter={() => handlePostLinkHover(post.filename)}>
           <h1>{post.data.title}</h1>
           <div className={styles.postMeta}>
             <span className={styles.postDate}>{formatDate(post.data.date)}</span>

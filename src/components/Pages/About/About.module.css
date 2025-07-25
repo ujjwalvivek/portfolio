@@ -382,7 +382,7 @@
 .quickJumpRow {
   display: flex;
   flex-direction: row;
-  gap: 2rem;
+  gap: 1rem;
   width: 100%;
   max-width: 1000px;
   border-radius: 2px;
@@ -421,7 +421,8 @@
 .blogList .postDate {
   color: var(--primary-color);
   font-weight: bold;
-  margin-right: 0.7em;
+  margin-right: 0.7rem;
+  font-size: 0.8rem;
 }
 
 .blogList .postTitle {
@@ -450,7 +451,7 @@
 }
 
 .resumeViewerBox {
-    background: rgba(var(--pdf-bg-rgb), 1);
+    background: rgba(var(--pdf-bg-rgb), 0.1) !important;
 }
 
 .recentLogsBox h2 {
@@ -475,21 +476,20 @@
   justify-content: center;
   align-items: center;
   border: 2px solid var(--text-color);
-  padding: 0.25rem;
+  padding: 0;
   animation: avatarGlow 2s linear infinite;
 
 }
 
 .resumeViewerOverlay {
-  background: #111;
-  border-radius: 8px;
+  border-radius: 4px;
   width: 100%;
   height: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 2px 16px 0 rgba(0, 0, 0, 0.12);
+  box-shadow: 0 2px 16px 0 rgba(0, 0, 0, 0);
   min-width: 0;
   cursor: zoom-in;
   position: relative;
@@ -686,8 +686,6 @@
     font-size: 0.75rem;
   }
 }
-
-
 
 /* Responsive Styles 
 @media (max-width: 900px) {

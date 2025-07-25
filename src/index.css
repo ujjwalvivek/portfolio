@@ -225,5 +225,8 @@ display: block !important;
   color: var(--terminal-input-color) !important;
     font-style: normal !important;
       letter-spacing: 0px !important;
+}
 
+.rpv-core__inner-page {
+    background: rgba(var(--pdf-bg-rgb), 0.1) !important;
 }

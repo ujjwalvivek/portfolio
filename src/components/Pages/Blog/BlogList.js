@@ -28,34 +28,17 @@ const BlogList = () => {
   const [filteredPosts, setFilteredPosts] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [visibleCount, setVisibleCount] = useState(8);
+    const [isLoading, setIsLoading] = useState(true);
+  // Ref for the loader element to observe for lazy loading
   const loaderRef = useRef(null);
 
   useEffect(() => {
     const fetchPosts = async () => {
+      setIsLoading(true);
+      try {
       // Fetch posts metadata
       const metaResponse = await fetch('/posts/meta.json');
       const allPosts = await metaResponse.json();
-
-      // // Fetch content for reading time calculation
-      // const postsWithContent = await Promise.all(
-      //   allPosts.map(async (post) => {
-      //     try {
-      //       const response = await fetch(`/posts/${post.filename}`);
-      //       const content = await response.text();
-      //       const readingTime = calculateReadingTime(content);
-      //       // Extract first image from markdown
-      //       const imageMatch = content.match(/!\[[^\]]*\]\(([^)]+)\)/);
-      //       const firstImage = imageMatch ? imageMatch[1] : null;
-      //       // Use thumbnail if it's a non-empty string, else use first image
-      //       let thumbnail = post.thumbnail && post.thumbnail.trim() !== '' ? post.thumbnail : firstImage;
-      //       return { ...post, readingTime, thumbnail };
-      //     } catch (error) {
-      //       console.error(`Error fetching ${post.filename}:`, error);
-      //       let thumbnail = post.thumbnail && post.thumbnail.trim() !== '' ? post.thumbnail : null;
-      //       return { ...post, readingTime: '1 min read', thumbnail };
-      //     }
-      //   })
-      // );
 
       // Sort posts by date (newest first)
       allPosts.sort((a, b) => new Date(b.date) - new Date(a.date));
@@ -63,8 +46,12 @@ const BlogList = () => {
       // Set initial posts and filtered posts
       setPosts(allPosts);
       setFilteredPosts(allPosts);
-    };
-
+    } catch (error) {
+        console.error('Error fetching post:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };  
     fetchPosts();
   }, []);
 
@@ -74,7 +61,7 @@ const BlogList = () => {
     const observer = new window.IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting) {
-          setVisibleCount((prev) => Math.min(prev + 8, filteredPosts.length));
+          setVisibleCount((prev) => Math.min(prev + 1, filteredPosts.length));
         }
       },
       { threshold: 1 }
@@ -100,6 +87,17 @@ const BlogList = () => {
   const handleSearch = (query) => {
     setSearchQuery(query);
   };
+
+     // Show loading state
+  if (isLoading) {
+    return (
+      <div>
+        <div>
+            <h1>Loading...</h1>
+          </div>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.blogContainer}>
