@@ -23,13 +23,6 @@ const fuzzySearch = (query, text) => {
   return queryIndex === queryLower.length;
 };
 
-const calculateReadingTime = (text) => {
-  const wordsPerMinute = 200;
-  const words = text.trim().split(/\s+/).length;
-  const minutes = Math.ceil(words / wordsPerMinute);
-  return `${minutes} min read`;
-};
-
 const BlogList = () => {
   const [posts, setPosts] = useState([]);
   const [filteredPosts, setFilteredPosts] = useState([]);
@@ -43,33 +36,33 @@ const BlogList = () => {
       const metaResponse = await fetch('/posts/meta.json');
       const allPosts = await metaResponse.json();
 
-      // Fetch content for reading time calculation
-      const postsWithContent = await Promise.all(
-        allPosts.map(async (post) => {
-          try {
-            const response = await fetch(`/posts/${post.filename}`);
-            const content = await response.text();
-            const readingTime = calculateReadingTime(content);
-            // Extract first image from markdown
-            const imageMatch = content.match(/!\[[^\]]*\]\(([^)]+)\)/);
-            const firstImage = imageMatch ? imageMatch[1] : null;
-            // Use thumbnail if it's a non-empty string, else use first image
-            let thumbnail = post.thumbnail && post.thumbnail.trim() !== '' ? post.thumbnail : firstImage;
-            return { ...post, readingTime, thumbnail };
-          } catch (error) {
-            console.error(`Error fetching ${post.filename}:`, error);
-            let thumbnail = post.thumbnail && post.thumbnail.trim() !== '' ? post.thumbnail : null;
-            return { ...post, readingTime: '1 min read', thumbnail };
-          }
-        })
-      );
+      // // Fetch content for reading time calculation
+      // const postsWithContent = await Promise.all(
+      //   allPosts.map(async (post) => {
+      //     try {
+      //       const response = await fetch(`/posts/${post.filename}`);
+      //       const content = await response.text();
+      //       const readingTime = calculateReadingTime(content);
+      //       // Extract first image from markdown
+      //       const imageMatch = content.match(/!\[[^\]]*\]\(([^)]+)\)/);
+      //       const firstImage = imageMatch ? imageMatch[1] : null;
+      //       // Use thumbnail if it's a non-empty string, else use first image
+      //       let thumbnail = post.thumbnail && post.thumbnail.trim() !== '' ? post.thumbnail : firstImage;
+      //       return { ...post, readingTime, thumbnail };
+      //     } catch (error) {
+      //       console.error(`Error fetching ${post.filename}:`, error);
+      //       let thumbnail = post.thumbnail && post.thumbnail.trim() !== '' ? post.thumbnail : null;
+      //       return { ...post, readingTime: '1 min read', thumbnail };
+      //     }
+      //   })
+      // );
 
       // Sort posts by date (newest first)
-      postsWithContent.sort((a, b) => new Date(b.date) - new Date(a.date));
+      allPosts.sort((a, b) => new Date(b.date) - new Date(a.date));
 
       // Set initial posts and filtered posts
-      setPosts(postsWithContent);
-      setFilteredPosts(postsWithContent);
+      setPosts(allPosts);
+      setFilteredPosts(allPosts);
     };
 
     fetchPosts();

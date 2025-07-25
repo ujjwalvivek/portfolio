@@ -11,7 +11,9 @@
       "Origin",
       "Site Build",
       "Portfolio"
-    ]
+    ],
+    "readingTime": "5 min read",
+    "thumbnail": "https://cdn.ujjwalvivek.com/posts/media/old_website_haunted.webp"
   },
   {
     "id": 2,
@@ -24,7 +26,9 @@
       "Testing",
       "Playground",
       "Features"
-    ]
+    ],
+    "readingTime": "2 min read",
+    "thumbnail": "https://images.unsplash.com/photo-1635830510445-7c0edf90c468?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8bWFya2Rvd258ZW58MHx8MHx8fDA%3D"
   },
   {
     "id": 3,
@@ -39,7 +43,9 @@
       "Patch",
       "Accessibility",
       "Meltdown"
-    ]
+    ],
+    "readingTime": "5 min read",
+    "thumbnail": "https://cdn.ujjwalvivek.com/posts/media/webgpu.svg"
   },
   {
     "id": 4,
@@ -86,7 +92,9 @@
       "Unity",
       "multiplayer",
       "snake"
-    ]
+    ],
+    "readingTime": "12 min read",
+    "thumbnail": "https://cdn.ujjwalvivek.com/posts/media/greedysnek.webp"
   },
   {
     "id": 7,
@@ -101,7 +109,9 @@
       "Networking",
       "Prototype",
       "Unity"
-    ]
+    ],
+    "readingTime": "6 min read",
+    "thumbnail": "https://cdn.ujjwalvivek.com/posts/media/fake_mp.webp"
   },
   {
     "id": 8,
@@ -115,7 +125,9 @@
       "Javascript",
       "cross-platform",
       "Meltdown"
-    ]
+    ],
+    "readingTime": "11 min read",
+    "thumbnail": "https://cdn.ujjwalvivek.com/posts/media/tech_stack.webp"
   },
   {
     "id": 9,
@@ -130,6 +142,8 @@
       "Site Build",
       "Portfolio",
       "Open Source"
-    ]
+    ],
+    "readingTime": "30 min read",
+    "thumbnail": "https://cdn.ujjwalvivek.com/posts/media/very_nice.webp"
   }
 ]

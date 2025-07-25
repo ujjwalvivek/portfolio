@@ -44,6 +44,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
+    "prebuild": "node scripts/generateMeta.js",
     "start": "cross-env BROWSER=none WDS_SOCKET_PORT=0 react-app-rewired start",
     "build": "react-app-rewired build",
     "test": "react-app-rewired test",

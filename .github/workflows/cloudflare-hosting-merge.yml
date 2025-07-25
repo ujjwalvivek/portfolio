@@ -32,6 +32,9 @@ jobs:
       - name: Wiping away past sins
         run: rm -rf build
 
+      - name: Generate meta.json for posts
+        run: node scripts/generateMeta.js
+
       - name: Build project NOW
         run: npm run build
 
