@@ -14,9 +14,7 @@ import { LuFigma } from 'react-icons/lu';
 import { IoLogoFirebase } from 'react-icons/io5';
 import { TbSql } from 'react-icons/tb';
 import { IoLogoJavascript } from "react-icons/io";
-import profileImg from '../../../assets/images/profile.jpg';
 import { useBackground } from '../../Background/BackgroundContext';
-
 
 const About = () => {
   const [resumeOpen, setResumeOpen] = React.useState(false);
@@ -95,8 +93,8 @@ const About = () => {
             </p>
             <div className={styles.heroArt}>
               <img
-                src={profileImg}
-                alt="Vivek's avatar"
+                src="https://cdn.ujjwalvivek.com/images/profile.jpg"
+                alt=""
                 className={styles.avatarImg}
               />
             </div>
@@ -217,7 +215,7 @@ const About = () => {
                 <Worker workerUrl={`https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js`}>
                   <Viewer
                     theme={pdfTheme}
-                    fileUrl={pdfTheme === 'dark' ? '/docs/resume-dark.pdf' : '/docs/resume-light.pdf'}
+                    fileUrl={pdfTheme === 'dark' ? 'https://cdn.ujjwalvivek.com/docs/resume-dark.pdf' : 'https://cdn.ujjwalvivek.com/docs/resume-light.pdf'}
                     defaultScale={SpecialZoomLevel.PageWidth}
                     open={true}
                     className={styles.resumeIframe}

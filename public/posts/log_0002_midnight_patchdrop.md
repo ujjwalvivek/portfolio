@@ -38,7 +38,7 @@ So that I self sabotage my weekend plans? <br>Human brain is weird. <br>Not real
 
 #### Performance Improvements
 
-![webGPU](/posts/media/webgpu.svg)
+![webGPU](https://cdn.ujjwalvivek.com/posts/media/webgpu.svg)
 `{the above svg is a prime example of how webkit doesnt play nice with anything.}`
 
 

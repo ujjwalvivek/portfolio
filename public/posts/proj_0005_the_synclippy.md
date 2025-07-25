@@ -356,7 +356,7 @@ privacy by default and instant LAN transfers with E2EE
 - **Database**: SQLite for local storage, PostgreSQL for server deployments
 - **Security**: End-to-end encryption with device pairing
 
-![Thumbnail](/posts/media/tech_stack.png)
+![Thumbnail](https://cdn.ujjwalvivek.com/posts/media/tech_stack.png)
 
 ### Repository Overhaul
 

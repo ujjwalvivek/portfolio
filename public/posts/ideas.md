@@ -4,7 +4,6 @@
          `Make it feel like sending a message through a shell (how to embed subject and body in mailto?)`
 * [ ] Project sorting and search 'grep' functionality
 * [ ] **Add The Reckoning Entry to Projects and Blog.**
-* [ ] **Move hosting to cloudflare pages and storage to R2.**
 
 #### Optional
 * [ ] Add upcoming blog posts / dev journey / devlogs timeline view (optional)
@@ -29,3 +28,4 @@
 * [x] Responsiveness broken on ipad mini, air - portrait modes, even on fold phones. (~800px width)
 * [x] Link related posts with proper tags, possibly forming a narrative.
 * [x] Open Source Release Blog - How did i make this website.
+* [x] **Move hosting to cloudflare pages and storage to R2.**

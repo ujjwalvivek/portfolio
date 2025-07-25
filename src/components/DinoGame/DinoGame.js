@@ -1,6 +1,5 @@
 import React from "react";
 import styles from "./DinoGame.module.css";
-import dino from '../../assets/images/dino.svg'
 
 const GAME_WIDTH = Math.min(window.innerWidth * 0.98, 400); 
 const GAME_HEIGHT = 150; 
@@ -332,7 +331,7 @@ const DinoGame = () => {
         <div ref={dinoRef} className={styles.dino} style={{ bottom: 10 + dinoY }}>
           {/* 🦖 */}
           <img
-            src={dino}
+            src="https://cdn.ujjwalvivek.com/images/dino.svg"
             alt="Dino"
             style={{ width: "32px", height: "32px", display: "block", opacity: isJumping ? 0 : 0.9 }}
             draggable={false}

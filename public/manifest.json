@@ -4,17 +4,17 @@
   "description": "A creative, interactive portfolio documenting Vivek's journey in code, design, and ideas.",
   "icons": [
     {
-      "src": "/icons/favicon.ico",
+      "src": "https://cdn.ujjwalvivek.com/icons/favicon.ico",
       "sizes": "64x64 32x32 24x24 16x16",
       "type": "image/x-icon"
     },
     {
-      "src": "/icons/logo192.png",
+      "src": "https://cdn.ujjwalvivek.com/icons/logo192.png",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "/icons/logo512.png",
+      "src": "https://cdn.ujjwalvivek.com/icons/logo512.png",
       "type": "image/png",
       "sizes": "512x512"
     }
@@ -34,10 +34,6 @@
     {
       "name": "About",
       "url": "/about"
-    },
-    {
-      "name": "Resume",
-      "url": "/docs/resume-light.pdf"
     },
     {
       "name": "Projects",
