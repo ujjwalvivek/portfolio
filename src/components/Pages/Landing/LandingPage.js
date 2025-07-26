@@ -9,10 +9,9 @@ import { useNavigate } from 'react-router-dom';
 
 const LandingPage = ({ onEnter }) => {
     const { darkMode, toggleDarkMode } = useContext(ThemeContext);
-    const { updateBackgroundConfig } = useBackground();
+    const { backgroundConfig, updateBackgroundConfig } = useBackground();
     const prefersReducedMotion = usePrefersReducedMotion();
     const [showPrompt, setShowPrompt] = useState(false);
-
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -47,7 +46,7 @@ const LandingPage = ({ onEnter }) => {
             density: isMobile ? 1.7 : 2,
             colorMode: 'cyber',
             customColor: '#d63031',
-            isAnimated: !prefersReducedMotion,
+            isAnimated: backgroundConfig.isAnimated && !prefersReducedMotion,
         },
         hologram: {
             type: 'hologram',
@@ -56,7 +55,7 @@ const LandingPage = ({ onEnter }) => {
             density: isMobile ? 0.5 : 1,
             colorMode: 'fire',
             customColor: '#00b894',
-            isAnimated: !prefersReducedMotion,
+            isAnimated: backgroundConfig.isAnimated && !prefersReducedMotion,
         },
         circuit: {
             type: 'circuit',
@@ -65,7 +64,7 @@ const LandingPage = ({ onEnter }) => {
             density: isMobile ? 1 : 1.5,
             colorMode: 'ocean',
             customColor: '#0984e3',
-            isAnimated: !prefersReducedMotion,
+            isAnimated: backgroundConfig.isAnimated && !prefersReducedMotion,
         },
         vortex: {
             type: 'vortex',
@@ -74,12 +73,12 @@ const LandingPage = ({ onEnter }) => {
             density: isMobile ? 20 : 40,
             colorMode: 'terminal',
             customColor: '#d63031',
-            isAnimated: !prefersReducedMotion,
+            isAnimated: backgroundConfig.isAnimated && !prefersReducedMotion,
         },
         low: {
             type: 'none'
         }
-    }), [isMobile, prefersReducedMotion]);
+    }), [isMobile, prefersReducedMotion, backgroundConfig.isAnimated]);
 
     const mainPresets = useMemo(() => ({
         psychedelic: {
@@ -89,7 +88,7 @@ const LandingPage = ({ onEnter }) => {
             density: isMobile ? 2 : 2.5,
             colorMode: 'cyber',
             customColor: '#d63031',
-            isAnimated: !prefersReducedMotion,
+            isAnimated: backgroundConfig.isAnimated && !prefersReducedMotion,
         },
         hologram: {
             type: 'hologram',
@@ -98,7 +97,7 @@ const LandingPage = ({ onEnter }) => {
             density: isMobile ? 1 : 2,
             colorMode: 'fire',
             customColor: '#00b894',
-            isAnimated: !prefersReducedMotion,
+            isAnimated: backgroundConfig.isAnimated && !prefersReducedMotion,
         },
         circuit: {
             type: 'circuit',
@@ -107,7 +106,7 @@ const LandingPage = ({ onEnter }) => {
             density: isMobile ? 1.5 : 2.5,
             colorMode: 'ocean',
             customColor: '#0984e3',
-            isAnimated: !prefersReducedMotion,
+            isAnimated: backgroundConfig.isAnimated && !prefersReducedMotion,
         },
         vortex: {
             type: 'vortex',
@@ -116,12 +115,12 @@ const LandingPage = ({ onEnter }) => {
             density: isMobile ? 40 : 80,
             colorMode: 'terminal',
             customColor: '#d63031',
-            isAnimated: !prefersReducedMotion,
+            isAnimated: backgroundConfig.isAnimated && !prefersReducedMotion,
         },
         low: {
             type: 'none'
         }
-    }), [isMobile, prefersReducedMotion]);
+    }), [isMobile, prefersReducedMotion, backgroundConfig.isAnimated]);
 
     const handleEnter = (type) => {
         updateBackgroundConfig(mainPresets[type]);

@@ -1,8 +1,13 @@
 import { createContext, useState, useContext, useMemo, useEffect } from 'react';
 import { usePrefersReducedMotion } from '../A11y/UsePrefersReducedMotion';
-
+import { useCapabilityProbe } from './useCapabilityProbe';
 
 const BackgroundContext = createContext();
+
+export const CapabilityProbeRunner = () => {
+  useCapabilityProbe();      // runs after provider context is ready
+  return null;               // renders nothing
+};
 
 export const useBackground = () => {
     const context = useContext(BackgroundContext);
@@ -13,10 +18,8 @@ export const useBackground = () => {
 };
 
 export const BackgroundProvider = ({ children }) => {
-
     // --- Use prefersReducedMotion for animations ---
     const prefersReducedMotion = usePrefersReducedMotion();
-
 
     // --- Add isMobile logic ---
     const isMobile = useMemo(() => {
@@ -134,8 +137,10 @@ export const BackgroundProvider = ({ children }) => {
             backgroundConfig,
             updateBackgroundConfig,
             toggleBackground,
-            clearStoredConfig
+            clearStoredConfig,
+            isMobile,
         }}>
+            <CapabilityProbeRunner />
             {children}
         </BackgroundContext.Provider>
     );

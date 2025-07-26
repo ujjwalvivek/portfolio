@@ -170,6 +170,18 @@ const BackgroundTest = () => {
         wallpaperStates
     ]);
 
+    function handleAnimationToggle() {
+  const newVal = !backgroundConfig.isAnimated;
+
+  // 1) update React state + your globalBackgroundConfig LS so the change is live
+  updateBackgroundConfig({ isAnimated: newVal });
+
+  // 2) update the same LS key your probe reads 
+  localStorage.setItem('bgAnimationAutoDecision', newVal ? 'on' : 'off');
+
+  console.log('[ManualToggle] animations', newVal ? 'ENABLED' : 'DISABLED');
+}
+
     const shareConfig = () => {
         const config = btoa(JSON.stringify({
             bg: currentBg,
@@ -253,12 +265,12 @@ const BackgroundTest = () => {
                         </div>
                     </div>
 
-                    <div className={styles.controlPanel}>
+                    <div className={styles.controlPanel} style={{ pointerEvents: backgroundConfig.type === 'none' ? 'none' : 'auto', cursor: backgroundConfig.type === 'none' ? 'not-allowed' : 'default' }}>
                         <div className={styles.controlSection}>
                             <div className={styles.sectionHeaderRow}>
                                 <h4 className={styles.sectionTitle}>Visual Controls</h4>
                                 <span className={`${styles.sectionTitle} ${styles.fpsValue} ${fps < 15 ? styles.fpsLow : fps < 25 ? styles.fpsMedium : styles.fpsHigh}`}>
-                                    {currentBg === 'none' ? 'OFF' : (isAnimated ? `${fps}.fps` : 'static')}
+                                    {currentBg === 'none' ? 'OFF' : (backgroundConfig.isAnimated && fps > 0 ? `${fps}.fps` : 'static')}
                                 </span>
                             </div>
                             {currentBgData?.controls && Object.entries(currentBgData.controls).map(([key, control]) => (
@@ -323,13 +335,13 @@ const BackgroundTest = () => {
                             <div className={styles.selectGroup}>
                                 <button
                                     className={`${styles.selectButton} ${backgroundConfig.isAnimated ? styles.active : ''}`}
-                                    onClick={() => updateLocalAndGlobal({ isAnimated: true })}
+                                    onClick={() => handleAnimationToggle(true)}
                                 >
                                     Animated
                                 </button>
                                 <button
                                     className={`${styles.selectButton} ${!backgroundConfig.isAnimated ? styles.active : ''}`}
-                                    onClick={() => updateLocalAndGlobal({ isAnimated: false })}
+                                    onClick={() => handleAnimationToggle(false)}
                                 >
                                     Static
                                 </button>
