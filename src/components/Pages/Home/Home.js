@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link } from 'react-router-dom';
 import styles from './Home.module.css';
 import { useBackground } from '../../Background/BackgroundContext';
+import TerminalMail from "../../Terminal Mail/TerminalMail";
 
 const Home = () => {
     // State for latest posts and toggling social links
@@ -104,6 +105,10 @@ const Home = () => {
                         );
                     })}
                 </ul>
+            </div>
+            {/* Terminal mail component */}
+            <div className={styles.terminalMailComponent}>
+                <TerminalMail />
             </div>
         </div>
     );

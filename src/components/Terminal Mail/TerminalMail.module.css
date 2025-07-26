@@ -1,0 +1,317 @@
+/* src/components/TerminalMail/TerminalMail.module.css */
+
+.terminalContainer {
+  font-family: var(--font-mono);
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 
+    0 20px 40px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(255, 255, 255, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  max-width: 1000px;
+  border: 1px solid rgba(56, 139, 253, 0.2);
+  backdrop-filter: blur(20px);
+  position: relative;
+  height: 100%;
+  max-height: 400px;
+    display: flex;
+  flex-direction: column;
+}
+
+.terminalContainer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(56, 139, 253, 0.03) 0%, rgba(163, 109, 253, 0.03) 100%);
+  pointer-events: none;
+}
+
+.terminalHeader {
+  background: rgba(var(--background-color-rgb), 0.5);
+  padding: 0.3rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  border-bottom: 1px solid rgba(56, 139, 253, 0.2);
+  position: relative;
+}
+
+.terminalButtons {
+  display: flex;
+  gap: 0.5rem;
+  z-index: 2;
+}
+
+.closeButton, .minimizeButton, .maximizeButton {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.closeButton {
+  background: linear-gradient(135deg, var(--status-ram-color) 0%, var(--status-ram-color) 100%);
+}
+
+.minimizeButton {
+  background: linear-gradient(135deg, var(--status-warn-color) 0%, var(--status-warn-color) 100%);
+}
+
+.maximizeButton {
+  background: linear-gradient(135deg, var(--terminal-output-color) 0%, var(--terminal-output-color) 100%);
+}
+
+.closeButton:hover, .minimizeButton:hover, .maximizeButton:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+}
+
+.terminalTitle {
+  color: var(--text-color);
+  font-size: 0.8rem;
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex: 1;
+  text-shadow: 0 0 10px rgba(56, 139, 253, 0.3);
+  line-height: 0.6rem;
+  font-family: var(--font-mono);
+}
+
+.titleIcon {
+  font-size: 1rem;
+  align-items: center;
+}
+
+.titleDomain {
+  color: var(--terminal-input-color);
+  font-weight: 400;
+    line-height: 0.6rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+}
+
+.terminalStatus {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.statusDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.statusDot.ready {
+  background: var(--terminal-input-color);
+  box-shadow: 0 0 6px rgba(63, 185, 80, 0.6);
+}
+
+.statusDot.sending {
+  background: var(--status-ram-color);
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.7; transform: scale(1.2); }
+}
+
+.terminalContent {
+  background: rgba(var(--background-color-rgb), 0.3);
+  backdrop-filter: blur(32px) saturate(180%);
+  -webkit-backdrop-filter: blur(32px) saturate(180%);
+  overflow-y: auto;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  height: 400px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.terminalContent::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(circle at 20% 80%, rgba(56, 139, 253, 0.05) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(163, 109, 253, 0.05) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.terminalOutput {
+  flex: 1;
+  color: var(--terminal-output-color);
+  line-height: 1.6;
+  font-size: 0.9rem;
+  position: relative;
+  z-index: 1;
+}
+
+.outputLine {
+  margin-bottom: 0.3rem;
+  white-space: pre-wrap;
+  word-break: break-word;
+  text-shadow: 0 0 2px rgba(125, 211, 252, 0.3);
+}
+
+.inputContainer {
+  display: flex;
+  align-items: center;
+  margin-top: 1rem;
+  position: relative;
+  z-index: 1;
+}
+
+.prompt {
+  color: var(--terminal-input-color);
+  margin-right: 0.75rem;
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+  text-shadow: 0 0 4px rgba(88, 166, 255, 0.4);
+}
+
+.promptUser {
+  color: var(--terminal-input-color);
+}
+
+.promptSeparator {
+  color: var(--text-color);
+  margin: 0 0.2rem;
+}
+
+.promptHost {
+  color: var(--status-info-color);
+}
+
+.promptPath {
+  color: var(--text-color);
+  margin-left: 0.2rem;
+}
+
+.terminalInput {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--text-color);
+  font-family: inherit;
+  font-size: 0.9rem;
+  caret-color: var(--status-info-color);
+  text-shadow: 0 0 2px rgba(240, 246, 252, 0.3);
+}
+
+.terminalInput::placeholder {
+  color: var(--primary-color);
+  font-style: italic;
+}
+
+.terminalInput:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.terminalFooter {
+  border: 1px solid rgba(56, 139, 253, 0.2);
+}
+
+.statusBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  font-size: 0.75rem;
+  color: var(--primary-color);
+  gap: 3rem;
+}
+
+.statusItem {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.statusIcon {
+  font-size: 0.6rem;
+  color: var(--status-info-color);
+}
+
+/* Scrollbar styling */
+.terminalContent::-webkit-scrollbar {
+  width: 2px;
+}
+
+.terminalContent::-webkit-scrollbar-track {
+  background: rgba(13, 17, 23, 0.5);
+}
+
+.terminalContent::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, var(--status-info-color) 0%, var(--status-warning-color) 100%);
+  border-radius: 0px;
+}
+
+.terminalContent::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, var(--status-info-color) 0%, var(--status-warning-color) 100%);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .terminalContainer {
+    margin: 1rem;
+    max-width: none;
+    border-radius: 8px;
+  }
+  
+  .terminalContent {
+    min-height: 300px;
+    max-height: 400px;
+    padding: 1rem;
+  }
+  
+  .terminalHeader {
+    padding: 0.5rem 1rem;
+  }
+  
+  .statusBar {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+  }
+  
+  .statusItem {
+    font-size: 0.7rem;
+  }
+  
+  .prompt {
+    font-size: 0.8rem;
+  }
+  
+  .terminalInput {
+    font-size: 0.8rem;
+  }
+}
+
+/* Animation for terminal boot effect */
+@keyframes terminalBoot {
+  0% { opacity: 0; transform: scale(0.95); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+.terminalContainer {
+  animation: terminalBoot 0.5s ease-out;
+}

@@ -29,4 +29,4 @@
 * [x] Open Source Release Blog - How did i make this website.
 * [x] **Move hosting to cloudflare pages and storage to R2.**
 * [x] Add upcoming blog posts / dev journey / devlogs timeline view (optional)
-
+* [x] Hardware Capability Probe - Low end devices have procedural animations set to "Static".

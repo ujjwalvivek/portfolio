@@ -563,3 +563,13 @@ button.cta {
         align-items: stretch;
     }
 }
+
+.terminalMailComponent {
+    width: 100%;
+    margin-top: 1rem;
+    max-width: 1000px;
+    height: 400px;
+    border-radius: 4px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+}

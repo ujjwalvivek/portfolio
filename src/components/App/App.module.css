@@ -6,6 +6,38 @@ body {
   font-size: 16px;
 }
 
+/* body::-webkit-scrollbar {
+  width: 0.5rem;
+  background: transparent;
+}
+
+body::-webkit-scrollbar-track {
+  background: rgba(var(--text-color-rgb), 0.9);
+  border-radius: 0px;
+  margin: 0;
+}
+
+body::-webkit-scrollbar-thumb {
+  background: var(--background-color);
+  border-radius: 4px;
+  min-height: 40px;
+  border: 2px solid rgba(var(--text-color-rgb), 0.9);
+}
+
+body::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #79c0ff 0%, #b392f0 100%);
+  box-shadow: 0 4px 16px var(--background-color);
+}
+
+body::-webkit-scrollbar-corner {
+  background: #23272e;
+}
+
+body {
+  scrollbar-width: thin;
+  scrollbar-color: #58a6ff #23272e;
+} */
+
 .App {
   display: flex;
   flex-direction: column;
