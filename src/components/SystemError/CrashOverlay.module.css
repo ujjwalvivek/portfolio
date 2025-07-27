@@ -147,17 +147,15 @@
 
 .mockCloseMsg {
   position: absolute;
-  top: 10px;
+  top: 2px;
   left: 50%;
   transform: translateX(-50%);
-  background: #ff5f56;
   color: #fff;
-  padding: 0.5rem 1.2rem;
-  border-radius: 8px;
-  font-family: monospace;
-  font-size: 1rem;
+  padding: 0.4rem 1.2rem;
+  border-radius: 2px;
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
   z-index: 10;
-  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.18);
   pointer-events: none;
 }
 
@@ -199,12 +197,36 @@
   }
 }
 
-@media (max-width: 1400px) {
+@media (max-width: 1500px) {
   .crashTextMain {
     font-size: 6rem;
     letter-spacing: -1px;
   }
+}
 
+@media (max-width: 1200px) {
+  .crashTextMain {
+    font-size: 5rem;
+    letter-spacing: -1px;
+  }
+}
+
+@media (max-width: 1000px) {
+  .crashTextMain {
+    font-size: 4rem;
+    letter-spacing: -1px;
+  }
+  .crashTextSub {
+    font-size: 0.95rem;
+    letter-spacing: -1px;
+  }
+}
+
+@media (max-width: 800px) {
+  .crashTextMain {
+    font-size: 2.9rem;
+    letter-spacing: -1px;
+  }
 }
 
 @media (max-width: 600px) {

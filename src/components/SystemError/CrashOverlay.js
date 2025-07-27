@@ -6,6 +6,12 @@ import { MdOutlineBugReport } from "react-icons/md";
 const CrashOverlay = ({ onRestart }) => {
   const [mockClose, setMockClose] = React.useState(false);
 
+  // React.useEffect(() => {
+  //   if (performance.getEntriesByType("navigation")[0]?.type === "reload") {
+  //     window.location.href = '/';
+  //   }
+  // }, []);
+
   return (
     <div className={styles.crashOverlay} onContextMenu={e => e.preventDefault()}>
       <div className={styles.crashWindow}>

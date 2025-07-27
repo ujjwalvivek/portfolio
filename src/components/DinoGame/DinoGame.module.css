@@ -276,12 +276,6 @@
 }
 
 @media (max-width: 600px) {
-  .dinoGameWrapper {
-    width: 98vw;
-    max-width: 100vw;
-    min-width: 0;
-  }
-
   .dinoGameContainer {
     height: 38vw;
     max-height: 100px;

@@ -13,9 +13,19 @@ import TopBar from '../TopBar/TopBar';
 import LoadingSpinner from '../Loader/LoadingSpinner';
 import BackgroundTest from '../Pages/BackgroundTest/BackgroundTest';
 import LandingPage from '../Pages/Landing/LandingPage';
+import CommandPalette from '../Command Palette/CommandPalette';
+import { useCommandPalette } from '../Command Palette/useCommandPalette';
+import AsciiGenerator from '../Command Palette/Commands/Ascii Generator/AsciiGenerator'; 
+import GithubNavigator from '../Command Palette/Commands/Github Navigator/GithubNavigator';
+import DevTools from '../Command Palette/Commands/Dev Tools/DevTools';
 
 function AppContent() {
   const { backgroundConfig } = useBackground();
+  const { isOpen, setIsOpen } = useCommandPalette();
+  const [isAsciiOpen, setIsAsciiOpen] = useState(false);
+  const [isGithubOpen, setIsGithubOpen] = useState(false);
+  const [isDevToolsOpen, setIsDevToolsOpen] = useState(false);
+
 
   return (
     <div
@@ -36,6 +46,36 @@ function AppContent() {
         </Routes>
       </main>
       <Footer />
+      <CommandPalette 
+            isOpen={isOpen} 
+            onClose={() => setIsOpen(false)} 
+            onOpenAscii={() => {
+              setIsAsciiOpen(true);
+              setIsOpen(false); // Close command palette when opening ASCII
+            }}
+            onOpenGithub={() => { 
+              setIsGithubOpen(true);
+              setIsOpen(false);
+            }}
+            onOpenDevTools={() => {
+              setIsDevToolsOpen(true);
+              setIsOpen(false);
+            }}  
+          />
+        <AsciiGenerator 
+            isOpen={isAsciiOpen} 
+            onClose={() => setIsAsciiOpen(false)} 
+          /> 
+
+          <GithubNavigator 
+            isOpen={isGithubOpen} 
+            onClose={() => setIsGithubOpen(false)} 
+          /> 
+
+          <DevTools 
+            isOpen={isDevToolsOpen} 
+            onClose={() => setIsDevToolsOpen(false)} 
+          />
     </div>
   );
 }

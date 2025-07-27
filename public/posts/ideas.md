@@ -1,12 +1,13 @@
 ## 📅 v1.3 Target Changelog (WIP)
 
 
-* [o] Project sorting and search 'grep' functionality
+* [o] Project sorting and search 'grep' functionality - via commandpalette.
 * [ ] **Add The Reckoning Entry to Projects and Blog.**
 
 #### Optional
 * [o] Terminal command palette - Ctrl+K style navigation across your whole site (optional)
-
+<!-- TODO: Commit first -->
+<!-- TODO: forEach(Commands).styles -->
 #### Future Plans
 
 * [ ] shift procedural computing to webGPU
