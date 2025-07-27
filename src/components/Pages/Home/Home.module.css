@@ -9,7 +9,6 @@
 .noBackdrop * {
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
-    background: none !important;
 }
 
 /* --- Main container for homepage --- */
@@ -22,11 +21,19 @@
     width: 100%;
     max-width: 1000px;
     margin: 0 auto;
-    padding: 0 1.5rem;
+    padding: 0rem 1.5rem;
     box-sizing: border-box;
     gap: calc(var(--spacing-unit) * 3);
     gap: 0rem;
+    min-height: 100vh;
+    padding-top: 16rem;
 }
+
+/*
+=========================================================================================
+Hero Section Styles
+=========================================================================================
+*/
 
 /* --- Main heading --- */
 .homeContainer h1 {
@@ -73,7 +80,7 @@
     position: relative;
     font-weight: 500;
     margin: 4rem auto 1rem auto;
-    padding: 1.5rem 2rem;
+    padding: 1rem 1rem;
     max-width: 1000px;
     text-align: left;
 
@@ -93,7 +100,7 @@
     color: var(--text-color);
     font-style: italic;
     font-weight: 500;
-    letter-spacing: 0.03em;
+    letter-spacing: 0rem;
 }
 
 /* --- Glitch effect for headings --- */
@@ -268,7 +275,12 @@
     }
 }
 
-/* --- CTA (call-to-action) button container --- */
+/*
+=========================================================================================
+CTA (call-to-action) button container
+=========================================================================================
+*/
+
 .ctaContainer {
     display: flex;
     flex-wrap: wrap;
@@ -346,157 +358,391 @@ button.cta {
     justify-content: center;
 }
 
-/* --- Latest logs/posts container --- */
+/*
+=========================================================================================
+ Enhanced Latest Logs/Posts Container
+=========================================================================================
+*/
+
 .latestLogs {
-    border-radius: 2px;
-    background: rgba(var(--background-color-rgb), 0.3);
-    backdrop-filter: blur(32px) saturate(180%);
-    -webkit-backdrop-filter: blur(32px) saturate(180%);
-    margin: 8.5rem auto 1rem auto;
+    position: relative;
+    margin: 8rem auto 4rem auto;
     width: 100%;
     letter-spacing: 0px;
     font-family: var(--font-mono);
     font-size: 1rem;
     color: var(--text-color);
     line-height: 1.5;
-    padding: 1.5rem 2rem;
+    padding: 0;
+    overflow: hidden;
 }
 
-/* --- Latest logs heading --- */
+/* --- Subtle gradient overlay --- */
+.latestLogs::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    z-index: 1;
+}
+
 .latestLogs h3 {
+    display: flex;
+    align-items: center;
+    position: relative;
+    z-index: 2;
     color: var(--text-color);
-    text-align: left;
     font-family: var(--font-mono);
-    margin-bottom: 1.2rem;
-    letter-spacing: 0px;
-    transform: translateX(8px);
+    font-weight: 800;
+    font-size: 1.2rem;
+    padding: 1rem 2rem;
+    margin-bottom: 1.5rem;
+    border-radius: 0px 2px 2px 0px;
+    background: rgba(var(--background-color-rgb), 0.3);
+    text-shadow: 0 1px 8px rgba(56, 139, 253, 0.18);
+    overflow: hidden;
+    backdrop-filter: blur(32px) saturate(180%);
+    -webkit-backdrop-filter: blur(32px) saturate(180%);
+    pointer-events: none;
 }
 
-/* --- Latest logs list --- */
+.latestLogs h3::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 4px;
+    height: 100%;
+    background: var(--text-color);
+    box-shadow: 0 0 16px 2px #79c0ff55;
+    z-index: 2;
+}
+
+.latestLogs h3 .newIndicator {
+    margin-left: 1.2rem;
+    background: linear-gradient(90deg, #3fb950 0%, #56d364 100%);
+    color: #181c1f;
+    font-size: 0.82rem;
+    font-weight: 900;
+    padding: 0.18rem 0.7rem;
+    border-radius: 4px;
+    letter-spacing: 1.5px;
+    text-shadow: none;
+    box-shadow: 0 0 10px rgba(63, 185, 80, 0.18);
+    align-self: center;
+    border: 1.5px solid #2ea043;
+    filter: brightness(1.1);
+    text-transform: uppercase;
+    font-family: var(--font-mono);
+}
+
+/* --- Container for the list --- */
+.latestLogs .logsContent {
+    position: relative;
+    z-index: 2;
+    padding: 1.5rem rem;
+}
+
+/* --- Enhanced list styling --- */
 .latestLogs ul {
     list-style: none;
     padding: 0;
     margin: 0;
     display: flex;
-    flex-direction: row;
-    gap: 2rem;
-    flex-wrap: nowrap;
-    justify-content: center;
+    flex-direction: column;
+    gap: 1rem;
     width: 100%;
 }
 
 .latestLogs li {
-    flex: 1 1 0;
-    min-width: 0;
-    margin-bottom: 0;
-    transition: background 0.2s;
-    display: flex;
-    align-items: center;
+    border-radius: 2px;
+    margin: 0;
+    transition: all 0.3s ease;
+    display: block;
     box-sizing: border-box;
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(32px) saturate(180%);
+    -webkit-backdrop-filter: blur(32px) saturate(180%);
+    background: rgba(var(--background-color-rgb), 0.2);
+    border-left: 4px solid var(--text-color);
 }
 
-/* --- Latest logs post title hover --- */
-.latestLogs li:hover .postTitle {
-    background: var(--text-color);
-    color: var(--background-color);
+/* --- Enhanced hover effects --- */
+.latestLogs li:hover {
+    border-color: var(--terminal-output-color);
+    background: rgba(var(--background-color-rgb), 0.5);
+    transform: translateY(-2px);
+    box-shadow: 0 0 4px rgba(var(--text-color-rgb), 0.2);
 }
 
-/* --- Latest logs link --- */
+/* --- Subtle glow on hover --- */
+.latestLogs li::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(var(--terminal-input-color-rgb), 0.1), transparent);
+    transition: left 0.5s ease;
+}
+
+.latestLogs li:hover::before {
+    left: 100%;
+}
+
+/* --- Enhanced link styling --- */
 .latestLogs a {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
+    display: block;
+    /* ✅ CHANGED: Block layout for vertical stacking */
     font-family: var(--font-mono);
     color: var(--text-color);
     text-decoration: none;
-    padding: 0.5em 0.2em;
-    border-radius: 4px;
-    transition: background 0.18s, color 0.18s;
+    padding: 1.5rem;
+    transition: all 0.3s ease;
     background: transparent;
+    width: 100%;
+    position: relative;
+    z-index: 2;
 }
 
-/* --- Latest logs link hover --- */
-.latestLogs a:hover,
-.latestLogs li:hover a {
-    color: var(--text-color);
+/* ✅ NEW: Post header container --- */
+.postHeader {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
 }
 
-/* --- Latest logs post title hover (link) --- */
-.latestLogs a:hover .postTitle,
-.latestLogs li:hover .postTitle {
-    color: var(--text-color);
-    text-decoration: none;
-    background: none;
-    transition: color 0.18s, text-decoration 0.18s;
-}
-
-/* --- Latest logs post date hover --- */
-.latestLogs a:hover .postDate,
-.latestLogs li:hover .postDate {
-    color: var(--primary-color);
-    opacity: 1;
-}
-
-/* --- Post date style --- */
+/* --- Post date enhanced styling --- */
 .postDate {
     color: var(--primary-color);
-    font-size: 0.98rem;
-    opacity: 0.85;
-    font-weight: 600;
-    min-width: 64px;
-    display: inline-block;
-    letter-spacing: 1px;
+    font-size: 0.9rem;
+    font-weight: 800;
+    min-width: 70px;
+    display: flex;
+    /* <-- Use flex for vertical centering */
+    align-items: center;
+    /* <-- Center content vertically */
+    justify-content: center;
+    /* <-- Center content horizontally */
+    letter-spacing: 0px;
+    padding: 0.25rem 0.5rem;
+    background: rgba(var(--primary-color-rgb), 0.4);
+    border-radius: 2px;
+    border: 1px solid rgba(var(--primary-color-rgb), 1);
+    text-align: center;
+    transition: all 0.3s ease;
+    line-height: 1;
+    /* Slightly larger for better centering */
+    vertical-align: middle;
+    box-sizing: border-box;
 }
 
-/* --- Post title style --- */
+.latestLogs li:hover .postDate {
+    background: rgba(var(--primary-color-rgb), 0.2);
+    border-color: rgba(var(--primary-color-rgb), 0.4);
+    box-shadow: 0 0 10px rgba(var(--primary-color-rgb), 0.3);
+}
+
+/* --- Post title enhanced styling --- */
 .postTitle {
     color: var(--text-color);
-    font-weight: 400;
+    font-weight: 600;
+    font-size: 1.2rem;
     flex: 1;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
     letter-spacing: 0.5px;
+    text-shadow: 0 0 2px rgba(240, 246, 252, 0.3);
+    transition: all 0.3s ease;
+    line-height: 1;
 }
 
-/* --- Mobile styles --- */
-@media (max-width: 600px) {
+.latestLogs li:hover .postTitle {
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
+}
 
-    /* --- Home container mobile --- */
+/* NEW: Post description styling --- */
+.postDescription {
+    color: var(--primary-color);
+    font-size: 0.9rem;
+    line-height: 1.4;
+    margin-bottom: 0.75rem;
+    font-weight: 400;
+    letter-spacing: 0px;
+    transition: all 0.3s ease;
+}
+
+/* ✅ NEW: Tags container --- */
+.postTags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+/* ✅ NEW: Individual tag styling --- */
+.tag {
+    color: var(--primary-color);
+    font-size: 0.7rem;
+    font-weight: 400;
+    padding: 0.2rem 0.4rem;
+    border-radius: 2px;
+    border: 1px dashed var(--primary-color);
+    letter-spacing: 0px;
+    text-transform: lowercase;
+    transition: all 0.3s ease;
+    display: inline-block;
+}
+
+.latestLogs li:hover .tag {
+    background: linear-gradient(135deg, rgba(var(--terminal-output-color-rgb), 0.25) 0%, rgba(var(--terminal-input-color-rgb), 0.25) 100%);
+    border-color: var(--terminal-output-color);
+    color: var(--terminal-input-color);
+    box-shadow: 0 0 8px rgba(var(--terminal-output-color-rgb), 0.2);
+}
+
+/*
+=========================================================================================
+Terminal mail component styles
+This component is used to send terminal-like email directly from within the website
+=========================================================================================
+*/
+
+.terminalMailComponent {
+    width: 100%;
+    max-width: 1000px;
+    height: 400px;
+    border-radius: 4px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2.5rem;
+}
+
+/*
+=========================================================================================
+Responsive Styles
+=========================================================================================
+*/
+
+/* ...existing code... */
+
+/* --- Responsive: Home container --- */
+/* @media (max-width: 1200px) {
     .homeContainer {
-        width: 100% !important;
-        max-width: 100% !important;
-        padding: 0.5rem !important;
-        gap: 0;
-        box-sizing: border-box;
-        overflow-x: hidden;
+        padding-top: 17rem;
+    }
+} */
+
+@media (max-width: 900px) {
+    .homeContainer {
+        padding-top: 14.5rem;
     }
 
-    .homeContainer h1 {
-        font-size: 1.7rem;
-        word-break: break-word;
-        padding: 0.5rem 0;
+    .terminalMailComponent {
+        height: 400px;
     }
 
-    .homeContainer h2 {
-        font-size: 0.9rem;
-        padding: 0.25rem 0;
-        word-break: break-word;
+    .latestLogs {
+        font-size: 0.95rem;
     }
 
-    .homeContainer p,
-    .blockquoteIntro {
+    .latestLogs h3 {
+        font-size: 1.1rem;
+    }
+}
+
+@media (max-width: 700px) {
+    .homeContainer {
+        padding-top: 10rem;
+    }
+
+    .terminalMailComponent {
+        height: 400px;
+        min-width: 0;
+    }
+
+    .latestLogs h3 {
+        font-size: 0.95rem;    
+    }
+
+    .latestLogs {
+        font-size: 0.92rem;
+        margin: 4rem auto 2rem auto;
+    }
+
+    .postTitle {
+        font-size: 1rem;
+    }
+
+    .postDate {
+        font-size: 0.8rem;
+        min-width: 54px;
+        padding: 0.18rem 0.35rem;
+    }
+
+    .postDescription {
         font-size: 0.85rem;
     }
 
-    /* --- CTA grid for 2x2 layout --- */
+    .postTags {
+        gap: 0.3rem;
+    }
+
+    .tag {
+        font-size: 0.65rem;
+        padding: 0.13rem 0.32rem;
+    }
+}
+
+@media (max-width: 500px) {
+    .homeContainer {
+        padding-top: 2rem;
+    }
+
+    .terminalMailComponent {
+        margin-bottom: 2rem;
+    }
+
+    .latestLogs {
+        font-size: 0.85rem;
+    }
+
+    .latestLogs h3 {
+        font-size: 0.85rem;
+    }
+
+    .postTitle {
+        font-size: 1rem;
+    }
+
+    .postDate {
+        font-size: 0.7rem;
+    }
+
+    .postDescription {
+        font-size: 0.8rem;
+    }
+
+    .postTags {
+        gap: 0.5rem;
+    }
+
+    .tag {
+        font-size: 0.6rem;
+    }
+}
+
+/* --- Responsive: CTA grid --- */
+@media (max-width: 900px) {
     .ctaContainer {
         display: grid;
-        grid-template-columns: 1fr 1fr;
-        /* 2 columns */
+        grid-template-columns: 1fr 1fr 1fr 1fr;
         gap: 1rem;
         width: 100%;
-        margin: 1.2rem 0;
+        margin: 1rem 0;
         justify-items: stretch;
         align-items: stretch;
     }
@@ -510,66 +756,131 @@ button.cta {
         box-sizing: border-box;
         margin: 0;
     }
-
-    .latestLogs ul {
-        flex-direction: column;
-        gap: 0.5rem;
-        width: 100%;
-    }
-
-    .latestLogs li {
-        flex: none;
-        margin-bottom: 0.2rem;
-        width: 100%;
-        display: flex;
-        align-items: center;
-    }
-
-    .latestLogs a {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        width: 100%;
-    }
-
-    .postDate {
-        min-width: 48px;
-        font-size: 0.9rem;
-        flex-shrink: 0;
-    }
-
-    .postTitle {
-        font-size: 0.95rem;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        word-break: normal;
-        display: block;
-        max-width: 100%;
-    }
 }
 
-@media (max-width: 900px) {
-
-    /* --- CTA grid for 2x2 layout --- */
+@media (max-width: 680px) {
     .ctaContainer {
-        display: grid;
         grid-template-columns: 1fr 1fr;
-        /* 2 columns */
         gap: 1rem;
         width: 100%;
-        margin: 1.2rem 0;
+        margin: 1rem 0;
         justify-items: stretch;
         align-items: stretch;
     }
 }
 
-.terminalMailComponent {
-    width: 100%;
-    margin-top: 1rem;
-    max-width: 1000px;
-    height: 400px;
-    border-radius: 4px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin-bottom: 2rem;
+/* --- Responsive: Headings --- */
+@media (max-width: 1000px) {
+    .homeContainer h1 {
+        font-size: 3.3rem;
+    }
+    .homeContainer h2 {
+        font-size: 1.4rem;
+    }
 }
+@media (max-width: 900px) {
+    .homeContainer h1 {
+        font-size: 3rem;
+    }
+    .homeContainer h2 {
+        font-size: 1.3rem;
+    }
+}
+
+@media (max-width: 800px) {
+    .homeContainer h1 {
+        font-size: 2.7rem;
+    }
+    .homeContainer h2 {
+        font-size: 1.2rem;
+    }
+}
+
+@media (max-width: 700px) {
+    .homeContainer h1 {
+        font-size: 2.3rem;
+    }
+
+    .homeContainer h2 {
+        font-size: 1.1rem;
+    }
+}
+@media (max-width: 600px) {
+    .homeContainer h1 {
+        font-size: 1.9rem;
+    }
+
+    .homeContainer h2 {
+        font-size: 1.05rem;
+    }
+}
+@media (max-width: 500px) {
+    .homeContainer h1 {
+        font-size: 1.8rem;
+    }
+
+    .homeContainer h2 {
+        font-size: 1rem;
+    }
+}
+@media (max-width: 475px) {
+    .homeContainer h1 {
+        font-size: 2.1rem;
+    }
+
+    .homeContainer h2 {
+        font-size: 1rem;
+    }
+}
+
+/* --- Responsive: Blockquote and Paragraphs --- */
+@media (max-width: 700px) {
+    .blockquoteIntro,
+    .homeContainer p {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 600px) {
+    .blockquoteIntro,
+    .homeContainer p {
+        font-size: 0.85rem;
+        line-height: 1.4;
+    }
+}
+
+@media (max-width: 500px) {
+
+    .blockquoteIntro,
+    .homeContainer p {
+        font-size: 0.8rem;
+        line-height: 1.4;
+    }
+}
+
+/* --- Responsive: Latest Logs List --- */
+@media (max-width: 700px) {
+    .latestLogs ul {
+        gap: 1rem;
+    }
+
+    .latestLogs a {
+        padding: 1rem;
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 500px) {
+    .latestLogs ul {
+        gap: 0.8rem;
+    }
+
+    .latestLogs a {
+        font-size: 0.85rem;
+    }
+}
+
+/* --- Responsive: Hide non-essential elements on very small screens --- */
+/* @media (max-width: 400px) {
+
+} */

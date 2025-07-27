@@ -100,5 +100,6 @@ export const useCapabilityProbe = () => {
         return () => {
             cancelled = true;
         };
-    }, [backgroundConfig.isAnimated, updateBackgroundConfig]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 };

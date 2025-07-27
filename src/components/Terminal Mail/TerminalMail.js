@@ -25,6 +25,28 @@ const STEPS = {
     COMPLETE: 'complete'
 };
 
+function getAsciiHeader(width) {
+    if (width < 400) {
+        return [
+            '╔══[  MAIL ME  ]══════╗',
+            '║  MAIL TERMINAL v1.0 ║',
+            '╚═════════════════════╝',
+        ];
+    } else if (width < 700) {
+        return [
+            '╔═══[  SEND ME A MESSAGE  ]═══╗',
+            '║   MAIL TERMINAL  ·   v1.0   ║',
+            '╚═════════════════════════════╝',
+        ];
+    } else {
+        return [
+            '╔═════[  SEND ME A MESSAGE  ]═══════════════════╗',
+            '║     MAIL TERMINAL  ·   v1.0  ·   ENCRYPTED    ║',
+            '╚═══════════════════════════════════════════════╝',
+        ];
+    }
+}
+
 export default function TerminalMail() {
     // Conversation state
     const [currentStep, setCurrentStep] = useState(STEPS.WELCOME);
@@ -49,13 +71,18 @@ export default function TerminalMail() {
     const invisibleRef = useRef(null); // ✅ NEW: Proper Turnstile container
     const turnstileWidgetId = useRef(null);
 
+    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+    useEffect(() => {
+        const handleResize = () => setWindowWidth(window.innerWidth);
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
     // Initialize welcome message
     useEffect(() => {
         const welcomeMessages = [
-            '╭─────────────────────────────────────────────────────────────╮',
-            '│                    SECURE TERMINAL MAIL                     │',
-            '│                         v1.1.0                              │',
-            '╰─────────────────────────────────────────────────────────────╯',
+            ...getAsciiHeader(windowWidth),
             '',
             'Encrypted connection established via Turnstile',
             'Connecting to iCloud mail server',
@@ -68,7 +95,7 @@ export default function TerminalMail() {
 
         setHistory(welcomeMessages);
         setCurrentStep(STEPS.SUBJECT);
-    }, []);
+    }, [windowWidth]);
 
     // FIXED: Initialize Turnstile properly after DOM is ready
     useEffect(() => {
@@ -100,9 +127,11 @@ export default function TerminalMail() {
         }
     }, []); // Run once after first DOM paint
 
+    //const didMount = useRef(false);
+
     // Auto-focus and scroll
     useEffect(() => {
-        inputRef.current?.focus();
+        //inputRef.current?.focus();
         if (terminalRef.current) {
             terminalRef.current.scrollTop = terminalRef.current.scrollHeight;
         }
@@ -225,7 +254,7 @@ export default function TerminalMail() {
         }
 
         setBodyLines(prev => [...prev, input]);
-        //appendHistory(`✓ Line ${bodyLines.length + 1} added`);
+        appendHistory(`✓ Line ${bodyLines.length + 1} added`);
     };
 
     const handleContactPreferenceInput = (input) => {
@@ -235,7 +264,7 @@ export default function TerminalMail() {
             setNeedsContact(false);
             appendHistory('✓ Got it, no contact info needed');
             appendHistory('');
-            appendHistory('🚀 Ready to send! Type "send" to transmit your message');
+            appendHistory('Ready to send! Type "send" to transmit your message');
             setCurrentStep(STEPS.READY_TO_SEND);
         } else if (answer === 'y' || answer === 'yes') {
             setNeedsContact(true);
@@ -293,7 +322,7 @@ export default function TerminalMail() {
         }
 
         appendHistory('');
-        appendHistory('🚀 Ready to send! Type "send" to transmit your message');
+        appendHistory('Ready to send! Type "send" to transmit your message');
         setCurrentStep(STEPS.READY_TO_SEND);
     };
 
@@ -310,8 +339,8 @@ export default function TerminalMail() {
         setCurrentStep(STEPS.SENDING);
 
         appendHistory('');
-        appendHistory('🔐 Initiating secure transmission...');
-        appendHistory('🤖 Performing security verification...');
+        appendHistory('Initiating secure transmission...');
+        appendHistory('Performing security verification...');
 
         // Check if we already have a valid token
         if (turnstileToken) {
@@ -366,8 +395,8 @@ export default function TerminalMail() {
     };
 
     const proceedWithSend = (token) => {
-        appendHistory('📡 Establishing connection to mail server...');
-        appendHistory('📨 Transmitting encrypted message...');
+        appendHistory('Establishing connection to mail server...');
+        appendHistory('Transmitting encrypted message...');
 
         // Prepare template params
         const templateParams = {
@@ -381,21 +410,21 @@ export default function TerminalMail() {
 
         emailjs.send(SERVICE_ID, TEMPLATE_ID, templateParams, PUBLIC_KEY)
             .then(() => {
-                appendHistory('✅ MESSAGE TRANSMITTED SUCCESSFULLY');
+                appendHistory('MESSAGE TRANSMITTED SUCCESSFULLY');
                 appendHistory('');
-                appendHistory('📬 Your message has been delivered securely');
+                appendHistory('Your message has been delivered securely');
                 if (needsContact) {
-                    appendHistory(`📞 I'll get back to you via ${contactMethod}: ${contactInfo}`);
+                    appendHistory(`I'll get back to you via ${contactMethod}: ${contactInfo}`);
                 }
                 appendHistory('');
-                appendHistory('Thank you for reaching out! 🚀');
+                appendHistory('Thank you for reaching out!');
                 appendHistory('');
                 appendHistory('Type "reset" to send another message');
                 setCurrentStep(STEPS.COMPLETE);
             })
             .catch((error) => {
                 console.error('EmailJS Error:', error);
-                appendHistory('❌ TRANSMISSION FAILED');
+                appendHistory('TRANSMISSION FAILED');
                 appendHistory(`Error: ${error.text || 'Network error'}`);
                 appendHistory('');
                 appendHistory('Please try again or check your connection');
@@ -419,7 +448,7 @@ export default function TerminalMail() {
         setHistoryIndex(-1);
 
         setHistory([
-            '🔄 Terminal reset',
+            'Terminal reset',
             '',
             'What\'s the subject of your message?'
         ]);
@@ -442,7 +471,6 @@ export default function TerminalMail() {
 
     return (
         <div className={styles.terminalContainer}>
-            {/* ✅ NEW: Hidden container for invisible Turnstile */}
             <div ref={invisibleRef} style={{ display: 'none' }} />
 
             <div className={styles.terminalHeader}>
@@ -453,10 +481,10 @@ export default function TerminalMail() {
                 </div>
                 <div className={styles.terminalTitle}>
                     <span className={styles.titleIcon}><RiTerminalBoxFill /></span>
-                    secure-mail@ujjwalvivek
+                    securemail@ujjwalvivek
                 </div>
                 <div className={styles.terminalStatus}>
-                    <span className={styles.titleDomain}>secure_connection_on</span>
+                    <span className={styles.titleDomain}>e2ee_connection_on</span>
                     <span className={`${styles.statusDot} ${sending ? styles.sending : styles.ready}`}></span>
                 </div>
             </div>
@@ -475,10 +503,10 @@ export default function TerminalMail() {
 
                 <div className={styles.inputContainer}>
                     <span className={styles.prompt}>
-                        <span className={styles.promptUser}>mail</span>
+                        <span className={styles.promptUser}>root</span>
                         <span className={styles.promptSeparator}>@</span>
-                        <span className={styles.promptHost}>uv</span>
-                        <span className={styles.promptPath}>:~$</span>
+                        <span className={styles.promptHost}>securemail</span>
+                        <span className={styles.promptPath}>:#</span>
                     </span>
                     <input
                         ref={inputRef}
@@ -512,7 +540,7 @@ export default function TerminalMail() {
                         Lines: {bodyLines.length}
                     </span>
                     <span className={styles.statusItem}>
-                        <span className={styles.statusIcon}>⚡</span>
+                        <span className={styles.statusIcon}>●</span>
                         Ready
                     </span>
                 </div>

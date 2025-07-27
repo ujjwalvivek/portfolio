@@ -1,12 +1,11 @@
 ## 📅 v1.3 Target Changelog (WIP)
 
-* [ ] Contact form as terminal input on Homepage
-         `Make it feel like sending a message through a shell (how to embed subject and body in mailto?)`
-* [ ] Project sorting and search 'grep' functionality
+
+* [o] Project sorting and search 'grep' functionality
 * [ ] **Add The Reckoning Entry to Projects and Blog.**
 
 #### Optional
-* [ ] Terminal command palette - Ctrl+K style navigation across your whole site (optional)
+* [o] Terminal command palette - Ctrl+K style navigation across your whole site (optional)
 
 #### Future Plans
 
@@ -30,3 +29,5 @@
 * [x] **Move hosting to cloudflare pages and storage to R2.**
 * [x] Add upcoming blog posts / dev journey / devlogs timeline view (optional)
 * [x] Hardware Capability Probe - Low end devices have procedural animations set to "Static".
+* [x] Contact form as terminal input on Homepage
+         `Make it feel like sending a message through a shell (how to embed subject and body in mailto?)`

@@ -22,14 +22,14 @@
 .terminalFooterWindowBar {
   display: flex;
   align-items: center;
-  gap: 0.5em;
-  background: #70707054;
-  padding: 0.3em 1.2em;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
   height: 1.5rem;
   width: 100%;
   backdrop-filter: blur(32px) saturate(180%);
   -webkit-backdrop-filter: blur(32px) saturate(180%);
-  background: rgba(var(--text-color-rgb), 0.5);
+  background: rgba(var(--text-color-rgb), 0.3);
+  position: relative;
 }
 
 .terminalDot {

@@ -9,8 +9,8 @@
     0 0 0 1px rgba(255, 255, 255, 0.05),
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
   max-width: 1000px;
-  border: 1px solid rgba(56, 139, 253, 0.2);
-  backdrop-filter: blur(20px);
+  backdrop-filter: blur(32px) saturate(180%);
+  -webkit-backdrop-filter: blur(32px) saturate(180%);
   position: relative;
   height: 100%;
   max-height: 400px;
@@ -25,17 +25,15 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(135deg, rgba(56, 139, 253, 0.03) 0%, rgba(163, 109, 253, 0.03) 100%);
   pointer-events: none;
 }
 
 .terminalHeader {
-  background: rgba(var(--background-color-rgb), 0.5);
-  padding: 0.3rem 1rem;
+  background: rgba(var(--bit-dark-color-rgb), 1);
+  padding: 0.4rem 1rem;
   display: flex;
   align-items: center;
   gap: 1rem;
-  border-bottom: 1px solid rgba(56, 139, 253, 0.2);
   position: relative;
 }
 
@@ -71,8 +69,8 @@
 
 .terminalTitle {
   color: var(--text-color);
-  font-size: 0.8rem;
-  font-weight: 400;
+  font-size: 0.75rem;
+  font-weight: 500;
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -124,10 +122,7 @@
 }
 
 .terminalContent {
-  background: rgba(var(--background-color-rgb), 0.3);
-  backdrop-filter: blur(32px) saturate(180%);
-  -webkit-backdrop-filter: blur(32px) saturate(180%);
-  overflow-y: auto;
+  overflow-y: visible;
   padding: 1.5rem;
   display: flex;
   flex-direction: column;
@@ -144,9 +139,6 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: 
-    radial-gradient(circle at 20% 80%, rgba(56, 139, 253, 0.05) 0%, transparent 50%),
-    radial-gradient(circle at 80% 20%, rgba(163, 109, 253, 0.05) 0%, transparent 50%);
   pointer-events: none;
 }
 
@@ -181,6 +173,7 @@
   display: flex;
   align-items: center;
   text-shadow: 0 0 4px rgba(88, 166, 255, 0.4);
+  font-size: 0.9rem;
 }
 
 .promptUser {
@@ -199,6 +192,7 @@
 .promptPath {
   color: var(--text-color);
   margin-left: 0.2rem;
+  font-style: normal;
 }
 
 .terminalInput {
@@ -211,11 +205,13 @@
   font-size: 0.9rem;
   caret-color: var(--status-info-color);
   text-shadow: 0 0 2px rgba(240, 246, 252, 0.3);
+  display: flex;
+  align-items: center;
 }
 
 .terminalInput::placeholder {
   color: var(--primary-color);
-  font-style: italic;
+  font-style: normal;
 }
 
 .terminalInput:disabled {
@@ -224,7 +220,7 @@
 }
 
 .terminalFooter {
-  border: 1px solid rgba(56, 139, 253, 0.2);
+  border-top: 1px solid rgba(56, 139, 253, 0.2);
 }
 
 .statusBar {
@@ -261,26 +257,54 @@
 }
 
 .terminalContent::-webkit-scrollbar-thumb {
-  background: linear-gradient(135deg, var(--status-info-color) 0%, var(--status-warning-color) 100%);
+  background: white;
   border-radius: 0px;
 }
 
 .terminalContent::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(135deg, var(--status-info-color) 0%, var(--status-warning-color) 100%);
+  background: grey;
 }
 
 /* Responsive design */
-@media (max-width: 768px) {
-  .terminalContainer {
-    margin: 1rem;
-    max-width: none;
-    border-radius: 8px;
-  }
-  
+@media (max-width: 1200px) {
   .terminalContent {
-    min-height: 300px;
-    max-height: 400px;
-    padding: 1rem;
+    padding: 1.3rem;
+  }
+}
+
+@media (max-width: 900px) {
+  .terminalContent {
+    padding: 1.2rem;
+  }
+  .terminalOutput {
+    font-size: 0.85rem;
+  }
+  .terminalHeader {
+    padding: 0.5rem 1rem;
+  }
+  .statusBar {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+  }
+  .statusItem {
+    font-size: 0.75rem;
+  }
+  .prompt {
+    font-size: 0.85rem;
+  }
+  .terminalInput {
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 700px) {
+  .terminalContent {
+    padding: 1.1rem;
+  }
+
+  .terminalOutput {
+    font-size: 0.8rem;
   }
   
   .terminalHeader {
@@ -304,6 +328,45 @@
   .terminalInput {
     font-size: 0.8rem;
   }
+}
+@media (max-width: 500px) {
+  .terminalContent {
+    min-height: 250px;
+    max-height: 350px;
+    padding: 1rem;
+  }
+
+  .terminalOutput {
+    font-size: 0.75rem;
+  }
+  
+  .terminalHeader {
+    padding: 0.5rem 1rem;
+  }
+  
+  .statusBar {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+  }
+  
+  .statusItem {
+    font-size: 0.65rem;
+  }
+  
+  .prompt {
+    font-size: 0.7rem;
+  }
+  
+  .terminalInput {
+    font-size: 0.7rem;
+  }
+}
+
+@media (max-width: 495px) {
+.titleDomain {
+  display: none;
+}
 }
 
 /* Animation for terminal boot effect */

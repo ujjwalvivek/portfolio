@@ -86,25 +86,48 @@ const Home = () => {
             {/* Latest blog posts */}
             <div className={styles.latestLogs}>
                 <h3>
-                    check out my recent logs <span style={{ color: 'var(--primary-color)' }}>[NEW]</span>
+                    my_recent_logs.
+                    <span style={{ color: 'var(--primary-color)', fontWeight: '400', letterSpacing: '-1px', fontFamily: 'var(--font-mono)' }}>_slice(0,2)_</span>
+                    <span style={{ color: 'var(--terminal-input-color)' }}>.new</span>
                 </h3>
-                <ul>
-                    {latestPosts.slice(0, 2).map((post, idx) => {
-                        const maxLen = 30;
-                        // Truncate long titles
-                        const shortTitle = post.title.length > maxLen ? post.title.slice(0, maxLen) + '...' : post.title;
-                        return (
-                            <li key={post.slug || post.filename || idx}>
-                                <Link to={`/blog/${post.filename}`}>
-                                    <span className={styles.postDate}>
-                                        [{new Date(post.date).toLocaleDateString('en-GB', { month: '2-digit', day: '2-digit' })}]
-                                    </span>
-                                    <span className={styles.postTitle}> {shortTitle} </span>
-                                </Link>
-                            </li>
-                        );
-                    })}
-                </ul>
+                <div className={styles.logsContent}>
+                    <ul>
+                        {latestPosts.slice(0, 2).map((post, idx) => {
+                            const maxLen = 50;
+                            // Truncate long titles
+                            const shortTitle = post.title.length > maxLen ? post.title.slice(0, maxLen) + '...' : post.title;
+                            return (
+                                <li key={post.slug || post.filename || idx}>
+                                    <Link to={`/blog/${post.filename}`}>
+                                        <div className={styles.postHeader}>
+                                            <span className={styles.postDate}>
+                                                {new Date(post.date).toLocaleDateString('en-GB', { month: '2-digit', day: '2-digit', year: '2-digit' })}
+                                            </span>
+                                            <span className={styles.postTitle}> {shortTitle} </span>
+                                        </div>
+                                        {/* ✅ NEW: Post description */}
+                                        {post.description && (
+                                            <div className={styles.postDescription}>
+                                                {post.description}
+                                            </div>
+                                        )}
+
+                                        {/* ✅ NEW: Tags */}
+                                        {post.tags && post.tags.length > 0 && (
+                                            <div className={styles.postTags}>
+                                                {post.tags.map((tag, tagIndex) => (
+                                                    <span key={tagIndex} className={styles.tag}>
+                                                        {tag}
+                                                    </span>
+                                                ))}
+                                            </div>
+                                        )}
+                                    </Link>
+                                </li>
+                            );
+                        })}
+                    </ul>
+                </div>
             </div>
             {/* Terminal mail component */}
             <div className={styles.terminalMailComponent}>
