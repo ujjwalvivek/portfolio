@@ -110,7 +110,7 @@ const generateGitHubFetchDisplay = (repo, user, commits, languages) => {
   // Cyberpunk Style Design
   const asciiStats = `
 ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄
-█▌ GITHUB TERMINAL v3.0 ▐█ ${user.login}@github.com ████████████████
+█▌ GITHUB TERMINAL v1.0 ▐█ ${user.login}@github.com ████████████████
 ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
 
 ▌▌▌ ${repo.name.toUpperCase()}.${repo.default_branch} ███████████████████████████████████████████████
@@ -590,7 +590,7 @@ const getLanguageIcon = (language) => {
 //   // Initialize with welcome message
 //   useEffect(() => {
 //     if (isOpen) {
-//       setOutput(`🐙 GitHub Terminal Explorer v3.0
+//       setOutput(`🐙 GitHub Terminal Explorer v1.0
 // Connected to: ${GITHUB_REPO}
 // Repository loaded successfully!
 

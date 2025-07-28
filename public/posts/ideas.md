@@ -1,6 +1,7 @@
-## 📅 v1.3 Target Changelog (WIP)
+## 📅 v1.4 Target Changelog (WIP)
 
 * [ ] **Add The Reckoning, UltraTech Entry to Projects and Blog.**
+* [ ] Editable customised shortcut keys.
 
 #### Optional
 
