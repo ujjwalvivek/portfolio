@@ -16,10 +16,13 @@ import LandingPage from '../Pages/Landing/LandingPage';
 import CommandPalette from '../Command Palette/CommandPalette';
 import { useCommandPalette } from '../Command Palette/useCommandPalette';
 import GithubNavigator from '../Command Palette/Commands/Github Navigator/GithubNavigator';
+import Shortcuts from '../Command Palette/Commands/Shortcuts/Shortcuts';
+import CommandHint from '../Command Palette/Tip/CommandHint';
 
 function AppContent() {
   const { backgroundConfig } = useBackground();
-  const { isOpen, setIsOpen } = useCommandPalette();
+  const [showShortcuts, setShowShortcuts] = useState(false);
+  const { isOpen, setIsOpen } = useCommandPalette(setShowShortcuts);
   const [isGithubOpen, setIsGithubOpen] = useState(false);
 
   return (
@@ -41,6 +44,7 @@ function AppContent() {
         </Routes>
       </main>
       <Footer />
+      <CommandHint />
       <CommandPalette 
             isOpen={isOpen} 
             onClose={() => setIsOpen(false)} 
@@ -54,6 +58,10 @@ function AppContent() {
             isOpen={isGithubOpen} 
             onClose={() => setIsGithubOpen(false)} 
           /> 
+
+          {showShortcuts && <Shortcuts 
+            onClose={() => setShowShortcuts(false)} 
+          />}
     </div>
   );
 }

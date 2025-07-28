@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ThemeContext } from '../ThemeSwitcher/ThemeContext';  
 
-export const useCommandPalette = () => {
+export const useCommandPalette = (setShowShortcuts) => {
   const [isOpen, setIsOpen] = useState(false);
   const chainState = useRef(null);
   const chainTimeout = useRef(null);
@@ -59,6 +59,9 @@ export const useCommandPalette = () => {
         else if (e.key.toLowerCase() === '4') {
           navigate('/projects');
         }
+        else if (e.key.toLowerCase() === '/') {
+            setShowShortcuts(prev => !prev);
+        }
         chainState.current = null;
         clearTimeout(chainTimeout.current);
         return;
@@ -96,7 +99,7 @@ export const useCommandPalette = () => {
       document.removeEventListener('contextmenu', handleContextMenu);
       clearTimeout(chainTimeout.current);
     };
-  }, [navigate, toggleDarkMode]);
+  }, [navigate, toggleDarkMode, setShowShortcuts]);
 
   return { isOpen, setIsOpen };
 };

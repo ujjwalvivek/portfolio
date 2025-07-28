@@ -3,36 +3,46 @@
 
 <head>
   <meta charset="utf-8" />
-
-  <link rel="icon" href="https://cdn.ujjwalvivek.com/icons/favicon.ico" />
-
+  <meta 
+    http-equiv="Content-Security-Policy" 
+    content="
+    default-src 'self'; script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com https://*.cloudflare.com; 
+    script-src-elem 'self' 'unsafe-inline' https://challenges.cloudflare.com; 
+    style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; 
+    style-src-elem 'self' 'unsafe-inline' https://fonts.googleapis.com; 
+    object-src 'none'; img-src 'self' data: https://cdn.ujjwalvivek.com https://images.unsplash.com; 
+    font-src 'self' https://fonts.gstatic.com; 
+    connect-src 'self' https://challenges.cloudflare.com https://*.cloudflare.com; 
+    frame-src https://challenges.cloudflare.com;"
+  />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#1a1a1a" />
   <meta name="description" content="Welcome | Vivek's Journey" />
-
   <meta property="og:title" content="Vivek's Journey" />
-  <meta property="og:description"
-    content="A creative, interactive portfolio documenting Vivek's journey in code, design, and ideas." />
+  <meta 
+    property="og:description"
+    content="A creative, interactive portfolio documenting Vivek's journey in code, design, and ideas."
+  />
   <meta property="og:image" content="https://cdn.ujjwalvivek.com/icons/logo512.png" />
   <meta property="og:url" content="https://ujjwalvivek.com/" />
   <meta property="og:type" content="website" />
-
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Vivek's Journey" />
-  <meta name="twitter:description"
-    content="A creative, interactive portfolio documenting Vivek's journey in code, design, and ideas." />
+  <meta 
+    name="twitter:description"
+    content="A creative, interactive portfolio documenting Vivek's journey in code, design, and ideas." 
+  />
   <meta name="twitter:image" content="https://cdn.ujjwalvivek.com/icons/logo512.png" />
-
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-
+    
+  <link rel="icon" href="https://cdn.ujjwalvivek.com/icons/favicon.ico" />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
-
-  <link rel="preload" as="fetch" href="/posts/meta.json" type="application/json" crossorigin>
+  <link rel="prefetch" as="fetch" href="/posts/meta.json" type="application/json" crossorigin>
   <link rel="prefetch" as="fetch" href="/posts/log_0003_going_open_source.md" type="text/markdown" crossorigin>
-  <link rel="preload" href="https://cdn.ujjwalvivek.com/posts/media/webgpu.svg" as="image" type="image/svg+xml">
-
+  <link rel="prefetch" href="https://cdn.ujjwalvivek.com/posts/media/webgpu.svg" as="fetch" type="image/svg+xml" crossorigin>
   <link rel="apple-touch-icon" href="https://cdn.ujjwalvivek.com/icons/logo192.png" />
   <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+
   <title>Welcome | Vivek's Journey</title>
 </head>
 

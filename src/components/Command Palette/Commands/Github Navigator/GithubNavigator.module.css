@@ -277,7 +277,7 @@
 }
 
 /* Mobile Responsive */
-@media (max-width: 768px) {
+@media (max-width: 1200px) {
   .header {
     padding: 8px 12px;
     flex-wrap: wrap;

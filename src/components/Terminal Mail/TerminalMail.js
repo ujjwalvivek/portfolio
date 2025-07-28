@@ -437,6 +437,14 @@ export default function TerminalMail() {
     };
 
     const resetConversation = () => {
+        // ✅ RESET THE TURNSTILE WIDGET FIRST
+  if (turnstileWidgetId.current && window.turnstile) {
+    try {
+      window.turnstile.reset(turnstileWidgetId.current);
+    } catch (error) {
+      console.warn('Turnstile reset failed:', error);
+    }
+  }
         setSubject('');
         setBodyLines([]);
         setNeedsContact(false);
@@ -510,6 +518,7 @@ export default function TerminalMail() {
                     </span>
                     <input
                         ref={inputRef}
+                        name='terminalInput'
                         type="text"
                         value={input}
                         onChange={(e) => setInput(e.target.value)}

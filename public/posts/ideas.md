@@ -1,7 +1,6 @@
 ## 📅 v1.3 Target Changelog (WIP)
 
 * [ ] **Add The Reckoning, UltraTech Entry to Projects and Blog.**
-* [ ] Shortcuts Overlay
 
 #### Optional
 
@@ -31,5 +30,4 @@
          `Make it feel like sending a message through a shell (how to embed subject and body in mailto?)`
 * [x] Project sorting (opinionated) and search functionality - via commandpalette.
 * [x] Terminal command palette - Ctrl+K style navigation across your whole site (optional)
-
-
+* [x] Shortcuts Overlay with a helper toast
