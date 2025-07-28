@@ -7,7 +7,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #E3DCED;
+    background-color: var(--text-color);
     z-index: 9999;
 }
 
@@ -16,8 +16,8 @@
 }
 
 .Spinner {
-    border: 5px solid rgba(0, 0, 0, 0.1);
-    border-left-color: #222222;
+    border: 5px solid rgba(var(--background-color-rgb), 0.1);
+    border-left-color: var(--background-color);
     border-radius: 50%;
     width: 40px;
     height: 40px;

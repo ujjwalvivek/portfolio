@@ -81,6 +81,7 @@
     color: rgba(var(--text-color-rgb), 0.3);
     font-style: normal;
     font-weight: 400;
+    word-spacing: -0.3rem;
 }
 
 .shortcut {
@@ -106,7 +107,6 @@
     cursor: pointer;
     transition: all 0.2s ease;
     border-bottom: 1px solid rgba(var(--text-color-rgb), 0.05);
-    transition: background 0.3s ease-out, color 0.3s ease-out;
 }
 
 .command:hover,
@@ -137,7 +137,7 @@
 }
 
 .commandTitle {
-    font-weight: 600;
+    font-weight: 700;
     font-size: 0.95rem;
     color: var(--text-color);
     margin-bottom: 0.2rem;
@@ -173,21 +173,21 @@
 }
 
 .enterHint {
-    color: rgba(255, 255, 255, 0.6);
+    color: rgba(var(--background-color-rgb), 0.6);
     font-size: 0.8rem;
     font-family: 'SF Mono', 'Monaco', 'Consolas', monospace;
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(var(--background-color-rgb), 0.1);
     padding: 0.2rem 0.4rem;
     border-radius: 3px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(var(--background-color-rgb), 0.2);
 }
 
 .noResults {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 3rem 1.5rem;
-    color: #858585;
+    padding: 2rem 1.5rem;
+    color: rgba(var(--primary-color-rgb), 0.6);
 }
 
 .noResultsIcon {
@@ -198,11 +198,12 @@
 
 .noResultsText {
     font-size: 0.9rem;
-    font-style: italic;
+    font-style: normal;
+    font-family: var(--font-mono);
 }
 
 .footer {
-    padding: 0.7rem 1.4rem;
+    padding: 1rem 1.5rem;
     border-top: 1px solid #3c3c3c;
     background: rgba(var(--text-color-rgb), 0.1);
 }
@@ -213,6 +214,8 @@
     font-size: 0.75rem;
     color: var(--primary-color);
     font-family: 'SF Mono', 'Monaco', 'Consolas', monospace;
+    flex-wrap: wrap;
+    align-items: center;
 }
 
 .shortcuts kbd {
@@ -225,8 +228,8 @@
 }
 
 /* Konami code effect */
-:global(.konami-activated) {
-    animation: konamiShake 0.5s infinite;
+:global(.konami-activated) * {
+    animation: konamiShake 0.5s infinite, glitch 0.3s infinite linear alternate;
 }
 
 @keyframes konamiShake {
@@ -243,6 +246,53 @@
     75% {
         transform: translateX(5px) rotate(-1deg);
     }
+}
+
+@keyframes glitch {
+  0% { text-shadow: 2px 0 red, -2px 0 cyan; }
+  20% { text-shadow: -2px 0 lime, 2px 0 magenta; }
+  40% { text-shadow: 2px 2px yellow, -2px -2px blue; }
+  60% { text-shadow: 0 2px orange, 0 -2px purple; }
+  80% { text-shadow: 2px -2px green, -2px 2px pink; }
+  100% { text-shadow: none; }
+}
+
+
+.commandType {
+  color: rgba(var(--background-color-rgb), 0.6);
+  font-size: 0.75rem;
+  font-weight: 700;
+  font-family: var(--font-mono);
+}
+
+.commandDate {
+  color: rgba(var(--background-color-rgb), 0.6);
+  font-size: 0.75rem;
+  font-weight: 700;
+  font-family: var(--font-mono);
+}
+
+.commandTags {
+  margin-top: 0.3rem;
+  display: flex;
+  gap: 0.3rem;
+  flex-wrap: wrap;
+}
+
+.tag {
+  background: rgba(var(--primary-color-rgb), 0.2);
+  color: var(--primary-color);
+  font-size: 0.65rem;
+  padding: 0.1rem 0.3rem;
+  border-radius: 3px;
+  border: 1px solid rgba(var(--primary-color-rgb), 0.3);
+  font-family: var(--font-mono);
+}
+
+.command.selected .tag {
+  background: rgba(var(--background-color-rgb), 0.2);
+  color: var(--background-color);
+  border-color: rgba(var(--background-color-rgb), 0.3);
 }
 
 /* Scrollbar styling */

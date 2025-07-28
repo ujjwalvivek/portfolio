@@ -3,35 +3,191 @@ import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useBackground } from '../Background/BackgroundContext';
 import { useContext } from 'react';
-import { ThemeContext } from '../ThemeSwitcher/ThemeContext';  // ✅ Fixed import
+import { ThemeContext } from '../ThemeSwitcher/ThemeContext';  
 import styles from './CommandPalette.module.css';
 import CrashOverlay from "../SystemError/CrashOverlay";
 import { FiCommand } from "react-icons/fi";
 import { TbSwitch2, TbError404 } from "react-icons/tb";
 import { GiThunderSkull, GiEasterEgg } from "react-icons/gi";
-import { MdLightMode, MdDarkMode, MdQuestionMark, MdTableRows, MdFiberNew  } from "react-icons/md";
-import { RiHome3Fill, RiMailSendFill } from "react-icons/ri";
-import { IoGameController } from "react-icons/io5";
-import { LuBinary, LuPartyPopper } from "react-icons/lu";
-import { FaDev } from "react-icons/fa";
-import { ImTerminal, ImTextColor } from "react-icons/im";
+import { MdLightMode, MdDarkMode } from "react-icons/md";
+import { RiMailSendFill } from "react-icons/ri";
+import { ImTerminal } from "react-icons/im";
+import { FaDice } from "react-icons/fa";
+import { ProjectsData } from '../Pages/Projects/ProjectsData'; 
+import { BsJournalAlbum  } from "react-icons/bs";
+import { FaRegFolderOpen } from "react-icons/fa6";
+import { TbFaceIdError } from "react-icons/tb";
 
-
-
-const CommandPalette = ({ isOpen, onClose, onOpenAscii, onOpenGithub, onOpenDevTools }) => {
+const CommandPalette = ({ isOpen, onClose, onOpenGithub }) => {
     const [query, setQuery] = useState('');
     const [selectedIndex, setSelectedIndex] = useState(0);
+    const [blogPosts, setBlogPosts] = useState([]);
+    const [searchResults, setSearchResults] = useState([]);
     const inputRef = useRef(null);
     const navigate = useNavigate();
     const { toggleBackground } = useBackground();
     const [crashed, setCrashed] = useState(false);
-
-
-    // ✅ FIXED: Use useContext instead of calling ThemeProvider as function
     const { darkMode, toggleDarkMode } = useContext(ThemeContext);
+
+    // Fetch blog metadata on component mount
+  useEffect(() => {
+    const fetchBlogPosts = async () => {
+      try {
+        const response = await fetch('/posts/meta.json');
+        const posts = await response.json();
+        setBlogPosts(posts);
+      } catch (error) {
+        console.error('Error fetching blog posts:', error);
+      }
+    };
+    
+    fetchBlogPosts();
+  }, []);
+    
+    const effects = [
+        {
+            name: 'konami',
+            action: () => {
+                document.body.classList.add('konami-activated');
+                setTimeout(() => document.body.classList.remove('konami-activated'), 3000);
+            }
+        },
+        {
+            name: 'disco',
+            action: () => startDiscoMode()
+        },
+        {
+            name: 'matrix',
+            action: () => createMatrixRain()
+        },
+        {
+        name: 'all',
+        action: () => {
+            // Play all three effects together
+            document.body.classList.add('konami-activated');
+            setTimeout(() => document.body.classList.remove('konami-activated'), 3000);
+            startDiscoMode();
+            createMatrixRain();
+            // delay(createMatrixRain, 1000);
+        }
+    }];
+
+    // Search function for blogs and projects
+  const searchSitewide = (searchQuery) => {
+    if (!searchQuery.trim()) return [];
+    
+    const query_lower = searchQuery.toLowerCase();
+    const results = [];
+
+    // Search blog posts
+    blogPosts.forEach(blog => {
+      const searchText = `${blog.title} ${blog.description} ${blog.tags?.join(' ') || ''} ${blog.date}`.toLowerCase();
+      if (searchText.includes(query_lower)) {
+        results.push({
+          type: 'blog',
+          id: `blog-${blog.id}`,
+          title: blog.title,
+          description: blog.description,
+          icon: <BsJournalAlbum  />,
+          date: blog.date,
+          tags: blog.tags || [],
+          filename: blog.filename,
+          action: () => {
+            if (blog.filename) {
+              navigate(`/blog/${blog.filename}`);
+            }
+            onClose();
+          }
+        });
+      }
+    });
+
+    // Search projects
+    ProjectsData.forEach(project => {
+      const contentText = project.content?.join(' ') || '';
+      const searchText = `${project.title} ${contentText} ${project.tags?.join(' ') || ''}`.toLowerCase();
+      if (searchText.includes(query_lower)) {
+        results.push({
+          type: 'project',
+          id: `project-${project.id}`,
+          title: project.title,
+          description: contentText.slice(0, 120) + (contentText.length > 120 ? '...' : ''),
+          icon: <FaRegFolderOpen />,
+          tags: project.tags || [],
+          projectId: project.id,
+          action: () => {
+            navigate('/projects');
+            // Optionally scroll to specific project or open project details
+            setTimeout(() => {
+              const projectElement = document.querySelector(`[data-project-id="${project.id}"]`);
+              if (projectElement) {
+                projectElement.scrollIntoView({ behavior: 'smooth' });
+              }
+            }, 100);
+            onClose();
+          }
+        });
+      }
+    });
+
+    return results.slice(0, 8); // Limit results to prevent overwhelming UI
+  };
+
+  // Update search results when query changes
+  useEffect(() => {
+    if (query.trim()) {
+      const results = searchSitewide(query);
+      setSearchResults(results);
+    } else {
+      setSearchResults([]);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [query, blogPosts]);
+
+    useEffect(() => {
+        if (!isOpen) return;
+
+        const handleQuickNav = (e) => {
+            if (e.altKey) {
+                switch (e.key) {
+                    case '1':
+                        navigate('/');
+                        onClose();
+                        break;
+                    case '2':
+                        navigate('/about');
+                        onClose();
+                        break;
+                    case '3':
+                        navigate('/blog');
+                        onClose();
+                        break;
+                    case '4':
+                        navigate('/projects');
+                        onClose();
+                        break;
+                    default:
+                        break;
+                }
+            }
+        };
+
+        window.addEventListener('keydown', handleQuickNav);
+        return () => window.removeEventListener('keydown', handleQuickNav);
+    }, [isOpen, navigate, onClose]);
 
     // Define all available commands
     const commands = [
+        {
+            id: 'virtual-terminal',
+            title: 'GitHub Terminal Explorer',
+            description: 'Browse GitHub repo and edit files with VS Code.dev integration',
+            icon: <ImTerminal />,
+            keywords: ['terminal', 'github', 'vscode', 'editor', 'filesystem'],
+            action: () => {
+                onOpenGithub();
+            }
+        },
         {
             id: 'background-vibe',
             title: 'Switch Vibe',
@@ -83,38 +239,6 @@ const CommandPalette = ({ isOpen, onClose, onOpenAscii, onOpenGithub, onOpenDevT
             }
         },
         {
-            id: 'go-home',
-            title: 'Go Home',
-            description: 'Navigate to homepage',
-            icon: <RiHome3Fill />,
-            keywords: ['home', 'main', 'index', 'landing'],
-            action: () => navigate('/')
-        },
-        {
-            id: 'go-about',
-            title: 'About Page',
-            description: 'Navigate to about page',
-            icon: <MdQuestionMark />,
-            keywords: ['about', 'profile', 'bio', 'info'],
-            action: () => navigate('/about')
-        },
-        {
-            id: 'go-projects',
-            title: 'View Projects',
-            description: 'Navigate to projects page',
-            icon: <MdTableRows />,
-            keywords: ['projects', 'work', 'portfolio', 'code'],
-            action: () => navigate('/projects')
-        },
-        {
-            id: 'go-posts',
-            title: 'Recent Posts',
-            description: 'Navigate to blog posts',
-            icon: <MdFiberNew />,
-            keywords: ['posts', 'blog', 'articles', 'logs'],
-            action: () => navigate('/blog')
-        },
-        {
             id: 'send-mail',
             title: 'Send Mail',
             description: 'Open terminal mail composer',
@@ -131,78 +255,31 @@ const CommandPalette = ({ isOpen, onClose, onOpenAscii, onOpenGithub, onOpenDevT
             }
         },
         {
-            id: 'konami-code',
-            title: 'Konami Code',
-            description: 'Activate secret sequence',
-            icon: <IoGameController />,
-            keywords: ['konami', 'cheat', 'code', 'secret', 'game'],
+            id: 'random-css-effect',
+            title: 'Activate a random CSS effect',
+            description: 'Triggers a random fun visual effect (Konami, Disco, or Matrix Rain)',
+            icon: <FaDice />,
+            keywords: ['random', 'effect', 'css', 'konami', 'disco', 'matrix', 'fun', 'rain',
+                'code', 'effect', 'green', 'party', 'colors', 'flash', 'dance', 'cheat',
+                'code', 'secret'],
             action: () => {
-                document.body.classList.add('konami-activated');
-                setTimeout(() => document.body.classList.remove('konami-activated'), 3000);
+                const random = effects[Math.floor(Math.random() * effects.length)];
+                random.action();
             }
         },
-        {
-            id: 'matrix-rain',
-            title: 'Matrix Rain',
-            description: 'Activate falling code rain effect',
-            icon: <LuBinary />,
-            keywords: ['matrix', 'rain', 'code', 'effect', 'green'],
-            action: () => {
-                createMatrixRain();
-            }
-        },
-        {
-            id: 'disco-mode',
-            title: 'Disco Mode',
-            description: 'Party time with flashing colors!',
-            icon: <LuPartyPopper />,
-            keywords: ['disco', 'party', 'colors', 'flash', 'dance'],
-            action: () => {
-                startDiscoMode();
-            }
-        },
-        {
-            id: 'dev-mode',
-            title: 'Developer Mode',
-            description: 'Show debug info and grid overlay',
-            icon: <FaDev />,
-            keywords: ['dev', 'debug', 'grid', 'developer', 'mode'],
-            action: () => {
-                onOpenDevTools();
-            }
-        },
-        {
-            id: 'virtual-terminal',
-            title: 'GitHub Terminal Explorer',
-            description: 'Browse GitHub repo and edit files with VS Code.dev integration',
-            icon: <ImTerminal />,
-            keywords: ['terminal', 'github', 'vscode', 'editor', 'filesystem'],
-            action: () => {
-                onOpenGithub();
-            }
-        },
-        {
-            id: '3d-ascii-art',
-            title: '3D ASCII Art Generator',
-            description: 'Convert text to stunning 3D ASCII art with animations',
-            icon: <ImTextColor />,
-            keywords: ['ascii', 'art', '3d', 'text', 'generator', 'animation'],
-            action: () => {
-                onOpenAscii();
-            }
-        }
     ];
 
     // Filter commands based on query
-    const filteredCommands = commands.filter(command => {
-        if (!query) return true;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const filteredCommands = query.trim() 
+    ? [...searchResults, ...commands.filter(command => {
         const searchTerms = query.toLowerCase().split(' ');
         return searchTerms.every(term =>
-            command.title.toLowerCase().includes(term) ||
-            command.description.toLowerCase().includes(term) ||
-            command.keywords.some(keyword => keyword.includes(term))
+          command.title.toLowerCase().includes(term) ||
+          command.description.toLowerCase().includes(term) ||
+          command.keywords?.some(keyword => keyword.includes(term))
         );
-    });
+      })] : commands;
 
     const startDiscoMode = () => {
         const disco = document.createElement('div');
@@ -404,16 +481,18 @@ const CommandPalette = ({ isOpen, onClose, onOpenAscii, onOpenGithub, onOpenDevT
                             setQuery(e.target.value);
                             setSelectedIndex(0);
                         }}
-                        placeholder="Type a command..."
+                        placeholder="Search commands, blogs, and projects, and more..."
                         className={styles.input}
                     />
                     <div className={styles.shortcut}>ESC</div>
                 </div>
 
+
+
                 <div className={styles.results} ref={resultsRef}>
                     {filteredCommands.length === 0 ? (
                         <div className={styles.noResults}>
-                            <div className={styles.noResultsIcon}>🔍</div>
+                            <div className={styles.noResultsIcon}><TbFaceIdError /></div>
                             <div className={styles.noResultsText}>No commands found</div>
                         </div>
                     ) : (
@@ -427,9 +506,29 @@ const CommandPalette = ({ isOpen, onClose, onOpenAscii, onOpenGithub, onOpenDevT
                                 }}
                             >
                                 <div className={styles.commandIcon}>{command.icon}</div>
+                                
                                 <div className={styles.commandContent}>
-                                    <div className={styles.commandTitle}>{command.title}</div>
+                                    <div className={styles.commandTitle}>
+                                        {command.title}
+                                        {command.type && (
+                      <span className={styles.commandType}>
+                        {command.type === 'blog' ? ' • Blog' : ' • Project'}
+                      </span>
+                    )}
+                    {command.date && (
+                      <span className={styles.commandDate}>
+                        {' • ' + new Date(command.date).toLocaleDateString()}
+                      </span>
+                    )}
+                                        </div>
                                     <div className={styles.commandDescription}>{command.description}</div>
+                                    {command.tags && command.tags.length > 0 && (
+                    <div className={styles.commandTags}>
+                      {command.tags.slice(0, 3).map(tag => (
+                        <span key={tag} className={styles.tag}>{tag}</span>
+                      ))}
+                    </div>
+                  )}
                                 </div>
                                 {index === selectedIndex && (
                                     <div className={styles.enterHint}>⏎</div>
@@ -444,6 +543,10 @@ const CommandPalette = ({ isOpen, onClose, onOpenAscii, onOpenGithub, onOpenDevT
                         <span><kbd>↑</kbd><kbd>↓</kbd> Navigate</span>
                         <span><kbd>⏎</kbd> Execute</span>
                         <span><kbd>ESC</kbd> Close</span>
+                        <span><kbd>Alt+1</kbd> Home</span>
+                        <span><kbd>Alt+2</kbd> About Moi</span>
+                        <span><kbd>Alt+3</kbd> Blog</span>
+                        <span><kbd>Alt+4</kbd> Projects</span>
                     </div>
                 </div>
             </div>

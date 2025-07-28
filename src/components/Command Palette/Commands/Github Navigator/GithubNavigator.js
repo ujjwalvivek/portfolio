@@ -1,7 +1,11 @@
 import { useState, useEffect, useRef } from 'react';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { tomorrow } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import { duotoneForest } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import styles from './GithubNavigator.module.css';
+import { FaGithub } from "react-icons/fa";
+import { MdExitToApp, MdContentCopy } from "react-icons/md";
+import { RiSidebarUnfoldLine } from "react-icons/ri";
+import { VscVscode } from "react-icons/vsc";
 
 const GithubNavigator = ({ isOpen, onClose }) => {
   // GitHub API configuration
@@ -16,6 +20,8 @@ const GithubNavigator = ({ isOpen, onClose }) => {
   const [inputValue, setInputValue] = useState('');
   const [isVSCodeOpen, setIsVSCodeOpen] = useState(false);
   const [vsCodeContent, setVsCodeContent] = useState(null);
+  const [copied, setCopied] = useState(false);
+
 
   // Refs
   const inputRef = useRef(null);
@@ -54,23 +60,115 @@ const GithubNavigator = ({ isOpen, onClose }) => {
     }
   };
 
+  // Initialize with GitHub neofetch display
+useEffect(() => {
+  if (isOpen) {
+    generateGitHubFetch();
+  }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+}, [isOpen]);
+
+// Add this new function before your existing functions
+const generateGitHubFetch = async () => {
+  setOutput('Loading GitHub stats...\n');
+  
+  try {
+    // Fetch repository info
+    const repoResponse = await fetch(`https://api.github.com/repos/${GITHUB_REPO}`);
+    const repoData = await repoResponse.json();
+    
+    // Fetch user info
+    const userResponse = await fetch(`https://api.github.com/users/${repoData.owner.login}`);
+    const userData = await userResponse.json();
+    
+    // Fetch recent commits
+    const commitsResponse = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/commits?per_page=5`);
+    const commitsData = await commitsResponse.json();
+    
+    // Fetch languages
+    const languagesResponse = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/languages`);
+    const languagesData = await languagesResponse.json();
+    
+    const githubFetch = generateGitHubFetchDisplay(repoData, userData, commitsData, languagesData);
+    setOutput(githubFetch);
+  } catch (error) {
+    setOutput(`❌ Failed to load GitHub stats: ${error.message}\n\nType 'help' for available commands.\n`);
+  }
+};
+
+const generateGitHubFetchDisplay = (repo, user, commits, languages) => {
+  // Calculate language percentages
+  const totalBytes = Object.values(languages).reduce((a, b) => a + b, 0);
+  const topLanguages = Object.entries(languages)
+    .sort(([,a], [,b]) => b - a)
+    .slice(0, 3)
+    .map(([lang, bytes]) => ({
+      name: lang,
+      percentage: ((bytes / totalBytes) * 100).toFixed(1)
+    }));
+
+  // Cyberpunk Style Design
+  const asciiStats = `
+▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄
+█▌ GITHUB TERMINAL v3.0 ▐█ ${user.login}@github.com ████████████████
+▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
+
+▌▌▌ ${repo.name.toUpperCase()}.${repo.default_branch} ███████████████████████████████████████████████
+▌▌▌ ${(repo.description || 'No description').substring(0, 60)}
+▌▌▌ Stars:${repo.stargazers_count.toString().padEnd(4)} Forks:${repo.forks_count.toString().padEnd(4)} Issues:${repo.open_issues_count.toString().padEnd(4)} Size:${((repo.size/1024).toFixed(1)+'MB').padEnd(8)}
+▌▌▌ Created: ${new Date(repo.created_at).toLocaleDateString().padEnd(12)}
+
+▸▸▸ USER DATA ◂◂◂◂◂◂◂◂◂◂◂◂◂◂◂◂◂◂◂◂◂◂◂◂◂◂◂◂◂◂◂◂◂◂◂◂◂◂◂◂◂◂◂◂◂◂◂
+▸▸▸ Repositories: ${user.public_repos} • Followers: ${user.followers} • Following: ${user.following}
+
+▸▸▸ COMMIT LOG ◂◂◂◂◂◂◂◂◂◂◂◂◂◂◂◂◂◂◂◂◂◂◂◂◂◂◂◂◂◂◂◂◂◂◂◂◂◂◂◂◂◂◂◂◂◂
+▸▸▸ ${commits.slice(0, 5).map(commit => `● ${commit.commit.message.split('\n')[0]}`).join('\n▸▸▸ ')}
+▸▸▸ ◦ Latest by ${commits[0]?.commit?.author?.name} on ${new Date(commits[0]?.commit?.author?.date).toLocaleDateString()}
+
+▸▸▸ STACK ANALYSIS ◂◂◂◂◂◂◂◂◂◂◂◂◂◂◂◂◂◂◂◂◂◂◂◂◂◂◂◂◂◂◂◂◂◂◂◂◂◂◂◂◂◂◂
+${topLanguages.map(lang => `▸▸▸ [${lang.percentage.padStart(5)}%] ${getLanguageIcon(lang.name)} ${lang.name}`).join('\n')}
+
+◄◄◄ READY FOR INPUT ► help | ls | tree | find | cat <file> ►►►►►►►►►►►►►►
+  `;
+
+  return asciiStats;
+};
+
+// Helper function for language icons
+const getLanguageIcon = (language) => {
+  const icons = {
+    'JavaScript': '🟨',
+    'TypeScript': '🔷',
+    'Python': '🐍',
+    'Java': '☕',
+    'C++': '⚙️',
+    'C': '🔧',
+    'HTML': '🌐',
+    'CSS': '🎨',
+    'PHP': '🐘',
+    'Ruby': '💎',
+    'Go': '🐹',
+    'Rust': '🦀',
+    'Swift': '🍎',
+    'Kotlin': '🎯',
+    'Dart': '🎯',
+    'Shell': '🐚',
+    'Dockerfile': '🐳',
+    'JSON': '📋',
+    'YAML': '📄',
+    'Markdown': '📝'
+  };
+  return icons[language] || '📄';
+};
+
+
   // VS Code content component
   const VSCodeViewer = ({ fileName, filePath, content, language, lineCount, onClose }) => (
     <div className={styles.vsCodeViewer}>
       <div className={styles.vsCodeHeader}>
-        <div className={styles.vsCodeHeaderLeft}>
-          <span className={styles.vsCodeIcon}>📝</span>
-          <span className={styles.vsCodeFileName}>{fileName}</span>
-          <span className={styles.vsCodeFileInfo}>
-            {language.toUpperCase()} • {lineCount} lines • Read-Only
-          </span>
-        </div>
         <div className={styles.vsCodeActions}>
-          <button 
-            className={styles.vsCodeCopyBtn}
-            onClick={() => navigator.clipboard.writeText(content)}
-          >
-            📋 Copy
+          <button className={styles.vsCodeCloseBtn} onClick={onClose}>
+            <RiSidebarUnfoldLine />
           </button>
           <a 
             href={`https://vscode.dev/github/${GITHUB_REPO}/${filePath}`}
@@ -78,35 +176,42 @@ const GithubNavigator = ({ isOpen, onClose }) => {
             rel="noopener noreferrer"
             className={styles.vsCodeEditBtn}
           >
-            ✨ Edit in VS Code.dev
+            <VscVscode />
           </a>
-          <button className={styles.vsCodeCloseBtn} onClick={onClose}>
-            ✕
+          <button 
+            className={styles.vsCodeCopyBtn}
+            onClick={() => navigator.clipboard.writeText(content)}
+          >
+            <MdContentCopy />
           </button>
+        </div>
+        <div className={styles.vsCodeHeaderLeft}>
+          <span className={styles.vsCodeFileInfo}>
+            <span className={styles.vsCodeFileName}>{'<'}{fileName}{'/>'}</span> • {language.toUpperCase()} • {lineCount} lines • Read-Only
+          </span>
         </div>
       </div>
       <div className={styles.vsCodeContent}>
         <SyntaxHighlighter
           language={language}
-          style={tomorrow}
+          style={duotoneForest}
           showLineNumbers={true}
           customStyle={{
             margin: 0,
-            padding: '16px',
-            background: '#0d1117',
-            fontSize: '13px',
-            fontFamily: "'SF Mono', 'Monaco', 'Consolas', monospace"
+            background: 'rgba(var(--background-color-rgb), 0)',
+            fontSize: '0.9rem',
+            fontFamily: 'var(--font-mono)'
           }}
           lineNumberStyle={{
             color: '#7d8590',
-            backgroundColor: '#161b22',
             paddingRight: '16px',
             marginRight: '16px',
-            borderRight: '1px solid #30363d'
           }}
           codeTagProps={{
             style: {
-              fontFamily: "'SF Mono', 'Monaco', 'Consolas', monospace"
+              fontFamily: 'var(--font-mono)',
+              lineHeight: '2',
+              fontSize: '0.9rem',
             }
           }}
         >
@@ -340,29 +445,36 @@ const GithubNavigator = ({ isOpen, onClose }) => {
       return `🔍 Found ${results.length} matches:\n\n${results.join('\n')}`;
     },
 
-    help: () => `🚀 GitHub Terminal Explorer Commands:
-
-📁 Navigation:
-  ls [path]         - List directory contents
-  cd <dir>          - Change directory
-  cd ..             - Go up one directory
-  pwd               - Show current path
-  tree [depth]      - Show directory tree
-
-📄 File Operations:
-  cat <file>        - Display file contents
-  code <file>       - Open file in VS Code.dev
-  find <name>       - Search for files
-
-ℹ️  Information:
-  help              - Show this help
-  clear             - Clear terminal
-  exit              - Close terminal
-
-🎯 Examples:
-  ls src            - List src directory
-  code README.md    - Edit README in VS Code
-  find .js          - Find all .js files`,
+    help: () => `
++------------------------------------------------+
+|           GitHub Terminal Helper               |
+|------------------------------------------------|
+| NAVIGATION                                     |
+|   ls [path]    List directory contents         |
+|   cd [dir]     Change directory                |
+|   cd ..        Go up one directory             |
+|   pwd          Show current path               |
+|   tree [n]     Show directory tree             |
+|                                                |
+| FILE OPERATIONS                                |
+|   cat [file]   Display file contents           |
+|   code [file]  Open file in VS Code.dev        |
+|   find [name]  Search for files                |
+|                                                |
+| INFORMATION                                    |
+|   help        Show this help                   |
+|   clear       Clear terminal                   |
+|   exit        Close terminal                   |
+|                                                |
+| EXAMPLES                                       |
+|   ls src         List src directory            |
+|   code README.md  Edit README in VS Code       |
+|   find .js        Find all .js files           |
+|                                                |
+| NOTE: Use double quotes for names with spaces. |
+|   e.g. cat "My File.md"                        |
++------------------------------------------------+
+`,
 
     clear: () => {
       setOutput('');
@@ -381,12 +493,42 @@ const GithubNavigator = ({ isOpen, onClose }) => {
     setCommandHistory(newHistory);
     setHistoryIndex(newHistory.length);
 
-    const [cmd, ...args] = cmdLine.trim().split(' ');
+    const parseCommand = (cmdLine) => {
+      const args = [];
+      let current = '';
+      let inQuotes = false;
+      let quoteChar = '';
+
+      for (let i = 0; i < cmdLine.length; i++) {
+        const char = cmdLine[i];
+
+        if ((char === '"' || char === "'") && !inQuotes) {
+          inQuotes = true;
+          quoteChar = char;
+        } else if (char === quoteChar && inQuotes) {
+          inQuotes = false;
+          quoteChar = '';
+        } else if (char === ' ' && !inQuotes) {
+          if (current) {
+            args.push(current);
+            current = '';
+          }
+        } else {
+          current += char;
+        }
+      }
+
+      if (current) args.push(current);
+      return args;
+    };
+
+    const args = parseCommand(cmdLine.trim());
+    const [cmd, ...commandArgs] = args;
     const command = commands[cmd];
 
     if (command) {
       try {
-        const result = await command(args);
+        const result = await command(commandArgs);
         if (result) {
           addOutput(result);
         }
@@ -445,18 +587,18 @@ const GithubNavigator = ({ isOpen, onClose }) => {
     }
   }, [isOpen]);
 
-  // Initialize with welcome message
-  useEffect(() => {
-    if (isOpen) {
-      setOutput(`🐙 GitHub Terminal Explorer v3.0
-Connected to: ${GITHUB_REPO}
-Repository loaded successfully!
+//   // Initialize with welcome message
+//   useEffect(() => {
+//     if (isOpen) {
+//       setOutput(`🐙 GitHub Terminal Explorer v3.0
+// Connected to: ${GITHUB_REPO}
+// Repository loaded successfully!
 
-Type 'help' for available commands or 'ls' to explore.
+// Type 'help' for available commands or 'ls' to explore.
 
-`);
-    }
-  }, [isOpen]);
+// `);
+//     }
+//   }, [isOpen]);
 
   if (!isOpen) return null;
 
@@ -464,22 +606,38 @@ Type 'help' for available commands or 'ls' to explore.
     <div className={styles.container}>
       <div className={styles.header}>
         <div className={styles.headerLeft}>
-          <span className={styles.octopus}>🐙</span>
-          <span className={styles.title}>GitHub Terminal Explorer</span>
-          <span className={styles.status}>CONNECTED</span>
-          <span className={styles.path}>/{GITHUB_REPO}/{currentPath}</span>
+          <span className={styles.octopus}><FaGithub /></span>
+          <span className={styles.title}>Repository Navigator</span>
+          <span
+            className={styles.path}
+            onClick={() => {
+              navigator.clipboard.writeText(`https://github.com/${GITHUB_REPO}/${currentPath}`);
+              setCopied(true);
+              setTimeout(() => setCopied(false), 800);
+            }}
+          >
+            <span style={{ opacity: copied ? 0 : 1, position: 'absolute' }}>
+              {`https://github.com/${GITHUB_REPO}/${currentPath}`}
+            </span>
+            <span style={{ opacity: copied ? 1 : 0, position: 'absolute' }}>
+              Copied to clipboard!
+            </span>
+            <span style={{ visibility: 'hidden' }}>
+              {`https://github.com/${GITHUB_REPO}/${currentPath}`}
+            </span>
+          </span>
         </div>
-        <button className={styles.closeButton} onClick={onClose}>
-          ✕ EXIT
-        </button>
+        <div className={styles.closeButton} onClick={onClose} title="Close Terminal">
+          <MdExitToApp />
+        </div>
       </div>
 
       <div className={styles.mainContainer}>
-        <div 
+        <div
           className={styles.terminalSection}
           style={{ width: isVSCodeOpen ? '50%' : '100%' }}
         >
-          <div 
+          <div
             className={styles.output}
             ref={outputRef}
             dangerouslySetInnerHTML={{ __html: output }}
@@ -504,7 +662,9 @@ Type 'help' for available commands or 'ls' to explore.
               placeholder="Enter command..."
             />
           </div>
+        <span className={styles.status}>CONNECTED</span>
         </div>
+
 
         {isVSCodeOpen && vsCodeContent && (
           <VSCodeViewer

@@ -4,64 +4,68 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: #0d1117;
-  color: #58a6ff;
-  font-family: 'SF Mono', 'Monaco', 'Consolas', monospace;
-  font-size: 14px;
+  max-height: 100vh;
+  background: #111;
+  color: rgb(29, 209, 161);
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
   z-index: 99999;
   display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-
-.header {
-  background: linear-gradient(135deg, #21262d 0%, #30363d 100%);
-  color: #f0f6fc;
-  padding: 12px 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid #30363d;
-}
-
-.headerLeft {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.octopus {
-  font-size: 18px;
-}
-
-.title {
-  font-weight: 600;
-}
-
-.status {
-  background: #238636;
+    flex-direction: column;
+    overflow: visible;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .header {
+    background: #181818;
+    color: #f0f6fc;
+    padding: 0 1rem;
+    min-height: 38px;
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #222;
+    position: relative;
+  }
+  
+  .headerLeft {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    line-height: 0.5rem;
+  }
+  
+  .octopus {
+    font-size: 1.5rem;
+  }
+  
+  .title {
+    font-weight: 400;
+  }
+  
+  .status {
+  background: rgb(16, 172, 132);
   color: white;
-  padding: 4px 8px;
-  border-radius: 12px;
-  font-size: 11px;
-  font-weight: 600;
+  padding: 0.3rem 1rem;
+  font-size: 0.7rem;
+  font-weight: 700;
 }
 
 .path {
-  color: #7d8590;
-  font-size: 12px;
+  color: var(--primary-color);
+  font-size: 0.75rem;
+  padding: 0.35rem 0.7rem;
+  border: 1px dashed rgba(var(--primary-color-rgb), 0.3);
 }
 
 .closeButton {
-  background: #da3633;
   color: white;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 6px;
   cursor: pointer;
-  font-weight: 600;
-  font-size: 12px;
+  font-size: 1.5rem;
   transition: background-color 0.2s ease;
+  line-height: 0.5rem;
 }
 
 .closeButton:hover {
@@ -71,11 +75,15 @@
 .mainContainer {
   flex: 1;
   display: flex;
-  height: calc(100vh - 60px);
+  overflow: visible;
+  min-height: 0;
+  justify-content: space-between;
+  gap: 0;
 }
 
 .terminalSection {
   display: flex;
+  flex:1;
   flex-direction: column;
   transition: width 0.3s ease;
 }
@@ -87,7 +95,6 @@
   white-space: pre-wrap;
   line-height: 1.4;
   font-family: inherit;
-  background: #0d1117;
 }
 
 .output::-webkit-scrollbar {
@@ -100,7 +107,6 @@
 
 .output::-webkit-scrollbar-thumb {
   background: #30363d;
-  border-radius: 4px;
 }
 
 .output::-webkit-scrollbar-thumb:hover {
@@ -111,27 +117,27 @@
   display: flex;
   align-items: center;
   padding: 16px 20px;
-  background: #161b22;
-  border-top: 1px solid #30363d;
+  background: #181818;
+  border-top: 1px solid #222;
 }
 
 .prompt {
   display: flex;
   align-items: center;
-  margin-right: 8px;
-  font-weight: 500;
+  margin-right: 0.5rem;
+  font-weight: 400;
 }
 
 .promptUser {
-  color: #39d353;
+  color: rgb(29, 209, 161);
 }
 
 .promptSeparator {
-  color: #f78166;
+  color: rgb(131, 149, 167);
 }
 
 .promptHost {
-  color: #58a6ff;
+  color: rgb(255, 107, 107);
 }
 
 .promptColon {
@@ -164,30 +170,29 @@
 
 /* VS Code Viewer Styles */
 .vsCodeViewer {
-  width: 50%;
-  background: #1f2428;
+  width: 40%;
   border-left: 1px solid #30363d;
   display: flex;
   flex-direction: column;
 }
 
 .vsCodeHeader {
-  background: #2d333b;
-  padding: 12px;
-  border-bottom: 1px solid #30363d;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+    background: #181818;
+    color: #f0f6fc;
+    padding: 0 1rem;
+    min-height: 38px;
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #222;
+    position: relative;
 }
 
 .vsCodeHeaderLeft {
   display: flex;
   align-items: center;
-  gap: 8px;
-}
-
-.vsCodeIcon {
-  font-size: 16px;
+  gap: 0.7rem;
 }
 
 .vsCodeFileName {
@@ -202,54 +207,57 @@
 
 .vsCodeActions {
   display: flex;
-  gap: 8px;
+  gap: 0.7rem;
 }
 
 .vsCodeCopyBtn,
 .vsCodeEditBtn,
 .vsCodeCloseBtn {
-  border: none;
-  padding: 4px 8px;
-  border-radius: 4px;
+  border: 1px dashed rgba(var(--primary-color-rgb), 0.3);
   cursor: pointer;
-  font-size: 11px;
+  font-size: 1.15rem;
   text-decoration: none;
   display: inline-flex;
   align-items: center;
-  transition: background-color 0.2s ease;
+  padding: 0.2rem;
+  background: none;
 }
 
 .vsCodeCopyBtn {
-  background: #6f42c1;
-  color: white;
+  color: var(--primary-color);
 }
 
 .vsCodeCopyBtn:hover {
   background: #8b5cf6;
+  color: white;
+}
+
+.vsCodeCopyBtn:active {
+  background: rgb(29, 209, 161);
+  color: white;
 }
 
 .vsCodeEditBtn {
-  background: #0066cc;
-  color: white;
+  color: var(--primary-color);
 }
 
 .vsCodeEditBtn:hover {
   background: #2188ff;
+  color: white;
 }
 
 .vsCodeCloseBtn {
-  background: #da3633;
-  color: white;
+  color: var(--primary-color);
 }
 
 .vsCodeCloseBtn:hover {
   background: #f85149;
+  color: white;
 }
 
 .vsCodeContent {
   flex: 1;
   overflow: auto;
-  background: #0d1117;
 }
 
 .vsCodeContent::-webkit-scrollbar {
@@ -262,7 +270,6 @@
 
 .vsCodeContent::-webkit-scrollbar-thumb {
   background: #30363d;
-  border-radius: 4px;
 }
 
 .vsCodeContent::-webkit-scrollbar-thumb:hover {
@@ -336,4 +343,10 @@
   -moz-user-select: text;
   -ms-user-select: text;
   user-select: text;
+}
+
+.fetchIcon {
+  color: var(--primary-color);
+  font-size: 0.8rem;
+  margin: 0 1rem;
 }

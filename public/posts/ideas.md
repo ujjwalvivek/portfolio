@@ -1,13 +1,10 @@
 ## 📅 v1.3 Target Changelog (WIP)
 
-
-* [o] Project sorting and search 'grep' functionality - via commandpalette.
-* [ ] **Add The Reckoning Entry to Projects and Blog.**
+* [ ] **Add The Reckoning, UltraTech Entry to Projects and Blog.**
+* [ ] Shortcuts Overlay
 
 #### Optional
-* [o] Terminal command palette - Ctrl+K style navigation across your whole site (optional)
-<!-- TODO: Commit first -->
-<!-- TODO: forEach(Commands).styles -->
+
 #### Future Plans
 
 * [ ] shift procedural computing to webGPU
@@ -32,3 +29,7 @@
 * [x] Hardware Capability Probe - Low end devices have procedural animations set to "Static".
 * [x] Contact form as terminal input on Homepage
          `Make it feel like sending a message through a shell (how to embed subject and body in mailto?)`
+* [x] Project sorting (opinionated) and search functionality - via commandpalette.
+* [x] Terminal command palette - Ctrl+K style navigation across your whole site (optional)
+
+
