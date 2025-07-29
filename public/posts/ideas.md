@@ -2,6 +2,7 @@
 
 * [ ] **Add The Reckoning, UltraTech Entry to Projects and Blog.**
 * [ ] Editable customised shortcut keys.
+* [ ] Bundle some cool npm packages
 
 #### Optional
 
