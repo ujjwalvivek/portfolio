@@ -1151,7 +1151,7 @@ Alright, that covers the entire codebase, from graphics to input to those hidden
 
 I’ve laid bare every skeleton in the closet. If you’ve read this far, **please** fork the repo and send a PR if you see anything amiss or have ideas. Issues and contributions live on GitHub, and trust me, every little fix or suggestion is welcome.
 
-Looking back, I never imagined getting from [log_0000 Boot Sequence](http://ujjwalvivek.com/blog/log_0000_boot_sequence.md) to here so quickly. Each post has been an improvisation jam session, and now you can jam with me.
+Looking back, I never imagined getting from [log_0000 Boot Sequence](https://ujjwalvivek.com/blog/log_0000_boot_sequence.md) to here so quickly. Each post has been an improvisation jam session, and now you can jam with me.
 
 :::warning
 If you’ve made it this far
