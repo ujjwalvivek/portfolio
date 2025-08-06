@@ -46,7 +46,13 @@ const GithubNavigator = ({ isOpen, onClose }) => {
   const fetchGitHubContent = async (path = '') => {
     try {
       const url = path ? `${GITHUB_API}/${path}` : GITHUB_API;
-      const response = await fetch(url);
+      const response = await fetch(url, {
+  headers: {
+    'Accept': 'application/vnd.github+json',
+    'User-Agent': 'ujjwalvivek-portfolio',
+    'X-GitHub-Api-Version': '2022-11-28'
+  }
+});
 
       if (!response.ok) {
         throw new Error(`GitHub API error: ${response.status}`);
@@ -74,25 +80,64 @@ const generateGitHubFetch = async () => {
   
   try {
     // Fetch repository info
-    const repoResponse = await fetch(`https://api.github.com/repos/${GITHUB_REPO}`);
+    const repoResponse = await fetch(`https://api.github.com/repos/${GITHUB_REPO}`, {
+  headers: {
+    'Accept': 'application/vnd.github+json',
+    'User-Agent': 'ujjwalvivek-portfolio',
+    'X-GitHub-Api-Version': '2022-11-28'
+  }
+});
     const repoData = await repoResponse.json();
     
     // Fetch user info
-    const userResponse = await fetch(`https://api.github.com/users/${repoData.owner.login}`);
+    const userResponse = await fetch(`https://api.github.com/users/${repoData.owner.login}`, {
+  headers: {
+    'Accept': 'application/vnd.github+json',
+    'User-Agent': 'ujjwalvivek-portfolio',
+    'X-GitHub-Api-Version': '2022-11-28'
+  }
+});
     const userData = await userResponse.json();
     
     // Fetch recent commits
-    const commitsResponse = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/commits?per_page=5`);
+    const commitsResponse = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/commits?per_page=5`, {
+  headers: {
+    'Accept': 'application/vnd.github+json',
+    'User-Agent': 'ujjwalvivek-portfolio',
+    'X-GitHub-Api-Version': '2022-11-28'
+  }
+});
     const commitsData = await commitsResponse.json();
     
     // Fetch languages
-    const languagesResponse = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/languages`);
+    const languagesResponse = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/languages`, {
+  headers: {
+    'Accept': 'application/vnd.github+json',
+    'User-Agent': 'ujjwalvivek-portfolio',
+    'X-GitHub-Api-Version': '2022-11-28'
+  }
+});
     const languagesData = await languagesResponse.json();
     
     const githubFetch = generateGitHubFetchDisplay(repoData, userData, commitsData, languagesData);
     setOutput(githubFetch);
   } catch (error) {
-    setOutput(`❌ Failed to load GitHub stats: ${error.message}\n\nType 'help' for available commands.\n`);
+
+    const fallbackDisplay = `
+🚧 GitHub API Unavailable - ${error.message} - Showing Basic Info
+
+▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄
+█▌ GITHUB TERMINAL v1.0 ▐█ ujjwalvivek@github.com ████████████████
+▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
+
+▌▌▌ PORTFOLIO.main ███████████████████████████████████████████████
+▌▌▌ Repository: ujjwalvivek/portfolio
+▌▌▌ Status: GitHub API temporarily unavailable
+
+◄◄◄ LIMITED MODE ► help | ls | tree | find | cat ►►►►►►►►►►►►►►
+
+`;
+    setOutput(fallbackDisplay);
   }
 };
 

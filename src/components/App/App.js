@@ -18,12 +18,16 @@ import { useCommandPalette } from '../Command Palette/useCommandPalette';
 import GithubNavigator from '../Command Palette/Commands/Github Navigator/GithubNavigator';
 import Shortcuts from '../Command Palette/Commands/Shortcuts/Shortcuts';
 import CommandHint from '../Command Palette/Tip/CommandHint';
+import { usePageAnalytics } from '../../hooks/useAnalytics';
 
 function AppContent() {
   const { backgroundConfig } = useBackground();
   const [showShortcuts, setShowShortcuts] = useState(false);
   const { isOpen, setIsOpen } = useCommandPalette(setShowShortcuts);
   const [isGithubOpen, setIsGithubOpen] = useState(false);
+
+  // Track page views for analytics
+  usePageAnalytics();
 
   return (
     <div

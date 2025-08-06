@@ -1,0 +1,314 @@
+/* Analytics Dashboard Styles */
+.container {
+  min-height: 100vh;
+  background: var(--background-color);
+  color: var(--text-color);
+  font-family: var(--font-mono);
+  padding: 2rem;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid rgba(var(--primary-color-rgb), 0.3);
+  padding-bottom: 1rem;
+}
+
+.header h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+  color: var(--primary-color);
+}
+
+.timeRangeSelector {
+  display: flex;
+  gap: 0.5rem;
+  background: rgba(var(--background-color-rgb), 0.5);
+  border: 1px solid rgba(var(--text-color-rgb), 0.2);
+  border-radius: 4px;
+  padding: 0.25rem;
+}
+
+.timeRangeSelector button {
+  background: transparent;
+  border: none;
+  color: var(--text-color);
+  padding: 0.5rem 1rem;
+  border-radius: 2px;
+  font-family: var(--font-mono);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.timeRangeSelector button:hover {
+  background: rgba(var(--primary-color-rgb), 0.2);
+}
+
+.timeRangeSelector button.active {
+  background: var(--primary-color);
+  color: var(--background-color);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.metricCard {
+  background: rgba(var(--background-color-rgb), 0.8);
+  border: 1px solid rgba(var(--text-color-rgb), 0.1);
+  border-radius: 8px;
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  backdrop-filter: blur(10px);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.metricCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(var(--primary-color-rgb), 0.1);
+}
+
+.metricIcon {
+  font-size: 2rem;
+  opacity: 0.8;
+}
+
+.metricContent h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 0.9rem;
+  font-weight: 500;
+  opacity: 0.7;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.metricValue {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+  color: var(--primary-color);
+}
+
+.metricChange {
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.metricChange.positive {
+  color: #00d2ff;
+}
+
+.metricChange.negative {
+  color: #ff6b6b;
+}
+
+.chartContainer {
+  grid-column: span 2;
+  background: rgba(var(--background-color-rgb), 0.8);
+  border: 1px solid rgba(var(--text-color-rgb), 0.1);
+  border-radius: 8px;
+  padding: 1.5rem;
+  backdrop-filter: blur(10px);
+}
+
+.chartContainer h3 {
+  margin: 0 0 1rem 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-color);
+  border-bottom: 1px solid rgba(var(--text-color-rgb), 0.1);
+  padding-bottom: 0.5rem;
+}
+
+.topPagesList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.topPageItem {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem;
+  background: rgba(var(--background-color-rgb), 0.3);
+  border-radius: 4px;
+  border: 1px solid rgba(var(--text-color-rgb), 0.05);
+}
+
+.rank {
+  font-weight: 700;
+  color: var(--primary-color);
+  min-width: 2rem;
+  text-align: center;
+}
+
+.pageInfo {
+  flex: 1;
+}
+
+.pagePath {
+  font-weight: 600;
+  color: var(--text-color);
+  font-size: 0.9rem;
+}
+
+.pageTitle {
+  font-size: 0.8rem;
+  opacity: 0.6;
+  margin-top: 0.2rem;
+}
+
+.pageViews {
+  font-weight: 600;
+  color: var(--primary-color);
+  font-size: 0.9rem;
+}
+
+.blogPerformance {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.blogPost {
+  padding: 1rem;
+  background: rgba(var(--background-color-rgb), 0.3);
+  border-radius: 4px;
+  border: 1px solid rgba(var(--text-color-rgb), 0.05);
+}
+
+.blogPost h4 {
+  margin: 0 0 0.75rem 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+.blogMetrics {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  font-size: 0.8rem;
+  opacity: 0.8;
+}
+
+.blogMetrics span {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.trafficSources {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.sourceItem {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.sourceName {
+  min-width: 6rem;
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.sourceBar {
+  flex: 1;
+  height: 0.5rem;
+  background: rgba(var(--text-color-rgb), 0.1);
+  border-radius: 0.25rem;
+  overflow: hidden;
+}
+
+.sourceBarFill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary-color), #00d2ff);
+  transition: width 0.5s ease;
+}
+
+.sourcePercentage {
+  min-width: 3rem;
+  text-align: right;
+  font-weight: 600;
+  font-size: 0.8rem;
+  color: var(--primary-color);
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50vh;
+  font-size: 1.2rem;
+  opacity: 0.7;
+}
+
+.error {
+  color: #ff6b6b;
+  text-align: center;
+  padding: 2rem;
+  font-size: 1.1rem;
+}
+
+.retryButton {
+  background: var(--primary-color);
+  color: var(--background-color);
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  margin: 1rem auto;
+  display: block;
+}
+
+.retryButton:hover {
+  opacity: 0.8;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem;
+  }
+  
+  .header {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: stretch;
+  }
+  
+  .grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .chartContainer {
+    grid-column: span 1;
+  }
+  
+  .metricCard {
+    padding: 1rem;
+  }
+  
+  .metricValue {
+    font-size: 1.5rem;
+  }
+  
+  .blogMetrics {
+    gap: 0.5rem;
+  }
+}

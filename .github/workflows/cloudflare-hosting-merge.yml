@@ -38,11 +38,26 @@ jobs:
       - name: Build project NOW
         run: npm run build
 
-      - name: Deploy to Cloudflare Pages
+      - name: Build analytics dashboard
+        run: |
+          cd analytics-dashboard
+          npm ci
+          npm run build
+
+      - name: Deploy main site to Cloudflare Pages
         uses: cloudflare/pages-action@v1
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           projectName: portfolio
           directory: build
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Deploy analytics dashboard to Cloudflare Pages
+        uses: cloudflare/pages-action@v1
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          projectName: analytics-dashboard
+          directory: analytics-dashboard/build
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}

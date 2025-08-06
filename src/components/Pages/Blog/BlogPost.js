@@ -20,6 +20,7 @@ import { IoIosWarning } from "react-icons/io";
 import { BsFillPencilFill, BsFillInfoSquareFill } from "react-icons/bs";
 import { MdDangerous } from "react-icons/md";
 import { AiTwotoneStar } from "react-icons/ai";
+import { useBlogAnalytics } from '../../../hooks/useAnalytics';
 
 // Simple reading time calculation function
 const calculateReadingTime = (text) => {
@@ -140,6 +141,8 @@ const BlogPost = () => {
   const [lightboxImage, setLightboxImage] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const blogPostRef = useRef(null);
+  const { trackLike, trackShare } = useBlogAnalytics(post.data.id || filename, post.data.title);
+
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -267,6 +270,10 @@ const BlogPost = () => {
               one line at a time.
             </p>
           </div>
+          <div className={styles.blogActions}>
+  <button onClick={trackLike}>👍 Like</button>
+  <button onClick={trackShare}>🔗 Share</button>
+</div>
           <br />
           <RelatedPosts posts={relatedPosts} />
         </div>

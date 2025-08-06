@@ -1,18 +1,19 @@
 ## 📅 v1.4 Target Changelog (WIP)
 
-* [ ] **Add The Reckoning, UltraTech Entry to Projects and Blog.**
+#### Ongoing
+* [x] Custom made Analytics software, with a focus on privacy and performance. `Architecture planned, implementation ready`
+* [ ] update look and feel with some advanced css features.
+* [ ] Revisit UX of the website.
+
+#### Optional
 * [ ] Editable customised shortcut keys.
 * [ ] Bundle some cool npm packages
 
-#### Optional
-
 #### Future Plans
-
-* [ ] shift procedural computing to webGPU
-      `keep the generators intact and only shift computing? makes sense?`
+* [ ] **Add The Reckoning, UltraTech Entry to Projects and Blog.**
+* [ ] shift procedural computing to webGPU `keep the generators intact and only shift computing? makes sense?`
 
 #### Done
-
 * [x] Add `prefers-reduced-motion` support, A11y violation.
 * [x] Cap FPS of background to 30/48
 * [x] Background toggle on header should have a better UX and visibility.
