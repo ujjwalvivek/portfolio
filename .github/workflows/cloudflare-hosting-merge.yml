@@ -22,6 +22,7 @@ jobs:
         with:
           node-version: '18'
           cache: 'npm'
+          cache-dependency-path: 'package-lock.json'
 
       - name: Installing dependencies
         run: npm ci
@@ -41,7 +42,7 @@ jobs:
       - name: Build analytics dashboard
         run: |
           cd analytics-dashboard
-          npm ci
+          npm install --prefer-offline
           npm run build
 
       - name: Deploy main site to Cloudflare Pages
