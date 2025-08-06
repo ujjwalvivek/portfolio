@@ -7,23 +7,50 @@ function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
-    // Simple authentication check
-    if (apiKey && apiKey.length > 10) {
-      setIsAuthenticated(true);
+    // Test stored API key by making a quick API call
+    if (apiKey) {
+      fetch('https://analytics.ujjwalvivek.com/api?range=1d', {
+        headers: {
+          'Authorization': `Bearer ${apiKey}`,
+        },
+      })
+      .then(response => {
+        if (response.ok) {
+          setIsAuthenticated(true);
+        } else {
+          // Invalid stored key, clear it
+          localStorage.removeItem('analytics_api_key');
+          setApiKey('');
+        }
+      })
+      .catch(() => {
+        // Network error, assume key is valid for now
+        setIsAuthenticated(true);
+      });
     }
   }, [apiKey]);
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     const inputKey = e.target.apiKey.value;
     
-    // Simple validation - in production, validate against your API
-    if (inputKey && inputKey.length > 10) {
-      localStorage.setItem('analytics_api_key', inputKey);
-      setApiKey(inputKey);
-      setIsAuthenticated(true);
-    } else {
-      alert('Invalid API key');
+    // Test the API key by making a request to the analytics API
+    try {
+      const response = await fetch('https://analytics.ujjwalvivek.com/api?range=1d', {
+        headers: {
+          'Authorization': `Bearer ${inputKey}`,
+        },
+      });
+      
+      if (response.ok) {
+        localStorage.setItem('analytics_api_key', inputKey);
+        setApiKey(inputKey);
+        setIsAuthenticated(true);
+      } else {
+        alert('Invalid API key. Access denied.');
+      }
+    } catch (error) {
+      alert('Failed to validate API key. Please check your connection.');
     }
   };
 

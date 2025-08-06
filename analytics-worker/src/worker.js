@@ -5,7 +5,7 @@
 const corsHeaders = {
   'Access-Control-Allow-Origin': 'https://analytics.ujjwalvivek.com',
   'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-  'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+  'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-API-Key',
   'Access-Control-Max-Age': '86400',
 };
 
@@ -37,6 +37,21 @@ function validateEvent(event) {
   if (event.query) event.query = event.query.substring(0, 100);
   
   return event;
+}
+
+// Validate API key for dashboard access
+function validateApiKey(request, env) {
+  const authHeader = request.headers.get('Authorization');
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    return false;
+  }
+  
+  const apiKey = authHeader.substring(7); // Remove "Bearer " prefix
+  
+  // Use environment variable for API key (set in Cloudflare dashboard)
+  const validApiKey = env.ANALYTICS_API_KEY;
+  
+  return apiKey === validApiKey;
 }
 
 // Store event in R2 bucket (organized by date)
@@ -81,6 +96,14 @@ async function isRateLimited(hashedIP, env) {
 
 async function handleDashboardData(request, env) {
   try {
+    // Validate API key for dashboard access
+    if (!validateApiKey(request, env)) {
+      return new Response('Unauthorized', { 
+        status: 401,
+        headers: corsHeaders 
+      });
+    }
+
     // Get query parameters
     const url = new URL(request.url);
     const range = url.searchParams.get('range') || '7d';
@@ -113,7 +136,12 @@ async function handleDashboardData(request, env) {
     });
   } catch (error) {
     console.error('Dashboard data error:', error);
-    return new Response(JSON.stringify({ error: 'Failed to fetch analytics data' }), {
+    console.error('Error stack:', error.stack);
+    return new Response(JSON.stringify({ 
+      error: 'Failed to fetch analytics data', 
+      details: error.message,
+      stack: error.stack 
+    }), {
       status: 500,
       headers: {
         ...corsHeaders,
@@ -124,6 +152,7 @@ async function handleDashboardData(request, env) {
 }
 
 async function getAnalyticsFromR2(env, startDate, endDate) {
+  console.log('Getting analytics data from R2...');
   // For now, return minimal real data structure
   // You can expand this to actually read from R2 later
   const events = [];
@@ -132,8 +161,10 @@ async function getAnalyticsFromR2(env, startDate, endDate) {
   try {
     const today = new Date().toISOString().split('T')[0];
     const prefix = `analytics/${today}/`;
+    console.log('Listing R2 objects with prefix:', prefix);
     
     const list = await env.analytics_data.list({ prefix, limit: 100 });
+    console.log('Found objects:', list.objects.length);
     
     for (const object of list.objects) {
       try {
@@ -144,12 +175,13 @@ async function getAnalyticsFromR2(env, startDate, endDate) {
           events.push(event);
         }
       } catch (e) {
+        console.error('Error parsing event:', e);
         // Skip invalid events
         continue;
       }
     }
   } catch (error) {
-    console.log('No analytics data found yet');
+    console.error('Error reading from R2:', error);
   }
 
   // Process events into dashboard data
@@ -235,14 +267,14 @@ const worker = {
       return new Response(null, { headers: corsHeaders });
     }
 
-    // Route handling
+    // Route handling for analytics.ujjwalvivek.com/api
     if (url.pathname === '/api' && request.method === 'POST') {
       // Analytics data collection endpoint
       return handleAnalyticsCollection(request, env);
     } else if (url.pathname === '/api' && request.method === 'GET') {
       // Dashboard data endpoint
       return handleDashboardData(request, env);
-    } else if (url.pathname === '/dashboard' && request.method === 'GET') {
+    } else if (url.pathname === '/api/dashboard' && request.method === 'GET') {
       // Dashboard data endpoint (future feature)
       return new Response('Dashboard API endpoint', { headers: corsHeaders });
     } else {
