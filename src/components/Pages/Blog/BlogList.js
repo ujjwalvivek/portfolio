@@ -4,16 +4,20 @@ import styles from './Blog.module.css';
 import SearchBar from '../../SearchBar/SearchBar';
 import { FaLock } from "react-icons/fa";
 import { useBackground } from '../../Background/BackgroundContext';
+import analytics from '../../../utils/analytics';
 
 
 // Simple fuzzy search function
 const fuzzySearch = (query, text) => {
   if (!query) return true;
 
-  const queryLower = query.toLowerCase();
+  const queryLower = query.toLowerCase().trim();
   const textLower = text.toLowerCase();
 
-  // Exact match gets highest priority
+  // If query is empty after trimming, show all
+  if (queryLower === '') return true;
+
+  // Direct substring match (most common case)
   if (textLower.includes(queryLower)) return true;
 
   // Fuzzy match - check if all characters in query appear in order
@@ -23,6 +27,8 @@ const fuzzySearch = (query, text) => {
       queryIndex++;
     }
   }
+  
+  // Return true if all query characters were found in order
   return queryIndex === queryLower.length;
 };
 
@@ -85,11 +91,30 @@ const BlogList = () => {
       setVisibleCount(4);
     } else {
       const filtered = posts.filter(post => {
-        const searchText = `${post.title} ${post.description} ${post.tags.join(' ')}`;
-        return fuzzySearch(searchQuery, searchText);
+        // Create searchable text including title, description, and tags
+        const searchText = [
+          post.title || '',
+          post.description || '',
+          ...(post.tags || [])
+        ].join(' ').toLowerCase();
+        
+        return fuzzySearch(searchQuery.trim(), searchText);
       });
       setFilteredPosts(filtered);
       setVisibleCount(filtered.length); // Show all search results at once
+      
+      // Track search with results count (debounced to prevent spam)
+      if (searchQuery.trim().length > 2) {
+        // Clear any existing timeout
+        if (window.searchAnalyticsTimeout) {
+          clearTimeout(window.searchAnalyticsTimeout);
+        }
+        
+        // Set a new timeout to track after user stops typing
+        window.searchAnalyticsTimeout = setTimeout(() => {
+          analytics.trackSearch(searchQuery.trim(), filtered.length);
+        }, 1000); // Wait 1 second after user stops typing
+      }
     }
   }, [searchQuery, posts]);
 

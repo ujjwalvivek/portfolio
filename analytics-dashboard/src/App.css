@@ -1,12 +1,11 @@
-/* Analytics Dashboard App Styles */
+/* Terminal-Style Analytics Dashboard App */
 :root {
-  --background-color: #1a1a1a;
-  --text-color: #ffffff;
-  --primary-color: #00d2ff;
-  --font-mono: 'Courier New', monospace;
-  --background-color-rgb: 26, 26, 26;
-  --text-color-rgb: 255, 255, 255;
-  --primary-color-rgb: 0, 210, 255;
+  --background-color: #000000;
+  --text-color: #00ff41;
+  --primary-color: #00ff41;
+  --secondary-color: #ffffff;
+  --error-color: #ff4444;
+  --font-mono: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
 }
 
 * {
@@ -22,10 +21,29 @@ body {
   color: var(--text-color);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  line-height: 1.4;
 }
 
 .App {
   min-height: 100vh;
+  position: relative;
+}
+
+/* Terminal scanlines effect */
+.App::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    transparent 50%, 
+    rgba(0, 255, 65, 0.03) 50%
+  );
+  background-size: 100% 2px;
+  pointer-events: none;
+  z-index: 1;
 }
 
 .logout-section {
@@ -36,86 +54,133 @@ body {
 }
 
 .logout-button {
-  background: rgba(255, 107, 107, 0.1);
-  border: 1px solid #ff6b6b;
-  color: #ff6b6b;
+  background: #110000;
+  border: 1px solid var(--error-color);
+  color: var(--error-color);
   padding: 0.5rem 1rem;
-  border-radius: 4px;
+  border-radius: 2px;
   font-family: var(--font-mono);
   cursor: pointer;
   transition: all 0.2s;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 0.8rem;
 }
 
 .logout-button:hover {
-  background: rgba(255, 107, 107, 0.2);
+  background: #220000;
+  box-shadow: 0 0 10px var(--error-color);
 }
 
-/* Login page styles */
+/* Terminal login page styles */
 .login-container {
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  background: var(--background-color);
+  padding: 1rem;
 }
 
 .login-box {
-  background: rgba(26, 26, 26, 0.9);
-  border: 1px solid rgba(0, 210, 255, 0.3);
-  border-radius: 8px;
-  padding: 3rem;
+  background: var(--background-color);
+  border: 1px solid var(--primary-color);
+  border-radius: 2px;
+  padding: 2rem;
   text-align: center;
-  backdrop-filter: blur(10px);
-  box-shadow: 0 8px 32px rgba(0, 210, 255, 0.1);
   max-width: 400px;
   width: 100%;
-  margin: 1rem;
+  position: relative;
+  box-shadow: 0 0 20px rgba(0, 255, 65, 0.3);
+}
+
+.login-box::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
+  animation: scanline 2s ease-in-out infinite;
+}
+
+@keyframes scanline {
+  0%, 100% { opacity: 0; }
+  50% { opacity: 1; }
 }
 
 .login-box h1 {
   color: var(--primary-color);
   margin-bottom: 1rem;
-  font-size: 2rem;
+  font-size: 1.5rem;
+  text-shadow: 0 0 10px var(--primary-color);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.login-box h1::before {
+  content: 'root@analytics:~$ ';
+  opacity: 0.6;
+  font-size: 0.8rem;
 }
 
 .login-box p {
   margin-bottom: 2rem;
   opacity: 0.8;
   line-height: 1.5;
+  color: var(--secondary-color);
+  font-size: 0.9rem;
 }
 
 .api-key-input {
   width: 100%;
   padding: 1rem;
-  background: rgba(26, 26, 26, 0.5);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 4px;
-  color: var(--text-color);
+  background: #001100;
+  border: 1px solid #004400;
+  border-radius: 2px;
+  color: var(--secondary-color);
   font-family: var(--font-mono);
-  font-size: 1rem;
+  font-size: 0.9rem;
   margin-bottom: 1.5rem;
-  transition: border-color 0.2s;
+  transition: all 0.2s;
 }
 
 .api-key-input:focus {
   outline: none;
   border-color: var(--primary-color);
+  background: #002200;
+  box-shadow: 0 0 10px rgba(0, 255, 65, 0.3);
+}
+
+.api-key-input::placeholder {
+  color: #006600;
+  opacity: 0.7;
 }
 
 .login-button {
   width: 100%;
   padding: 1rem;
   background: var(--primary-color);
-  border: none;
-  border-radius: 4px;
+  border: 1px solid var(--primary-color);
+  border-radius: 2px;
   color: var(--background-color);
   font-family: var(--font-mono);
   font-weight: 600;
-  font-size: 1rem;
+  font-size: 0.9rem;
   cursor: pointer;
-  transition: opacity 0.2s;
+  transition: all 0.2s;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 .login-button:hover {
-  opacity: 0.8;
+  background: #001100;
+  color: var(--primary-color);
+  box-shadow: 0 0 15px var(--primary-color);
+}
+
+.login-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }

@@ -17,6 +17,7 @@ import { ProjectsData } from '../Pages/Projects/ProjectsData';
 import { BsJournalAlbum  } from "react-icons/bs";
 import { FaRegFolderOpen } from "react-icons/fa6";
 import { TbFaceIdError } from "react-icons/tb";
+import analytics from '../../utils/analytics';
 
 const CommandPalette = ({ isOpen, onClose, onOpenGithub }) => {
     const [query, setQuery] = useState('');
@@ -138,6 +139,19 @@ const CommandPalette = ({ isOpen, onClose, onOpenGithub }) => {
     if (query.trim()) {
       const results = searchSitewide(query);
       setSearchResults(results);
+      
+      // Track command palette searches (debounced to prevent spam)
+      if (query.trim().length > 2) {
+        // Clear any existing timeout
+        if (window.commandPaletteSearchTimeout) {
+          clearTimeout(window.commandPaletteSearchTimeout);
+        }
+        
+        // Set a new timeout to track after user stops typing
+        window.commandPaletteSearchTimeout = setTimeout(() => {
+          analytics.trackSearch(query.trim(), results.length);
+        }, 1500); // Wait 1.5 seconds for command palette
+      }
     } else {
       setSearchResults([]);
     }

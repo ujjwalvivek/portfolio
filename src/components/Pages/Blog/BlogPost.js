@@ -141,7 +141,12 @@ const BlogPost = () => {
   const [lightboxImage, setLightboxImage] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const blogPostRef = useRef(null);
-  const { trackLike, trackShare } = useBlogAnalytics(post.data.id || filename, post.data.title);
+  
+  // Use filename as fallback postId if post.data.id is not available yet
+  const postId = post.data?.id || filename;
+  const postTitle = post.data?.title || 'Loading...';
+  
+  const { trackLike, trackShare, hasLiked, hasShared } = useBlogAnalytics(postId, postTitle);
 
 
   useEffect(() => {
@@ -271,8 +276,12 @@ const BlogPost = () => {
             </p>
           </div>
           <div className={styles.blogActions}>
-  <button onClick={trackLike}>👍 Like</button>
-  <button onClick={trackShare}>🔗 Share</button>
+  <button onClick={trackLike} disabled={hasLiked} style={{opacity: hasLiked ? 0.5 : 1}}>
+    {hasLiked ? '👍 Liked!' : '👍 Like'}
+  </button>
+  <button onClick={() => trackShare('manual')} disabled={hasShared} style={{opacity: hasShared ? 0.5 : 1}}>
+    {hasShared ? '🔗 Shared!' : '🔗 Share'}
+  </button>
 </div>
           <br />
           <RelatedPosts posts={relatedPosts} />

@@ -9,23 +9,31 @@ function App() {
   useEffect(() => {
     // Test stored API key by making a quick API call
     if (apiKey) {
+      console.log('Testing stored API key...');
       fetch('https://analytics.ujjwalvivek.com/api?range=1d', {
         headers: {
           'Authorization': `Bearer ${apiKey}`,
         },
       })
       .then(response => {
+        console.log('API key test response:', response.status);
         if (response.ok) {
           setIsAuthenticated(true);
         } else {
           // Invalid stored key, clear it
+          console.log('Stored API key invalid, clearing...');
           localStorage.removeItem('analytics_api_key');
           setApiKey('');
+          setIsAuthenticated(false);
         }
       })
-      .catch(() => {
-        // Network error, assume key is valid for now
-        setIsAuthenticated(true);
+      .catch(error => {
+        console.error('API key test error:', error);
+        // Network error - do NOT assume key is valid, clear it
+        console.log('Network error during API key test, clearing stored key');
+        localStorage.removeItem('analytics_api_key');
+        setApiKey('');
+        setIsAuthenticated(false);
       });
     }
   }, [apiKey]);
@@ -33,6 +41,8 @@ function App() {
   const handleLogin = async (e) => {
     e.preventDefault();
     const inputKey = e.target.apiKey.value;
+    
+    console.log('Attempting login with API key...');
     
     // Test the API key by making a request to the analytics API
     try {
@@ -42,14 +52,20 @@ function App() {
         },
       });
       
+      console.log('Login response status:', response.status);
+      
       if (response.ok) {
+        console.log('Login successful, storing API key');
         localStorage.setItem('analytics_api_key', inputKey);
         setApiKey(inputKey);
         setIsAuthenticated(true);
       } else {
-        alert('Invalid API key. Access denied.');
+        const errorText = await response.text();
+        console.error('Login failed:', response.status, errorText);
+        alert(`Invalid API key. Access denied. (${response.status})`);
       }
     } catch (error) {
+      console.error('Login error:', error);
       alert('Failed to validate API key. Please check your connection.');
     }
   };

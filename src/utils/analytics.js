@@ -4,9 +4,18 @@
 class PrivacyAnalytics {
   constructor() {
     this.apiEndpoint = process.env.REACT_APP_ANALYTICS_API;
-    this.enabled = process.env.NODE_ENV === 'production' && this.apiEndpoint;
+    // Enable in development for testing
+    this.enabled = (process.env.REACT_APP_ANALYTICS_ENABLED === 'true' || process.env.NODE_ENV === 'development') && this.apiEndpoint;
     this.sessionId = this.generateSessionId();
     this.visitStartTime = Date.now();
+    
+    // Debug log
+    console.log('Analytics initialized:', {
+      enabled: this.enabled,
+      apiEndpoint: this.apiEndpoint,
+      nodeEnv: process.env.NODE_ENV,
+      analyticsEnabled: process.env.REACT_APP_ANALYTICS_ENABLED
+    });
   }
 
   // Generate ephemeral session ID (resets on page reload)
@@ -114,16 +123,51 @@ class PrivacyAnalytics {
     this.sendEvent(event);
   }
 
+  // Clean event data to prevent cyclic object errors
+  cleanEventData(event) {
+    const cleaned = {};
+    for (const [key, value] of Object.entries(event)) {
+      // Skip complex objects that might cause cyclic references
+      if (value !== null && typeof value === 'object' && !Array.isArray(value)) {
+        // Only include simple object properties
+        if (key === 'data' && value) {
+          cleaned[key] = {};
+          for (const [dataKey, dataValue] of Object.entries(value)) {
+            if (typeof dataValue !== 'object' || Array.isArray(dataValue)) {
+              cleaned[key][dataKey] = dataValue;
+            }
+          }
+        } else {
+          // Skip complex objects
+          continue;
+        }
+      } else {
+        cleaned[key] = value;
+      }
+    }
+    return cleaned;
+  }
+
   // Send event to analytics API
   async sendEvent(event) {
+    console.log('Sending analytics event:', event);
+    
     try {
-      await fetch(this.apiEndpoint, {
+      const cleanedEvent = this.cleanEventData(event);
+      
+      const response = await fetch(this.apiEndpoint, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(event),
+        body: JSON.stringify(cleanedEvent),
       });
+      
+      console.log('Analytics response:', response.status, response.statusText);
+      
+      if (!response.ok) {
+        console.error('Analytics API error:', response.status, response.statusText);
+      }
     } catch (error) {
       // Silently fail - don't break the user experience
       console.debug('Analytics event failed:', error);
