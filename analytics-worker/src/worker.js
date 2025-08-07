@@ -13,9 +13,6 @@ function getCorsHeaders(request) {
     'https://analytics.ujjwalvivek.com',
     'http://localhost:3000',
     'http://localhost:3001',
-    'http://localhost:3002',
-    'http://localhost:3003',
-    'http://localhost:3004',
   ];
   
   // If origin is in allowed list, use it; otherwise allow all for now
@@ -95,7 +92,7 @@ function validateApiKey(request, env) {
 // Store event in R2 bucket (organized by date)
 async function storeEvent(event, env) {
   const now = new Date();
-  const eventDate = new Date(event.timestamp);
+  //const eventDate = new Date(event.timestamp);
   
   console.log('=== DATE DEBUG ===');
   console.log('Current server time (UTC):', now.toISOString());
@@ -209,9 +206,9 @@ async function handleDashboardData(request, env, dynamicCorsHeaders = corsHeader
         endDate.setTime(istNow.getTime() - istOffset);
         break;
       case '7d':
-        // Last 7 days from IST time
+        // Last 7 days from IST time (including today, so start from 6 days ago)
         const sevenDaysAgoIST = new Date(istNow);
-        sevenDaysAgoIST.setUTCDate(sevenDaysAgoIST.getUTCDate() - 7);
+        sevenDaysAgoIST.setUTCDate(sevenDaysAgoIST.getUTCDate() - 6);
         sevenDaysAgoIST.setUTCHours(0, 0, 0, 0);
         
         startDate.setTime(sevenDaysAgoIST.getTime() - istOffset);
@@ -227,9 +224,9 @@ async function handleDashboardData(request, env, dynamicCorsHeaders = corsHeader
         endDate.setTime(istNow.getTime() - istOffset);
         break;
       default:
-        // Default to last 7 days in IST
+        // Default to last 7 days in IST (including today, so start from 6 days ago)
         const defaultSevenDaysAgoIST = new Date(istNow);
-        defaultSevenDaysAgoIST.setUTCDate(defaultSevenDaysAgoIST.getUTCDate() - 7);
+        defaultSevenDaysAgoIST.setUTCDate(defaultSevenDaysAgoIST.getUTCDate() - 6);
         defaultSevenDaysAgoIST.setUTCHours(0, 0, 0, 0);
         
         startDate.setTime(defaultSevenDaysAgoIST.getTime() - istOffset);

@@ -1,0 +1,164 @@
+/* Traffic Sources Component Styles */
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.sourcesList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.sourceItem {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(var(--text-color-rgb), 0.1);  
+  border-radius: 2px;
+  transition: all 0.2s ease;
+  font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+}
+
+.sourceItem:hover {
+  background: rgba(0, 0, 0, 0.5);
+  border-color: rgba(var(--terminal-output-color-dark-rgb), 0.3);
+  transform: translateX(4px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.sourceInfo {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.sourceName {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #ffffff;
+  word-break: break-word;
+  text-transform: capitalize;
+}
+
+.sourceBar {
+  width: 100%;
+  height: 6px;
+  background: rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+  border: 1px solid rgba(var(--terminal-output-color-dark-rgb), 0.2);
+}
+
+.sourceBarFill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--terminal-output-color-dark), rgba(var(--terminal-output-color-rgb), 0.6));
+  transition: width 0.6s ease;
+  box-shadow: 0 0 8px rgba(var(--terminal-output-color-dark-rgb), 0.4);
+  animation: barPulse 3s ease-in-out infinite;
+}
+
+@keyframes barPulse {
+  0%, 100% {
+    box-shadow: 0 0 8px rgba(var(--terminal-output-color-dark-rgb), 0.4);
+  }
+  50% {
+    box-shadow: 0 0 16px rgba(var(--terminal-output-color-dark-rgb), 0.6);
+  }
+}
+
+.sourceMeta {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.6);
+  line-height: 1.3;
+}
+
+.sourcePercentage {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--terminal-output-color-dark);
+  text-shadow: 0 0 8px rgba(var(--terminal-output-color-dark-rgb), 0.5);
+  min-width: 60px;
+  text-align: right;
+  font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+}
+
+.showMoreButton {
+  width: 100%;
+  padding: 0.75rem;
+  background: rgba(var(--text-color-rgb), 0.1);
+  border: none;
+  border-radius: 2px;
+  color: var(--text-color);
+  font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.showMoreButton:hover {
+  background: rgba(var(--terminal-output-color-dark-rgb), 0.4);
+  border-color: var(--terminal-output-color-dark);
+  box-shadow: 0 0 15px rgba(var(--terminal-output-color-dark-rgb), 0.2);
+  transform: translateY(-1px);
+}
+
+.noData {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  color: rgba(255, 255, 255, 0.5);
+  text-align: center;
+}
+
+.noDataIcon {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  opacity: 0.5;
+}
+
+.noData p {
+  font-size: 0.9rem;
+  margin: 0;
+  font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .sourceItem {
+    padding: 0.75rem;
+    gap: 0.75rem;
+  }
+  
+  .rank {
+    width: 24px;
+    height: 24px;
+    font-size: 0.75rem;
+  }
+  
+  .sourceName {
+    font-size: 0.8rem;
+  }
+  
+  .sourceMeta {
+    font-size: 0.7rem;
+  }
+  
+  .sourcePercentage {
+    font-size: 0.9rem;
+    min-width: 50px;
+  }
+  
+  .sourceBar {
+    height: 5px;
+  }
+}

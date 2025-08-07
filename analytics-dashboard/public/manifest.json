@@ -1,0 +1,28 @@
+{
+  "short_name": "L.A.Dash",
+  "name": "Analytics Dashboard | Vivek's Journey",
+  "description": "Privacy-focused Analytics Dashboard for Vivek's portfolio, providing insights into page views and user engagement without compromising user privacy.",
+  "icons": [
+    {
+      "src": "https://cdn.ujjwalvivek.com/icons/favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "https://cdn.ujjwalvivek.com/icons/logo192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "https://cdn.ujjwalvivek.com/icons/logo512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#181818",
+  "lang": "en-US",
+  "orientation": "portrait"
+}

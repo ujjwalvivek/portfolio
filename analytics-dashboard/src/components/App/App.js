@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import AnalyticsDashboard from './components/Analytics/AnalyticsDashboard';
+import AnalyticsDashboard from '../Dashboard/AnalyticsDashboard';
+import AuthScreen from '../Auth/AuthScreen';
 import './App.css';
 
 function App() {
   const [apiKey, setApiKey] = useState(localStorage.getItem('analytics_api_key') || '');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     // Test stored API key by making a quick API call
@@ -26,6 +28,7 @@ function App() {
           setApiKey('');
           setIsAuthenticated(false);
         }
+        setIsLoading(false);
       })
       .catch(error => {
         console.error('API key test error:', error);
@@ -34,17 +37,17 @@ function App() {
         localStorage.removeItem('analytics_api_key');
         setApiKey('');
         setIsAuthenticated(false);
+        setIsLoading(false);
       });
+    } else {
+      setIsLoading(false);
     }
   }, [apiKey]);
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    const inputKey = e.target.apiKey.value;
-    
+  const handleLogin = async (inputKey) => {
     console.log('Attempting login with API key...');
+    setIsLoading(true);
     
-    // Test the API key by making a request to the analytics API
     try {
       const response = await fetch('https://analytics.ujjwalvivek.com/api?range=1d', {
         headers: {
@@ -59,14 +62,17 @@ function App() {
         localStorage.setItem('analytics_api_key', inputKey);
         setApiKey(inputKey);
         setIsAuthenticated(true);
+        return { success: true };
       } else {
         const errorText = await response.text();
         console.error('Login failed:', response.status, errorText);
-        alert(`Invalid API key. Access denied. (${response.status})`);
+        return { success: false, error: `Invalid API key. Access denied. (${response.status})` };
       }
     } catch (error) {
       console.error('Login error:', error);
-      alert('Failed to validate API key. Please check your connection.');
+      return { success: false, error: 'Failed to validate API key. Please check your connection.' };
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -77,36 +83,12 @@ function App() {
   };
 
   if (!isAuthenticated) {
-    return (
-      <div className="login-container">
-        <div className="login-box">
-          <h1>Analytics Dashboard</h1>
-          <p>Enter your API key to access the dashboard</p>
-          <form onSubmit={handleLogin}>
-            <input
-              type="password"
-              name="apiKey"
-              placeholder="API Key"
-              required
-              className="api-key-input"
-            />
-            <button type="submit" className="login-button">
-              Access Dashboard
-            </button>
-          </form>
-        </div>
-      </div>
-    );
+    return <AuthScreen onLogin={handleLogin} isLoading={isLoading} />;
   }
 
   return (
-    <div className="App">
-      <div className="logout-section">
-        <button onClick={handleLogout} className="logout-button">
-          Logout
-        </button>
-      </div>
-      <AnalyticsDashboard apiKey={apiKey} />
+    <div className="app">
+      <AnalyticsDashboard apiKey={apiKey} onLogout={handleLogout} />
     </div>
   );
 }

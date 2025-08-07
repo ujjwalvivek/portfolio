@@ -1,0 +1,318 @@
+/* Clean Chart Container - Recharts Style */
+.chartContainer {
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 1.5rem 2rem 0.5rem 2rem;
+  box-shadow: none;
+  position: relative;
+  overflow: visible;
+}
+
+/* Header */
+.chartHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+  position: relative;
+  z-index: 2;
+}
+
+.chartTitle {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+  align-items: center;
+  line-height: 0.5;
+  gap: 1rem;
+}
+
+.chartStats {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  text-align: center;
+}
+
+/* Chart Area */
+.chartWrapper {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  padding: 0 1rem;
+}
+
+.chartArea {
+  position: relative;
+  width: 100%;
+  height: 300px;
+  overflow: visible;
+  padding: 0;
+  margin: 0;
+}
+
+.lineChart {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  display: block;
+}
+
+/* D3 Generated Elements Styling */
+.lineChart .overlay {
+  cursor: crosshair;
+}
+
+.lineChart .dot {
+  transition: all 0.2s ease;
+}
+
+.lineChart .dot:hover {
+  stroke-width: 3;
+  filter: drop-shadow(0 0 8px var(--terminal-output-color));
+}
+
+.lineChart .cursor-line {
+  transition: opacity 0.15s ease;
+}
+
+.lineChart .grid-line {
+  opacity: 0.6;
+}
+
+.lineChart .domain {
+  stroke: rgba(var(--terminal-output-color-rgb), 0.3) !important;
+}
+
+.lineChart .tick line {
+  stroke: rgba(var(--terminal-output-color-rgb), 0.2) !important;
+}
+
+.lineChart .tick text {
+  fill: rgba(var(--terminal-output-color-rgb), 0.7) !important;
+  font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace !important;
+  font-size: 12px !important;
+}
+
+/* Tooltip */
+.tooltip {
+  background: rgba(10, 24, 18, 0.95);
+  border: 1px solid rgba(var(--terminal-output-color-rgb), 0.4);
+  border-radius: 2px;
+  padding: 12px 16px;
+  font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+  backdrop-filter: blur(12px);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.3),
+    0 0 20px rgba(0, 255, 65, 0.1);
+  animation: tooltipFadeIn 0.15s ease-out;
+  pointer-events: none;
+  z-index: 1000;
+}
+
+@keyframes tooltipFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.tooltipContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.tooltipValue {
+  color: var(--terminal-output-color);
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-shadow: 0 0 6px rgba(var(--terminal-output-color-rgb), 0.4);
+}
+
+.tooltipDate {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.85rem;
+  opacity: 0.9;
+}
+
+.statItem {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.2rem 0.4rem;
+  line-height: 1.5;
+  border: 1px solid rgba(var(--terminal-output-color-dark-rgb), 0.3);
+  border-radius: 2px;
+  width: 120px;
+  justify-content: center;
+  background: linear-gradient(90deg, rgba(var(--background-color-rgb), 0.1), rgba(var(--terminal-output-color-dark-rgb), 0.1));
+
+}
+
+.statLabel {
+  color: rgba(var(--terminal-output-color-rgb), 0.7);
+  font-size: 0.85rem;
+  font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+  font-weight: 500;
+}
+
+.statValue {
+  color: var(--terminal-output-color);
+  font-size: 0.9rem;
+  font-weight: 700;
+  font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+}
+
+/* Footer */
+
+.totalStat {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.totalLabel {
+  color: rgba(var(--terminal-output-color-rgb), 0.7);
+  font-size: 1rem;
+  font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+  font-weight: 500;
+}
+
+.totalValue {
+  color: var(--terminal-output-color);
+  font-size: 1.3rem;
+  font-weight: 700;
+  font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+  text-shadow: 0 0 6px rgba(var(--terminal-output-color-rgb), 0.4);
+}
+
+.periodStat {
+  display: flex;
+  align-items: center;
+}
+
+.periodLabel {
+  color: rgba(var(--terminal-output-color-rgb), 0.5);
+  font-size: 0.8rem;
+  font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+  font-style: italic;
+}
+
+/* No Data State */
+.noData {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1rem;
+  color: rgba(var(--terminal-output-color-rgb), 0.6);
+  font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+}
+
+.noDataIcon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  opacity: 0.5;
+}
+
+.noData p {
+  font-size: 1rem;
+  margin: 0;
+  opacity: 0.7;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .chartContainer {
+    padding: 1.5rem 1rem;
+    min-height: 280px;
+  }
+
+  .chartTitle {
+    font-size: 1.4rem;
+  }
+
+  .chartHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .chartStats {
+    gap: 1.25rem;
+  }
+
+  .chartArea {
+    height: 200px !important;
+    margin-bottom: 1.25rem;
+  }
+
+  .tooltip {
+    padding: 0.625rem 0.875rem;
+  }
+
+  .tooltipValue {
+    font-size: 0.85rem;
+  }
+
+  .tooltipDate {
+    font-size: 0.65rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .chartContainer {
+    padding: 1rem 0.75rem;
+    min-height: 240px;
+  }
+
+  .chartTitle {
+    font-size: 1.2rem;
+  }
+
+  .statLabel,
+  .statValue {
+    font-size: 0.75rem;
+  }
+
+  .totalLabel {
+    font-size: 0.85rem;
+  }
+
+  .totalValue {
+    font-size: 1rem;
+  }
+
+  .chartArea {
+    height: 160px !important;
+  }
+
+  .tooltip {
+    padding: 0.5rem 0.75rem;
+  }
+
+  .tooltipValue {
+    font-size: 0.8rem;
+  }
+
+  .tooltipDate {
+    font-size: 0.6rem;
+  }
+}

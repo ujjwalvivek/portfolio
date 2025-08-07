@@ -1,0 +1,422 @@
+/* Dashboard Container */
+.dashboardContainer {
+  display: flex;
+  height: 100vh;
+  background: var(--background-color);
+  color: var(--text-color);
+  font-family: var(--font-mono);
+  overflow: hidden;
+  background: rgba(var(--text-color-rgb), 0.05);
+}
+
+/* Main Content */
+.mainContent {
+  flex: 1;
+  margin-left: 300px;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+.mainContent.collapsed {
+  margin-left: 80px;
+}
+
+/* Dashboard Header */
+.dashboardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid rgba(var(--text-color-rgb), 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  height: 60px;
+}
+
+.headerTitle {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.dashboardHeader h1 {
+  font-size: 1rem;
+  font-weight: 400;
+  margin: 0;
+  color: var(--text-color);
+  letter-spacing: 1px;
+}
+
+.headerControls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.timeRangeSelector {
+  display: flex;
+  border: 1px solid rgba(var(--text-color-rgb), 0.1);
+  border-radius: 2px;
+  padding: 0.25rem;
+}
+
+.rangeButton {
+  padding: 0.5rem 1rem;
+  background: transparent;
+  border: none;
+  color: var(--text-color);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-radius: 2px;
+  text-transform: uppercase;
+}
+
+.rangeButton:focus {
+  outline: none;
+}
+
+.rangeButton:hover {
+  color: var(--primary-color);
+}
+
+.rangeButton.active {
+  color: var(--terminal-output-color-dark);
+  text-decoration: underline;
+}
+
+.refreshButton {
+  width: 40px;
+  height: 40px;
+  background: transparent;
+  border: 1px solid rgba(var(--text-color-rgb), 0.1);
+  border-radius: 2px;
+  color: var(--text-color);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 0.5;
+}
+
+.refreshButton:hover {
+  background: rgba(var(--terminal-output-color-dark-rgb), 0.6);
+  border: 1px solid rgba(var(--terminal-output-color-dark-rgb), 0.9);
+}
+
+.refreshButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.refreshIcon {
+  font-size: 1.2rem;
+  transition: transform 0.2s ease;
+}
+
+.refreshIcon.spinning {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Dashboard Content */
+.dashboardContent {
+  flex: 1;
+  padding: 2rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 255, 65, 0.3) transparent;
+}
+
+/* Metrics Grid */
+.metricsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 1.5rem;
+}
+
+/* Hero Chart Section */
+.heroChart {
+  margin-bottom: 2rem;
+}
+
+.heroChartContainer {
+  position: relative;
+border: 1px solid rgba(var(--terminal-output-color-dark-rgb), 0.5);  
+border-radius: 2px;
+  padding: 0;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.heroChartContainer:hover {
+  transform: translateY(-2px);
+  box-shadow: 
+    0 4px 16px rgba(0, 0, 0, 0.5),
+    0 0 20px rgba(var(--terminal-output-color-dark-rgb), 0.15),
+    inset 0 0 20px rgba(var(--terminal-output-color-dark-rgb), 0.05);
+}
+
+/* Charts Grid */
+.chartsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 1.5rem;
+}
+
+.chartCard {
+  position: relative;
+  border: 1px solid rgba(var(--terminal-output-color-dark-rgb), 0.5);
+  border-radius: 2px;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.chartCard:hover {
+  transform: translateY(-2px);
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+  align-items: center;
+  line-height: 0.5;
+  gap: 1rem;
+  justify-content: space-between;
+  padding-bottom: 1rem;
+}
+
+.cardHeader h3 {
+  font-size: 0.9rem;
+}
+
+.cardControls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.expandButton {
+  width: 32px;
+  height: 32px;
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  color: var(--primary-color);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+}
+
+.expandButton:hover {
+  color: var(--terminal-output-color-dark);
+}
+
+.cardContent {
+  position: relative;
+  z-index: 2;
+}
+
+/* Loading and Error States */
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background: var(--background);
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+}
+
+.loadingContainer,
+.errorContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 2rem;
+}
+
+.loadingSpinner {
+  width: 48px;
+  height: 48px;
+  border: 3px solid transparent;
+  border-top: 3px solid var(--primary-color);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1.5rem;
+}
+
+.loadingContainer p {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.errorContainer h2 {
+  color: var(--error-color);
+  margin: 0 0 1rem 0;
+  font-size: 1.5rem;
+}
+
+.errorContainer p {
+  color: var(--text-secondary);
+  margin: 0 0 2rem 0;
+  font-size: 1rem;
+}
+
+.retryButton {
+  padding: 0.75rem 1.5rem;
+  background: var(--primary-color);
+  border: 1px solid var(--primary-color);
+  border-radius: 8px;
+  color: #000000;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.retryButton:hover {
+  background: var(--primary-dark);
+  box-shadow: 0 0 20px rgba(0, 255, 65, 0.4);
+  transform: translateY(-1px);
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 1024px) {
+  .metricsGrid {
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1rem;
+  }
+  
+  .chartsGrid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .heroChartContainer {
+    border-radius: 12px;
+  }
+  
+  .dashboardContent {
+    padding: 1.5rem;
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .mainContent {
+    margin-left: 0;
+  }
+  
+  .mainContent.collapsed {
+    margin-left: 0;
+  }
+  
+  .dashboardHeader {
+    padding: 1rem;
+  }
+  
+  .dashboardHeader h1 {
+    font-size: 1.2rem;
+  }
+  
+  .timeRangeSelector {
+    flex-wrap: wrap;
+  }
+  
+  .rangeButton {
+    font-size: 0.75rem;
+    padding: 0.4rem 0.8rem;
+  }
+  
+  .metricsGrid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .dashboardContent {
+    padding: 1rem;
+    gap: 1rem;
+  }
+  
+  .chartCard {
+    padding: 1rem;
+  }
+  
+  .headerControls {
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: flex-end;
+  }
+}
+
+/* Terminal Effects */
+.chartCard::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    transparent 50%, 
+    rgba(0, 255, 65, 0.01) 50%
+  );
+  background-size: 100% 2px;
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  :root {
+    --primary-color: #00ff00;
+    --border: #00ff00;
+    --text-primary: #ffffff;
+    --surface: #000000;
+  }
+  
+  .chartCard {
+    border-width: 2px;
+  }
+}
