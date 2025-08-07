@@ -48,6 +48,121 @@
 
 .copyButton:hover {
   background: var(--background-color);
+  color: var(--primary-color);
+  transform: translateY(-1px);
+}
+
+/* Blog Actions Styles */
+.blogActions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  position: relative;
+  font-family: var(--font-mono);
+}
+
+.actionButton {
+  display: flex;
+  align-items: center;
+  border: none;
+  background: transparent;
+  color: var(--text-color);
+  font-family: var(--font-mono);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.actionButton:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.likeButton:hover {
+  color: var(--status-ram-color);
+  opacity: 1;
+}
+
+.likeButton.liked {
+  color: var(--status-ram-color);
+}
+
+.likeButton.liked:hover {
+  opacity: 0.9;
+  transform: none;
+  cursor: not-allowed;
+  color: var(--status-ram-color);
+}
+
+.shareButton {
+  background: transparent;
+  border-color: none;
+  opacity: 0.8;
+}
+
+.shareButton:hover {
+  color: var(--status-warn-color);
+  opacity: 1;
+}
+
+.buttonIcon {
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+/* Copy Notification */
+.copyNotification {
+  position: absolute;
+  top: 0px;
+  left: 50%;
+  transform: translateX(-50%);
+  backdrop-filter: blur(32px) saturate(180%);
+  -webkit-backdrop-filter: blur(32px) saturate(180%);
+  background: rgba(var(--background-color-rgb), 0.3);  color: var(--background-color);
+  padding: 0.5rem 1rem;
+  border-radius: 2px;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  animation: slideInBounce 0.4s ease-out;
+  z-index: 100;
+  color: var(--text-color);
+}
+
+.notificationText {
+  white-space: nowrap;
+}
+
+@keyframes slideInBounce {
+  0% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(10px);
+  }
+  60% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(-5px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+@keyframes sparkle {
+  0%, 100% { transform: scale(1) rotate(0deg); }
+  25% { transform: scale(1.2) rotate(90deg); }
+  50% { transform: scale(1.1) rotate(180deg); }
+  75% { transform: scale(1.2) rotate(270deg); }
+}
+
+.copyButton:hover {
+  background: var(--background-color);
   transform: translateY(-1px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }

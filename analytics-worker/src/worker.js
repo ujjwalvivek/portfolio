@@ -565,6 +565,101 @@ async function getAnalyticsFromR2(env, startDate, endDate) {
   };
 }
 
+// Handle blog like count requests
+async function handleBlogLikeCount(request, env, dynamicCorsHeaders = corsHeaders) {
+  try {
+    const url = new URL(request.url);
+    const pathParts = url.pathname.split('/');
+    
+    // Extract post ID from /api/blog/{postId}/likes
+    if (pathParts.length !== 5 || pathParts[1] !== 'api' || pathParts[2] !== 'blog' || pathParts[4] !== 'likes') {
+      return new Response('Invalid blog likes endpoint format', { 
+        status: 400,
+        headers: dynamicCorsHeaders 
+      });
+    }
+    
+    const postId = decodeURIComponent(pathParts[3]);
+    console.log('Fetching like count for post:', postId);
+    
+    // Query R2 for blog engagement events for this post
+    const bucket = env.ANALYTICS_BUCKET;
+    if (!bucket) {
+      console.error('R2 bucket not configured');
+      return new Response(JSON.stringify({ likes: 0, error: 'Storage not configured' }), { 
+        headers: { 
+          'Content-Type': 'application/json',
+          ...dynamicCorsHeaders 
+        } 
+      });
+    }
+    
+    // List all analytics files to find blog engagement events
+    let likeCount = 0;
+    try {
+      const objects = await bucket.list({ prefix: 'analytics/' });
+      
+      for (const obj of objects.objects) {
+        try {
+          const eventFile = await bucket.get(obj.key);
+          if (eventFile) {
+            const eventText = await eventFile.text();
+            const events = eventText.split('\n').filter(line => line.trim());
+            
+            for (const eventLine of events) {
+              try {
+                const event = JSON.parse(eventLine);
+                
+                // Count 'like' events for this specific post
+                if (event.type === 'blog_engagement' && 
+                    event.action === 'like' && 
+                    event.postId === postId) {
+                  likeCount++;
+                }
+              } catch (parseError) {
+                // Skip invalid JSON lines
+                continue;
+              }
+            }
+          }
+        } catch (fileError) {
+          // Skip files we can't read
+          console.log('Could not read file:', obj.key, fileError.message);
+          continue;
+        }
+      }
+    } catch (listError) {
+      console.error('Error querying R2 for like count:', listError);
+      // Return 0 likes if we can't query the storage
+    }
+    
+    console.log(`Found ${likeCount} likes for post: ${postId}`);
+    
+    return new Response(JSON.stringify({ 
+      likes: likeCount,
+      postId: postId 
+    }), { 
+      headers: { 
+        'Content-Type': 'application/json',
+        ...dynamicCorsHeaders 
+      } 
+    });
+    
+  } catch (error) {
+    console.error('Blog like count error:', error);
+    return new Response(JSON.stringify({ 
+      likes: 0, 
+      error: 'Internal server error' 
+    }), { 
+      status: 500,
+      headers: { 
+        'Content-Type': 'application/json',
+        ...dynamicCorsHeaders 
+      } 
+    });
+  }
+}
+
 const worker = {
   async fetch(request, env) {
     const url = new URL(request.url);
@@ -586,6 +681,9 @@ const worker = {
     } else if (url.pathname === '/api/dashboard' && request.method === 'GET') {
       // Dashboard data endpoint (future feature)
       return new Response('Dashboard API endpoint', { headers: dynamicCorsHeaders });
+    } else if (url.pathname.startsWith('/api/blog/') && url.pathname.endsWith('/likes') && request.method === 'GET') {
+      // Blog like count endpoint
+      return handleBlogLikeCount(request, env, dynamicCorsHeaders);
     } else {
       return new Response('Not found', { 
         status: 404,

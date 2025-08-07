@@ -163,7 +163,7 @@ But because abandoned builds taught my brain:
 I didn't want to be that guy anymore.
 So I pushed. Not because it's perfect, but because it's mine.
 
-<Note title="This is not a 2-week build."> This is a **two-year transformation log** disguised as a terminal vibe. </Note>
+This is a **two-year transformation log** disguised as a terminal vibe.
 
 ```javascript
 > deploy  

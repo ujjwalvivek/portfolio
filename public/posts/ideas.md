@@ -1,11 +1,10 @@
 ## 📅 v1.4 Target Changelog (WIP)
 
 #### Ongoing
-* [x] Custom made Analytics software, with a focus on privacy and performance. `Architecture planned, implementation ready`
-* [ ] update look and feel with some advanced css features.
-* [ ] Revisit UX of the website.
 
 #### Optional
+* [ ] update look and feel with some advanced css features.
+* [ ] Revisit UX of the website.
 * [ ] Editable customised shortcut keys.
 * [ ] Bundle some cool npm packages
 
@@ -34,3 +33,4 @@
 * [x] Project sorting (opinionated) and search functionality - via commandpalette.
 * [x] Terminal command palette - Ctrl+K style navigation across your whole site (optional)
 * [x] Shortcuts Overlay with a helper toast
+* [x] Custom made Analytics software, with a focus on privacy and performance. `Architecture planned, implementation ready`

@@ -21,6 +21,8 @@ import { BsFillPencilFill, BsFillInfoSquareFill } from "react-icons/bs";
 import { MdDangerous } from "react-icons/md";
 import { AiTwotoneStar } from "react-icons/ai";
 import { useBlogAnalytics } from '../../../hooks/useAnalytics';
+import { AiFillLike, AiOutlineLike  } from "react-icons/ai";
+import { FaShare } from "react-icons/fa";
 
 // Simple reading time calculation function
 const calculateReadingTime = (text) => {
@@ -146,8 +148,32 @@ const BlogPost = () => {
   const postId = post.data?.id || filename;
   const postTitle = post.data?.title || 'Loading...';
   
-  const { trackLike, trackShare, hasLiked, hasShared } = useBlogAnalytics(postId, postTitle);
+  const { trackLike, trackShare, hasLiked } = useBlogAnalytics(postId, postTitle);
 
+  // State for copy notification
+  const [showCopyNotification, setShowCopyNotification] = useState(false);
+
+
+  // Function to copy blog link and show notification
+  const handleShare = async () => {
+    const blogUrl = `${window.location.origin}/blog/${filename}`;
+    
+    try {
+      await navigator.clipboard.writeText(blogUrl);
+      setShowCopyNotification(true);
+      trackShare('clipboard');
+      
+      // Hide notification after 3 seconds
+      setTimeout(() => {
+        setShowCopyNotification(false);
+      }, 3000);
+    } catch (error) {
+      console.error('Failed to copy:', error);
+      // Fallback: show URL in a prompt for manual copy
+      prompt('Copy this URL:', blogUrl);
+      trackShare('manual');
+    }
+  };
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -268,6 +294,37 @@ const BlogPost = () => {
               {post.content}
             </ReactMarkdown>
           </div>
+          <div className={styles.blogActions}>
+            <button 
+              className={`${styles.actionButton} ${styles.likeButton} ${hasLiked ? styles.liked : ''}`}
+              onClick={trackLike} 
+              disabled={hasLiked}
+              title={hasLiked ? "You've already liked this post!" : "Like this post!"}
+            >
+              <span className={styles.buttonIcon}>
+                {hasLiked ? <AiFillLike /> : <AiOutlineLike />}
+              </span>
+            </button>
+            
+            <button 
+              className={`${styles.actionButton} ${styles.shareButton}`}
+              onClick={handleShare}
+              title="Copy link to clipboard"
+            >
+              <span className={styles.buttonIcon}>
+                <FaShare />
+              </span>
+            </button>
+
+            {/* Copy notification */}
+            {showCopyNotification && (
+              <div className={styles.copyNotification}>
+                <span className={styles.notificationText}>
+                  Copied to clipboard!
+                </span>
+              </div>
+            )}
+          </div>
           <div className={styles.authorSignature}>
             <p>
               <strong>Vivek</strong> crafting systems,
@@ -275,14 +332,7 @@ const BlogPost = () => {
               one line at a time.
             </p>
           </div>
-          <div className={styles.blogActions}>
-  <button onClick={trackLike} disabled={hasLiked} style={{opacity: hasLiked ? 0.5 : 1}}>
-    {hasLiked ? '👍 Liked!' : '👍 Like'}
-  </button>
-  <button onClick={() => trackShare('manual')} disabled={hasShared} style={{opacity: hasShared ? 0.5 : 1}}>
-    {hasShared ? '🔗 Shared!' : '🔗 Share'}
-  </button>
-</div>
+          
           <br />
           <RelatedPosts posts={relatedPosts} />
         </div>

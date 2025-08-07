@@ -10,11 +10,18 @@ export const useBlogAnalytics = (postId, postTitle) => {
   const hasStartedReadingRef = useRef(false);
   const startTimeRef = useRef(null);
 
+  // Check if user has already liked this post on component mount
+  useEffect(() => {
+    if (!postId) return;
+    
+    const likedKey = `blog_liked_${postId}`;
+    const hasUserLiked = localStorage.getItem(likedKey) === 'true';
+    setHasLiked(hasUserLiked);
+  }, [postId]);
+
   useEffect(() => {
     if (!postId || postTitle === 'Loading...') return;
     
-    console.log('Blog analytics hook initialized for:', postId, postTitle);
-
     // Reset states when post changes
     hasStartedReadingRef.current = false;
 
@@ -22,7 +29,6 @@ export const useBlogAnalytics = (postId, postTitle) => {
     const triggerReadStart = () => {
       if (hasStartedReadingRef.current) return; // Prevent duplicate
       
-      console.log('Triggering blog read event');
       hasStartedReadingRef.current = true;
       startTimeRef.current = Date.now();
       analytics.trackBlogEngagement(postId, 'read_start', {
@@ -37,7 +43,6 @@ export const useBlogAnalytics = (postId, postTitle) => {
     const handleBeforeUnload = () => {
       if (startTimeRef.current) {
         const timeSpent = Date.now() - startTimeRef.current;
-        console.log('Sending time spent event:', timeSpent);
         analytics.trackTimeSpent(window.location.pathname, timeSpent);
       }
     };
@@ -51,9 +56,17 @@ export const useBlogAnalytics = (postId, postTitle) => {
   }, [postId, postTitle]); // Only depend on postId and postTitle
 
   // Function to track likes (can be called from like button)
-  const trackLike = () => {
-    if (hasLiked) return; // Prevent multiple likes
+  const trackLike = async () => {
+    if (hasLiked) {
+      return; // Prevent multiple likes
+    }
+        
+    // Store liked state in localStorage
+    const likedKey = `blog_liked_${postId}`;
+    localStorage.setItem(likedKey, 'true');
     setHasLiked(true);
+    
+    // Track the like event
     analytics.trackBlogEngagement(postId, 'like', {
       title: postTitle,
       timeSpent: startTimeRef.current ? Date.now() - startTimeRef.current : 0
@@ -91,9 +104,7 @@ export const usePageAnalytics = () => {
   useEffect(() => {
     const path = location.pathname;
     const title = document.title;
-    
-    console.log('Tracking page view:', path, title);
-    
+        
     // Small delay to ensure page has loaded
     const timer = setTimeout(() => {
       analytics.trackPageView(path, title);

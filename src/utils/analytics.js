@@ -8,14 +8,6 @@ class PrivacyAnalytics {
     this.enabled = (process.env.REACT_APP_ANALYTICS_ENABLED === 'true' || process.env.NODE_ENV === 'development') && this.apiEndpoint;
     this.sessionId = this.generateSessionId();
     this.visitStartTime = Date.now();
-    
-    // Debug log
-    console.log('Analytics initialized:', {
-      enabled: this.enabled,
-      apiEndpoint: this.apiEndpoint,
-      nodeEnv: process.env.NODE_ENV,
-      analyticsEnabled: process.env.REACT_APP_ANALYTICS_ENABLED
-    });
   }
 
   // Generate ephemeral session ID (resets on page reload)
@@ -150,7 +142,6 @@ class PrivacyAnalytics {
 
   // Send event to analytics API
   async sendEvent(event) {
-    console.log('Sending analytics event:', event);
     
     try {
       const cleanedEvent = this.cleanEventData(event);
@@ -162,9 +153,7 @@ class PrivacyAnalytics {
         },
         body: JSON.stringify(cleanedEvent),
       });
-      
-      console.log('Analytics response:', response.status, response.statusText);
-      
+            
       if (!response.ok) {
         console.error('Analytics API error:', response.status, response.statusText);
       }
