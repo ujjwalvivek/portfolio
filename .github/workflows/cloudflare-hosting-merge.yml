@@ -27,7 +27,7 @@ jobs:
       - name: Installing dependencies
         run: npm ci
 
-      - name: No source maps, please
+      - name: No source maps, please (try 1)
         run: echo "GENERATE_SOURCEMAP=false" > .env
 
       - name: Wiping away past sins
@@ -38,7 +38,11 @@ jobs:
 
       - name: Build project NOW
         run: npm run build
+        env:
+          GENERATE_SOURCEMAP: "false"
 
+      - name: Remove source maps (try 2)
+        run: find build -name "*.map" -delete
 
       - name: Deploy main site to Cloudflare Pages
         uses: cloudflare/pages-action@v1
