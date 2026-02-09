@@ -1,0 +1,174 @@
+/**
+ * ██████╗ ███████╗███████╗██╗   ██╗███╗   ███╗███████╗       
+ * ██╔══██╗██╔════╝██╔════╝██║   ██║████╗ ████║██╔════╝       
+ * ██████╔╝█████╗  ███████╗██║   ██║██╔████╔██║█████╗         
+ * ██╔══██╗██╔══╝  ╚════██║██║   ██║██║╚██╔╝██║██╔══╝         
+ * ██║  ██║███████╗███████║╚██████╔╝██║ ╚═╝ ██║███████╗       
+ * ╚═╝  ╚═╝╚══════╝╚══════╝ ╚═════╝ ╚═╝     ╚═╝╚══════╝       
+ *                                                            
+ *  ██████╗ ██╗   ██╗███████╗██████╗ ██╗      █████╗ ██╗   ██╗
+ * ██╔═══██╗██║   ██║██╔════╝██╔══██╗██║     ██╔══██╗╚██╗ ██╔╝
+ * ██║   ██║██║   ██║█████╗  ██████╔╝██║     ███████║ ╚████╔╝ 
+ * ██║   ██║╚██╗ ██╔╝██╔══╝  ██╔══██╗██║     ██╔══██║  ╚██╔╝  
+ * ╚██████╔╝ ╚████╔╝ ███████╗██║  ██║███████╗██║  ██║   ██║   
+ *  ╚═════╝   ╚═══╝  ╚══════╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝   ╚═╝   
+ *                                                            
+ */
+
+.resumeBar {
+    width: 100%;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    justify-content: space-between;
+    backdrop-filter: blur(32px) saturate(180%);
+    -webkit-backdrop-filter: blur(32px) saturate(180%);
+    background: linear-gradient(180deg, rgba(var(--dynamic-hsl-average-rgb), 0.03), rgba(var(--dynamic-dominant-color-rgb), 0.05));
+    border-radius: 4px;
+    padding: 1rem 1rem;
+}
+
+.resumeThumbnail {
+    width: 64px;
+    flex-shrink: 0;
+    border: 1px solid rgba(var(--dynamic-dominant-color-rgb), 1);
+    border-radius: 2px;
+    cursor: pointer;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+    transition: all 0.24s ease;
+    overflow: hidden;
+    padding: 4px;
+    animation: thumbnailGlow 4s linear infinite;
+    background-clip: padding-box;
+    display: inline-flex;
+    align-items: flex-start;
+    justify-content: center;
+    position: relative;
+}
+
+@keyframes thumbnailGlow {
+    0% {
+        box-shadow: 0 0 0px 0 var(--dynamic-dominant-color), 0 0 0 0px var(--dynamic-hsl-average);
+    }
+
+    50% {
+        box-shadow: 0 0 2px 2px var(--dynamic-hsl-average), 0 0 0 2px var(--dynamic-hsl-average);
+    }
+
+    100% {
+        box-shadow: 0 0 0px 0 var(--dynamic-dominant-color), 0 0 0 0px var(--dynamic-hsl-average);
+    }
+}
+
+.resumeThumbnail img {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    transition: filter 0.24s ease, transform 0.24s ease;
+    will-change: filter, transform;
+}
+
+.resumeThumbnail:hover {
+    transform: translateY(-2px);
+    border-color: rgba(var(--dynamic-dominant-color-rgb), 1);
+}
+
+.resumeThumbnail:hover img {
+    filter: blur(4px);
+}
+
+.thumbOverlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 3;
+    opacity: 0;
+    transition: opacity 160ms ease, transform 160ms ease;
+    pointer-events: none;
+}
+
+.resumeThumbnail:hover .thumbOverlay {
+    opacity: 1;
+}
+
+.thumbIcon {
+    width: 24px;
+    height: 24px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(var(--dynamic-hsl-average-rgb), 0.8);
+    transform: translateY(6px) scale(0.98);
+    transition: transform 180ms ease, background 180ms ease;
+}
+
+.resumeThumbnail:hover .thumbIcon {
+    transform: translateY(0) scale(1);
+}
+
+.resumeTitle {
+    flex: 1;
+    font-family: var(--font-mono);
+    color: var(--text-color);
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    line-height: 1.2;
+}
+
+.resumeTextStrong {
+    font-size: 1.5rem;
+    text-transform: uppercase;
+    font-weight: 800;
+}
+
+.resumeTextSubtitle {
+    font-size: 1rem;
+    font-weight: 400;
+    color: rgba(var(--text-color-rgb), 0.8);
+}
+
+.resumeDownloadBtn {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.5rem 1rem;
+    letter-spacing: 1px;
+    color: var(--text-color);
+    border: 2px solid var(--dynamic-dominant-color);
+    border-radius: 2px;
+    color: var(--text-color);
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    background: rgba(var(--background-color-rgb), 0.3);
+    text-align: center;
+    cursor: pointer;
+}
+
+.resumeDownloadBtn:hover {
+    color: var(--dynamic-dominant-color);
+    box-shadow: 0 4px 8px rgba(var(--dynamic-dominant-color-rgb), 0.2);
+}
+
+/* Small screens: stack vertically and center */
+@media (max-width: 400px) {
+    .resumeBar {
+        flex-direction: column;
+        align-items: center;
+        gap: 0.8rem;
+    }
+
+    .resumeTitle {
+        align-items: center;
+        text-align: center;
+    }
+}

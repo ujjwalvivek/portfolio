@@ -1,67 +1,58 @@
-# The Terminal That Talks Back
+# TECH ISN'T THE HARD PART. Systems, behaviour, and questions are.
 
 Welcome, wanderer.
 
-You’ve booted into a system built from fragments, logs, code, and questions.  
-This isn’t a portfolio. It’s a ritual.  
+You’ve booted into a personal portfolio rendered as an interactive terminal and a markdown blog.  
+This isn’t just a portfolio. I like to call it an `experiment playground` rather.  
+
 I build, break, and rebuild systems, across code, teams, and products.  
-From VR platforms to Rust game engines, this journey is logged.
-Every page, a prompt. Every glitch, a memory.  
+This is where I log those experiments, the questions they raise, and the answers they sometimes yield.
 
+## Why this exists
 
-## Philosophy
+- Capture design & engineering experiments as readable artifacts. 
+- Surface failures, fixes and small wins in a format that’s easy to iterate on.
+- Give other builders practical, remixable patterns (`backgrounds`, `markdown rendering`, `keyboard-first UX`, `js snippets`).
 
-- **Tech isn't the hard part.**  
-  Systems, behaviour, and questions are.
-- **Transparency > Perfection.**  
-  You'll find unfinished thoughts, failed experiments, and the occasional breakthrough.
-- **Source ≠ Product.**  
-  This repo is public and open. *Steal* ideas, not identity.
+## Quick facts (TL;DR)
+- **Stack:** React + client-rendered Markdown + custom CSS
+- **Primary UX:** terminal-like interactions, Command Palette, GitHub navigator
+- **Content:** markdown files in posts (see `meta.json`)
+- **Design:** Global, procedural background engine with live color updates (`GlobalBackground`, `RealTimeColorChange`)
+- **Privacy:** no analytics, no popups
+- **Build:** compatible with Vercel/Netlify/GitHub Pages/Cloudflare Pages.
 
-## What's Inside
-
-- ✍️ **Blog:** A markdown engine that renders thoughts as commands..  
-- 🖥️ **Easter Egg:** The site talks back. Try out some commands when you come across it.
-- 💃 **Vibe:** Procedural backgrounds, born from chaos and tamed for clarity..
-- 🛠️ **Stack:** React, Markdown, custom CSS, and a sprinkle of terminal magic.
-
-> Logs of failures, launches, and the silence between.
-
-No analytics. No popups. No noise.  
-Just a builder’s log, still compiling.
-
-## Running Locally
+## Running Locally (2 Min)
 
 ```sh
-cd $Home_Folder
-npm install
-npm run start
+git clone https://github.com/ujjwalvivek/portfolio.git
+cd portfolio
+npm ci
+npm start
+npm run build
 ```
 
-## Folder Structure
-
-- `/src` — React components, pages, and everything logic
-- `/public/posts` — Markdown blog posts, raw
-- `/public/_dump.md` — Future logs and drafts, and mostly dumps
+## Testing & QA checklist
+- Start app and verify routes: `/`, `/about`, `/projects`, `/blog`
+- Open Command Palette, run commands, and confirm shortcuts
+- Verify `GlobalBackground` themes and `RealTimeColorChange` behavior
+- Test reduced-motion: system setting + `UsePrefersReducedMotion` module
+- Mobile/responsive: ensure TopBar, Footer, and Terminal interactions are usable
+- Run Lighthouse: aim for no critical accessibility regressions
 
 ## Contributing
+This is a personal log. PRs accepted selectively.
 
-This is a personal log, not a community project.  
-But if you spot a bug or want to say hi, open an issue or drop a message.
-[Mail Me!](mailto:hello@ujjwalvivek.com)
+If you find a bug, open an issue with steps to reproduce. For small fixes, fork → branch → PR with a focused description and screenshots where applicable.
+
+Or, just come say hi: [Mail Me!](mailto:hello@ujjwalvivek.com)
 
 ## License
 
-MIT License
-
-
-
-Read, learn, remix.
-But remember,
-
-
-> Don't optimize systems you don't really understand. :)
+MIT License `Do what you want, credit appreciated` 
 
 ---
 
-Happy building.  
+Happy building.
+
+`v2.0.0 update`

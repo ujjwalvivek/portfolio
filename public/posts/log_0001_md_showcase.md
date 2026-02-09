@@ -11,6 +11,31 @@ Testing complete. Everything renders. Mostly.
 You are now inside the markdown engine.
 ```
 
+### Clean Separation of Concerns
+
+<mark>The Three-Headed Snake</mark>
+
+One thing I got right with GreedySnek was the **modular project structure**. Instead of cramming everything into a single messy folder, I separated the game into three completely independent modules. Here's how the project is organized. [^1]
+
+```bash
+GreedySnek/
+├── .idea/                          # JetBrains IDE configuration
+├── AndroidBuild/                   # Pre-built APK files
+├── Assets/                         # Unity project assets
+│   ├── _Home/                      # Main menu system (standalone)
+│   ├── _Singleplayer/              # Offline snake game (standalone)
+│   ├── _Multiplayer/               # Network-enabled version (standalone)
+│   ├── Plugins/                    # Custom Unity Alert Plugin (Java)
+│   └── Settings/                   # Unity URP render pipeline settings
+├── Packages/                       # Unity Package Manager dependencies
+├── ProjectSettings/                # Unity project configuration
+├── .gitignore                      # Git ignore rules
+├── .vsconfig                       # Visual Studio configuration
+├── LICENSE                         # MIT license
+└── README.md                       # Project documentation
+```
+
+
 ---
 
 ## Diagnostic Log
@@ -63,11 +88,11 @@ SELECT * FROM logs WHERE status = 'booted';
 
 ## 📊 Tables
 
-| Feature            | Status | Owner  |
-|--------------------|--------|--------|
-| Markdown Engine    | ✅     | System |
-| Blur Layer         | ⚠️     | CSS    |
-| Terminal Footer    | 🔄     | You    |
+| Feature         | Status | Owner  |
+| --------------- | ------ | ------ |
+| Markdown Engine | ✅      | System |
+| Blur Layer      | ⚠️      | CSS    |
+| Terminal Footer | 🔄      | You    |
 
 ---
 

@@ -1,0 +1,259 @@
+/* --- Real Terminal Footer --- */
+.terminalFooterReal {
+  margin: 0 auto;
+  width: 100%;
+  backdrop-filter: blur(32px) saturate(180%);
+  -webkit-backdrop-filter: blur(32px) saturate(180%);
+  box-shadow:
+    0 20px 40px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(255, 255, 255, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  overflow: hidden;
+  position: relative;
+  font-weight: 400;
+  height: 420px;
+  width: 100%;
+  max-width: 1000px;
+  display: flex;
+  flex-direction: column;
+  line-height: 1.5;
+}
+
+.terminalFooterReal::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+}
+
+.terminalFooterWindowBar {
+  background: rgba(var(--bit-dark-color-rgb), 1);
+  padding: 0.4rem 1rem;
+  display: flex;
+  align-items: center;
+  position: relative;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.terminalDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.terminalFooterScroll {
+  max-height: 420px;
+  overflow-y: auto;
+  padding: 1.2rem 1.5rem;
+  background: none;
+  min-height: 120px;
+  flex: 1 1 auto;
+}
+
+/* Input prompt that YOU type into */
+.terminalInputLine {
+  display: flex;
+  align-items: center;
+  font-family: inherit;
+  color: var(--dynamic-dominant-color);
+  margin-bottom: 0.1em;
+}
+
+/* > symbol for the input prompt that YOU type into */
+.terminalPromptReal {
+  color: var(--dynamic-hsl-average);
+  font-weight: 700;
+  margin-right: 0.3em;
+  font-size: 1.08em;
+}
+
+.terminalInputReal {
+  background: none;
+  border: none;
+  font-family: inherit;
+  font-size: 1em;
+  outline: none;
+  width: 70%;
+  min-width: 120px;
+  padding: 0.1em 0.3em;
+  transition: border-color 0.2s;
+  color: var(--dynamic-dominant-color);
+  caret-color: var(--dynamic-dominant-color);
+  /* Cursor color */
+}
+
+.terminalInputReal:focus {
+  font-weight: 700;
+}
+
+/* Output lines that appear in the terminal */
+.terminalOutputLine {
+  color: var(--dynamic-dominant-color);
+  font-family: inherit;
+  margin-bottom: 0.1rem;
+  white-space: pre-wrap;
+  /* Preserve whitespace and line breaks */
+  text-shadow: #707070 0 0 0px;
+}
+
+/* --- Flicker/Dim/Alert/Glitch Effects --- */
+
+.flicker {
+  animation: flickerAnim 2.5s infinite alternate;
+}
+
+@keyframes flickerAnim {
+
+  0%,
+  19.9%,
+  22%,
+  62.9%,
+  64%,
+  64.9%,
+  70%,
+  100% {
+    opacity: 0.99;
+  }
+
+  20%,
+  21.9%,
+  63%,
+  63.9%,
+  65%,
+  69.9% {
+    opacity: 0.7;
+  }
+
+  0%,
+  90% {
+    opacity: 0.8;
+  }
+
+  80% {
+    opacity: 0.85;
+  }
+
+  85% {
+    opacity: 0.6;
+  }
+
+  95% {
+    opacity: 0.5;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+.blink {
+  animation: blinkAnim 0.7s steps(1) infinite;
+}
+
+@keyframes blinkAnim {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.2;
+  }
+}
+
+.dimmed {
+  background: #111 !important;
+  color: #444 !important;
+  filter: blur(1.5px) brightness(0.9);
+  transition: filter 0.5s, color 0.5s, background 0.5s;
+}
+
+.alert {
+  background: #2e003e !important;
+  color: #ff003c !important;
+  animation: alertFlash 0.5s steps(2) infinite;
+}
+
+@keyframes alertFlash {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.2;
+  }
+}
+
+.glitch {
+  background: #008080 !important;
+  color: #fff;
+  text-shadow:
+    2px 0 #ff00c8,
+    -2px 0 #00ffea,
+    0 2px #ff003c,
+    0 -2px #00ffea;
+  animation: glitchAnim 0.3s infinite alternate;
+}
+
+@keyframes glitchAnim {
+  0% {
+    transform: translate(0, 0);
+  }
+
+  20% {
+    transform: translate(-1px, 1px);
+  }
+
+  40% {
+    transform: translate(-2px, -1px);
+  }
+
+  60% {
+    transform: translate(2px, 2px);
+  }
+
+  80% {
+    transform: translate(1px, -2px);
+  }
+
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
+@media (max-width: 600px) {
+
+  /* Terminal footer */
+  .terminalFooterReal {
+    max-width: 99vw;
+    height: 300px;
+    font-size: 0.93em;
+  }
+
+  .terminalFooterScroll {
+    padding: 0.5em 0.2em 0.5em 0.4em;
+    min-height: 80px;
+    max-height: 300px;
+  }
+
+  .terminalFooterWindowBar {
+    height: 1.5em;
+    padding: 0.1em 0.5em;
+  }
+
+  .terminalDot {
+    width: 0.7em;
+    height: 0.7em;
+  }
+}

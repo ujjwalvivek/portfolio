@@ -1,0 +1,597 @@
+.terminalContainer {
+    font-family: var(--font-mono);
+    line-height: 1.6;
+    color: var(--text-color);
+    font-size: 0.9rem;
+    border-radius: 2px;
+    white-space: pre-wrap;
+    display: flex;
+    gap: 1rem;
+    flex-direction: column;
+    padding-top: 0.5rem;
+    padding-bottom: 1rem;
+    width: 100%;
+}
+
+.prompt {
+    color: var(--dynamic-dominant-color);
+    font-weight: bold;
+    animation: blink 2s linear infinite;
+}
+
+.command {
+    color: var(--dynamic-dominant-color);
+    font-weight: 800;
+    margin-left: 0.5rem;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.commandParam {
+    color: var(--primary-color) !important;
+    font-weight: 400;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+
+.primary {
+    background: linear-gradient(90deg, rgba(var(--primary-color-rgb), 0.12), rgba(var(--primary-color-rgb), 0.06));
+    border-color: rgba(var(--primary-color-rgb), 0.12);
+    color: var(--primary-color);
+    padding-left: 0.5rem;
+}
+
+.output {
+    margin-top: 0.5rem;
+    color: var(--text-color);
+}
+
+.outputLine {
+    font-family: var(--font-mono);
+    font-weight: 300;
+    margin-left: 0.5rem;
+}
+
+/**
+ * ██████╗  █████╗ ██████╗  ██████╗ ███████╗
+ * ██╔══██╗██╔══██╗██╔══██╗██╔════╝ ██╔════╝
+ * ██████╔╝███████║██║  ██║██║  ███╗█████╗  
+ * ██╔══██╗██╔══██║██║  ██║██║   ██║██╔══╝  
+ * ██████╔╝██║  ██║██████╔╝╚██████╔╝███████╗
+ * ╚═════╝ ╚═╝  ╚═╝╚═════╝  ╚═════╝ ╚══════╝
+ *                                          
+ */
+
+.refBadge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.1rem 0.1rem;
+    font-size: 0.8rem;
+    line-height: 0.5;
+    color: var(--dynamic-dominant-color);
+    cursor: pointer;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    transition: transform 160ms ease, box-shadow 160ms ease, background 160ms ease, color 160ms ease;
+    vertical-align: middle;
+}
+
+.refBadgeText {
+    display: inline-block;
+    position: relative;
+    white-space: nowrap;
+    opacity: 0.95;
+    text-decoration: none;
+    -webkit-font-smoothing: antialiased;
+}
+
+.refBadgeText::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 2px;
+    bottom: -0.5em;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: left;
+    opacity: 0;
+    transition: transform 180ms cubic-bezier(.2, .9, .2, 1), opacity 140ms linear;
+    border-radius: 2px;
+}
+
+.refBadge:hover,
+.refBadge:focus {
+    transform: translateY(-1px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+    color: rgba(var(--dynamic-dominant-color-rgb), 1);
+    outline: none;
+    animation: none;
+}
+
+.refBadge:focus-visible {
+    box-shadow: 0 0 0 3px rgba(var(--dynamic-dominant-color-rgb), 0.12);
+    border-radius: 4px;
+}
+
+.refBadge:hover .refBadgeText::after,
+.refBadge:focus-visible .refBadgeText::after {
+    transform: scaleX(1);
+    opacity: 1;
+}
+
+.refBadge .letter {
+    display: inline-block;
+    color: inherit;
+    /* ensure animated letters use badge color */
+    -webkit-font-smoothing: antialiased;
+}
+
+/**
+ * ███████╗████████╗ █████╗ ██████╗ ███████╗██╗  ██╗██╗██████╗ 
+ * ██╔════╝╚══██╔══╝██╔══██╗██╔══██╗██╔════╝██║  ██║██║██╔══██╗
+ * ███████╗   ██║   ███████║██████╔╝███████╗███████║██║██████╔╝
+ * ╚════██║   ██║   ██╔══██║██╔══██╗╚════██║██╔══██║██║██╔═══╝ 
+ * ███████║   ██║   ██║  ██║██║  ██║███████║██║  ██║██║██║     
+ * ╚══════╝   ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝╚═╝╚═╝     
+ *                                                             
+ */
+
+.starship {
+    display: inline-flex;
+    align-items: center;
+    color: var(--starship-grey-color);
+    vertical-align: middle;
+    gap: 0;
+    font-family: var(--font-krypton) !important;
+    height: 2rem;
+    flex-wrap: nowrap;
+}
+
+.colorGroup {
+    display: inline-flex;
+    position: relative;
+}
+
+.color1,
+.color2,
+.color3 {
+    display: inline-flex;
+    width: 0.8rem;
+    height: 1.2rem;
+    min-height: 1rem;
+}
+
+.color1 {
+    border-radius: 1.1rem 0 0 1.1rem !important;
+}
+
+.colorLogo {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    background-color: rgba(var(--dynamic-dominant-color-rgb), 0.4);
+    padding: 0.2rem 0.5rem;
+    line-height: 0.5;
+    color: var(--starship-grey-color);
+}
+
+.path,
+.gitBranch,
+.version {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 300;
+    padding: 0 0.4rem;
+    line-height: 0.5;
+    font-size: 0.8rem;
+}
+
+.segmentText {
+    display: inline-flex;
+    align-items: center;
+    margin-left: 0.5rem;
+    flex: 1;
+}
+
+.segment {
+    display: inline-flex;
+    align-items: center;
+    position: relative;
+    height: 1.2rem;
+    line-height: 1;
+    margin-right: 0.3rem;
+    box-sizing: border-box;
+    vertical-align: middle;
+    overflow: visible;
+    --seg-color: #888888;
+    --seg-z: 10;
+    background: var(--seg-color);
+    z-index: var(--seg-z);
+    width: auto;
+}
+
+.segment+.segment {
+    margin-left: -0.75rem;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.segment:first-child .segmentText {
+    padding: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0.2rem !important;
+}
+
+.segment:nth-child(1) {
+    border-radius: 1.1rem 0 0 1.1rem !important;
+}
+
+.segment:last-child {
+    border-radius: 0 1.1rem 1.1rem 0 !important;
+}
+
+/**
+ * ███████╗████████╗ █████╗ ████████╗██╗   ██╗███████╗
+ * ██╔════╝╚══██╔══╝██╔══██╗╚══██╔══╝██║   ██║██╔════╝
+ * ███████╗   ██║   ███████║   ██║   ██║   ██║███████╗
+ * ╚════██║   ██║   ██╔══██║   ██║   ██║   ██║╚════██║
+ * ███████║   ██║   ██║  ██║   ██║   ╚██████╔╝███████║
+ * ╚══════╝   ╚═╝   ╚═╝  ╚═╝   ╚═╝    ╚═════╝ ╚══════╝
+ *                                                    
+ *  ██████╗ ██████╗ ██╗      ██████╗ ██████╗ ███████╗ 
+ * ██╔════╝██╔═══██╗██║     ██╔═══██╗██╔══██╗██╔════╝ 
+ * ██║     ██║   ██║██║     ██║   ██║██████╔╝███████╗ 
+ * ██║     ██║   ██║██║     ██║   ██║██╔══██╗╚════██║ 
+ * ╚██████╗╚██████╔╝███████╗╚██████╔╝██║  ██║███████║ 
+ *  ╚═════╝ ╚═════╝ ╚══════╝ ╚═════╝ ╚═╝  ╚═╝╚══════╝ 
+ *                                                    
+ */
+
+.statusOk {
+    color: var(--status-ok-color);
+    margin-right: 0.5rem;
+}
+
+.statusWarn {
+    color: var(--status-warn-color);
+    margin-right: 0.5rem;
+}
+
+.statusRam {
+    color: var(--status-ram-color);
+    margin-right: 0.5rem;
+}
+
+.statusInfo {
+    color: var(--status-info-color);
+    margin-right: 0.5rem;
+}
+
+.welcome {
+    color: var(--text-color);
+    font-weight: 200;
+    font-size: 0.8rem;
+    text-transform: lowercase;
+    font-family: var(--font-krypton);
+    margin-left: 0.5rem;
+    border: 1px dashed rgba(var(--dynamic-dominant-color-rgb), 0.4);
+    width: 45%;
+    margin-bottom: 0.3rem;
+    padding: 0 0.8rem;
+    border-radius: 0.25rem;
+}
+
+.welcome:nth-child(odd) {
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1' numOctaves='1' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' fill='black' opacity='0.2'/%3E%3C/svg%3E");
+    opacity: 1;
+}
+
+.welcome:nth-child(even) {
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1' numOctaves='1' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' fill='black' opacity='0.3'/%3E%3C/svg%3E");
+    opacity: 1;
+}
+
+
+/**
+ * ███████╗██████╗  █████╗ ███╗   ██╗██╗███████╗███████╗     
+ * ██╔════╝██╔══██╗██╔══██╗████╗  ██║██║╚══███╔╝██╔════╝     
+ * ███████╗██████╔╝███████║██╔██╗ ██║██║  ███╔╝ █████╗       
+ * ╚════██║██╔═══╝ ██╔══██║██║╚██╗██║██║ ███╔╝  ██╔══╝       
+ * ███████║██║     ██║  ██║██║ ╚████║██║███████╗███████╗     
+ * ╚══════╝╚═╝     ╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝╚══════╝╚══════╝     
+ *                                                           
+ * ██╗     ███████╗████████╗████████╗███████╗██████╗ ███████╗
+ * ██║     ██╔════╝╚══██╔══╝╚══██╔══╝██╔════╝██╔══██╗██╔════╝
+ * ██║     █████╗     ██║      ██║   █████╗  ██████╔╝███████╗
+ * ██║     ██╔══╝     ██║      ██║   ██╔══╝  ██╔══██╗╚════██║
+ * ███████╗███████╗   ██║      ██║   ███████╗██║  ██║███████║
+ * ╚══════╝╚══════╝   ╚═╝      ╚═╝   ╚══════╝╚═╝  ╚═╝╚══════╝
+ *                                                           
+ */
+
+.letter {
+    display: inline-block;
+    -webkit-animation: letter-glow 0.3s both;
+    animation: letter-glow 0.3s both;
+    letter-spacing: -0.3px;
+}
+
+.logoWrap {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    -webkit-animation: letter-glow 0.3s both;
+    animation: letter-glow 0.3s both;
+    vertical-align: middle;
+}
+
+.logo {
+    width: 1.1em;
+    height: 1.1em;
+    display: inline-block;
+    object-fit: contain;
+}
+
+@-webkit-keyframes letter-glow {
+    0% {
+        opacity: 0.4;
+        text-shadow: 0px 0px 1px rgba(var(--text-color-rgb), 0.1);
+    }
+
+    66% {
+        opacity: 0.6;
+        text-shadow: 0px 0px 20px rgba(var(--primary-color-rgb), 0.9);
+    }
+
+    77% {
+        opacity: 0.8;
+    }
+
+    100% {
+        opacity: 0.9;
+        text-shadow: 0px 0px 20px rgba(var(--primary-color-rgb), 0);
+    }
+}
+
+@keyframes letter-glow {
+    0% {
+        opacity: 0.4;
+        text-shadow: 0px 0px 1px rgba(var(--text-color-rgb), 0.1);
+    }
+
+    66% {
+        opacity: 0.6;
+        text-shadow: 0px 0px 20px rgba(var(--primary-color-rgb), 0.9);
+    }
+
+    77% {
+        opacity: 0.8;
+    }
+
+    100% {
+        opacity: 0.9;
+        text-shadow: 0px 0px 20px rgba(var(--primary-color-rgb), 0);
+    }
+}
+
+/**
+ *  █████╗ ███╗   ██╗██╗███╗   ███╗ █████╗ ████████╗██╗ ██████╗ ███╗   ██╗
+ * ██╔══██╗████╗  ██║██║████╗ ████║██╔══██╗╚══██╔══╝██║██╔═══██╗████╗  ██║
+ * ███████║██╔██╗ ██║██║██╔████╔██║███████║   ██║   ██║██║   ██║██╔██╗ ██║
+ * ██╔══██║██║╚██╗██║██║██║╚██╔╝██║██╔══██║   ██║   ██║██║   ██║██║╚██╗██║
+ * ██║  ██║██║ ╚████║██║██║ ╚═╝ ██║██║  ██║   ██║   ██║╚██████╔╝██║ ╚████║
+ * ╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝╚═╝     ╚═╝╚═╝  ╚═╝   ╚═╝   ╚═╝ ╚═════╝ ╚═╝  ╚═══╝
+ *                                                                        
+ * ███████╗████████╗ █████╗ ████████╗███████╗███████╗                     
+ * ██╔════╝╚══██╔══╝██╔══██╗╚══██╔══╝██╔════╝██╔════╝                     
+ * ███████╗   ██║   ███████║   ██║   █████╗  ███████╗                     
+ * ╚════██║   ██║   ██╔══██║   ██║   ██╔══╝  ╚════██║                     
+ * ███████║   ██║   ██║  ██║   ██║   ███████╗███████║                     
+ * ╚══════╝   ╚═╝   ╚═╝  ╚═╝   ╚═╝   ╚══════╝╚══════╝                     
+ *                                                                        
+ */
+
+.blink {
+    animation: blink 2s linear infinite;
+}
+
+.flicker {
+    animation: flicker 3s infinite;
+}
+
+.uptime {
+    color: #60a5fa;
+    animation: uptimeGlow 2s infinite alternate;
+}
+
+.scrollText {
+    display: inline-block;
+    overflow: visible;
+    white-space: nowrap;
+    animation: scrollAnim 2.5s linear infinite;
+}
+
+.vibrateText {
+    display: inline-block;
+    animation: vibrate 50ms linear infinite;
+}
+
+@keyframes vibrate {
+    0% {
+        transform: translateX(-1px) translateY(1px);
+    }
+
+    100% {
+        transform: translateX(2px) translateY(-2px);
+    }
+}
+
+@keyframes blink {
+
+    0%,
+    50% {
+        opacity: 1;
+    }
+
+    51%,
+    100% {
+        opacity: 0.3;
+    }
+}
+
+@keyframes flicker {
+
+    0%,
+    19.9%,
+    22%,
+    62.9%,
+    64%,
+    64.9%,
+    70%,
+    100% {
+        opacity: 0.99;
+    }
+
+    20%,
+    21.9%,
+    63%,
+    63.9%,
+    65%,
+    69.9% {
+        opacity: 0.4;
+    }
+
+    0%,
+    90% {
+        opacity: 0.5;
+    }
+
+    80% {
+        opacity: 0.85;
+    }
+
+    85% {
+        opacity: 0.6;
+    }
+
+    95% {
+        opacity: 0.4;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes uptimeGlow {
+    0% {
+        opacity: 0.8;
+    }
+
+    100% {
+        opacity: 1;
+        text-shadow: 0 0 5px currentColor;
+    }
+}
+
+@keyframes scrollAnim {
+    0% {
+        transform: translateX(4px);
+    }
+
+    50% {
+        transform: translateX(-4px);
+    }
+
+    100% {
+        transform: translateX(0px);
+    }
+}
+
+/**
+ * ██████╗ ███████╗███████╗██████╗  ██████╗ ███╗   ██╗███████╗██╗██╗   ██╗███████╗
+ * ██╔══██╗██╔════╝██╔════╝██╔══██╗██╔═══██╗████╗  ██║██╔════╝██║██║   ██║██╔════╝
+ * ██████╔╝█████╗  ███████╗██████╔╝██║   ██║██╔██╗ ██║███████╗██║██║   ██║█████╗  
+ * ██╔══██╗██╔══╝  ╚════██║██╔═══╝ ██║   ██║██║╚██╗██║╚════██║██║╚██╗ ██╔╝██╔══╝  
+ * ██║  ██║███████╗███████║██║     ╚██████╔╝██║ ╚████║███████║██║ ╚████╔╝ ███████╗
+ * ╚═╝  ╚═╝╚══════╝╚══════╝╚═╝      ╚═════╝ ╚═╝  ╚═══╝╚══════╝╚═╝  ╚═══╝  ╚══════╝
+ *                                                                                
+ *  ██████╗███████╗███████╗                                                       
+ * ██╔════╝██╔════╝██╔════╝                                                       
+ * ██║     ███████╗███████╗                                                       
+ * ██║     ╚════██║╚════██║                                                       
+ * ╚██████╗███████║███████║                                                       
+ *  ╚═════╝╚══════╝╚══════╝                                                       
+ *                                                                                
+ */
+
+@media (max-width: 900px) {
+    .statusConsoleSection {
+        width: 50%;
+        padding: 1rem 1rem;
+        margin-left: 1rem;
+    }
+
+    .statusService {
+        font-size: 0.9em;
+    }
+}
+
+@media (max-width: 768px) {
+    .terminalContainer {
+        font-size: 0.8rem;
+    }
+
+    .statusRow {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+
+    .statusBadge {
+        align-self: flex-end;
+    }
+}
+
+@media (max-width: 600px) {
+    .starship {
+        font-size: 0.78rem;
+        height: 1.8rem;
+    }
+
+    .segment {
+        margin-right: 0.2rem;
+    }
+
+    .segment+.segment {
+        margin-left: -0.5rem;
+    }
+
+    .path,
+    .gitBranch,
+    .version {
+        font-size: 0.72rem;
+        padding: 0 0.3rem;
+    }
+
+    .statusServiceKey {
+        padding: 0.3rem 0.5rem;
+        min-width: 80px;
+        font-size: 0.8em;
+    }
+
+    .statusService {
+        padding-right: 0.3rem;
+        font-size: 0.9em;
+    }
+
+    .statusConsoleSection {
+        width: 100%;
+        padding: 1rem 1rem;
+        margin: 0 auto;
+    }
+}

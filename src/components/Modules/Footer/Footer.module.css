@@ -1,0 +1,423 @@
+.Footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 1.5rem;
+    display: flex;
+    align-items: center;
+    background: rgba(var(--dynamic-hsl-average-rgb), 0.15);
+    backdrop-filter: blur(32px) saturate(200%);
+    -webkit-backdrop-filter: blur(32px) saturate(200%);
+    font-family: var(--font-krypton);
+    font-weight: 200 !important;
+    font-size: 0.8rem;
+    z-index: 1000;
+    user-select: none;
+}
+
+.overlayFooter {
+    padding: 0.5rem 1.4rem;
+    background: rgba(var(--bit-dark-color-rgb), 1);
+    display: flex;
+    flex-direction: row;
+    gap: 1.5rem;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid rgba(var(--primary-color-rgb), 0.2);
+    justify-content: flex-end;
+}
+
+.statusBarLeft {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    flex: 1;
+}
+
+.statusBarRight {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    margin-left: auto;
+}
+
+.statusBarItem {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    padding: 0.3rem 0.6rem;
+    cursor: pointer;
+    transition: background-color 0.1s ease;
+    white-space: nowrap;
+    font-size: 0.8rem;
+    text-align: center;
+    gap: 0.4rem;
+}
+
+.statusBarStats {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    cursor: pointer;
+    transition: background-color 0.1s ease;
+    white-space: nowrap;
+    text-align: center;
+    color: rgba(238, 231, 215, 0.75);
+    line-height: 1;
+    gap: 0.4rem;
+}
+
+.statusBarCookies {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    text-align: center;
+}
+
+.statusBarTrackers {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    text-align: center;
+    gap: 0rem;
+}
+
+
+.statusBarItem:hover {
+    background-color: rgba(var(--dynamic-dominant-color-rgb), 0.35);
+}
+
+.vibeIndicator {
+    background: rgba(var(--dynamic-hsl-average-rgb), 0.25);
+}
+
+.vibeIndicatorVariant {
+    background: rgba(var(--dynamic-dominant-color-rgb), 0.25);
+}
+
+.statusBarIcon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    line-height: 1;
+    margin: 0;
+    flex-shrink: 0;
+    vertical-align: baseline;
+}
+
+.statusBarText {
+    display: flex;
+    align-items: center;
+    vertical-align: middle;
+    font-size: 0.7rem;
+    line-height: 1;
+    margin: 0;
+}
+
+.statusBarBadge {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    padding: 0 0.5rem;
+    padding-left: 0.6rem;
+    color: var(--background-color);
+    font-weight: 500;
+    min-width: 1.5rem;
+    justify-content: center;
+}
+
+@media (max-width: 768px) {
+    .statusBarBadge {
+        display: none;
+    }
+}
+
+.languageMode {
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+}
+
+.Footer p {
+    margin: 0;
+    padding: 5px 10px;
+}
+
+.Footer.dark {
+    color: #E3DCED;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(var(--background-color-rgb), 0.8);
+    z-index: 9999;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 20vh 1.5rem 0 1.5rem;
+    animation: fadeIn 0.2s ease-out;
+}
+
+.overlay:has(.container:hover) {
+    background: rgba(var(--background-color-rgb), 0.2) !important;
+    transition: background 0.3s;
+}
+
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.container {
+    border-radius: 4px;
+    width: 100%;
+    max-width: 952px;
+    overflow: hidden;
+    animation: slideIn 0.3s ease-out;
+    backdrop-filter: blur(32px) saturate(180%);
+    -webkit-backdrop-filter: blur(32px) saturate(180%);
+    background: rgba(var(--background-color-rgb), 0.3);
+}
+
+.container:hover {
+    backdrop-filter: blur(32px) saturate(180%);
+    -webkit-backdrop-filter: blur(32px) saturate(180%);
+    background: rgba(var(--dynamic-hsl-average-rgb), 0.2);
+}
+
+.overlayContainer {
+    border-radius: 4px;
+    width: 100%;
+    max-width: 952px;
+    overflow: hidden;
+    animation: slideIn 0.3s ease-out;
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    background: rgba(var(--bit-dark-color-rgb), 1);
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px) scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.skillsGridIcons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    margin: 0.5rem auto;
+    padding: 0 0.5rem;
+}
+
+.skillItem {
+    position: relative;
+    display: flex;
+    flex: 0 0 auto;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(32px) saturate(180%);
+    -webkit-backdrop-filter: blur(32px) saturate(180%);
+    background: rgba(var(--background-color-rgb), 0.3);
+    border-radius: 2px;
+    padding: 1rem;
+    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.10);
+    transition: transform 0.18s, box-shadow 0.18s;
+    cursor: cell;
+    height: 60px;
+    width: auto;
+    text-align: center;
+    background: none;
+    overflow: visible;
+    margin: 0.4rem;
+    border: 2px solid rgba(var(--dynamic-dominant-color-rgb), 0.4);
+}
+
+.skillItem:hover {
+    transform: translateY(-4px) scale(1.001) rotate(0deg);
+    box-shadow: 0 6px 24px 0 rgba(0, 0, 0, 0.18);
+    background-color: rgba(var(--dynamic-dominant-color-rgb), 0.35);
+}
+
+.skillItem::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--text-color);
+    opacity: 0.7;
+    filter: blur(12px) saturate(180%);
+    z-index: 10004;
+    pointer-events: none;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    padding: 0.6rem 1.4rem;
+    background: rgba(var(--bit-dark-color-rgb), 1);
+    line-height: 1;
+    border-bottom: 1px solid rgba(var(--primary-color-rgb), 0.2);
+}
+
+.searchIcon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-color);
+    font-size: 1.3rem;
+    margin-right: 0.75rem;
+}
+
+.title {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: rgba(var(--text-color-rgb), 0.8);
+    font-size: 1rem;
+    font-family: var(--font-mono);
+    font-weight: 700;
+    cursor: default;
+}
+
+.shortcut {
+    color: rgba(var(--dynamic-dominant-color-rgb), 0.8);
+    font-size: 0.8rem;
+    font-family: var(--font-mono);
+    padding: 0.2rem 0.4rem;
+    border-radius: 2px;
+    border: 1px solid rgba(var(--dynamic-dominant-color-rgb), 0.5);
+    margin-left: 0.5rem;
+    cursor: pointer;
+    background: rgba(var(--dynamic-dominant-color-rgb), 0.2);
+}
+
+.shortcuts {
+    display: flex;
+    gap: 1.5rem;
+    font-size: 0.75rem;
+    color: rgba(var(--text-color-rgb), 0.7);
+    font-family: 'SF Mono', 'Monaco', 'Consolas', monospace;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.shortcuts kbd {
+    background: rgba(var(--dynamic-dominant-color-rgb), 0.1);
+    border: 1px solid rgba(var(--dynamic-dominant-color-rgb), 0.5);
+    border-radius: 2px;
+    padding: 0.2rem 0.4rem;
+    font-size: 0.7rem;
+    margin: 0 0.1rem;
+    color: rgba(var(--text-color-rgb), 0.9);
+    font-weight: 800;
+    font-family: inherit;
+    margin-right: 0.3rem;
+}
+
+.controlGroup {
+    display: flex;
+    flex-direction: row;
+    gap: 0.8rem;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* When the skills grid is composed with the generic controlGroup helper
+   allow wrapping and disable the clipping so icons can flow to multiple
+   rows instead of being forced into a single, clipped line. */
+.skillsGridIcons.controlGroup {
+    display: flex;
+    /* keep existing layout rules */
+    flex-wrap: wrap;
+    /* allow wrapping */
+    overflow: visible;
+    /* don't clip wrapped items */
+    justify-content: center;
+    /* center across rows */
+    gap: 0.8rem;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0.6rem 1rem;
+    max-width: 960px;
+    /* keep the overlay's max width in mind */
+}
+
+/* ------- WEB BREAKPOINTS ------- */
+
+@media (max-width: 768px) {
+    .Footer {
+        font-size: 0.8em;
+    }
+
+    .overlayFooter {
+        padding: 1rem;
+        gap: 1rem;
+    }
+
+    .header h1 {
+        font-size: 2.2rem;
+    }
+
+    .shortcuts {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 600px) {
+
+    .Footer {
+        font-size: 0.6em;
+    }
+
+    /* Skills grid: 5 icons per row, smaller icons */
+    .skillsGridIcons {
+        grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
+        gap: 1rem;
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .skillItem {
+        width: auto;
+        height: 50px;
+        padding: 0.7rem;
+        position: relative;
+    }
+
+    .skillItem .frostedIcon {
+        font-size: 1rem !important;
+    }
+}

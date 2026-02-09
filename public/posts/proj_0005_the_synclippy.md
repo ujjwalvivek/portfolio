@@ -399,12 +399,12 @@ go run main.go                 # Start backend server (separate terminal)
 
 ## Current Status (July 2025)
 
-| Component | State | Notes |
-|-----------|-------|-------|
-| Go WebSocket server | **Prototype** | Handles text sync in web-only mode |
-| Web UI | **Prototype** | Hit browser API ceiling |
-| Tauri desktop app | **Planned** | Rust bindings drafted |
-| Mobile app (Flutter) | **Backlog** | Awaiting stable core protocol |
+| Component            | State         | Notes                              |
+| -------------------- | ------------- | ---------------------------------- |
+| Go WebSocket server  | **Prototype** | Handles text sync in web-only mode |
+| Web UI               | **Prototype** | Hit browser API ceiling            |
+| Tauri desktop app    | **Planned**   | Rust bindings drafted              |
+| Mobile app (Flutter) | **Backlog**   | Awaiting stable core protocol      |
 
 ## Next Steps ToDo
 

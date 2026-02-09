@@ -1,0 +1,355 @@
+/*
+=========================================================================================
+ Enhanced Latest Logs/Posts Container
+=========================================================================================
+*/
+
+.latestLogs {
+    position: relative;
+    width: 100%;
+    letter-spacing: 0px;
+    font-family: var(--font-mono);
+    font-size: 1rem;
+    color: var(--text-color);
+    line-height: 1.5;
+    padding: 0;
+    overflow: hidden;
+}
+
+/* --- Subtle gradient overlay --- */
+.latestLogs::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* --- Container for the list --- */
+.latestLogs .logsContent {
+    position: relative;
+    z-index: 2;
+}
+
+/* --- Enhanced list styling --- */
+.latestLogs ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+}
+
+.latestLogs li {
+    border-radius: 2px;
+    margin: 0;
+    transition: all 0.3s ease;
+    display: block;
+    box-sizing: border-box;
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(32px) saturate(180%);
+    -webkit-backdrop-filter: blur(32px) saturate(180%);
+    background: rgba(var(--background-color-rgb), 0.2);
+    border: 2px solid transparent;
+}
+
+.latestLogs li::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 0.5rem;
+    left: 0;
+    background: var(--dynamic-dominant-color);
+    transform-origin: left;
+    transition: transform 220ms cubic-bezier(.2, .9, .2, 1), opacity 180ms linear;
+    pointer-events: none;
+    z-index: 1;
+    will-change: transform, opacity;
+}
+
+.latestLogs li:hover::after {
+    transform: scaleX(0);
+    opacity: 0;
+}
+
+/* --- Enhanced hover effects --- */
+.latestLogs li:hover {
+    border-color: var(--dynamic-dominant-color);
+    background: rgba(var(--background-color-rgb), 0.5);
+    box-shadow: 0 0 4px rgba(var(--text-color-rgb), 0.2);
+    transition: all 0.3s ease-in-out;
+}
+
+/* --- Subtle glow on hover --- */
+.latestLogs li::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(var(--dynamic-dominant-color-rgb), 0.1), transparent);
+    transition: left 0.5s ease;
+}
+
+.latestLogs li:hover::before {
+    left: 100%;
+}
+
+.latestLogs a {
+    display: block;
+    font-family: var(--font-mono);
+    color: var(--text-color);
+    text-decoration: none;
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+    background: transparent;
+    width: 100%;
+    position: relative;
+    z-index: 2;
+}
+
+.postHeader {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+}
+
+.postDate {
+    font-size: 0.9rem;
+    font-weight: 800;
+    min-width: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    letter-spacing: 0px;
+    padding: 0.25rem 0.5rem;
+    border-radius: 2px;
+    text-align: center;
+    transition: all 0.3s ease;
+    line-height: 1;
+    vertical-align: middle;
+    box-sizing: border-box;
+    background: rgba(var(--dynamic-dominant-color-rgb), 0.2);
+    border: 1px solid rgba(var(--dynamic-dominant-color-rgb), 0.4);
+    color: var(--dynamic-dominant-color);
+}
+
+.latestLogs li:hover .postDate {
+    box-shadow: 0 0 10px rgba(var(--dynamic-dominant-color-rgb), 0.3);
+}
+
+/* --- Post title enhanced styling --- */
+.postTitle {
+    color: var(--dynamic-dominant-color);
+    font-weight: 600;
+    font-size: 1.2rem;
+    flex: 1;
+    letter-spacing: 0.5px;
+    text-shadow: 0 0 2px rgba(240, 246, 252, 0.3);
+    transition: all 0.3s ease;
+    line-height: 1;
+}
+
+.latestLogs li:hover .postTitle {
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
+}
+
+/* NEW: Post description styling --- */
+.postDescription {
+    color: var(--primary-color);
+    font-size: 0.9rem;
+    line-height: 1.4;
+    margin-bottom: 0.75rem;
+    font-weight: 400;
+    letter-spacing: 0px;
+    transition: all 0.3s ease;
+}
+
+.postTags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.tag {
+    font-size: 0.7rem;
+    font-weight: 400;
+    padding: 0.2rem 0.4rem;
+    border-radius: 2px;
+    letter-spacing: 0px;
+    text-transform: lowercase;
+    transition: all 0.3s ease;
+    display: inline-block;
+    background: linear-gradient(135deg, rgba(var(--dynamic-dominant-color-rgb), 0.25) 0%, rgba(var(--dynamic-dominant-color-rgb), 0.25) 100%);
+    border: 1px dashed var(--dynamic-dominant-color);
+    color: var(--dynamic-dominant-color);
+}
+
+.latestLogs li:hover .tag {
+    box-shadow: 0 0 8px rgba(var(--dynamic-dominant-color-rgb), 0.2);
+}
+
+/* --- Blockquote intro style --- */
+.blockquoteIntro {
+    font-family: var(--font-neon);
+    font-size: 1rem;
+    color: var(--text-color);
+    line-height: 1.5;
+    position: relative;
+    font-weight: 200;
+    margin: 0 auto 1rem auto;
+    padding: 0 2rem;
+    max-width: 1000px;
+    text-align: left;
+    overflow-x: auto;
+    padding-bottom: 1rem;
+    letter-spacing: -1px;
+}
+
+.blockquoteIntro::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 4px;
+    height: 100%;
+    background: var(--text-color);
+    box-shadow: 0 0 16px 2px #79c0ff55;
+    z-index: 2;
+}
+
+/*
+=========================================================================================
+Responsive Styles
+=========================================================================================
+*/
+
+@media (max-width: 900px) {
+    .latestLogs {
+        font-size: 0.95rem;
+    }
+
+    .latestLogs h3 {
+        font-size: 1.1rem;
+    }
+}
+
+@media (max-width: 700px) {
+    .latestLogs h3 {
+        font-size: 0.95rem;
+    }
+
+    .latestLogs {
+        font-size: 0.92rem;
+        margin: 0 auto;
+    }
+
+    .postTitle {
+        font-size: 1rem;
+    }
+
+    .postDate {
+        font-size: 0.8rem;
+        min-width: 54px;
+        padding: 0.18rem 0.35rem;
+    }
+
+    .postDescription {
+        font-size: 0.85rem;
+    }
+
+    .postTags {
+        gap: 0.3rem;
+    }
+
+    .tag {
+        font-size: 0.65rem;
+        padding: 0.13rem 0.32rem;
+    }
+}
+
+@media (max-width: 500px) {
+    .latestLogs {
+        font-size: 0.85rem;
+    }
+
+    .latestLogs h3 {
+        font-size: 0.85rem;
+    }
+
+    .postTitle {
+        font-size: 1rem;
+    }
+
+    .postDate {
+        font-size: 0.7rem;
+    }
+
+    .postDescription {
+        font-size: 0.8rem;
+    }
+
+    .postTags {
+        gap: 0.5rem;
+    }
+
+    .tag {
+        font-size: 0.6rem;
+    }
+}
+
+/* --- Responsive: Blockquote and Paragraphs --- */
+@media (max-width: 700px) {
+
+    .blockquoteIntro {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 600px) {
+
+    .blockquoteIntro {
+        font-size: 0.85rem;
+        line-height: 1.4;
+    }
+}
+
+@media (max-width: 500px) {
+
+    .blockquoteIntro {
+        font-size: 0.8rem;
+        line-height: 1.4;
+    }
+}
+
+/* --- Responsive: Latest Logs List --- */
+@media (max-width: 700px) {
+    .latestLogs ul {
+        gap: 1rem;
+    }
+
+    .latestLogs a {
+        padding: 1rem;
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 500px) {
+    .latestLogs ul {
+        gap: 0.8rem;
+    }
+
+    .latestLogs a {
+        font-size: 0.85rem;
+    }
+}

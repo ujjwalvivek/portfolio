@@ -1,0 +1,197 @@
+.rpv-core__viewer {
+  width: 100% !important;
+  height: 100% !important;
+  overflow: auto !important;
+}
+
+.rpv-core__page-layer {
+  width: fit-content !important;
+  max-width: 100% !important;
+  justify-content: center !important;
+  margin: 0 auto !important;
+}
+
+.rpv-core__inner-pages {
+  width: 100% !important;
+  justify-content: flex-start !important;
+  align-items: center !important;
+  padding: 0 !important;
+}
+
+:global(.rpv-default-layout__toolbar) {
+  background: var(--background-color) !important;
+  box-shadow: none !important;
+  border-bottom: none !important;
+}
+
+:global(.rpv-toolbar) {
+  background: var(--background-color) !important;
+}
+
+:global(.rpv-core__inner-pages.rpv-core__inner-pages--vertical) {
+  background: var(--background-color) !important;
+}
+
+:global(.rpv-core__inner-page) {
+  background: rgba(var(--background-color-rgb), 1) !important;
+}
+
+:global(.rpv-default-layout__container) {
+  border: none !important;
+}
+
+.resumeOverlayRoot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(20px) saturate(180%);
+  animation: resumeOverlayFadeIn 0.25s cubic-bezier(.4, 0, .2, 1);
+  font-family: var(--font-mono);
+}
+
+.resumeOverlayModal {
+  width: 100%;
+  max-width: 1000px;
+  height: 85vh;
+  max-height: 85vh;
+  padding: 0 1.5rem;
+  transition: background 0.3s, box-shadow 0.3s;
+  animation: resumeModalPopIn 0.25s cubic-bezier(.4, 0, .2, 1);
+  display: flex;
+  flex-direction: column;
+}
+
+.resumeOverlayViewer {
+  background: rgba(255, 255, 255, 0.07);
+  border-color: transparent;
+  box-shadow: 0 12px 40px rgba(30, 40, 90, 0.22), 0 1.5px 8px rgba(59, 130, 246, 0.1);
+  position: relative;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  border-radius: 2px;
+  flex: 1;
+  min-height: 0;
+}
+
+@keyframes resumeOverlayFadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes resumeModalPopIn {
+  from {
+    transform: scale(0.97) translateY(30px);
+    opacity: 0;
+  }
+
+  to {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+}
+
+.postHeader {
+  background: rgba(var(--bit-dark-color-rgb), 1);
+  padding: 0.5rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  position: relative;
+  width: 100%;
+  max-width: 1000px;
+  border-radius: 4px 4px 0 0;
+  line-height: 1;
+}
+
+.closeButton,
+.minimizeButton,
+.maximizeButton {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.closeButton {
+  background: linear-gradient(135deg, var(--status-ram-color) 0%, var(--status-ram-color) 100%);
+}
+
+.minimizeButton {
+  background: linear-gradient(135deg, var(--status-warn-color) 0%, var(--status-warn-color) 100%);
+}
+
+.maximizeButton {
+  background: linear-gradient(135deg, var(--status-ok-color) 0%, var(--status-ok-color) 100%);
+}
+
+.closeButton:hover,
+.minimizeButton:hover,
+.maximizeButton:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+}
+
+.postTitle {
+  font-size: 1rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex: 1;
+  text-shadow: 0 0 10px rgba(56, 139, 253, 0.3);
+  font-family: var(--font-mono);
+}
+
+.headerButtons {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.headerBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 28px;
+  padding: 0 0.7rem;
+  box-sizing: border-box;
+  line-height: 1;
+  color: var(--text-color);
+  font-family: var(--font-mono);
+  margin-bottom: 0;
+  border: 1px solid rgba(var(--dynamic-dominant-color-rgb), 0.9);
+  border-radius: 2px;
+  background: rgba(var(--dynamic-dominant-color-rgb), 0.2);
+  opacity: 0.9;
+  cursor: pointer;
+}
+
+.customToolbar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 0.2rem;
+  padding: 8px;
+  gap: 12px;
+  background: transparent;
+  width: 100%;
+}
+
+.customToolbar>span {
+  cursor: default;
+}

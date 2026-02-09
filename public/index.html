@@ -4,45 +4,38 @@
 <head>
   <meta charset="utf-8" />
   <!-- Ever Growing list of websites smh  -->
-  <meta 
-    http-equiv="Content-Security-Policy" 
-    content="
+  <meta http-equiv="Content-Security-Policy" content="
     default-src 'self'; script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com https://*.cloudflare.com; 
     script-src-elem 'self' 'unsafe-inline' https://challenges.cloudflare.com https://unpkg.com; 
     style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; 
     style-src-elem 'self' 'unsafe-inline' https://fonts.googleapis.com; 
     object-src 'none'; 
     img-src 'self' data: https://cdn.ujjwalvivek.com https://images.unsplash.com; 
-    font-src 'self' https://fonts.gstatic.com; 
-    connect-src 'self' https://challenges.cloudflare.com https://*.cloudflare.com https://api.github.com https://api.github.com/* https://cdn.ujjwalvivek.com https://api.emailjs.com https://analytics.ujjwalvivek.com; 
+    font-src 'self' https://fonts.gstatic.com https://cdn.ujjwalvivek.com; 
+    connect-src 'self' https://challenges.cloudflare.com https://*.cloudflare.com https://api.github.com https://api.github.com/* https://cdn.ujjwalvivek.com https://api.emailjs.com https://analytics.ujjwalvivek.com https://analytics.ujjwalvivek.com/api; 
     frame-src https://challenges.cloudflare.com https://*.notion.site https://www.youtube.com https://www.youtube-nocookie.com;
-    worker-src 'self' blob:;"
-  />
+    worker-src 'self' blob:;" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#1a1a1a" />
   <meta name="description" content="Welcome | Vivek's Journey" />
   <meta property="og:title" content="Vivek's Journey" />
-  <meta 
-    property="og:description"
-    content="A creative, interactive portfolio documenting Vivek's journey in code, design, and ideas."
-  />
+  <meta property="og:description"
+    content="A creative, interactive portfolio documenting Vivek's journey in code, design, and ideas." />
   <meta property="og:image" content="https://cdn.ujjwalvivek.com/icons/logo512.png" />
   <meta property="og:url" content="https://ujjwalvivek.com/" />
   <meta property="og:type" content="website" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Vivek's Journey" />
-  <meta 
-    name="twitter:description"
-    content="A creative, interactive portfolio documenting Vivek's journey in code, design, and ideas." 
-  />
+  <meta name="twitter:description"
+    content="A creative, interactive portfolio documenting Vivek's journey in code, design, and ideas." />
   <meta name="twitter:image" content="https://cdn.ujjwalvivek.com/icons/logo512.png" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    
+
   <link rel="icon" href="https://cdn.ujjwalvivek.com/icons/favicon.ico" />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
   <link rel="prefetch" as="fetch" href="/posts/meta.json" type="application/json" crossorigin>
   <link rel="prefetch" as="fetch" href="/posts/log_0003_going_open_source.md" type="text/markdown" crossorigin>
-  <link rel="prefetch" href="https://cdn.ujjwalvivek.com/posts/media/webgpu.svg" as="fetch" type="image/svg+xml" crossorigin>
+  <link rel="prefetch" href="https://cdn.ujjwalvivek.com/posts/media/webgpu.svg" as="fetch" type="image/svg+xml"
+    crossorigin>
   <link rel="apple-touch-icon" href="https://cdn.ujjwalvivek.com/icons/logo192.png" />
   <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
 
@@ -50,9 +43,130 @@
 </head>
 
 <body>
+  <div id="fallback" style="position: fixed; 
+                            top: 0; left: 0; right: 0; bottom: 0;
+                            background: #030303;
+                            color: #00ff41; 
+                            padding: 40px 20px;
+                            font-family: 'JetBrains Mono', 'Fira Code', 'SF Mono', Consolas, monospace;
+                            display: flex;
+                            flex-direction: column;
+                            justify-content: center;
+                            align-items: center;
+                            line-height: 1.4;">
+    <div style="max-width: 700px;
+             width: calc(100% - 60px); 
+             margin: 0 auto; 
+             border: 1px solid #222; 
+             background: #111; 
+             padding: 30px; 
+             border-radius: 8px; 
+             box-shadow: 0 0 20px rgba(0,255,65,0.1);">
+      <div style="color: #00ff41; font-size: 14px; margin-bottom: 20px;"><span style="color:#666;">ujjwalvivek.com ~
+          %</span><br /> browser --probe --compatibility<span class="cursor">█</span></div>
+      <div style="color: #ff5555; margin-bottom: 10px; font-size: 14px;">
+        [ERROR] Incompatible browser detected
+      </div>
+      <div style="color: #ffaa00; margin-bottom: 10px; font-size: 14px;">
+        [WARN] Safari version too ancient to run this application
+      </div>
+      <div style="color: #4ecdc4; margin-bottom: 20px; font-size: 14px;">
+        [INFO] This website requires iOS 16+ or modern browser features
+      </div>
+      <pre style="color: #95a5a6; margin-bottom: 20px; font-size: 14px;">
+┌─ Minimum Requirements ─┐
+│ • iOS Safari 16+       │
+│ • Chrome / Edge 90+    │
+│ • Firefox 88+          │
+└────────────────────────┘
+      </pre>
+      <div style="color: #00ff41; font-size: 0.85rem;">ujjwalvivek.com ~ % <span class="cursor">█</span></div>
+    </div>
+  </div>
+  <style>
+    .cursor {
+      display: inline-block;
+      animation: blink 1s infinite steps(2, start);
+    }
+
+    @keyframes blink {
+      to {
+        visibility: hidden;
+      }
+    }
+  </style>
+
   <noscript>You need to enable JavaScript to run this app.</noscript>
+
+  <script>
+    try { if (JSON.parse(localStorage.getItem('darkMode')) !== false) document.body.classList.add('dark-mode'); } catch (e) { }
+  </script>
+
+  <div id="initial-loader" style="position: fixed; 
+                                inset: 0;
+                                background: #030303;
+                                font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+                                display: flex;
+                                flex-direction: column;
+                                z-index: 9998;
+                                opacity: 1;
+                                transition: opacity 0.3s ease-out;">
+
+    <!-- Centered placeholder for preview (empty state) -->
+    <div style="flex: 1;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 56px 1rem 1.2rem;">
+    </div>
+
+    <!-- Step text placeholder -->
+    <div style="height: 6rem;
+                padding: 0 2.5rem;
+                display: flex;
+                align-items: center;">
+      <span style="font-size: 0.8rem;
+                   color: rgba(255, 117, 117, 0.56);
+                   letter-spacing: 1px;">
+        <span style="color: #ff7675; margin-right: 0.6rem; font-weight: bold;">▶</span>
+        Initializing system<span class="cursor" style="color: #ff7675; margin-left: 0.3rem;">_</span>
+      </span>
+    </div>
+  </div>
+
   <div id="root"></div>
+
   <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+
+  <script>
+    // Hide initial loader once React renders (with smooth fade)
+    var rootEl = document.getElementById('root');
+    var loaderEl = document.getElementById('initial-loader');
+
+    var observer = new MutationObserver(function () {
+      if (rootEl.children.length > 0) {
+        // Fade out the loader
+        loaderEl.style.opacity = '0';
+        setTimeout(function () {
+          loaderEl.style.display = 'none';
+        }, 300); // match CSS transition duration
+        observer.disconnect();
+      }
+    });
+    observer.observe(rootEl, { childList: true });
+
+    // Keep old Safari fallback logic unchanged
+    var isOldSafari = /Safari/.test(navigator.userAgent) &&
+      /Version\/1[0-5]\./.test(navigator.userAgent);
+
+    if (isOldSafari) {
+      loaderEl.style.display = 'none'; // Hide loader for old Safari
+      document.getElementById('fallback').style.display = 'flex';
+      document.getElementById('root').style.display = 'none';
+    } else {
+      document.getElementById('fallback').style.display = 'none';
+    }
+  </script>
 </body>
 
 </html>

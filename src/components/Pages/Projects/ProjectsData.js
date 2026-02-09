@@ -29,7 +29,7 @@ export const ProjectsData = [
 
   {
     id: 'dev-1',
-    title: 'CaaS (Code as a Story) [Ongoing]',
+    title: 'CaaS (Code as a Story)',
     content: ['A self-generating portfolio featuring procedural background algorithms that create unique visuals no AI can replicate. Built with React, powered by mathematical creativity, and designed with terminal aesthetics that honor the beauty of command-line interfaces.'],
     tags: ['Js', 'CSS', 'Portfolio', 'Procedural Generation', 'Terminal Aesthetics'],
     contentLinks: {
@@ -49,7 +49,7 @@ export const ProjectsData = [
   },
   {
     id: 'dev-3',
-    title: 'Copy-Paste Everywhere [Ongoing]',
+    title: 'Copy-Paste Everywhere',
     content: ['Cross-platform clipboard synchronization originally built in Go. When you realize your Linux workstation, Windows laptop, and that one Mac you occasionally touch should all share the same copy-paste history. Read on to find more about this project.'],
     tags: ['Tauri', 'Go', 'Js', 'Cross-Platform', 'Utility', 'Clipboard', 'Multi-Device'],
     contentLinks: {
@@ -93,17 +93,15 @@ export const ProjectsData = [
     content: ['An ambitious multiplayer horror FPS with networking, 3D audio, and team mechanics. Project corrupted after years of development. Sometimes the most valuable lessons come from projects that don\'t survive, but the learning does.'],
     tags: ['Unity', 'Horror', 'Multiplayer', 'FPS', 'Networking', 'Corrupted', 'Archived'],
     contentLinks: {
-      blogPost: '/blog/', // write a blog post about this project
       githubRepo: 'https://github.com/ujjwalvivek/TheReckoning',
     },
   },
   {
     id: 'pm-1',
-    title: 'Training 65,000 Workers in Virtual Reality [MegaProject]',
+    title: 'Training 65,000 Workers in VR [MegaProject]',
     content: ['Led enterprise VR training deployment across 55+ cement plants for UltraTech. When safety training can mean the difference between life and death, virtual reality becomes more than innovation, it becomes responsibility.'],
     tags: ['VR', 'PM', 'Enterprise', 'Training', 'Simulation', 'Huge Impact', 'Large Scale'],
     contentLinks: {
-      blogPost: '/blog/', // write a blog post about this project
       websiteLink: 'https://www.autovrse.com/case-study-ultratech',
     },
   },

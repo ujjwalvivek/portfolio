@@ -1,10 +1,9 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import styles from './Projects.module.css';
-import { DescriptionCell } from "./ToolTip/DescriptionCell";
-import { TagCell } from "./ToolTip/TagCell";
+import { DescriptionCell } from "../../Modules/ToolTip/DescriptionCell";
+import { TagCell } from "../../Modules/ToolTip/TagCell";
 import { VscGithubInverted } from "react-icons/vsc";
-import { FaWindowClose } from "react-icons/fa";
-import PdfViewer from "./PDFViewer/PdfViewer";
+import PdfViewer from "../../Modules/PDFViewer/PdfViewer";
 import { ProjectsData } from './ProjectsData';
 import { useBackground } from '../../Background/BackgroundContext';
 import { BsJournalText } from 'react-icons/bs';
@@ -12,29 +11,22 @@ import { SiFigma, SiNotion } from "react-icons/si";
 import { PiFilePdfFill } from "react-icons/pi";
 import { TbWorldWww } from "react-icons/tb";
 import { BsHourglassSplit } from 'react-icons/bs';
+import { RiArchiveFill } from "react-icons/ri";
 
 const Projects = () => {
 
   const sortProjectsById = (projects) => {
     return projects.sort((a, b) => {
-      // Extract prefix and number from IDs like 'pm-1', 'dev-2'
       const aMatch = a.id.match(/([a-z]+)-(\d+)/);
       const bMatch = b.id.match(/([a-z]+)-(\d+)/);
-
       if (aMatch && bMatch) {
         const [, aPrefix, aNum] = aMatch;
         const [, bPrefix, bNum] = bMatch;
-
-        // First sort by prefix (pm vs dev)
         if (aPrefix !== bPrefix) {
           return aPrefix.localeCompare(bPrefix);
         }
-
-        // Then sort by number (1, 2, 3... not string sort)
         return parseInt(aNum) - parseInt(bNum);
       }
-
-      // Fallback for any non-matching IDs
       return a.id.localeCompare(b.id);
     });
   };
@@ -42,10 +34,15 @@ const Projects = () => {
   const [activeWindow, setActiveWindow] = useState(null);
   const [projectFilter, setProjectFilter] = useState('all');
 
-  // Responsive: show table on desktop, cards on mobile
   const [isMobile, setIsMobile] = useState(() =>
     typeof window !== 'undefined' && window.innerWidth <= 800
   );
+
+  const [showDelay, setShowDelay] = useState(true);
+  useEffect(() => {
+    const t = setTimeout(() => setShowDelay(false), 2000); // change 1200 -> 2000 for 2s
+    return () => clearTimeout(t);
+  }, []);
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth <= 800);
@@ -53,12 +50,9 @@ const Projects = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Background-dependent styling (like your original)
   const { backgroundConfig } = useBackground();
   const glitchyClasses = backgroundConfig.type !== 'none' ? styles.titleCell : '';
-  const noBlinkCursor = backgroundConfig.type !== 'none' ? '' : styles.noBlinkCursor;
 
-  // Memoize expensive calculations (this is good optimization)
   const { pmProjects, devProjects } = useMemo(() => ({
     pmProjects: sortProjectsById(
       ProjectsData.filter(project => project.id.startsWith('pm-'))
@@ -70,13 +64,13 @@ const Projects = () => {
 
   const filteredSections = useMemo(() => {
     if (projectFilter === 'pm') {
-      return [{ title: 'uv@chroot ~ ⪢ eza --PM "pm-projects"', projects: pmProjects, section: 'pm' }];
+      return [{ projects: pmProjects, section: 'pm' }];
     } else if (projectFilter === 'dev') {
-      return [{ title: 'uv@chroot ~ ⪢ eza --DEV "dev-projects"', projects: devProjects, section: 'dev' }];
+      return [{ projects: devProjects, section: 'dev' }];
     } else {
       return [
-        { title: 'uv@chroot ~ ⪢ eza --DEV "dev-projects"', projects: devProjects, section: 'dev' },
-        { title: 'uv@chroot ~ ⪢ eza --PM "pm-projects"', projects: pmProjects, section: 'pm' },
+        { projects: devProjects, section: 'dev' },
+        { projects: pmProjects, section: 'pm' },
       ];
     }
   }, [projectFilter, pmProjects, devProjects]);
@@ -86,7 +80,6 @@ const Projects = () => {
     return counts[projectFilter];
   }, [projectFilter, pmProjects.length, devProjects.length]);
 
-  // Memoize button layout function
   const getButtonLayout = useCallback((project) => {
     const { contentLinks } = project;
 
@@ -163,13 +156,12 @@ const Projects = () => {
         type: 'wip',
         label: 'WIP. Devlog Soon.',
         icon: <BsHourglassSplit />,
-        action: () => { }, // No action, it's disabled
+        action: () => { },
         className: 'wipBtn'
       }]
     };
-  }, []); // setActiveWindow is stable
+  }, []);
 
-  // NO React.memo - just regular component functions
   const ButtonGroup = ({ project }) => {
     const { layout, buttons } = getButtonLayout(project);
     if (buttons.length === 0) return null;
@@ -192,37 +184,87 @@ const Projects = () => {
   return (
     <div className={styles.projectsRoot}>
       <div className={styles.heroSection}>
-        <h1 className={styles.heroTitle}>Projects Directory</h1>
-        <p className={styles.heroSubtitle}>Projects. Failures. Successes. Learnings. Insights.</p>
+        <div className={styles.heroHeader}>
+          <div className={styles.headerIcon}>
+            <RiArchiveFill size={'2.5rem'} />
+          </div>
+          <div className={styles.headerText}>
+            <h1 className={styles.heroTitle}>Projects Directory</h1>
+            <p className={styles.heroSubtitle}>projects . failures . successes . learnings . insights</p>
+          </div>
+          <span className={styles.border}></span>
+          <span className={styles.borderFull}></span>
+        </div>
       </div>
 
       <div className={styles.tableWrapper}>
         <div className={styles.filterWrapper}>
-          <span style={{ fontWeight: 500 }}>{'filter@uv ~ ⪢ eza'}</span>
-          <div className={styles.filterButtons}>
-            {['all', 'pm', 'dev'].map((filter) => (
-              <button
-                key={filter}
-                className={`${styles.terminalBtn} ${projectFilter === filter ? styles.active : ''}`}
-                onClick={() => setProjectFilter(filter)}
-                style={{
-                  fontWeight: projectFilter === filter ? '800' : '400',
-                  background: projectFilter === filter ? 'var(--text-color)' : 'transparent',
-                  color: projectFilter === filter ? 'var(--background-color)' : 'var(--text-color)',
-                }}
-              >
-                --{filter.charAt(0).toUpperCase() + filter.slice(1)}
-              </button>
-            ))}
+          <div className={styles.filterSection}>
+            <div className={styles.sectionHeader}>
+              <span style={{ fontWeight: 500 }}>{'eza /projects -l'}</span>
+            </div>
+            <div className={styles.filterButtons}>
+              {['all', 'pm', 'dev'].map((filter) => (
+                <button
+                  key={filter}
+                  className={`${styles.terminalBtn} ${projectFilter === filter ? styles.active : ''}`}
+                  onClick={() => setProjectFilter(filter)}
+                >
+                  --{filter.charAt(0).toUpperCase() + filter.slice(1)}
+                </button>
+              ))}
+            </div>
+            <div className={`${styles.statusBar} ${showDelay ? '' : styles.loading}`}>
+              {showDelay ? (
+                <div className={styles.progress}>
+                  <div className={styles.track}>
+                    <div className={styles.bar}></div>
+                    <div className={styles.bar}></div>
+                    <div className={styles.bar}></div>
+                    <div className={styles.bar}></div>
+                    <div className={styles.bar}></div>
+                    <div className={styles.bar}></div>
+                    <div className={styles.bar}></div>
+                    <div className={styles.bar}></div>
+                    <div className={styles.bar}></div>
+                    <div className={styles.bar}></div>
+                    <div className={styles.bar}></div>
+                  </div>
+                </div>
+              ) : (
+                <>
+                  <span>
+                    Active filter: <span className={styles.activeFilter}>{projectFilter}</span>
+                  </span>
+                  <span className={styles.projectCount}>
+                    {projectCount} entries found
+                  </span>
+                </>
+              )}
+            </div>
           </div>
-          <div className={styles.statusBar}>
-            <span>
-              Active filter: <span className={styles.activeFilter}>{projectFilter}</span>
-            </span>
-            <span className={styles.projectCount}>
-              {projectCount} entries found
-            </span>
-          </div>
+          {showDelay ? (
+            null
+          ) : (
+            <div className={styles.systemStats}>
+              <span className={styles.stat}>
+                TOTAL_PROJECTS<span className={styles.value}>{ProjectsData.length}</span>
+              </span>
+              <span className={styles.stat}>
+                PM_PROJECTS<span className={styles.value}>{pmProjects.length}</span>
+              </span>
+              <span className={styles.stat}>
+                DEV_PROJECTS<span className={styles.value}>{devProjects.length}</span>
+              </span>
+              <span className={styles.stat}>
+                STATUS<span className={styles.value}>ONLINE</span>
+              </span>
+            </div>
+          )}
+        </div>
+
+        <div className={styles.tableStats}>
+
         </div>
 
         {!isMobile ? (
@@ -230,18 +272,9 @@ const Projects = () => {
             <tbody>
               {filteredSections.map(section => (
                 <React.Fragment key={section.title}>
-                  {section.projects.length > 0 && (
-                    <tr>
-                      <td colSpan={4}>
-                        <div className={`${styles.sectionSubtitle} ${styles.terminalCommand} ${noBlinkCursor}`}>
-                          {section.title}
-                        </div>
-                      </td>
-                    </tr>
-                  )}
                   {section.projects.map((project, idx) => (
                     <tr key={project.id} className={styles.glassRow} id={`project-card-${section.section}-${idx}`}>
-                      <td className={styles.cell}>{idx + 1}</td>
+                      <td className={styles.cell}><RiArchiveFill /></td>
                       <td className={styles.cell + ' ' + glitchyClasses}>
                         <DescriptionCell description={project.content}>
                           {project.title}
@@ -263,20 +296,15 @@ const Projects = () => {
           <div>
             {filteredSections.map(section => (
               <React.Fragment key={section.title}>
-                {section.projects.length > 0 && (
-                  <div className={`${styles.sectionSubtitle} ${noBlinkCursor}`}>
-                    {section.title}
-                  </div>
-                )}
                 {section.projects.map((project, idx) => (
                   <div key={project.id} className={styles.projectCard} id={`project-card-${section.section}-${idx}`}>
-                    <div className={styles.cell} style={{ fontWeight: 700, fontSize: '1.1rem', marginBottom: '0.2rem' }}>
-                      Entry #{idx + 1}
-                    </div>
-                    <div className={styles.cell + ' ' + glitchyClasses} style={{ marginBottom: '0.3rem' }}>
-                      <DescriptionCell description={project.content}>
-                        {project.title}
-                      </DescriptionCell>
+                    <div className={styles.cardHeader}>
+                      <RiArchiveFill />
+                      <div className={styles.cell + ' ' + glitchyClasses}>
+                        <DescriptionCell description={project.content}>
+                          {project.title}
+                        </DescriptionCell>
+                      </div>
                     </div>
                     <div className={styles.cell}>
                       <TagCell tags={project.tags} />
@@ -292,20 +320,6 @@ const Projects = () => {
 
       <div className={styles.stats} style={{ width: '100%', padding: '1rem' }}>
         <div className={styles.tableEnd} data-count={projectCount}></div>
-        <div className={styles.systemStats}>
-          <span className={styles.stat}>
-            TOTAL_PROJECTS<span className={styles.value}>{ProjectsData.length}</span>
-          </span>
-          <span className={styles.stat}>
-            PM_PROJECTS<span className={styles.value}>{pmProjects.length}</span>
-          </span>
-          <span className={styles.stat}>
-            DEV_PROJECTS<span className={styles.value}>{devProjects.length}</span>
-          </span>
-          <span className={styles.stat}>
-            STATUS<span className={styles.value}>ONLINE</span>
-          </span>
-        </div>
       </div>
 
       {/* Overlay rendering */}
@@ -313,35 +327,22 @@ const Projects = () => {
         project.contentLinks?.notionEmbed || project.contentLinks?.pdfDocument
       ).map(project => (
         activeWindow === project.id + '-embed' && (
-          <div className={styles.notionOverlay} key={project.id + '-embed'}>
+          <div className={styles.notionOverlay} key={project.id + '-embed'} onClick={() => setActiveWindow(null)}>
             <div className={styles.notionEmbedContainer}>
+              <div className={styles.postHeader}>
+                <div className={styles.headerButtons}>
+                  <div className={styles.closeButton} onClick={() => setActiveWindow(null)}></div>
+                  <div className={styles.minimizeButton} onClick={() => setActiveWindow(null)}></div>
+                  <div className={styles.maximizeButton}></div>
+                </div>
+                <div className={styles.postTitle}>
+                  {project.title}
+                </div>
+              </div>
               {project.contentLinks?.pdfDocument ? (
-                <PdfViewer
-                  fileUrl={project.contentLinks.pdfDocument}
-                  onClose={() => setActiveWindow(null)}
-                />
+                <PdfViewer fileUrl={project.contentLinks.pdfDocument} onClose={() => setActiveWindow(null)} />
               ) : project.contentLinks?.notionEmbed ? (
-                <>
-                  <div className={styles.closeBtnContainer}>
-                    <button
-                      className={styles.closeBtn}
-                      onClick={() => setActiveWindow(null)}
-                      aria-label="Close App"
-                    >
-                      <FaWindowClose style={{ marginRight: '0.5rem' }} size={'1.2rem'} />
-                      Close
-                    </button>
-                  </div>
-                  <iframe
-                    title={project.title}
-                    src={project.contentLinks.notionEmbed}
-                    width="100%"
-                    height="100%"
-                    frameBorder="0"
-                    allowFullScreen
-                    className={styles.notionIframe}
-                  />
-                </>
+                <iframe title={project.title} src={project.contentLinks.notionEmbed} className={styles.notionIframe} allowFullScreen />
               ) : null}
             </div>
           </div>

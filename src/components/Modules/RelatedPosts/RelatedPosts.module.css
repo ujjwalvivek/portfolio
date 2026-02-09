@@ -1,0 +1,106 @@
+.relatedPostsTitle {
+  letter-spacing: -0.5px;
+  font-size: 0.95rem;
+  margin: 0 auto;
+  width: 100%;
+  background-color: var(--color-background-secondary);
+  padding: 0.3rem 0.5rem;
+  color: var(--color-text-primary);
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.10);
+  border-radius: 2px;
+  border: 1px dashed var(--dynamic-dominant-color);
+  background-color: rgba(var(--background-color-rgb), 0.5);
+  background-image: linear-gradient(rgba(var(--dynamic-dominant-color-rgb), 0.07), rgba(var(--dynamic-dominant-color-rgb), 0.07));
+}
+
+.relatedPostsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin: 0 auto;
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.relatedPostCard {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.75rem 1.5rem;
+  text-decoration: none;
+  color: var(--color-text-primary);
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  border-radius: 2px;
+  margin: 0;
+  transition: all 0.3s ease;
+  display: block;
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+  border: 2px solid transparent;
+  border-radius: 2px 0 0 2px;
+  background-image:
+    linear-gradient(rgba(var(--dynamic-dominant-color-rgb), 0.06), rgba(var(--dynamic-dominant-color-rgb), 0.04)),
+    linear-gradient(rgba(var(--background-color-rgb), 0.5), rgba(var(--background-color-rgb), 0.5));
+  background-repeat: no-repeat, no-repeat;
+  background-size: cover, cover;
+  background-position: center, center;
+}
+
+.relatedPostCard::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 0.5rem;
+  left: 0;
+  background: var(--dynamic-dominant-color);
+  transform-origin: left;
+  transition: transform 220ms cubic-bezier(.2, .9, .2, 1), opacity 180ms linear;
+  pointer-events: none;
+  z-index: 1;
+  will-change: transform, opacity;
+}
+
+.relatedPostCard:hover::after {
+  transform: scaleX(0);
+  opacity: 0;
+}
+
+/* --- Enhanced hover effects --- */
+.relatedPostCard:hover {
+  border-color: var(--dynamic-dominant-color);
+  background: rgba(var(--background-color-rgb), 0.5);
+  box-shadow: 0 0 4px rgba(var(--text-color-rgb), 0.2);
+  transition: all 0.3s ease-in-out;
+}
+
+/* --- Subtle glow on hover --- */
+.relatedPostCard::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(var(--dynamic-dominant-color-rgb), 0.1), transparent);
+  transition: left 0.5s ease;
+}
+
+.relatedPostCard:hover::before {
+  left: 100%;
+}
+
+.relatedPostCard h4 {
+  margin: 0 0 var(--spacing-small) 0;
+  color: var(--color-primary);
+}
+
+.relatedPostCard p {
+  margin-bottom: 0;
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+  letter-spacing: -0.3px;
+  text-align: left;
+  font-weight: 400;
+}

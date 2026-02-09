@@ -1,205 +1,220 @@
-import React, { useContext, useMemo, useEffect, useState } from 'react';
+import { useMemo, useState, useEffect, useRef, useCallback } from 'react';
 import GlobalBackground from '../../Background/GlobalBackground';
-import { ThemeContext } from '../../ThemeSwitcher/ThemeContext';
 import { useBackground } from '../../Background/BackgroundContext';
+import { getWallpaperConfig, getAllWallpaperTypes } from '../../Background/BackgroundConfig';
+import { usePrefersReducedMotion } from '../../Modules/A11y/UsePrefersReducedMotion';
 import styles from './LandingPage.module.css';
-import { usePrefersReducedMotion } from '../../A11y/UsePrefersReducedMotion';
-import { useNavigate } from 'react-router-dom';
-
 
 const LandingPage = ({ onEnter }) => {
-    const { darkMode, toggleDarkMode } = useContext(ThemeContext);
-    const { backgroundConfig, updateBackgroundConfig } = useBackground();
+    const { updateBackgroundConfig, isMobile, deviceClass } = useBackground();
     const prefersReducedMotion = usePrefersReducedMotion();
-    const [showPrompt, setShowPrompt] = useState(false);
-    const navigate = useNavigate();
 
-    useEffect(() => {
-        if (
-            prefersReducedMotion &&
-            !showPrompt
-        ) {
-            window.alert(
-                "Accessibility Notice:\n\nWe detected your system prefers reduced motion. Some backgrounds and animations may cause discomfort. For a calmer experience, consider enabling Low Chaos Mode."
-            );
-            setShowPrompt(true);
+    const [currentStep, setCurrentStep] = useState(0);
+    const [stepExiting, setStepExiting] = useState(false);
+    const [isLeaving, setIsLeaving] = useState(false);
+
+    // Shuffling card state
+    const [shuffleIndex, setShuffleIndex] = useState(0);
+    const [shuffling, setShuffling] = useState(false); // Will be enabled below if needed
+    const wallpaperTypes = useMemo(() => getAllWallpaperTypes(), []);
+    const rootRef = useRef(null);
+    const sequenceDone = useRef(false);
+
+    // Stable wallpaper selection — override with 'none' if reduced motion detected
+    const optimalWallpaper = useMemo(() => {
+        // Reduced motion takes priority — set low chaos mode
+        if (prefersReducedMotion) {
+            localStorage.setItem('lowChaosOverride', 'true');
+            return 'none';
         }
-    }, [prefersReducedMotion, showPrompt]);
 
-    // For mobile/desktop density
-    const isMobile = useMemo(() => {
-        if (typeof navigator === "undefined" || typeof window === "undefined") return false;
-        const ua = navigator.userAgent;
-        const isIpad = (
-            /iPad/.test(ua) ||
-            (ua.includes("Macintosh") && ('ontouchstart' in window || navigator.maxTouchPoints > 1))
-        );
-        const isIphoneOrAndroid = /iPhone|iPod|Android/i.test(ua);
-        return isIphoneOrAndroid || isIpad;
+        // Otherwise, device-aware selection
+        if (isMobile) {
+            if (deviceClass === 'lowEnd') return 'circuit';
+            if (deviceClass === 'midRange') return 'hologram';
+            return 'vortex';
+        }
+        if (deviceClass === 'lowEnd') return 'circuit';
+        if (deviceClass === 'midRange') return 'hologram';
+        return 'psychedelic';
+    }, [prefersReducedMotion, isMobile, deviceClass]);
+
+    // Preview configs for the shuffling wallpaper
+    const landingPresets = useMemo(() => {
+        const presets = {};
+        const types = getAllWallpaperTypes();
+
+        types.forEach(type => {
+            const previewConfig = getWallpaperConfig(type, 'preview');
+            if (previewConfig) {
+                presets[type] = {
+                    type,
+                    ...previewConfig,
+                    opacity: 0.8,
+                    animationSpeed: 1.0,
+                    density: { psychedelic: 1.3, hologram: 0.9, circuit: 0.9, vortex: 0.4 }[type] || 1.0,
+                    colorMode: { psychedelic: 'ocean', hologram: 'synthwave', circuit: 'aurora', vortex: 'fire' }[type] || 'cyber',
+                };
+            }
+        });
+
+        return presets;
     }, []);
 
-    const landingPresets = useMemo(() => ({
-        psychedelic: {
-            type: 'psychedelic',
-            opacity: 1,
-            animationSpeed: 5,
-            density: isMobile ? 1.7 : 2,
-            colorMode: 'cyber',
-            customColor: '#d63031',
-            isAnimated: backgroundConfig.isAnimated && !prefersReducedMotion,
-        },
-        hologram: {
-            type: 'hologram',
-            opacity: 1,
-            animationSpeed: 0.5,
-            density: isMobile ? 0.5 : 1,
-            colorMode: 'fire',
-            customColor: '#00b894',
-            isAnimated: backgroundConfig.isAnimated && !prefersReducedMotion,
-        },
-        circuit: {
-            type: 'circuit',
-            opacity: 1,
-            animationSpeed: 0.5,
-            density: isMobile ? 1 : 1.5,
-            colorMode: 'ocean',
-            customColor: '#0984e3',
-            isAnimated: backgroundConfig.isAnimated && !prefersReducedMotion,
-        },
-        vortex: {
-            type: 'vortex',
-            opacity: 1,
-            animationSpeed: 1,
-            density: isMobile ? 20 : 40,
-            colorMode: 'terminal',
-            customColor: '#d63031',
-            isAnimated: backgroundConfig.isAnimated && !prefersReducedMotion,
-        },
-        low: {
-            type: 'none'
-        }
-    }), [isMobile, prefersReducedMotion, backgroundConfig.isAnimated]);
+    // Full-screen configs applied when entering the main site
+    const mainPresets = useMemo(() => {
+        const presets = {};
+        const types = getAllWallpaperTypes();
 
-    const mainPresets = useMemo(() => ({
-        psychedelic: {
-            type: 'psychedelic',
-            opacity: 0.8,
-            animationSpeed: 5,
-            density: isMobile ? 2 : 2.5,
-            colorMode: 'cyber',
-            customColor: '#d63031',
-            isAnimated: backgroundConfig.isAnimated && !prefersReducedMotion,
-        },
-        hologram: {
-            type: 'hologram',
-            opacity: 0.8,
-            animationSpeed: 1,
-            density: isMobile ? 1 : 2,
-            colorMode: 'fire',
-            customColor: '#00b894',
-            isAnimated: backgroundConfig.isAnimated && !prefersReducedMotion,
-        },
-        circuit: {
-            type: 'circuit',
-            opacity: 0.8,
-            animationSpeed: 1,
-            density: isMobile ? 1.5 : 2.5,
-            colorMode: 'ocean',
-            customColor: '#0984e3',
-            isAnimated: backgroundConfig.isAnimated && !prefersReducedMotion,
-        },
-        vortex: {
-            type: 'vortex',
-            opacity: 0.8,
-            animationSpeed: 1,
-            density: isMobile ? 40 : 80,
-            colorMode: 'terminal',
-            customColor: '#d63031',
-            isAnimated: backgroundConfig.isAnimated && !prefersReducedMotion,
-        },
-        low: {
-            type: 'none'
-        }
-    }), [isMobile, prefersReducedMotion, backgroundConfig.isAnimated]);
+        types.forEach(type => {
+            const smartConfig = getWallpaperConfig(type, 'fullscreen');
+            if (smartConfig) {
+                presets[type] = {
+                    type,
+                    ...smartConfig,
+                    opacity: 0.8,
+                    colorMode: { psychedelic: 'synthwave', hologram: 'fire', circuit: 'forest', vortex: 'aurora' }[type] || 'ocean',
+                };
+            }
+        });
 
-    const handleEnter = (type) => {
-        updateBackgroundConfig(mainPresets[type]);
-        onEnter();
-        navigate('/');
-    };
+        presets.minimal = { type: 'none' };
+        return presets;
+    }, []);
+
+    // Steps depend only on stable memoized values
+    const steps = useMemo(() => {
+        const wallpaperLabel = optimalWallpaper === 'none'
+            ? 'Low Chaos Mode (auto-enabled)'
+            : optimalWallpaper;
+
+        return [
+            { text: "Probing hardware capabilities...", duration: 400 },
+            { text: "Analyzing GPU performance...", duration: 400 },
+            { text: "Optimizing visual settings...", duration: 400 },
+            { text: `Device: ${deviceClass} — ${isMobile ? 'Mobile' : 'Desktop'}`, duration: 200 },
+            { text: `Wallpaper: ${wallpaperLabel}`, duration: 200 },
+        ];
+    }, [deviceClass, isMobile, optimalWallpaper]);
+
+    // Enable shuffling only if NOT in Low Chaos Mode
+    useEffect(() => {
+        if (optimalWallpaper !== 'none') {
+            setShuffling(true);
+        }
+    }, [optimalWallpaper]);
+
+    // Crossfade exit — stable callback, no function recreation issues
+    const exitLanding = useCallback(() => {
+        if (sequenceDone.current) return;
+        sequenceDone.current = true;
+
+        // Apply wallpaper before fading out (use 'minimal' key for 'none')
+        const configKey = optimalWallpaper === 'none' ? 'minimal' : optimalWallpaper;
+        updateBackgroundConfig(mainPresets[configKey]);
+
+        setShuffling(false);
+        const selectedIndex = wallpaperTypes.indexOf(optimalWallpaper);
+        setShuffleIndex(selectedIndex);
+
+        // Start crossfade
+        setIsLeaving(true);
+        setTimeout(() => {
+            onEnter();
+        }, 500); // matches CSS transition duration
+    }, [mainPresets, optimalWallpaper, updateBackgroundConfig, onEnter, wallpaperTypes]);
+
+    // Shuffle wallpaper cards
+    useEffect(() => {
+        if (!shuffling) return;
+        const interval = setInterval(() => {
+            setShuffleIndex(prev => (prev + 1) % wallpaperTypes.length);
+        }, 120);
+        return () => clearInterval(interval);
+    }, [shuffling, wallpaperTypes.length]);
+
+    // Run the boot step sequence
+    useEffect(() => {
+        let cancelled = false;
+
+        const runSequence = async () => {
+            for (let i = 0; i < steps.length; i++) {
+                if (cancelled) return;
+
+                // Fade out previous step
+                if (i > 0) {
+                    setStepExiting(true);
+                    await new Promise(r => setTimeout(r, 200));
+                }
+
+                if (cancelled) return;
+                setStepExiting(false);
+                setCurrentStep(i);
+
+                // Stop shuffling and lock wallpaper on the last step
+                if (i === steps.length - 1) {
+                    setShuffling(false);
+                    const selectedIndex = wallpaperTypes.indexOf(optimalWallpaper);
+                    setShuffleIndex(selectedIndex);
+                }
+
+                await new Promise(r => setTimeout(r, steps[i].duration));
+            }
+
+            if (!cancelled) exitLanding();
+        };
+
+        runSequence();
+        return () => { cancelled = true; };
+    }, [steps, exitLanding, wallpaperTypes, optimalWallpaper]);
+
+    const currentPreset = landingPresets[wallpaperTypes[shuffleIndex]];
+    const progress = ((currentStep + 1) / steps.length) * 100;
+    const isLowChaosMode = optimalWallpaper === 'none';
 
     return (
-        <div className={styles.landingRoot}>
-            {/* Hero/Header Section */}
-            <header className={styles.heroSection}>
-                <h1 className={styles.heroTitle}>Choose Your Vibe</h1>
-                <p className={styles.heroSubtitle}>
-                    Select a background vibe below, or use Low Chaos Mode for a minimal, distraction free experience.
-                </p>
-                <div className={styles.a11yDisclaimer} role="alert" style={{ background: darkMode ? 'none' : 'rgba(var(--text-color-rgb), 0.9)' }}>
-                    <strong>Accessibility Notice:</strong><br />
-                    Some backgrounds and animations may cause discomfort or reduce accessibility for sensitive users. Please consider using Low Chaos Mode™.<br />
-                    <span className={styles.a11yAction}>
-                        <button
-                            className={styles.lowChaosButton}
-                            aria-label="Switch to Low Chaos Mode"
-                            onClick={() => handleEnter('low')}
-                        >
-                            enter(lowChaosMode)
-                        </button>
-                        <button
-                            className={styles.lowChaosButton}
-                            aria-label={`Switch to ${darkMode ? 'light' : 'dark'} mode`}
-                            onClick={toggleDarkMode}
-                        >
-                            {darkMode ? 'switchTheme(light)' : 'switchTheme(dark)'}
-                        </button>
-                    </span>
+        <div ref={rootRef} className={`${styles.stagingRoot} ${isLeaving ? styles.leaving : ''}`}>
+            <div className={styles.wallpaperSection}>
+                <div className={styles.previewCard}>
+                    {isLowChaosMode ? (
+                        <div style={{
+                            width: '100%',
+                            height: '100%',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            background: 'linear-gradient(135deg, rgba(255,255,255,0.01), rgba(0,0,0,0.05))',
+                            color: '#555',
+                            fontSize: '0.85rem',
+                            fontFamily: 'inherit',
+                            letterSpacing: '1px'
+                        }}>
+                            Low Chaos Mode
+                        </div>
+                    ) : (
+                        <GlobalBackground previewConfig={currentPreset} />
+                    )}
                 </div>
-            </header>
-
-            {/* Background Component */}
-            <div className={styles.cardsWrapper}>
-                {/* Background Cards */}
-                <main className={styles.cardsSection}>
-                    {['psychedelic', 'hologram', 'circuit', 'vortex'].map((type) => {
-                        const displayNames = {
-                            psychedelic: 'Psych Dream',
-                            hologram: 'Holo Display',
-                            circuit: 'Circuit Flora',
-                            vortex: 'Quantum Threads'
-                        };
-                        return (
-                            <div
-                                key={type}
-                                className={styles.bgCard}
-                                role="button"
-                                tabIndex={0}
-                                aria-label={`Choose ${displayNames[type]} background`}
-                                onClick={() => handleEnter(type)}
-                                onKeyDown={e => (e.key === 'Enter' || e.key === ' ') && handleEnter(type)}
-                            >
-                                <div className={styles.bgFullPreview}>
-                                    <GlobalBackground previewConfig={{ ...landingPresets[type] }} />
-                                </div>
-                                <div className={styles.bgOverlay}>
-                                    <span className={styles.bgLabel}>
-                                        {displayNames[type]}
-                                    </span>
-                                </div>
-                            </div>
-                        );
-                    })}
-                </main>
             </div>
-
-            {/* Footer */}
-            <footer className={styles.footer}>
-                <span>
-                    <a href="https://ujjwalvivek.com" target="_blank" rel="noopener noreferrer">ujjwalvivek.com</a>
-                    &nbsp;·&nbsp;no trackers&nbsp;·&nbsp;built using JS and <span aria-label="love" role="img">❤️</span>
-                </span>
-            </footer>
+            <span className={styles.loadingTitle}>Loading Content</span>
+            <div className={styles.loadingBar}>
+                <div className={styles.progressTrack}>
+                    <div
+                        className={styles.progressFill}
+                        style={{ width: `${progress}%` }}
+                    />
+                </div>
+            </div>
+            <div className={styles.stepSection}>
+                <div
+                    key={currentStep}
+                    className={`${styles.stepText} ${stepExiting ? styles.exiting : ''}`}
+                >
+                    <span className={styles.prompt}>▶</span>
+                    {steps[currentStep]?.text}
+                    <span className={styles.cursor}>_</span>
+                </div>
+            </div>
         </div>
     );
 };

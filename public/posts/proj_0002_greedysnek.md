@@ -90,15 +90,6 @@ Mirror networking implementation, server-client architecture, and all the networ
 `Plugins/ - The Over Engineering`  
 Custom Java plugin for Unity Android alerts. Two weeks of work for something Unity's built-in notification system could have handled. Classic case of solving the wrong problem.
 
-### Why This Structure Actually Worked
-
-Despite all the technical problems with GreedySnek, the modular architecture was one decision I got right. It allowed me to:
-
-* Debug in isolation
-* Iterate quickly
-* Deploy selectively
-* Learn incrementally
-
 ## The Technical Implementation
 
 ### Core Snake Mechanics in 3D Space
@@ -228,7 +219,6 @@ The repository includes this warning in the README; you need to delete the Mirro
 This happened because Mirror updates frequently and the version I committed became incompatible with newer Unity versions. 
 :::
 
->It's a subtle reminder that networking libraries evolve faster than archived projects.
 ### Collision Detection Reality
 
 Network collision detection is a nightmare. My solution was **predictive collision on client, validation on server**. 

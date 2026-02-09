@@ -1,42 +1,71 @@
+/**
+ * ███╗   ███╗ █████╗ ██╗███╗   ██╗     █████╗ ██████╗ ██████╗ 
+ * ████╗ ████║██╔══██╗██║████╗  ██║    ██╔══██╗██╔══██╗██╔══██╗
+ * ██╔████╔██║███████║██║██╔██╗ ██║    ███████║██████╔╝██████╔╝
+ * ██║╚██╔╝██║██╔══██║██║██║╚██╗██║    ██╔══██║██╔═══╝ ██╔═══╝ 
+ * ██║ ╚═╝ ██║██║  ██║██║██║ ╚████║    ██║  ██║██║     ██║     
+ * ╚═╝     ╚═╝╚═╝  ╚═╝╚═╝╚═╝  ╚═══╝    ╚═╝  ╚═╝╚═╝     ╚═╝     
+ *                                                             
+ */
+
+/**========================================================================
+ *                           React Imports
+ *========================================================================**/
 import { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { ThemeProvider } from '../ThemeSwitcher/ThemeContext';
+
+/**========================================================================
+ *                           Context Hooks
+ *========================================================================**/
+import { ThemeProvider } from '../Utils/ThemeSwitcher/ThemeContext';
 import { BackgroundProvider, useBackground } from '../Background/BackgroundContext';
-import GlobalBackground from '../Background/GlobalBackground';
+import { useCommandPalette } from '../Utils/Command Palette/useCommandPalette';
+import { RealTimeColorChange } from '../Background/ColorUtils';
+
+/**========================================================================
+ *                           CSS Styles
+ *========================================================================**/
 import styles from './App.module.css';
+
+/**========================================================================
+ *                           Components
+ *========================================================================**/
 import Home from '../Pages/Home/Home';
 import About from '../Pages/About/About';
 import Projects from '../Pages/Projects/Projects';
 import Blog from '../Pages/Blog/Blog';
-import Footer from '../Footer/Footer';
-import TopBar from '../TopBar/TopBar';
-import LoadingSpinner from '../Loader/LoadingSpinner';
-import BackgroundTest from '../Pages/BackgroundTest/BackgroundTest';
+import Footer from '../Modules/Footer/Footer';
+import TopBar from '../Modules/TopBar/TopBar';
+import BackgroundTest from '../Utils/BackgroundTest/BackgroundTest';
+import GlobalBackground from '../Background/GlobalBackground';
+import CommandPalette from '../Utils/Command Palette/CommandPalette';
 import LandingPage from '../Pages/Landing/LandingPage';
-import CommandPalette from '../Command Palette/CommandPalette';
-import { useCommandPalette } from '../Command Palette/useCommandPalette';
-import GithubNavigator from '../Command Palette/Commands/Github Navigator/GithubNavigator';
-import Shortcuts from '../Command Palette/Commands/Shortcuts/Shortcuts';
-import CommandHint from '../Command Palette/Tip/CommandHint';
-import { usePageAnalytics } from '../../hooks/useAnalytics';
+import GithubNavigator from '../Modules/Github Navigator/GithubNavigator';
+import CommandHint from '../Modules/Tip/CommandHint';
 
+/**========================================================================
+ *                           App Wrapper
+ *========================================================================**/
 function AppContent() {
   const { backgroundConfig } = useBackground();
-  const [showShortcuts, setShowShortcuts] = useState(false);
-  const { isOpen, setIsOpen } = useCommandPalette(setShowShortcuts);
+  const { isOpen, setIsOpen } = useCommandPalette();
   const [isGithubOpen, setIsGithubOpen] = useState(false);
+  const [showBackgroundTest, setShowBackgroundTest] = useState(false);
 
-  // Track page views for analytics
-  usePageAnalytics();
+  /**======================
+   *    Live CSS Updates
+   *========================**/
+  RealTimeColorChange();
 
   return (
     <div
       className={styles.App}
-      style={{
-        backgroundColor: backgroundConfig.type === 'none' ? 'var(--background-color)' : 'transparent'
-      }}
+      style={{ backgroundColor: backgroundConfig.type === 'none' ? 'var(--background-color)' : 'transparent' }}
     >
+      {/* Global background is applied here, it will cover the entire app. */}
       <GlobalBackground />
+
+      {/* This is the main content area, where all pages will be rendered. */}
       <TopBar />
       <main id="main-content" className={styles.mainContent}>
         <Routes>
@@ -47,34 +76,45 @@ function AppContent() {
           <Route path="/bg-test" element={<BackgroundTest />} />
         </Routes>
       </main>
-      <Footer />
+      <Footer
+        showOverlay={showBackgroundTest}
+        setShowOverlay={setShowBackgroundTest}
+      />
+
+      {/* Command Shortcuts Overlay */}
       <CommandHint />
-      <CommandPalette 
-            isOpen={isOpen} 
-            onClose={() => setIsOpen(false)} 
-            onOpenGithub={() => { 
-              setIsGithubOpen(true);
-              setIsOpen(false);
-            }}  
-          />
 
-          <GithubNavigator 
-            isOpen={isGithubOpen} 
-            onClose={() => setIsGithubOpen(false)} 
-          /> 
+      {/* Command Palette and GitHub Navigator */}
+      <CommandPalette
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        onOpenGithub={() => {
+          setIsGithubOpen(true);
+          setIsOpen(false);
+        }}
+        onOpenBackgroundTest={() => {
+          setShowBackgroundTest(true);
+          setIsOpen(false);
+        }}
+      />
+      <GithubNavigator
+        isOpen={isGithubOpen}
+        onClose={() => setIsGithubOpen(false)}
+      />
 
-          {showShortcuts && <Shortcuts 
-            onClose={() => setShowShortcuts(false)} 
-          />}
     </div>
   );
 }
 
+/**========================================================================
+ *                           Main App Renderer
+ *========================================================================**/
 function App() {
   const [showLanding, setShowLanding] = useState(() => {
     return localStorage.getItem('hasVisitedLanding') !== 'true';
   });
 
+  // Landing page is set to show on the first load ONLY.
   const handleEnter = () => {
     localStorage.setItem('hasVisitedLanding', 'true');
     setShowLanding(false);
@@ -88,13 +128,8 @@ function App() {
             v7_startTransition: true,
             v7_relativeSplatPath: true,
           }}>
-          <LoadingSpinner>
-            {showLanding ? (
-              <LandingPage onEnter={handleEnter} />
-            ) : (
-              <AppContent />
-            )}
-          </LoadingSpinner>
+          <AppContent />
+          {showLanding && <LandingPage onEnter={handleEnter} />}
         </Router>
       </BackgroundProvider>
     </ThemeProvider>
@@ -102,3 +137,13 @@ function App() {
 }
 
 export default App;
+
+/**
+ * ███████╗ ██████╗ ███████╗
+ * ██╔════╝██╔═══██╗██╔════╝
+ * █████╗  ██║   ██║█████╗  
+ * ██╔══╝  ██║   ██║██╔══╝  
+ * ███████╗╚██████╔╝██║     
+ * ╚══════╝ ╚═════╝ ╚═╝     
+ *                          
+ */

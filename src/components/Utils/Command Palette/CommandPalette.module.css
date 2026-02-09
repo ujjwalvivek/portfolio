@@ -1,0 +1,349 @@
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(var(--background-color-rgb), 0.9);
+    z-index: 9999;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 20vh 1rem 0 1rem;
+    animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.container {
+    border-radius: 2px;
+    width: 100%;
+    max-width: 952px;
+    box-shadow:
+        0 20px 40px rgba(0, 0, 0, 0.5),
+        0 0 0 1px rgba(255, 255, 255, 0.1);
+    overflow: hidden;
+    animation: slideIn 0.3s ease-out;
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    background: rgba(var(--dynamic-hsl-average-rgb), 0.15);
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px) scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    padding: 0.7rem 1.4rem;
+    background: rgba(var(--bit-dark-color-rgb), 1);
+    line-height: 1;
+    border-bottom: 1px solid rgba(var(--primary-color-rgb), 0.2);
+}
+
+.searchIcon {
+    color: var(--text-color);
+    font-size: 1.2rem;
+    margin-right: 0.75rem;
+    line-height: 0.8;
+}
+
+.input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--text-color);
+    font-size: 1rem;
+    font-family: var(--font-neon);
+}
+
+.input::placeholder {
+    color: rgba(var(--text-color-rgb), 0.3);
+    font-style: normal;
+    font-weight: 400;
+    word-spacing: -0.3rem;
+}
+
+.shortcut {
+    color: rgba(var(--dynamic-dominant-color-rgb), 0.8);
+    font-size: 0.8rem;
+    font-family: var(--font-mono);
+    background: rgba(var(--dynamic-dominant-color-rgb), 0.1);
+    padding: 0.2rem 0.4rem;
+    border-radius: 2px;
+    border: 1px solid rgba(var(--dynamic-dominant-color-rgb), 0.5);
+    cursor: pointer;
+}
+
+.results {
+    max-height: 400px;
+    overflow-y: auto;
+    background: rgba(var(--bit-dark-color-rgb), 1);
+}
+
+.command {
+    display: flex;
+    align-items: center;
+    padding: 0.4rem 1.5rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.command:hover,
+.command.selected,
+.command:focus,
+.command:hover *,
+.command.selected *,
+.command:focus * {
+    color: var(--dynamic-dominant-color);
+}
+
+.commandIcon {
+    font-size: 1.3rem;
+    margin-right: 1rem;
+    min-width: 1.5rem;
+    text-align: center;
+    color: var(--text-color);
+}
+
+.command.selected .commandIcon {
+    color: var(--dynamic-dominant-color);
+    ;
+}
+
+.command:hover .commandIcon {
+    color: var(--dynamic-dominant-color);
+    ;
+}
+
+.commandContent {
+    flex: 1;
+    min-width: 0;
+}
+
+.commandTitle {
+    font-weight: 400;
+    font-size: 0.9rem;
+    color: var(--text-color);
+    margin-bottom: 0.2rem;
+}
+
+.command.selected .commandTitle {
+    color: var(--dynamic-dominant-color);
+}
+
+.command:hover .commandTitle {
+    color: var(--dynamic-dominant-color);
+}
+
+.commandDescription {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    font-family: 'SF Mono', 'Monaco', 'Consolas', monospace;
+}
+
+.command.selected .commandDescription {
+    color: var(--dynamic-dominant-color);
+}
+
+.command:hover * {
+    color: var(--dynamic-dominant-color);
+}
+
+.commandIcon,
+.commandTitle,
+.commandDescription {
+    transition: background 0.3s ease-out, color 0.3s ease-out;
+}
+
+.enterHint {
+    color: rgba(var(--dynamic-dominant-color-rgb), 0.6);
+    font-size: 0.8rem;
+    font-family: 'SF Mono', 'Monaco', 'Consolas', monospace;
+    background: rgba(var(--dynamic-dominant-color-rgb), 0.1);
+    padding: 0.2rem 0.4rem;
+    border-radius: 3px;
+    border: 1px solid rgba(var(--dynamic-dominant-color-rgb), 0.2);
+}
+
+.noResults {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem 1.5rem;
+    color: rgba(var(--primary-color-rgb), 0.6);
+}
+
+.noResultsIcon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    opacity: 0.5;
+}
+
+.noResultsText {
+    font-size: 0.9rem;
+    font-style: normal;
+    font-family: var(--font-mono);
+}
+
+.footer {
+    display: flex;
+    align-items: center;
+    padding: 0.7rem 1.4rem;
+    background: rgba(var(--bit-dark-color-rgb), 1);
+    line-height: 1;
+    border-top: 1px solid rgba(var(--primary-color-rgb), 0.2);
+}
+
+.shortcuts {
+    display: flex;
+    gap: 1.5rem;
+    font-size: 0.75rem;
+    color: rgba(var(--text-color-rgb), 0.7);
+    font-family: 'SF Mono', 'Monaco', 'Consolas', monospace;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.shortcuts kbd {
+    background: rgba(var(--dynamic-dominant-color-rgb), 0.05);
+    border: 1px solid rgba(var(--dynamic-dominant-color-rgb), 0.25);
+    border-radius: 2px;
+    padding: 0.2rem 0.4rem;
+    font-size: 0.7rem;
+    margin: 0 0.1rem;
+    color: rgba(var(--text-color-rgb), 0.9);
+    font-weight: 800;
+    font-family: inherit;
+    margin-right: 0.3rem;
+}
+
+/* Konami code effect */
+:global(.konami-activated) * {
+    animation: konamiShake 0.5s infinite, glitch 0.3s infinite linear alternate;
+}
+
+@keyframes konamiShake {
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(-5px) rotate(1deg);
+    }
+
+    75% {
+        transform: translateX(5px) rotate(-1deg);
+    }
+}
+
+@keyframes glitch {
+    0% {
+        text-shadow: 2px 0 red, -2px 0 cyan;
+    }
+
+    20% {
+        text-shadow: -2px 0 lime, 2px 0 magenta;
+    }
+
+    40% {
+        text-shadow: 2px 2px yellow, -2px -2px blue;
+    }
+
+    60% {
+        text-shadow: 0 2px orange, 0 -2px purple;
+    }
+
+    80% {
+        text-shadow: 2px -2px green, -2px 2px pink;
+    }
+
+    100% {
+        text-shadow: none;
+    }
+}
+
+
+.commandType {
+    color: rgba(var(--text-color-rgb), 0.6);
+    font-size: 0.75rem;
+    font-weight: 700;
+    font-family: var(--font-mono);
+}
+
+.commandDate {
+    color: rgba(var(--text-color-rgb), 0.6);
+    font-size: 0.75rem;
+    font-weight: 700;
+    font-family: var(--font-mono);
+}
+
+.commandTags {
+    margin-top: 0.3rem;
+    display: flex;
+    gap: 0.3rem;
+    flex-wrap: wrap;
+}
+
+.tag {
+    background: rgba(var(--primary-color-rgb), 0.2);
+    color: var(--primary-color);
+    font-size: 0.65rem;
+    padding: 0.1rem 0.3rem;
+    border-radius: 3px;
+    border: 1px solid rgba(var(--primary-color-rgb), 0.3);
+    font-family: var(--font-mono);
+}
+
+.command.selected .tag,
+.command:hover .tag {
+    background: rgba(var(--background-color-rgb), 0.2);
+    color: var(--dynamic-dominant-color);
+    border-color: rgba(var(--dynamic-dominant-color-rgb), 0.3);
+}
+
+/* Scrollbar styling */
+.results::-webkit-scrollbar {
+    width: 4px;
+}
+
+.results::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.results::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 2px;
+}
+
+.results::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* Hide on mobile completely */
+@media (max-width: 768px) {
+    .overlay {
+        display: none;
+    }
+}

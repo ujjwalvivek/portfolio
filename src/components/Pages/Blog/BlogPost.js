@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { useParams } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import matter from 'gray-matter';
 import 'katex/dist/katex.min.css';
-import styles from './Blog.module.css';
+import styles from './BlogPost.module.css';
 import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
@@ -13,17 +14,15 @@ import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 import remarkDirective from 'remark-directive';
 import { visit } from 'unist-util-visit';
-import RelatedPosts from '../../RelatedPosts/RelatedPosts';
-import { ThemeContext } from '../../ThemeSwitcher/ThemeContext';
+import RelatedPosts from '../../Modules/RelatedPosts/RelatedPosts';
+import { ThemeContext } from '../../Utils/ThemeSwitcher/ThemeContext';
 import { MdTipsAndUpdates } from "react-icons/md";
 import { IoIosWarning } from "react-icons/io";
-import { BsFillPencilFill, BsFillInfoSquareFill } from "react-icons/bs";
+import { BsFillInfoSquareFill } from "react-icons/bs";
+import { GrTooltip } from "react-icons/gr";
 import { MdDangerous } from "react-icons/md";
 import { AiTwotoneStar } from "react-icons/ai";
-import { useBlogAnalytics } from '../../../hooks/useAnalytics';
-import { AiFillLike, AiOutlineLike  } from "react-icons/ai";
-import { FaShare } from "react-icons/fa";
-
+import { PiHashStraightFill } from "react-icons/pi";
 // Simple reading time calculation function
 const calculateReadingTime = (text) => {
   const wordsPerMinute = 200;
@@ -128,7 +127,7 @@ const getAdmonitionIcon = (type) => {
   const icons = {
     note: <MdTipsAndUpdates />,
     warning: <IoIosWarning />,
-    tip: <BsFillPencilFill />,
+    tip: <GrTooltip />,
     danger: <MdDangerous />,
     info: <BsFillInfoSquareFill />
   };
@@ -143,37 +142,6 @@ const BlogPost = () => {
   const [lightboxImage, setLightboxImage] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const blogPostRef = useRef(null);
-  
-  // Use filename as fallback postId if post.data.id is not available yet
-  const postId = post.data?.id || filename;
-  const postTitle = post.data?.title || 'Loading...';
-  
-  const { trackLike, trackShare, hasLiked } = useBlogAnalytics(postId, postTitle);
-
-  // State for copy notification
-  const [showCopyNotification, setShowCopyNotification] = useState(false);
-
-
-  // Function to copy blog link and show notification
-  const handleShare = async () => {
-    const blogUrl = `${window.location.origin}/blog/${filename}`;
-    
-    try {
-      await navigator.clipboard.writeText(blogUrl);
-      setShowCopyNotification(true);
-      trackShare('clipboard');
-      
-      // Hide notification after 3 seconds
-      setTimeout(() => {
-        setShowCopyNotification(false);
-      }, 3000);
-    } catch (error) {
-      console.error('Failed to copy:', error);
-      // Fallback: show URL in a prompt for manual copy
-      prompt('Copy this URL:', blogUrl);
-      trackShare('manual');
-    }
-  };
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -259,6 +227,31 @@ const BlogPost = () => {
       }
       return <div {...props} />;
     },
+    h2: ({ node, children, ...props }) => (
+      <h2 className={styles.headingWithIcon} {...props}>
+        <PiHashStraightFill className={styles.headingIcon} aria-hidden="true" focusable="false" />
+        <span className={styles.headingText}>{children}</span>
+      </h2>
+    ),
+    h3: ({ node, children, ...props }) => (
+      <h3 className={styles.headingWithIcon} {...props}>
+        <span className={styles.headingIcons}>
+          <PiHashStraightFill className={styles.headingIcon} aria-hidden="true" />
+          <PiHashStraightFill className={styles.headingIcon} aria-hidden="true" />
+        </span>
+        <span className={styles.headingText}>{children}</span>
+      </h3>
+    ),
+    h4: ({ node, children, ...props }) => (
+      <h4 className={styles.headingWithIcon} {...props}>
+        <span className={styles.headingIcons}>
+          <PiHashStraightFill className={styles.headingIcon} aria-hidden="true" />
+          <PiHashStraightFill className={styles.headingIcon} aria-hidden="true" />
+          <PiHashStraightFill className={styles.headingIcon} aria-hidden="true" />
+        </span>
+        <span className={styles.headingText}>{children}</span>
+      </h4>
+    ),
   };
 
   const remarkPlugins = [
@@ -278,13 +271,23 @@ const BlogPost = () => {
 
   return (
     <>
-      <div className={styles.blogContainer}>
-        <div className={styles.blogPost} ref={blogPostRef}>
-          <h1>{post.data.title}</h1>
-          <div className={styles.postMeta}>
+      <div className={styles.blogPostContainer}>
+        <div className={styles.postHeader}>
+          <div className={styles.headerButtons}>
+            <div className={styles.closeButton}></div>
+            <div className={styles.minimizeButton}></div>
+            <div className={styles.maximizeButton}></div>
+          </div>
+          <div className={styles.postTitle}>
+            {post.data.title}
+          </div>
+          <div className={styles.postStatus}>
             <span className={styles.postDate}>{formatDate(post.data.date)}</span>
             <span className={styles.readingTime}>{post.readingTime}</span>
           </div>
+        </div>
+
+        <div className={styles.blogPost} ref={blogPostRef}>
           <div className={styles.markdown}>
             <ReactMarkdown
               remarkPlugins={remarkPlugins}
@@ -294,54 +297,29 @@ const BlogPost = () => {
               {post.content}
             </ReactMarkdown>
           </div>
-          <div className={styles.blogActions}>
-            <button 
-              className={`${styles.actionButton} ${styles.likeButton} ${hasLiked ? styles.liked : ''}`}
-              onClick={trackLike} 
-              disabled={hasLiked}
-              title={hasLiked ? "You've already liked this post!" : "Like this post!"}
-            >
-              <span className={styles.buttonIcon}>
-                {hasLiked ? <AiFillLike /> : <AiOutlineLike />}
-              </span>
-            </button>
-            
-            <button 
-              className={`${styles.actionButton} ${styles.shareButton}`}
-              onClick={handleShare}
-              title="Copy link to clipboard"
-            >
-              <span className={styles.buttonIcon}>
-                <FaShare />
-              </span>
-            </button>
+        </div>
 
-            {/* Copy notification */}
-            {showCopyNotification && (
-              <div className={styles.copyNotification}>
-                <span className={styles.notificationText}>
-                  Copied to clipboard!
-                </span>
-              </div>
-            )}
-          </div>
+        <div className={styles.blogFooter}>
           <div className={styles.authorSignature}>
             <p>
-              <strong>Vivek</strong> crafting systems,
-              <br />
-              one line at a time.
+              <strong>By Vivek</strong>
+              <br />crafting systems, one line at a time.
             </p>
           </div>
-          
-          <br />
-          <RelatedPosts posts={relatedPosts} />
+          <div className={styles.relatedPostsSection}>
+            <RelatedPosts posts={relatedPosts} />
+          </div>
         </div>
-        {lightboxImage && (
+      </div>
+
+      {lightboxImage &&
+        createPortal(
           <div className={styles.lightbox} onClick={() => setLightboxImage(null)}>
             <img src={lightboxImage} alt="Lightbox" />
-          </div>
+          </div>,
+          document.body
         )}
-      </div>
+
     </>
   );
 };

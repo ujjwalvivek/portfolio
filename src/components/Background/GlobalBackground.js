@@ -1,14 +1,51 @@
+/**
+ * ██████╗ ██████╗  ██████╗  ██████╗███████╗██████╗ ██╗   ██╗██████╗  █████╗ ██╗     
+ * ██╔══██╗██╔══██╗██╔═══██╗██╔════╝██╔════╝██╔══██╗██║   ██║██╔══██╗██╔══██╗██║     
+ * ██████╔╝██████╔╝██║   ██║██║     █████╗  ██║  ██║██║   ██║██████╔╝███████║██║     
+ * ██╔═══╝ ██╔══██╗██║   ██║██║     ██╔══╝  ██║  ██║██║   ██║██╔══██╗██╔══██║██║     
+ * ██║     ██║  ██║╚██████╔╝╚██████╗███████╗██████╔╝╚██████╔╝██║  ██║██║  ██║███████╗
+ * ╚═╝     ╚═╝  ╚═╝ ╚═════╝  ╚═════╝╚══════╝╚═════╝  ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝
+ *                                                                                   
+ * ███████╗███╗   ██╗ ██████╗ ██╗███╗   ██╗███████╗         ██╗███████╗              
+ * ██╔════╝████╗  ██║██╔════╝ ██║████╗  ██║██╔════╝         ██║██╔════╝              
+ * █████╗  ██╔██╗ ██║██║  ███╗██║██╔██╗ ██║█████╗           ██║███████╗              
+ * ██╔══╝  ██║╚██╗██║██║   ██║██║██║╚██╗██║██╔══╝      ██   ██║╚════██║              
+ * ███████╗██║ ╚████║╚██████╔╝██║██║ ╚████║███████╗    ╚█████╔╝███████║              
+ * ╚══════╝╚═╝  ╚═══╝ ╚═════╝ ╚═╝╚═╝  ╚═══╝╚══════╝     ╚════╝ ╚══════╝              
+ *                                                                                   
+ */
+
+/**============================================
+ **               React Dependencies
+ *=============================================**/
 import { useRef, useEffect, useCallback, useContext, useMemo } from 'react';
+
+/**============================================
+ **               Context Hooks
+ *=============================================**/
 import { useBackground } from './BackgroundContext';
-import { ThemeContext } from '../ThemeSwitcher/ThemeContext';
+import { ThemeContext } from '../Utils/ThemeSwitcher/ThemeContext';
+import { getCurrentColors, hexToRgb } from './ColorUtils';
+
+/**============================================
+ **               Stylesheet
+ *=============================================**/
 import styles from './GlobalBackground.module.css';
+
+/**========================================================================
+ * *                                INFO
+ *   This component handles the global background settings for the application.
+ *   It utilizes the BackgroundContext to access and modify background properties.
+ *   The ThemeContext is used to apply theme-specific styles and behaviors.
+ *========================================================================**/
 
 const GlobalBackground = ({ previewConfig }) => {
 
-
+    /**============================================
+     **           Constant Definitions
+     *=============================================**/
     const { backgroundConfig: globalConfig } = useBackground();
-    // Use previewConfig if present, otherwise global config
-    const backgroundConfig = previewConfig || globalConfig;
+    const backgroundConfig = previewConfig || globalConfig;  //* INFO: Using backgroundConfig from context or preview
     const { darkMode } = useContext(ThemeContext);
     const canvasRef = useRef(null);
     const animationRef = useRef(null);
@@ -16,126 +53,74 @@ const GlobalBackground = ({ previewConfig }) => {
     const fpsRef = useRef(0);
     const frameCount = useRef(0);
     const lastFpsUpdate = useRef(0);
+    const currentFps = useRef(30);
+    const frameSkipCounter = useRef(0);
+    const canvasContextRef = useRef(null);
+    const currentQuality = useRef(1.0); //* INFO: Instance-specific quality state to avoid conflicts between multiple backgrounds
+    const qualityStableFrames = useRef(0);
+    const currentColors = getCurrentColors(backgroundConfig, darkMode);
 
-    const maxOpacity = {
-        hologram: 0.9,
-        circuit: 0.9,
-        psychedelic: 0.8,
-        vortex: 0.9,
-    }[backgroundConfig.type] ?? 1;
-
-
-
-    const maxCanvasOpacity = Math.min(backgroundConfig.opacity ?? 0.8, maxOpacity);
-
-    // Adaptive color schemes based on theme mode
-    const getThemeColors = () => {
-        if (darkMode) {
-            // Dark mode colors
-            return {
-                quantum: {
-                    primary: '#00ffff',
-                    secondary: '#ff00ff',
-                    accent: '#ffff00',
-                    background: '#0a0a0a'
-                },
-                datastream: {
-                    primary: '#00ff41',
-                    secondary: '#0080ff',
-                    accent: '#ff4500',
-                    background: '#0d0d0d'
-                }
-            };
-        } else {
-            // Light mode colors
-            return {
-                quantum: {
-                    primary: '#4a90e2',
-                    secondary: '#7b68ee',
-                    accent: '#ff6b6b',
-                    background: '#f8f9fa'
-                },
-                datastream: {
-                    primary: '#28a745',
-                    secondary: '#007bff',
-                    accent: '#fd7e14',
-                    background: '#ffffff'
-                }
-            };
+    /**============================================
+     **   Helper function to convert any color + alpha to rgba
+     *=============================================**/
+    const hexWithAlpha = useCallback((hex, alphaHex) => {
+        // Validate hex string
+        if (typeof hex !== 'string' || !/^#([0-9a-fA-F]{6})$/.test(hex)) {
+            // fallback to transparent if invalid
+            return 'rgba(0,0,0,0)';
         }
-    };
+        const r = parseInt(hex.slice(1, 3), 16);
+        const g = parseInt(hex.slice(3, 5), 16);
+        const b = parseInt(hex.slice(5, 7), 16);
+        const alpha = parseInt(alphaHex, 16) / 255;
+        return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+    }, []);
 
-    const getCurrentColors = () => {
-        const themeColors = getThemeColors();
+    /**=============================================================
+     **  Memoize maxCanvasOpacity to prevent generator recreation
+     *=============================================================**/
+    const memoizedMaxCanvasOpacity = useMemo(() => {
+        const maxOpacity = {
+            hologram: 0.9,
+            circuit: 0.9,
+            psychedelic: 0.8,
+            vortex: 0.9,
+        }[backgroundConfig.type] ?? 1;
+        return Math.min(backgroundConfig.opacity ?? 0.8, maxOpacity);
+    }, [backgroundConfig.type, backgroundConfig.opacity]);
 
-        // If using old color mode system, map to appropriate wallpaper colors
-        if (backgroundConfig.colorMode && backgroundConfig.colorMode !== 'matrix') {
-            if (backgroundConfig.colorMode === 'custom' && backgroundConfig.customColor) {
-                // Use custom color for both wallpapers
-                return {
-                    primary: backgroundConfig.customColor,
-                    secondary: backgroundConfig.customColor + '80',
-                    accent: backgroundConfig.customColor + '60',
-                    background: darkMode ? '#0a0a0a' : '#f8f9fa'
-                };
-            }
+    /**========================================================================
+     **  Helper function to get alpha-adjusted colors based on canvas opacity
+     *========================================================================**/
+    const getAlphaAdjustedColors = useCallback((colors) => {
+        const canvasOpacity = memoizedMaxCanvasOpacity;
 
-            // Map old color modes to reasonable defaults
-            const legacyColorMappings = {
-                cyber: darkMode ? { primary: '#ff0080', secondary: '#8000ff', accent: '#00ffff' } : { primary: '#d63384', secondary: '#6f42c1', accent: '#0dcaf0' },
-                terminal: darkMode ? { primary: '#ffff00', secondary: '#ff8000', accent: '#00ff00' } : { primary: '#fd7e14', secondary: '#dc3545', accent: '#198754' },
-                ocean: darkMode ? { primary: '#00aaff', secondary: '#0066aa', accent: '#00ffff' } : { primary: '#0d6efd', secondary: '#0a58ca', accent: '#17a2b8' },
-                fire: darkMode ? { primary: '#ff4500', secondary: '#ff6600', accent: '#ffff00' } : { primary: '#fd7e14', secondary: '#dc3545', accent: '#ffc107' }
-            };
-
-            const legacyColors = legacyColorMappings[backgroundConfig.colorMode];
-            if (legacyColors) {
-                return {
-                    ...legacyColors,
-                    background: darkMode ? '#0a0a0a' : '#f8f9fa'
-                };
-            }
-        }
-
-        // Default to theme-adaptive colors for the current wallpaper
-        return themeColors[backgroundConfig.type] || themeColors.quantum;
-    };
-
-    // Helper function to get alpha-adjusted colors based on canvas opacity
-    const getAlphaAdjustedColors = (colors) => {
-        const canvasOpacity = maxCanvasOpacity;
-
-        // Helper function to convert hex to rgb
-        const hexToRgb = (hex) => {
-            const r = parseInt(hex.slice(1, 3), 16);
-            const g = parseInt(hex.slice(3, 5), 16);
-            const b = parseInt(hex.slice(5, 7), 16);
-            return { r, g, b };
-        };
-
-        // Smooth alpha adjustment function - gradually increases alpha values as opacity increases
+        /* Smooth alpha adjustment function - gradually increases alpha values as opacity increases */
         const adjustAlpha = (alphaHex) => {
             const baseAlpha = parseInt(alphaHex, 16);
 
-            // Smooth transition from normal alpha to boosted alpha
-            // At opacity 0.5: use original alpha
-            // At opacity 0.8: use 1.5x alpha  
-            // At opacity 1.0: use 3x alpha
+            /**=========================================================
+             * * INFO
+             *   Smooth transition from normal alpha to boosted alpha
+             *   At opacity 0.5: use original alpha
+             *   At opacity 0.8: use 1.5x alpha
+             *   At opacity 1.0: use 3x alpha
+             *=========================================================**/
             let multiplier;
             if (canvasOpacity <= 0.5) {
                 multiplier = 1.0;
             } else if (canvasOpacity <= 0.8) {
-                // Linear interpolation from 1.0 to 1.5 between opacity 0.5 and 0.8
+                /* Linear interpolation from 1.0 to 1.5 between opacity 0.5 and 0.8 */
                 const t = (canvasOpacity - 0.5) / 0.3;
                 multiplier = 1.0 + t * 0.5;
             } else {
-                // Linear interpolation from 1.5 to 3.0 between opacity 0.8 and 1.0
+                /* Linear interpolation from 1.5 to 3.0 between opacity 0.8 and 1.0 */
                 const t = (canvasOpacity - 0.8) / 0.2;
                 multiplier = 1.5 + t * 1.5;
             }
 
             const adjustedAlpha = Math.min(Math.round(baseAlpha * multiplier), 255);
-            return adjustedAlpha / 255; // Return as 0-1 value for rgba
+            return adjustedAlpha / 255;
         };
 
         return {
@@ -161,32 +146,44 @@ const GlobalBackground = ({ previewConfig }) => {
                 return `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${alpha})`;
             }
         };
-    };
+    }, [memoizedMaxCanvasOpacity]);
 
-    // Helper function to convert any color + alpha to rgba
-    const hexWithAlpha = (hex, alphaHex) => {
-        // Validate hex string
-        if (typeof hex !== 'string' || !/^#([0-9a-fA-F]{6})$/.test(hex)) {
-            // fallback to transparent if invalid
-            return 'rgba(0,0,0,0)';
-        }
-        const r = parseInt(hex.slice(1, 3), 16);
-        const g = parseInt(hex.slice(3, 5), 16);
-        const b = parseInt(hex.slice(5, 7), 16);
-        const alpha = parseInt(alphaHex, 16) / 255;
-        return `rgba(${r}, ${g}, ${b}, ${alpha})`;
-    };
+    /**
+    * ██████╗ ██████╗  ██████╗  ██████╗███████╗██████╗ ██╗   ██╗██████╗  █████╗ ██╗        
+    * ██╔══██╗██╔══██╗██╔═══██╗██╔════╝██╔════╝██╔══██╗██║   ██║██╔══██╗██╔══██╗██║        
+    * ██████╔╝██████╔╝██║   ██║██║     █████╗  ██║  ██║██║   ██║██████╔╝███████║██║        
+    * ██╔═══╝ ██╔══██╗██║   ██║██║     ██╔══╝  ██║  ██║██║   ██║██╔══██╗██╔══██║██║        
+    * ██║     ██║  ██║╚██████╔╝╚██████╗███████╗██████╔╝╚██████╔╝██║  ██║██║  ██║███████╗   
+    * ╚═╝     ╚═╝  ╚═╝ ╚═════╝  ╚═════╝╚══════╝╚═════╝  ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝   
+    *                                                                                      
+    *  ██████╗ ███████╗███╗   ██╗███████╗██████╗  █████╗ ████████╗ ██████╗ ██████╗ ███████╗
+    * ██╔════╝ ██╔════╝████╗  ██║██╔════╝██╔══██╗██╔══██╗╚══██╔══╝██╔═══██╗██╔══██╗██╔════╝
+    * ██║  ███╗█████╗  ██╔██╗ ██║█████╗  ██████╔╝███████║   ██║   ██║   ██║██████╔╝███████╗
+    * ██║   ██║██╔══╝  ██║╚██╗██║██╔══╝  ██╔══██╗██╔══██║   ██║   ██║   ██║██╔══██╗╚════██║
+    * ╚██████╔╝███████╗██║ ╚████║███████╗██║  ██║██║  ██║   ██║   ╚██████╔╝██║  ██║███████║
+    *  ╚═════╝ ╚══════╝╚═╝  ╚═══╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝    ╚═════╝ ╚═╝  ╚═╝╚══════╝
+    *                                                                                      
+    */
 
-    // New wallpaper generators
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    const generators = useCallback(() => ({
+    const generators = useMemo(() => ({
+
+        /**
+         * ██╗  ██╗ ██████╗ ██╗      ██████╗  ██████╗ ██████╗  █████╗ ███╗   ███╗
+         * ██║  ██║██╔═══██╗██║     ██╔═══██╗██╔════╝ ██╔══██╗██╔══██╗████╗ ████║
+         * ███████║██║   ██║██║     ██║   ██║██║  ███╗██████╔╝███████║██╔████╔██║
+         * ██╔══██║██║   ██║██║     ██║   ██║██║   ██║██╔══██╗██╔══██║██║╚██╔╝██║
+         * ██║  ██║╚██████╔╝███████╗╚██████╔╝╚██████╔╝██║  ██║██║  ██║██║ ╚═╝ ██║
+         * ╚═╝  ╚═╝ ╚═════╝ ╚══════╝ ╚═════╝  ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝     ╚═╝
+         *                                                                       
+         */
+
         hologram: (ctx, width, height, time = 0) => {
-            const colors = getCurrentColors();
+            const colors = currentColors;
             const speed = backgroundConfig.animationSpeed || 1;
             const density = backgroundConfig.density || 1;
-            const opacity = maxCanvasOpacity;
+            const opacity = memoizedMaxCanvasOpacity;
 
-            // Holographic projection base field
+            /* Holographic projection base field */
             const holoGradient = ctx.createRadialGradient(width / 2, height / 2, 0, width / 2, height / 2, Math.max(width, height) * 0.7);
             holoGradient.addColorStop(0, hexWithAlpha(colors.primary, '12'));
             holoGradient.addColorStop(0.4, hexWithAlpha(colors.accent, '08'));
@@ -195,9 +192,11 @@ const GlobalBackground = ({ previewConfig }) => {
             ctx.fillStyle = holoGradient;
             ctx.fillRect(0, 0, width, height);
 
-            // Holographic interference patterns (scanlines)
+            /**============================================
+             **  Holographic interference patterns (scanlines)
+             *=============================================**/
             const scanlineSpacing = 4;
-            ctx.globalAlpha = 0.08; // Fixed subtle alpha
+            ctx.globalAlpha = 0.08; //* Fixed subtle alpha
             ctx.strokeStyle = colors.primary;
             ctx.lineWidth = 1;
 
@@ -214,62 +213,72 @@ const GlobalBackground = ({ previewConfig }) => {
                 }
             }
 
-            // 3D wireframe objects floating in space
+            /**============================================
+             **  3D wireframe objects floating in space
+             *=============================================**/
             const objectCount = Math.floor(8 * density);
 
             for (let obj = 0; obj < objectCount; obj++) {
                 const objTime = time * speed * 0.001 + obj * 2.5;
                 const objX = width * 0.2 + (obj % 3) * width * 0.3 + Math.sin(objTime * 0.7) * 80;
                 const objY = height * 0.2 + Math.floor(obj / 3) * height * 0.25 + Math.cos(objTime * 0.9) * 60;
-                const objZ = Math.sin(objTime) * 100 + 200; // Z-depth for perspective
+                const objZ = Math.sin(objTime) * 100 + 200; //* Z-depth for perspective 
                 const rotX = objTime * 0.8;
                 const rotY = objTime * 1.2;
                 const rotZ = objTime * 0.5;
 
-                // Draw 3D cube wireframe with perspective
+                /**============================================
+                **  Draw 3D cube wireframe with perspective
+                *=============================================**/
                 const cubeSize = 40 + Math.sin(objTime * 1.5) * 15;
                 const perspective = 500;
 
-                // Define cube vertices
+                /**============================================
+                **  Define cube vertices
+                *=============================================**/
                 const vertices = [
                     [-1, -1, -1], [1, -1, -1], [1, 1, -1], [-1, 1, -1],
                     [-1, -1, 1], [1, -1, 1], [1, 1, 1], [-1, 1, 1]
                 ];
 
-                // Rotate and project vertices
+                /**============================================
+                **  Rotate and project vertices
+                *=============================================**/
                 const projectedVertices = vertices.map(([x, y, z]) => {
-                    // Scale by cube size
+                    /* Scale by cube size */
                     x *= cubeSize;
                     y *= cubeSize;
                     z *= cubeSize;
 
-                    // 3D rotation
+                    /* 3D rotation */
                     const cosX = Math.cos(rotX), sinX = Math.sin(rotX);
                     const cosY = Math.cos(rotY), sinY = Math.sin(rotY);
                     const cosZ = Math.cos(rotZ), sinZ = Math.sin(rotZ);
 
-                    // Rotate around X
+                    /* Rotate around X */
                     let newY = y * cosX - z * sinX;
                     let newZ = y * sinX + z * cosX;
                     y = newY;
                     z = newZ;
 
-                    // Rotate around Y
+                    /* Rotate around Y */
                     let newX = x * cosY + z * sinY;
                     newZ = -x * sinY + z * cosY;
                     x = newX;
                     z = newZ;
 
-                    // Rotate around Z
+                    /* Rotate around Z */
                     newX = x * cosZ - y * sinZ;
                     newY = x * sinZ + y * cosZ;
 
-                    // Perspective projection
+                    /* Perspective projection */
                     const scale = perspective / (perspective + z + objZ);
                     return [objX + newX * scale, objY + newY * scale, scale];
                 });
 
-                // Draw cube edges with holographic effect
+                /**============================================
+                 **   Draw cube edges with holographic effect
+                 *=============================================**/
                 const edges = [
                     [0, 1], [1, 2], [2, 3], [3, 0], // Front face
                     [4, 5], [5, 6], [6, 7], [7, 4], // Back face
@@ -280,7 +289,7 @@ const GlobalBackground = ({ previewConfig }) => {
                     const [x1, y1, scale1] = projectedVertices[a];
                     const [x2, y2, scale2] = projectedVertices[b];
 
-                    // Fade edges based on Z-depth
+                    /* Fade edges based on Z-depth */
                     const avgScale = (scale1 + scale2) * 0.5;
                     ctx.globalAlpha = opacity * avgScale * 0.6;
                     ctx.strokeStyle = obj % 2 === 0 ? colors.primary : colors.accent;
@@ -291,7 +300,7 @@ const GlobalBackground = ({ previewConfig }) => {
                     ctx.lineTo(x2, y2);
                     ctx.stroke();
 
-                    // Holographic shimmer on edges
+                    /* Holographic shimmer on edges */
                     const shimmer = Math.sin(time * 0.005 * speed + obj + a + b) * 0.5 + 0.5;
                     if (shimmer > 0.8) {
                         ctx.globalAlpha = opacity * 0.4;
@@ -301,7 +310,9 @@ const GlobalBackground = ({ previewConfig }) => {
                     }
                 });
 
-                // Holographic vertices
+                /**=====================================
+                 **    Holographic vertices
+                 *=====================================**/
                 projectedVertices.forEach(([x, y, scale], i) => {
                     const vertexPulse = Math.sin(time * 0.008 * speed + obj + i) * 0.5 + 0.5;
                     ctx.globalAlpha = opacity * scale * vertexPulse * 0.8;
@@ -312,45 +323,49 @@ const GlobalBackground = ({ previewConfig }) => {
                 });
             }
 
-            // Holographic data streams
+            /**============================================
+             **       Holographic data streams
+             *=============================================**/
             const streamCount = Math.floor(15 * density);
 
             for (let s = 0; s < streamCount; s++) {
                 const streamPhase = (time * speed * 0.02 + s * 0.4) % 1;
-                const streamPath = s % 4; // 4 different stream patterns
+                const streamPath = s % 4; //* 4 different stream patterns 
 
                 let streamX, streamY;
 
                 switch (streamPath) {
-                    case 0: // Horizontal sweep
+                    case 0: //*  Horizontal sweep
                         streamX = streamPhase * width;
                         streamY = height * 0.3 + Math.sin(streamPhase * Math.PI * 2) * 50;
                         break;
-                    case 1: // Vertical sweep
+                    case 1: //*  Vertical sweep
                         streamX = width * 0.7 + Math.cos(streamPhase * Math.PI * 2) * 80;
                         streamY = streamPhase * height;
                         break;
-                    case 2: // Diagonal sweep
+                    case 2: //* Diagonal sweep
                         streamX = streamPhase * width;
                         streamY = streamPhase * height;
                         break;
-                    case 3: // Circular sweep
+                    case 3: //* Circular sweep
                         const angle = streamPhase * Math.PI * 2;
                         streamX = width / 2 + Math.cos(angle) * 200;
                         streamY = height / 2 + Math.sin(angle) * 200;
                         break;
                     default:
-                        // Default case for safety
+                        //* Default case for safety
                         streamX = streamPhase * width;
                         streamY = height * 0.5;
                 }
 
-                // Data stream trail
+                /**============================================
+                 **         Data stream trail
+                 *=============================================**/
                 for (let trail = 0; trail < 12; trail++) {
                     const trailOffset = trail * 8;
                     const trailAlpha = (1 - trail / 12) * opacity * 0.5;
 
-                    // Adjust trail position based on stream direction
+                    /* Adjust trail position based on stream direction */
                     let trailX = streamX - (streamPath === 0 ? trailOffset : 0);
                     let trailY = streamY - (streamPath === 1 ? trailOffset : 0);
 
@@ -366,13 +381,13 @@ const GlobalBackground = ({ previewConfig }) => {
                     ctx.globalAlpha = trailAlpha;
                     ctx.fillStyle = trail < 3 ? colors.primary : colors.secondary;
 
-                    // Holographic data particles
+                    /* Holographic data particles */
                     const particleSize = 2 + (3 - Math.min(trail, 3)) * 0.5;
                     ctx.beginPath();
                     ctx.arc(trailX, trailY, particleSize, 0, Math.PI * 2);
                     ctx.fill();
 
-                    // Data glitch effect
+                    /* Data glitch effect */
                     if (trail === 0 && Math.sin(time * 0.01 * speed + s) > 0.9) {
                         ctx.globalAlpha = opacity * 0.6;
                         ctx.fillStyle = colors.accent;
@@ -381,14 +396,18 @@ const GlobalBackground = ({ previewConfig }) => {
                 }
             }
 
-            // Holographic grid overlay (subtle structural lines)
-            ctx.globalAlpha = 0.06; // Very subtle
+            /**============================================
+             **  Holographic grid overlay (subtle structural lines)
+             *=============================================**/
+            ctx.globalAlpha = 0.06; //* Very subtle
             ctx.strokeStyle = colors.secondary;
             ctx.lineWidth = 0.5;
 
             const gridSize = 100;
 
-            // Perspective grid lines
+            /**============================================
+             **       Perspective grid lines
+             *=============================================**/
             for (let x = 0; x <= width; x += gridSize) {
                 const gridWave = Math.sin(time * 0.001 * speed + x * 0.01) * 5;
                 ctx.beginPath();
@@ -405,7 +424,9 @@ const GlobalBackground = ({ previewConfig }) => {
                 ctx.stroke();
             }
 
-            // Holographic glitch artifacts
+            /**============================================
+             **      Holographic glitch artifacts
+             *=============================================**/
             if (Math.sin(time * 0.003 * speed) > 0.95) {
                 const glitchCount = Math.floor(5 * density);
                 ctx.globalCompositeOperation = 'screen';
@@ -427,13 +448,25 @@ const GlobalBackground = ({ previewConfig }) => {
             ctx.globalAlpha = 1;
         },
 
+        /**
+         *  ██████╗██╗██████╗  ██████╗██╗   ██╗██╗████████╗
+         * ██╔════╝██║██╔══██╗██╔════╝██║   ██║██║╚══██╔══╝
+         * ██║     ██║██████╔╝██║     ██║   ██║██║   ██║   
+         * ██║     ██║██╔══██╗██║     ██║   ██║██║   ██║   
+         * ╚██████╗██║██║  ██║╚██████╗╚██████╔╝██║   ██║   
+         *  ╚═════╝╚═╝╚═╝  ╚═╝ ╚═════╝ ╚═════╝ ╚═╝   ╚═╝   
+         *                                                 
+         */
+
         circuit: (ctx, width, height, time = 0) => {
-            const colors = getCurrentColors();
+            const colors = currentColors;
             const speed = backgroundConfig.animationSpeed || 1;
             const density = backgroundConfig.density || 1;
-            const opacity = maxCanvasOpacity;
+            const opacity = memoizedMaxCanvasOpacity;
 
-            // Organic circuit substrate (bio-electronic background)
+            /**========================================================================
+             **       Organic circuit substrate (bio-electronic background)
+             *========================================================================**/
             const substrate = ctx.createRadialGradient(width / 2, height / 2, 0, width / 2, height / 2, Math.max(width, height));
             substrate.addColorStop(0, hexWithAlpha(colors.background, '25'));
             substrate.addColorStop(0.5, hexWithAlpha(colors.primary, '08'));
@@ -441,7 +474,9 @@ const GlobalBackground = ({ previewConfig }) => {
             ctx.fillStyle = substrate;
             ctx.fillRect(0, 0, width, height);
 
-            // Bio-circuit trees (organic electronic growth)
+            /**============================================
+             **    Bio-circuit trees (organic electronic growth)
+             *=============================================**/
             const treeCount = Math.floor(8 * density);
 
             for (let tree = 0; tree < treeCount; tree++) {
@@ -452,18 +487,18 @@ const GlobalBackground = ({ previewConfig }) => {
                 const drawCircuitBranch = (x, y, angle, length, depth, energy, isMainStem) => {
                     if (depth > 9 || length < 8) return;
 
-                    // Organic growth with electronic precision
+                    /* Organic growth with electronic precision */
                     const growthPulse = Math.sin(treePhase + depth * 0.3) * 0.2 + 1.0;
                     const actualLength = length * growthPulse;
 
-                    // Slight organic curvature
+                    /* Slight organic curvature */
                     const curvature = Math.sin(treePhase + depth + x * 0.01) * 0.1;
                     const curvedAngle = angle + curvature;
 
                     const endX = x + Math.cos(curvedAngle) * actualLength;
                     const endY = y - Math.sin(curvedAngle) * actualLength;
 
-                    // Circuit trace coloring (deeper = more refined circuitry)
+                    /* Circuit trace coloring (deeper = more refined circuitry) */
                     let traceColor, traceWidth;
                     if (isMainStem) {
                         traceColor = colors.primary;
@@ -476,7 +511,9 @@ const GlobalBackground = ({ previewConfig }) => {
                         traceWidth = 1;
                     }
 
-                    // Draw organic circuit trace
+                    /**============================================
+                     **     Draw organic circuit trace
+                     *=============================================**/
                     ctx.globalAlpha = opacity * energy * 0.8;
                     ctx.strokeStyle = traceColor;
                     ctx.lineWidth = traceWidth;
@@ -485,25 +522,27 @@ const GlobalBackground = ({ previewConfig }) => {
                     ctx.lineTo(endX, endY);
                     ctx.stroke();
 
-                    // Electronic nodes at growth points
+                    /**============================================
+                     **    Electronic nodes at growth points
+                     *=============================================**/
                     if (depth % 2 === 0 && actualLength > 12) {
                         const nodeX = x + Math.cos(curvedAngle) * actualLength * 0.7;
                         const nodeY = y - Math.sin(curvedAngle) * actualLength * 0.7;
                         const nodeActivity = Math.sin(treePhase * 2 + depth + tree) * 0.5 + 0.5;
 
-                        // Circuit component (capacitor, resistor, or LED)
+                        /* Circuit component (capacitor, resistor, or LED) */
                         const componentType = (depth + tree) % 3;
 
                         ctx.globalAlpha = opacity * energy * nodeActivity;
 
                         if (componentType === 0) {
-                            // LED/diode
+                            /* LED/diode */
                             ctx.fillStyle = nodeActivity > 0.7 ? colors.primary : colors.accent;
                             ctx.beginPath();
                             ctx.arc(nodeX, nodeY, 4 + nodeActivity * 2, 0, Math.PI * 2);
                             ctx.fill();
 
-                            // LED light emission
+                            /* LED light emission */
                             if (nodeActivity > 0.8) {
                                 ctx.globalAlpha = opacity * 0.3;
                                 const glowGradient = ctx.createRadialGradient(nodeX, nodeY, 0, nodeX, nodeY, 12);
@@ -515,12 +554,12 @@ const GlobalBackground = ({ previewConfig }) => {
                                 ctx.fill();
                             }
                         } else if (componentType === 1) {
-                            // Resistor
+                            /* Resistor */
                             ctx.strokeStyle = colors.secondary;
                             ctx.lineWidth = 3;
                             ctx.strokeRect(nodeX - 6, nodeY - 2, 12, 4);
 
-                            // Resistance bands
+                            /* Resistance bands */
                             ctx.strokeStyle = colors.accent;
                             ctx.lineWidth = 1;
                             for (let band = 0; band < 3; band++) {
@@ -531,7 +570,7 @@ const GlobalBackground = ({ previewConfig }) => {
                                 ctx.stroke();
                             }
                         } else {
-                            // Capacitor
+                            /* Capacitor */
                             ctx.strokeStyle = colors.accent;
                             ctx.lineWidth = 2;
                             ctx.beginPath();
@@ -543,17 +582,19 @@ const GlobalBackground = ({ previewConfig }) => {
                         }
                     }
 
-                    // Organic branching with electronic constraints
+                    /**============================================
+                     **   Organic branching with electronic constraints
+                     *=============================================**/
                     if (actualLength > 15) {
                         let branchCount;
                         if (isMainStem && depth < 3) {
-                            branchCount = 3; // Main stems branch more
+                            branchCount = 3; //* Main stems branch more
                         } else {
-                            branchCount = 2; // Secondary branches
+                            branchCount = 2; //* Secondary branches
                         }
 
                         for (let b = 0; b < branchCount; b++) {
-                            // Bio-electronic branching angles (mix of organic and geometric)
+                            /* Bio-electronic branching angles (mix of organic and geometric) */
                             let branchAngle;
                             if (isMainStem) {
                                 branchAngle = angle + (b - 1) * 0.5 + Math.sin(treePhase + depth + b) * 0.3;
@@ -569,36 +610,40 @@ const GlobalBackground = ({ previewConfig }) => {
                     }
                 };
 
-                // Start with main stem
+                //* Start with main stem
                 const mainAngle = Math.PI / 2 + Math.sin(treePhase) * 0.2;
                 const mainLength = 70 + Math.sin(treePhase * 0.8) * 25;
                 drawCircuitBranch(rootX, rootY, mainAngle, mainLength, 0, 1.0, true);
             }
 
-            // Bio-electric data streams flowing through circuit paths
+            /**============================================
+             **   Bio-electric data streams flowing through circuit paths
+             *=============================================**/
             const streamCount = Math.floor(25 * density);
 
             for (let stream = 0; stream < streamCount; stream++) {
                 const streamPhase = (time * speed * 0.04 + stream * 0.3) % 1;
 
-                // Organic flow paths (following natural curves)
+                /**============================================
+                 **  Organic flow paths (following natural curves)
+                 *=============================================**/
                 const pathType = stream % 4;
                 let streamX, streamY, prevX, prevY;
 
                 switch (pathType) {
-                    case 0: // Vine-like horizontal flow
+                    case 0: //* Vine-like horizontal flow
                         streamX = streamPhase * width;
                         streamY = height * 0.4 + Math.sin(streamPhase * Math.PI * 3 + stream) * 80;
                         prevX = streamX - 12;
                         prevY = height * 0.4 + Math.sin((streamPhase - 0.02) * Math.PI * 3 + stream) * 80;
                         break;
-                    case 1: // Root-like vertical flow
+                    case 1: //* Root-like vertical flow
                         streamX = width * 0.3 + Math.cos(streamPhase * Math.PI * 2 + stream) * 60;
                         streamY = streamPhase * height;
                         prevX = width * 0.3 + Math.cos((streamPhase - 0.02) * Math.PI * 2 + stream) * 60;
                         prevY = streamY - 12;
                         break;
-                    case 2: // Spiral growth pattern
+                    case 2: //* Spiral growth pattern
                         const spiralAngle = streamPhase * Math.PI * 6 + stream;
                         const spiralRadius = 100 + streamPhase * 150;
                         streamX = width / 2 + Math.cos(spiralAngle) * spiralRadius;
@@ -609,32 +654,38 @@ const GlobalBackground = ({ previewConfig }) => {
                         prevX = width / 2 + Math.cos(prevSpiralAngle) * prevSpiralRadius;
                         prevY = height / 2 + Math.sin(prevSpiralAngle) * prevSpiralRadius;
                         break;
-                    case 3: // Branching network flow
+                    case 3: //* Branching network flow
                         streamX = streamPhase * width;
                         streamY = height * 0.6 + Math.sin(streamPhase * Math.PI * 4) * 100;
                         prevX = streamX - 15;
                         prevY = height * 0.6 + Math.sin((streamPhase - 0.025) * Math.PI * 4) * 100;
                         break;
                     default:
-                        // Default case for safety
+                        //* Default case for safety
                         streamX = streamPhase * width;
                         streamY = height * 0.5;
                         prevX = streamX - 10;
                         prevY = streamY;
                 }
 
-                // Data packet visualization
+                /**============================================
+                 **    Data packet visualization
+                 *=============================================**/
                 const packetSize = 3 + Math.sin(time * 0.008 * speed + stream) * 2;
                 const packetEnergy = Math.sin(time * 0.012 * speed + stream * 0.7) * 0.5 + 0.5;
 
-                // Main data packet
+                /**======================
+                 **   Main data packet
+                 *========================**/
                 ctx.globalAlpha = opacity * packetEnergy * 0.9;
                 ctx.fillStyle = stream % 2 === 0 ? colors.primary : colors.accent;
                 ctx.beginPath();
                 ctx.arc(streamX, streamY, packetSize, 0, Math.PI * 2);
                 ctx.fill();
 
-                // Organic trail effect
+                /**======================
+                 **  Organic trail effect
+                 *========================**/
                 const trailLength = 6;
                 for (let trail = 1; trail <= trailLength; trail++) {
                     const trailProgress = trail / trailLength;
@@ -650,7 +701,9 @@ const GlobalBackground = ({ previewConfig }) => {
                     ctx.fill();
                 }
 
-                // Energy discharge effect
+                /**============================================
+                 **         Energy discharge effect
+                 *=============================================**/
                 if (packetEnergy > 0.85) {
                     ctx.globalAlpha = opacity * 0.4;
                     ctx.strokeStyle = colors.primary;
@@ -668,14 +721,18 @@ const GlobalBackground = ({ previewConfig }) => {
                 }
             }
 
-            // Subtle organic circuit board grid
+            /**============================================
+             **     Subtle organic circuit board grid
+             *=============================================**/
             ctx.globalAlpha = 0.08;
             ctx.strokeStyle = colors.secondary;
             ctx.lineWidth = 0.5;
 
             const gridSpacing = 120;
 
-            // Organic horizontal traces
+            /**======================
+             **  Organic horizontal traces
+             *========================**/
             for (let y = gridSpacing; y < height; y += gridSpacing) {
                 const organicY = y + Math.sin(time * 0.0008 * speed + y * 0.01) * 8;
                 ctx.beginPath();
@@ -691,7 +748,9 @@ const GlobalBackground = ({ previewConfig }) => {
                 ctx.stroke();
             }
 
-            // Organic vertical traces
+            /**======================
+             **  Organic vertical traces
+             *========================**/
             for (let x = gridSpacing; x < width; x += gridSpacing) {
                 const organicX = x + Math.cos(time * 0.0008 * speed + x * 0.01) * 8;
                 ctx.beginPath();
@@ -710,16 +769,28 @@ const GlobalBackground = ({ previewConfig }) => {
             ctx.globalAlpha = 1;
         },
 
+        /**
+         * ██████╗ ███████╗██╗   ██╗ ██████╗██╗  ██╗███████╗██████╗ ███████╗██╗     ██╗ ██████╗
+         * ██╔══██╗██╔════╝╚██╗ ██╔╝██╔════╝██║  ██║██╔════╝██╔══██╗██╔════╝██║     ██║██╔════╝
+         * ██████╔╝███████╗ ╚████╔╝ ██║     ███████║█████╗  ██║  ██║█████╗  ██║     ██║██║     
+         * ██╔═══╝ ╚════██║  ╚██╔╝  ██║     ██╔══██║██╔══╝  ██║  ██║██╔══╝  ██║     ██║██║     
+         * ██║     ███████║   ██║   ╚██████╗██║  ██║███████╗██████╔╝███████╗███████╗██║╚██████╗
+         * ╚═╝     ╚══════╝   ╚═╝    ╚═════╝╚═╝  ╚═╝╚══════╝╚═════╝ ╚══════╝╚══════╝╚═╝ ╚═════╝
+         *                                                                                     
+         */
+
         psychedelic: (ctx, width, height, time = 0) => {
-            const colors = getCurrentColors();
+            const colors = currentColors;
             const adjustedColors = getAlphaAdjustedColors(colors);
             const speed = backgroundConfig.animationSpeed || 1;
-            const density = backgroundConfig.density || 1;
+            const density = (backgroundConfig.density || 1);
 
             const centerX = width / 2;
             const centerY = height / 2;
 
-            // Trippy kaleidoscopic background
+            /**============================================
+             **   Trippy kaleidoscopic background
+             *=============================================**/
             const kaleidoGradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, Math.max(width, height) * 1);
             kaleidoGradient.addColorStop(0, hexWithAlpha(colors.background, '40'));
             kaleidoGradient.addColorStop(0.3, adjustedColors.primaryAlpha('20'));
@@ -728,27 +799,35 @@ const GlobalBackground = ({ previewConfig }) => {
             ctx.fillStyle = kaleidoGradient;
             ctx.fillRect(0, 0, width, height);
 
-            // Mandala sacred geometry layers
-            const mandalaLayers = Math.floor(6 * density); //Psychedelic spikes density control. matching to 30fps max.
+            /**============================================
+             **   Mandala sacred geometry layers
+             *=============================================**/
+            const mandalaLayers = Math.floor(6 * density);
 
             for (let layer = 0; layer < mandalaLayers; layer++) {
                 const layerPhase = time * speed * 0.001 + layer * 0.8;
                 const layerRadius = 50 + layer * 30 + Math.sin(layerPhase * 0.7) * 20;
                 const layerRotation = layerPhase * (layer % 2 === 0 ? 1 : -1) * 0.3;
-                const petalCount = 5 + layer * 2; // More petals for deeper layers
+                const petalCount = 5 + layer * 2; //* More petals for deeper layers
 
-                // Mandala petals/segments
+                /**======================
+                 **  Mandala petals/segments
+                 *========================**/
                 for (let petal = 0; petal < petalCount; petal++) {
                     const petalAngle = (petal / petalCount) * Math.PI * 2 + layerRotation;
                     const petalPhase = layerPhase + petal * 0.2;
                     const petalScale = 0.7 + Math.sin(petalPhase * 1.5) * 0.5;
 
-                    // Petal geometry
+                    /**======================
+                     **   Petal geometry
+                     *========================**/
                     const petalRadius = layerRadius * petalScale;
                     const petalX = centerX + Math.cos(petalAngle) * petalRadius;
                     const petalY = centerY + Math.sin(petalAngle) * petalRadius;
 
-                    // Color cycling through spectrum
+                    /**============================================
+                     **    Color cycling through spectrum
+                     *=============================================**/
                     const colorCycle = (petalPhase + layer) % 3;
                     let petalColor;
                     if (colorCycle < 1) {
@@ -759,23 +838,33 @@ const GlobalBackground = ({ previewConfig }) => {
                         petalColor = colors.accent;
                     }
 
-                    // Draw mandala segment
+                    /**======================
+                     **   Draw mandala segment
+                     *========================**/
                     ctx.globalAlpha = 0.6 + Math.sin(petalPhase * 2) * 0.4;
 
-                    // Inner petal geometry
+                    /**======================
+                     **   Inner petal geometry
+                     *========================**/
                     const innerRadius = petalRadius * 0.3;
                     const outerRadius = petalRadius * 0.8;
 
-                    // Mandala petal with sacred geometry
+                    /**============================================
+                     **    Mandala petal with sacred geometry
+                     *=============================================**/
                     ctx.beginPath();
 
-                    // Create complex petal shape
+                    /**======================
+                     **   Create complex petal shape
+                     *========================**/
                     for (let point = 0; point <= 20; point++) {
                         const pointAngle = petalAngle + (point / 20) * (Math.PI / petalCount) - Math.PI / (petalCount * 2);
                         const pointRadius = innerRadius + (outerRadius - innerRadius) *
                             (0.5 + 0.5 * Math.sin(point * Math.PI / 10));
 
-                        // Add psychedelic warping
+                        /**======================
+                         **  Add psychedelic warping
+                         *========================**/
                         const warpFactor = Math.sin(petalPhase * 3 + point * 0.3) * 0.2;
                         const warpedRadius = pointRadius * (1 + warpFactor);
 
@@ -791,7 +880,9 @@ const GlobalBackground = ({ previewConfig }) => {
 
                     ctx.closePath();
 
-                    // Gradient fill for each petal
+                    /**============================================
+                     **    Gradient fill for each petal
+                     *=============================================**/
                     const petalGradient = ctx.createRadialGradient(petalX, petalY, 0, petalX, petalY, outerRadius);
                     petalGradient.addColorStop(0, adjustedColors.primaryAlpha('80'));
                     petalGradient.addColorStop(0.7, adjustedColors.primaryAlpha('40'));
@@ -800,13 +891,17 @@ const GlobalBackground = ({ previewConfig }) => {
                     ctx.fillStyle = petalGradient;
                     ctx.fill();
 
-                    // Petal outline with psychedelic effect
+                    /**============================================
+                     **    Petal outline with psychedelic effect
+                     *=============================================**/
                     ctx.globalAlpha = 0.8;
                     ctx.strokeStyle = petalColor;
                     ctx.lineWidth = 1 + Math.sin(petalPhase * 4) * 1;
                     ctx.stroke();
 
-                    // Fractal sub-patterns within petals
+                    /**============================================
+                     **   Fractal sub-patterns within petals
+                     *=============================================**/
                     if (layer < 4) {
                         const subPatterns = 3;
                         for (let sub = 0; sub < subPatterns; sub++) {
@@ -825,7 +920,9 @@ const GlobalBackground = ({ previewConfig }) => {
                     }
                 }
 
-                // Connecting geometric patterns between layers
+                /**========================================================================
+                 **          Connecting geometric patterns between layers
+                 *========================================================================**/
                 if (layer > 0) {
                     const connectionCount = petalCount * 4;
                     for (let conn = 0; conn < connectionCount; conn++) {
@@ -851,17 +948,23 @@ const GlobalBackground = ({ previewConfig }) => {
                 }
             }
 
-            // Central mandala core with intense psychedelic effects
+            /**========================================================================
+             **      Central mandala core with intense psychedelic effects
+             *========================================================================**/
             const corePhase = time * speed * 0.002;
             const coreRadius = 40 + Math.sin(corePhase * 3) * 15;
 
-            // Multi-layered core
+            /**======================
+             **    Multi-layered core
+             *========================**/
             for (let coreLayer = 0; coreLayer < 5; coreLayer++) {
                 const coreLayerRadius = coreRadius * (1 - coreLayer * 0.15);
                 const coreLayerPhase = corePhase + coreLayer * 0.5;
                 const coreRotation = coreLayerPhase * (coreLayer % 2 === 0 ? 2 : -1.5);
 
-                // Core sacred symbols
+                /**======================
+                 **  Core sacred symbols
+                 *========================**/
                 const symbolSides = 6 + coreLayer;
                 ctx.globalAlpha = 0.8 - coreLayer * 0.1;
 
@@ -870,20 +973,24 @@ const GlobalBackground = ({ previewConfig }) => {
                     const sideX = centerX + Math.cos(sideAngle) * coreLayerRadius;
                     const sideY = centerY + Math.sin(sideAngle) * coreLayerRadius;
 
-                    // Psychedelic color shifting
+                    /**============================================
+                     **     Psychedelic color shifting
+                     *=============================================**/
                     const colorShift = (coreLayerPhase + side) % 3;
                     let coreColor = colorShift < 1 ? colors.primary :
                         colorShift < 2 ? colors.secondary : colors.accent;
 
-                    // Sacred symbol at each point
+                    /**============================================
+                     **      Sacred symbol at each point
+                     *=============================================**/
                     if (coreLayer < 3) {
-                        // Inner core symbols
+                        /* Inner core symbols */
                         ctx.fillStyle = coreColor;
                         ctx.beginPath();
                         ctx.arc(sideX, sideY, 3 + Math.sin(coreLayerPhase * 8 + side) * 2, 0, Math.PI * 2);
                         ctx.fill();
                     } else {
-                        // Outer core lines
+                        /* Outer core lines */
                         ctx.strokeStyle = coreColor;
                         ctx.lineWidth = 2;
                         ctx.beginPath();
@@ -894,18 +1001,22 @@ const GlobalBackground = ({ previewConfig }) => {
                 }
             }
 
-            // Psychedelic particle field
+            /**============================================
+             **      Psychedelic particle field
+             *=============================================**/
             const particleCount = Math.floor(80 * density);
 
             for (let particle = 0; particle < particleCount; particle++) {
                 const particlePhase = time * speed * 0.003 + particle * 0.1;
-                const particleAngle = (particle * 2.39998) % (Math.PI * 2) + particlePhase; // Golden angle
+                const particleAngle = (particle * 2.39998) % (Math.PI * 2) + particlePhase; //* Golden angle
                 const particleRadius = 200 + (particle % 200) + Math.sin(particlePhase * 2) * 50;
 
                 const particleX = centerX + Math.cos(particleAngle) * particleRadius;
                 const particleY = centerY + Math.sin(particleAngle) * particleRadius;
 
-                // Psychedelic particle properties
+                /**============================================
+                 **     Psychedelic particle properties
+                 *=============================================**/
                 const particleIntensity = Math.sin(particlePhase * 7) * 0.5 + 0.5;
                 const particleSize = 2 + Math.sin(particlePhase * 11) * 3;
                 const colorIndex = Math.floor((particlePhase * 3) % 3);
@@ -913,12 +1024,14 @@ const GlobalBackground = ({ previewConfig }) => {
                 const particleColor = colorIndex === 0 ? colors.primary :
                     colorIndex === 1 ? colors.secondary : colors.accent;
 
-                // Check if particle is within canvas bounds
+                /* Check if particle is within canvas bounds */
                 if (particleX >= 0 && particleX <= width && particleY >= 0 && particleY <= height) {
                     ctx.globalAlpha = particleIntensity * 0.7;
 
-                    // Particle glow effect
-                    const glowRadius = Math.max(particleSize * 3, 1); // Ensure positive radius
+                    /**======================
+                     **  Particle glow effect
+                     *========================**/
+                    const glowRadius = Math.max(particleSize * 3, 1); //* Ensure positive radius
                     const glowGradient = ctx.createRadialGradient(particleX, particleY, 0,
                         particleX, particleY, glowRadius);
                     glowGradient.addColorStop(0, adjustedColors.primaryAlpha('FF'));
@@ -930,16 +1043,20 @@ const GlobalBackground = ({ previewConfig }) => {
                     ctx.arc(particleX, particleY, glowRadius, 0, Math.PI * 2);
                     ctx.fill();
 
-                    // Particle core
+                    /**======================
+                     **      Particle core
+                     *========================**/
                     ctx.globalAlpha = particleIntensity;
                     ctx.fillStyle = particleColor;
                     ctx.beginPath();
-                    ctx.arc(particleX, particleY, Math.max(particleSize, 1), 0, Math.PI * 2); // Ensure positive radius
+                    ctx.arc(particleX, particleY, Math.max(particleSize, 1), 0, Math.PI * 2); //* Ensure positive radius
                     ctx.fill();
                 }
             }
 
-            // Psychedelic energy waves
+            /**============================================
+             **      Psychedelic energy waves
+             *=============================================**/
             const waveCount = Math.floor(4 * density);
 
             for (let wave = 0; wave < waveCount; wave++) {
@@ -952,7 +1069,9 @@ const GlobalBackground = ({ previewConfig }) => {
                     ctx.strokeStyle = wave % 2 === 0 ? colors.primary : colors.accent;
                     ctx.lineWidth = 2 + waveIntensity * 3;
 
-                    // Psychedelic distorted circles
+                    /**======================
+                     **  Psychedelic distorted circles
+                     *========================**/
                     ctx.beginPath();
 
                     const segments = 60;
@@ -979,18 +1098,35 @@ const GlobalBackground = ({ previewConfig }) => {
             ctx.globalAlpha = 1;
         },
 
+        /**
+         * ██╗   ██╗ ██████╗ ██████╗ ████████╗███████╗██╗  ██╗
+         * ██║   ██║██╔═══██╗██╔══██╗╚══██╔══╝██╔════╝╚██╗██╔╝
+         * ██║   ██║██║   ██║██████╔╝   ██║   █████╗   ╚███╔╝ 
+         * ╚██╗ ██╔╝██║   ██║██╔══██╗   ██║   ██╔══╝   ██╔██╗ 
+         *  ╚████╔╝ ╚██████╔╝██║  ██║   ██║   ███████╗██╔╝ ██╗
+         *   ╚═══╝   ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚══════╝╚═╝  ╚═╝
+         *                                                    
+         */
+
         vortex: (ctx, width, height, time = 0) => {
-            // QUANTUM THREADS: Visualizing invisible quantum fields through interconnected light filaments
-            const colors = getCurrentColors();
+            /**========================================================================
+             **   Visualizing invisible quantum fields through interconnected 
+             **   light filaments
+             *========================================================================**/
+            const colors = currentColors;
             const speed = backgroundConfig.animationSpeed || 1;
             const t = time * 0.3 * speed;
             const density = backgroundConfig.density || 1;
 
-            // Quantum field parameters
-            const nodeCount = Math.floor(1 * density);
-            const maxDistance = 3 * density; // Maximum distance for entanglement connections
+            /**========================================================================
+             **      Quantum field parameters - 
+             **      Scale density from 0.2-1.5 to 50-100 range
+             *========================================================================**/
+            const scaledDensity = 50 + (density - 0.2) * (100 - 50) / (1.5 - 0.2);
+            const nodeCount = Math.floor(scaledDensity);
+            const maxDistance = Math.min(width, height) * 0.15; //* Connection distance: Scale with canvas size (15% of smallest dimension)
 
-            // Always re-create nodes if count changes
+            /* Always re-create nodes if count changes */
             if (!ctx.quantumNodes) {
                 ctx.quantumNodes = [];
                 for (let i = 0; i < nodeCount; i++) {
@@ -1006,7 +1142,7 @@ const GlobalBackground = ({ previewConfig }) => {
                 }
             }
 
-            // Helper function to validate colors
+            /* Helper function to validate colors */
             const validateColor = (color, fallback = '#000000') => {
                 if (!color || typeof color !== 'string') return fallback;
                 if (color.includes('var(')) return fallback;
@@ -1014,7 +1150,7 @@ const GlobalBackground = ({ previewConfig }) => {
                 return color;
             };
 
-            // Validate all colors upfront
+            /* Validate all colors upfront */
             const validColors = {
                 background: validateColor(colors.background, '#0a0b1e'),
                 primary: validateColor(colors.primary, '#00ffff'),
@@ -1022,7 +1158,9 @@ const GlobalBackground = ({ previewConfig }) => {
                 accent: validateColor(colors.accent, '#ffff00')
             };
 
-            // Deep space background with quantum foam - respects theme colors
+            /**========================================================================
+             **    Deep space background with quantum foam - respects theme colors
+             *========================================================================**/
             const bgGrad = ctx.createRadialGradient(width / 2, height / 2, 0, width / 2, height / 2, Math.max(width, height));
 
             try {
@@ -1031,12 +1169,14 @@ const GlobalBackground = ({ previewConfig }) => {
                 ctx.fillStyle = bgGrad;
                 ctx.fillRect(0, 0, width, height);
             } catch (e) {
-                // Fallback to solid color
+                //! Fallback to solid color
                 ctx.fillStyle = '#0a0b1e';
                 ctx.fillRect(0, 0, width, height);
             }
 
-            // Quantum foam (subtle background noise)
+            /**============================================
+             **   Quantum foam (subtle background noise)
+             *=============================================**/
             ctx.save();
             ctx.globalAlpha = 0.05;
             for (let i = 0; i < 200; i++) {
@@ -1050,35 +1190,47 @@ const GlobalBackground = ({ previewConfig }) => {
             }
             ctx.restore();
 
-            // Update quantum nodes with field dynamics
+            /**============================================
+             **  Update quantum nodes with field dynamics
+             *=============================================**/
             ctx.quantumNodes.forEach((node, i) => {
-                // Quantum field influence (wave function)
+                /**============================================
+                 **   Quantum field influence (wave function)
+                 *=============================================**/
                 const fieldX = Math.sin(t * 2 + node.phase) * 0.5;
                 const fieldY = Math.cos(t * 1.7 + node.phase) * 0.5;
 
-                // Apply quantum tunneling effect
+                /**============================================
+                 **    Apply quantum tunneling effect
+                 *=============================================**/
                 node.vx += fieldX * 0.02;
                 node.vy += fieldY * 0.02;
 
-                // Damping to prevent runaway motion
+                /**============================================
+                 **    Damping to prevent runaway motion
+                 *=============================================**/
                 node.vx *= 0.98;
                 node.vy *= 0.98;
 
-                // Update position
+                /* Update position */
                 node.x += node.vx;
                 node.y += node.vy;
 
-                // Quantum boundary conditions (wrap around)
+                /**============================================
+                 **   Quantum boundary conditions (wrap around)
+                 *=============================================**/
                 if (node.x < 0) node.x = width;
                 if (node.x > width) node.x = 0;
                 if (node.y < 0) node.y = height;
                 if (node.y > height) node.y = 0;
 
-                // Update energy based on position in field
+                //* Update energy based on position in field
                 node.energy = (Math.sin(t * 3 + node.x * 0.01) + Math.cos(t * 2.5 + node.y * 0.01)) * 0.5 + 0.5;
             });
 
-            // Calculate quantum entanglements (connections)
+            /**========================================================================
+             **         Calculate quantum entanglements (connections)
+             *========================================================================**/
             ctx.quantumNodes.forEach(node => {
                 node.connections = [];
                 ctx.quantumNodes.forEach(other => {
@@ -1100,18 +1252,20 @@ const GlobalBackground = ({ previewConfig }) => {
                 });
             });
 
-            // Draw quantum threads (entangled connections)
+            /**========================================================================
+             **         Draw quantum threads (entangled connections)
+             *========================================================================**/
             ctx.quantumNodes.forEach(node => {
                 node.connections.forEach(connection => {
                     if (connection.strength > 0.3) {
                         const target = connection.target;
                         const energy = (node.energy + target.energy) / 2;
 
-                        // Quantum thread appearance
+                        //* Quantum thread appearance
                         ctx.save();
                         ctx.globalAlpha = connection.strength * 0.6 * energy;
 
-                        // Color based on energy state
+                        //* Color based on energy state
                         const threadColor = energy > 0.7 ? validColors.accent :
                             energy > 0.4 ? validColors.primary : validColors.secondary;
 
@@ -1120,11 +1274,11 @@ const GlobalBackground = ({ previewConfig }) => {
                         ctx.shadowColor = threadColor;
                         ctx.shadowBlur = 8;
 
-                        // Draw curved quantum thread
+                        //* Draw curved quantum thread
                         ctx.beginPath();
                         ctx.moveTo(node.x, node.y);
 
-                        // Quantum fluctuation in the thread
+                        //* Quantum fluctuation in the thread
                         const midX = (node.x + target.x) / 2 + Math.sin(t * 8 + connection.distance * 0.03) * 30;
                         const midY = (node.y + target.y) / 2 + Math.cos(t * 6 + connection.distance * 0.03) * 30;
 
@@ -1135,7 +1289,9 @@ const GlobalBackground = ({ previewConfig }) => {
                 });
             });
 
-            // Draw quantum nodes (field intersections)
+            /**========================================================================
+             **      Draw quantum nodes (field intersections)
+             *========================================================================**/
             ctx.quantumNodes.forEach(node => {
                 const nodeSize = 2 + node.energy * 4;
                 const nodeColor = node.energy > 0.6 ? validColors.accent : validColors.primary;
@@ -1143,7 +1299,9 @@ const GlobalBackground = ({ previewConfig }) => {
                 ctx.save();
                 ctx.globalAlpha = 0.8 + node.energy * 0.2;
 
-                // Node core
+                /**======================
+                 **      Node core
+                 *========================**/
                 const nodeGrad = ctx.createRadialGradient(node.x, node.y, 0, node.x, node.y, nodeSize * 2);
                 try {
                     nodeGrad.addColorStop(0, '#ffffff');
@@ -1151,7 +1309,7 @@ const GlobalBackground = ({ previewConfig }) => {
                     nodeGrad.addColorStop(1, nodeColor + '00');
                     ctx.fillStyle = nodeGrad;
                 } catch (e) {
-                    // Fallback to solid color if gradient fails
+                    //! Fallback to solid color if gradient fails
                     ctx.fillStyle = nodeColor;
                 }
                 ctx.shadowColor = nodeColor;
@@ -1162,11 +1320,14 @@ const GlobalBackground = ({ previewConfig }) => {
                 ctx.restore();
             });
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }), [backgroundConfig, darkMode]);
+        //* Add getAdaptiveQuality to the DArray when using Adaptive Quality on a wallpaper.
+    }), [backgroundConfig.animationSpeed, backgroundConfig.density, currentColors, memoizedMaxCanvasOpacity, getAlphaAdjustedColors, hexWithAlpha]);
 
-    // Use smaller FPS for preview
+    /**============================================
+     **    Use smaller FPS for preview
+     *=============================================**/
     const isPreview = !!previewConfig;
+
     const defaultFps = useMemo(() => {
         if (typeof navigator === "undefined" || typeof window === "undefined") return 30;
         const ua = navigator.userAgent;
@@ -1178,104 +1339,330 @@ const GlobalBackground = ({ previewConfig }) => {
         return (isIphoneOrAndroid || isIpad) ? 20 : 30;
     }, []);
 
+    /**========================================================================
+     **    Ensure currentFps starts in sync with computed default
+     *========================================================================**/
+    useEffect(() => {
+        currentFps.current = defaultFps || 30;
+    }, [defaultFps]);
+
+    /**============================================
+     **    Adaptive quality with hysteresis
+     *=============================================**/
+    const getAdaptiveQuality = useCallback(() => {
+        const fps = currentFps.current;
+        const current = currentQuality.current;
+
+        /**============================================
+         **  Different hysteresis bands for preview vs website
+         *=============================================**/
+        if (isPreview) {
+            /* Tighter bands for preview (landing page with 4 wallpapers, capped at 20 FPS) */
+            if (current >= 1.0 && fps <= 15) {
+                currentQuality.current = 0.8;
+                qualityStableFrames.current = 0;
+                return 0.8;
+            } else if (current >= 0.8 && fps <= 12) {
+                currentQuality.current = 0.6;
+                qualityStableFrames.current = 0;
+                return 0.6;
+            } else if (current >= 0.6 && fps <= 8) {
+                currentQuality.current = 0.4;
+                qualityStableFrames.current = 0;
+                return 0.4;
+            } else if (qualityStableFrames.current > 60) {
+                if (current <= 0.4 && fps >= 18) {
+                    currentQuality.current = 0.6;
+                    qualityStableFrames.current = 0;
+                    return 0.6;
+                } else if (current <= 0.6 && fps >= 19) {
+                    currentQuality.current = 0.8;
+                    qualityStableFrames.current = 0;
+                    return 0.8;
+                } else if (current <= 0.8 && fps >= 20) {
+                    currentQuality.current = 1.0;
+                    qualityStableFrames.current = 0;
+                    return 1.0;
+                } else {
+                    /* Reset counter if upgrade conditions aren't met after waiting */
+                    qualityStableFrames.current = 0;
+                }
+            }
+        } else {
+            /**========================================================================
+             **  Wider bands for website (single wallpaper, mobile 20 FPS / desktop 30 FPS)
+             *========================================================================**/
+            const websiteTarget = defaultFps;
+            if (current >= 1.0 && fps <= websiteTarget - 8) {
+                currentQuality.current = 0.8;
+                qualityStableFrames.current = 0;
+                return 0.8;
+            } else if (current >= 0.8 && fps <= websiteTarget - 12) {
+                currentQuality.current = 0.6;
+                qualityStableFrames.current = 0;
+                return 0.6;
+            } else if (current >= 0.6 && fps <= websiteTarget - 16) {
+                currentQuality.current = 0.4;
+                qualityStableFrames.current = 0;
+                return 0.4;
+            } else if (qualityStableFrames.current > 60) {
+                if (current <= 0.4 && fps >= websiteTarget - 8) {
+                    currentQuality.current = 0.6;
+                    qualityStableFrames.current = 0;
+                    return 0.6;
+                } else if (current <= 0.6 && fps >= websiteTarget - 4) {
+                    currentQuality.current = 0.8;
+                    qualityStableFrames.current = 0;
+                    return 0.8;
+                } else if (current <= 0.8 && fps >= websiteTarget) {
+                    currentQuality.current = 1.0;
+                    qualityStableFrames.current = 0;
+                    return 1.0;
+                } else {
+                    /* Reset counter if upgrade conditions aren't met after waiting */
+                    qualityStableFrames.current = 0;
+                }
+            }
+        }
+
+        /* Only increment if we're in a stable state (no changes made) */
+        qualityStableFrames.current++;
+        return currentQuality.current;
+    }, [isPreview, defaultFps]);
+
+    /**
+     * ██████╗ ███████╗███╗   ██╗██████╗ ███████╗██████╗ ██╗███╗   ██╗ ██████╗ 
+     * ██╔══██╗██╔════╝████╗  ██║██╔══██╗██╔════╝██╔══██╗██║████╗  ██║██╔════╝ 
+     * ██████╔╝█████╗  ██╔██╗ ██║██║  ██║█████╗  ██████╔╝██║██╔██╗ ██║██║  ███╗
+     * ██╔══██╗██╔══╝  ██║╚██╗██║██║  ██║██╔══╝  ██╔══██╗██║██║╚██╗██║██║   ██║
+     * ██║  ██║███████╗██║ ╚████║██████╔╝███████╗██║  ██║██║██║ ╚████║╚██████╔╝
+     * ╚═╝  ╚═╝╚══════╝╚═╝  ╚═══╝╚═════╝ ╚══════╝╚═╝  ╚═╝╚═╝╚═╝  ╚═══╝ ╚═════╝ 
+     *                                                                         
+     *  █████╗ ███╗   ██╗██╗███╗   ███╗ █████╗ ████████╗██╗ ██████╗ ███╗   ██╗ 
+     * ██╔══██╗████╗  ██║██║████╗ ████║██╔══██╗╚══██╔══╝██║██╔═══██╗████╗  ██║ 
+     * ███████║██╔██╗ ██║██║██╔████╔██║███████║   ██║   ██║██║   ██║██╔██╗ ██║ 
+     * ██╔══██║██║╚██╗██║██║██║╚██╔╝██║██╔══██║   ██║   ██║██║   ██║██║╚██╗██║ 
+     * ██║  ██║██║ ╚████║██║██║ ╚═╝ ██║██║  ██║   ██║   ██║╚██████╔╝██║ ╚████║ 
+     * ╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝╚═╝     ╚═╝╚═╝  ╚═╝   ╚═╝   ╚═╝ ╚═════╝ ╚═╝  ╚═══╝ 
+     *                                                                         
+     */
+
     const animate = useCallback((timestamp) => {
-        // Use lower FPS for preview, otherwise use config or default
+        //! Use lower FPS for preview, otherwise use config or default
         const maxFps = isPreview ? 20 : (defaultFps || 30);
         const frameInterval = 1000 / maxFps;
         const canvas = canvasRef.current;
-        if (!canvas || !backgroundConfig.isAnimated) return;
+
+        //! Stop animation if canvas is gone, not animated, or type is 'none'
+        if (!canvas || !backgroundConfig.isAnimated || backgroundConfig.type === 'none') {
+            return;
+        }
 
         const now = timestamp;
         const elapsed = now - lastFrameTime.current;
 
         if (elapsed >= frameInterval) {
-            lastFrameTime.current = now - (elapsed % frameInterval); // avoid drift
+            lastFrameTime.current = now - (elapsed % frameInterval); //* avoid drift
 
-            const ctx = canvas.getContext('2d');
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            /**========================================================================
+             **   Frame skipping logic for very low performance (preserve previous frame)
+             *========================================================================**/
+            frameSkipCounter.current++;
+            const shouldSkipFrame = currentFps.current < 15 && frameSkipCounter.current % 2 === 0;
 
-            const generator = generators()[backgroundConfig.type];
-            if (generator) {
-                generator(ctx, canvas.width, canvas.height, now * 0.001);
+            /**========================================================================
+             **   Always prepare context, but only render on non-skipped frames
+             *========================================================================**/
+            if (!canvasContextRef.current) {
+                canvasContextRef.current = canvas.getContext('2d', {
+                    alpha: false,
+                    desynchronized: true
+                });
             }
 
-            // Update FPS tracking
+            if (!shouldSkipFrame) {
+                const ctx = canvasContextRef.current;
+                //! Update adaptive quality only during actual rendering
+                getAdaptiveQuality();
+                const generator = generators[backgroundConfig.type];
+
+                if (generator) {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                    try {
+                        generator(ctx, canvas.width, canvas.height, now * 0.001);
+                    } catch (error) {
+                        console.error('Generator error:', error);
+                    }
+                } else {
+                    console.warn('No generator found for type:', backgroundConfig.type, 'Available:', Object.keys(generators || {}));
+                }
+            }
+            //* When skipping frame: do nothing, preserve previous frame on canvas
+
+            //* Update FPS tracking
             if (typeof frameCount !== "undefined" && frameCount.current !== undefined) {
                 frameCount.current++;
                 if (now - lastFpsUpdate.current >= 1000) {
-                    fpsRef.current = Math.round(frameCount.current * 1000 / (now - lastFpsUpdate.current));
-                    window.dispatchEvent(new CustomEvent('fpsUpdate', { detail: fpsRef.current }));
+                    const newFps = Math.round(frameCount.current * 1000 / (now - lastFpsUpdate.current));
+                    fpsRef.current = newFps;
+                    currentFps.current = newFps; // Track for adaptive quality
+                    window.dispatchEvent(new CustomEvent('fpsUpdate', {
+                        detail: { fps: newFps, source: previewConfig?.type ?? backgroundConfig.type ?? 'global' }
+                    }));
                     frameCount.current = 0;
                     lastFpsUpdate.current = now;
                 }
             }
         }
 
-        animationRef.current = requestAnimationFrame(animate); // always schedule next
+        //! Only schedule next frame if animation should continue
+        animationRef.current = requestAnimationFrame(animate);
     }, [
         isPreview,
+        previewConfig?.type,
         backgroundConfig.type,
         backgroundConfig.isAnimated,
         defaultFps,
-        generators
+        generators,
+        getAdaptiveQuality
     ]);
+
+    /**
+     *  ██████╗ █████╗ ███╗   ██╗██╗   ██╗ █████╗ ███████╗          
+     * ██╔════╝██╔══██╗████╗  ██║██║   ██║██╔══██╗██╔════╝          
+     * ██║     ███████║██╔██╗ ██║██║   ██║███████║███████╗          
+     * ██║     ██╔══██║██║╚██╗██║╚██╗ ██╔╝██╔══██║╚════██║          
+     * ╚██████╗██║  ██║██║ ╚████║ ╚████╔╝ ██║  ██║███████║          
+     *  ╚═════╝╚═╝  ╚═╝╚═╝  ╚═══╝  ╚═══╝  ╚═╝  ╚═╝╚══════╝          
+     *                                                              
+     *  ██████╗ ██████╗ ███╗   ██╗████████╗███████╗██╗  ██╗████████╗
+     * ██╔════╝██╔═══██╗████╗  ██║╚══██╔══╝██╔════╝╚██╗██╔╝╚══██╔══╝
+     * ██║     ██║   ██║██╔██╗ ██║   ██║   █████╗   ╚███╔╝    ██║   
+     * ██║     ██║   ██║██║╚██╗██║   ██║   ██╔══╝   ██╔██╗    ██║   
+     * ╚██████╗╚██████╔╝██║ ╚████║   ██║   ███████╗██╔╝ ██╗   ██║   
+     *  ╚═════╝ ╚═════╝ ╚═╝  ╚═══╝   ╚═╝   ╚══════╝╚═╝  ╚═╝   ╚═╝   
+     *                                                              
+     */
 
     useEffect(() => {
         const canvas = canvasRef.current;
-        if (!canvas || backgroundConfig.type === 'none') return;
-
-        // For preview, use parent size; for fullscreen, use window size
-        if (isPreview) {
-            const parent = canvas.parentNode;
-            canvas.width = parent.offsetWidth;
-            canvas.height = parent.offsetHeight;
-        } else {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
+        if (!canvas || backgroundConfig.type === 'none') {
+            return () => {
+                //! Ensure context cleared even when early returning
+                canvasContextRef.current = null;
+                if (animationRef.current) {
+                    cancelAnimationFrame(animationRef.current);
+                    animationRef.current = null;
+                }
+            };
         }
 
+        //* Use device pixel ratio to avoid squish / blurriness on resize
+        const dpr = window.devicePixelRatio || 1;
+        const setCanvasSize = (w, h) => {
+            canvas.style.width = w + 'px';
+            canvas.style.height = h + 'px';
+            canvas.width = Math.round(w * dpr);
+            canvas.height = Math.round(h * dpr);
+        };
+
+        if (isPreview) {
+            const parent = canvas.parentNode;
+            setCanvasSize(parent.offsetWidth, parent.offsetHeight);
+        } else {
+            setCanvasSize(window.innerWidth, window.innerHeight);
+        }
+
+        //! Always cancel any existing RAF & reset context so new canvas mounts clean
         if (animationRef.current) {
             cancelAnimationFrame(animationRef.current);
             animationRef.current = null;
         }
+        canvasContextRef.current = null; //* force fresh context for new canvas element
+
+        //! Only clear canvas for main wallpaper, not previews (they start fresh anyway)
+        if (!isPreview) {
+            const ctxInit = canvas.getContext('2d');
+            ctxInit.clearRect(0, 0, canvas.width, canvas.height);
+        }
 
         if (backgroundConfig.isAnimated) {
             animationRef.current = requestAnimationFrame(animate);
+
+            //! Force browser refresh for animated wallpapers too
+            const originalTransform = canvas.style.transform;
+            canvas.style.transform = 'translateZ(0)';
+            setTimeout(() => {
+                canvas.style.transform = originalTransform;
+            }, 1);
         } else {
-            const ctx = canvas.getContext('2d');
+            //* Static rendering - always recreate context to avoid stale references
+            canvasContextRef.current = canvas.getContext('2d', {
+                alpha: false,
+                desynchronized: true
+            });
+            const ctx = canvasContextRef.current;
+
+            ctx.scale(dpr, dpr); //* account for high DPI
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            const generator = generators()[backgroundConfig.type];
+            const generator = generators[backgroundConfig.type];
             if (generator) {
-                generator(ctx, canvas.width, canvas.height, 0);
+                generator(ctx, canvas.width / dpr, canvas.height / dpr, 0);
+
+                //* Force browser to refresh canvas display (fixes browser cache bug)
+                const originalTransform = canvas.style.transform;
+                canvas.style.transform = 'translateZ(0)';
+                setTimeout(() => {
+                    canvas.style.transform = originalTransform;
+                }, 1);
             }
         }
 
-        // For preview, update on parent resize
+        /**========================================================================
+         **  Resize handling (preview: ResizeObserver, fullscreen: window resize)
+         *========================================================================**/
         let resizeObserver;
+        let handleResize;
+        const redrawStaticIfNeeded = () => {
+            if (!backgroundConfig.isAnimated) {
+                if (!canvasContextRef.current) {
+                    canvasContextRef.current = canvas.getContext('2d', {
+                        alpha: false,
+                        desynchronized: true
+                    });
+                }
+                const ctx = canvasContextRef.current;
+                ctx.scale(dpr, dpr);
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                const generator = generators[backgroundConfig.type];
+                if (generator) {
+                    generator(ctx, canvas.width / dpr, canvas.height / dpr, 0);
+                }
+            }
+        };
+
         if (isPreview && window.ResizeObserver) {
             resizeObserver = new ResizeObserver(() => {
                 const parent = canvas.parentNode;
-                canvas.width = parent.offsetWidth;
-                canvas.height = parent.offsetHeight;
-                // Redraw static frame if not animated
-                if (!backgroundConfig.isAnimated) {
-                    const ctx = canvas.getContext('2d');
-                    ctx.clearRect(0, 0, canvas.width, canvas.height);
-                    const generator = generators()[backgroundConfig.type];
-                    if (generator) {
-                        generator(ctx, canvas.width, canvas.height, 0);
-                    }
+                const newWidth = parent.offsetWidth;
+                const newHeight = parent.offsetHeight;
+                if (canvas.style.width !== newWidth + 'px' || canvas.style.height !== newHeight + 'px') {
+                    setCanvasSize(newWidth, newHeight);
+                    redrawStaticIfNeeded();
                 }
             });
             resizeObserver.observe(canvas.parentNode);
         } else if (!isPreview) {
-            // For fullscreen, update on window resize
-            const handleResize = () => {
-                canvas.width = window.innerWidth;
-                canvas.height = window.innerHeight;
+            handleResize = () => {
+                const newWidth = window.innerWidth;
+                const newHeight = window.innerHeight;
+                if (canvas.style.width !== newWidth + 'px' || canvas.style.height !== newHeight + 'px') {
+                    setCanvasSize(newWidth, newHeight);
+                    redrawStaticIfNeeded();
+                }
             };
             window.addEventListener('resize', handleResize);
-            return () => window.removeEventListener('resize', handleResize);
         }
 
         return () => {
@@ -1283,16 +1670,46 @@ const GlobalBackground = ({ previewConfig }) => {
                 cancelAnimationFrame(animationRef.current);
                 animationRef.current = null;
             }
-            if (resizeObserver) {
-                resizeObserver.disconnect();
-            }
+            if (handleResize) window.removeEventListener('resize', handleResize);
+            if (resizeObserver) resizeObserver.disconnect();
+            canvasContextRef.current = null;
         };
-    }, [backgroundConfig, animate, isPreview, generators]);
+    }, [
+        backgroundConfig.type,
+        backgroundConfig.isAnimated,
+        backgroundConfig.opacity,
+        backgroundConfig.density,
+        backgroundConfig.animationSpeed,
+        backgroundConfig.colorMode,
+        backgroundConfig.customColor,
+        animate,
+        isPreview,
+        generators
+    ]);
 
+    /**========================================================================
+    **   For preview, show a blank area; for fullscreen, render nothing
+    *========================================================================**/
     if (backgroundConfig.type === 'none') {
-        // For preview, show a blank area; for fullscreen, render nothing
         return isPreview ? <div style={{ width: '100%', height: '100%', background: darkMode ? '#18181c' : '#fff' }} /> : null;
     }
+
+    /**
+     *  ██████╗ █████╗ ███╗   ██╗██╗   ██╗ █████╗ ███████╗        
+     * ██╔════╝██╔══██╗████╗  ██║██║   ██║██╔══██╗██╔════╝        
+     * ██║     ███████║██╔██╗ ██║██║   ██║███████║███████╗        
+     * ██║     ██╔══██║██║╚██╗██║╚██╗ ██╔╝██╔══██║╚════██║        
+     * ╚██████╗██║  ██║██║ ╚████║ ╚████╔╝ ██║  ██║███████║        
+     *  ╚═════╝╚═╝  ╚═╝╚═╝  ╚═══╝  ╚═══╝  ╚═╝  ╚═╝╚══════╝        
+     *                                                            
+     * ██████╗ ██╗██╗   ██╗                                       
+     * ██╔══██╗██║██║   ██║                                       
+     * ██║  ██║██║██║   ██║                                       
+     * ██║  ██║██║╚██╗ ██╔╝                                       
+     * ██████╔╝██║ ╚████╔╝                                        
+     * ╚═════╝ ╚═╝  ╚═══╝                                         
+     *                                                            
+     */
 
     return (
         <canvas
@@ -1300,12 +1717,25 @@ const GlobalBackground = ({ previewConfig }) => {
             className={isPreview ? styles.previewBackground : styles.globalBackground}
             style={{
                 opacity: backgroundConfig.opacity ?? 0.8,
-                width: '100%',
-                height: '100%',
                 display: 'block',
+                position: isPreview ? 'absolute' : 'fixed',
+                top: 0,
+                left: 0,
+                zIndex: -1,
+                pointerEvents: 'none',
             }}
         />
     );
 };
 
 export default GlobalBackground;
+
+/**
+ * ███████╗ ██████╗ ███████╗
+ * ██╔════╝██╔═══██╗██╔════╝
+ * █████╗  ██║   ██║█████╗  
+ * ██╔══╝  ██║   ██║██╔══╝  
+ * ███████╗╚██████╔╝██║     
+ * ╚══════╝ ╚═════╝ ╚═╝     
+ *                          
+ */
