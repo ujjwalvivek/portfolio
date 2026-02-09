@@ -202,14 +202,26 @@
 }
 
 .overlayContainer {
+    /* layout: header (fixed) + scrollable body + footer (fixed) */
+    display: flex;
+    flex-direction: column;
     border-radius: 4px;
     width: 100%;
     max-width: 952px;
+    max-height: 70vh;
     overflow: hidden;
+    /* container itself shouldn't scroll */
+    -webkit-overflow-scrolling: touch;
     animation: slideIn 0.3s ease-out;
     backdrop-filter: blur(16px) saturate(180%);
     -webkit-backdrop-filter: blur(16px) saturate(180%);
     background: rgba(var(--bit-dark-color-rgb), 1);
+}
+
+/* ensure header/footer remain pinned and don't shrink */
+.overlayContainer .header,
+.overlayContainer .overlayFooter {
+    flex: 0 0 auto;
 }
 
 @keyframes slideIn {
@@ -226,11 +238,20 @@
 
 .skillsGridIcons {
     display: flex;
+    flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
     margin: 0.5rem auto;
     padding: 0 0.5rem;
+
+    /* when used inside the overlay, allow the grid to grow and scroll */
+    flex: 1 1 auto;
+    min-height: 0;
+    /* required for flex children to overflow correctly */
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
 }
 
 .skillItem {
@@ -255,6 +276,13 @@
     overflow: visible;
     margin: 0.4rem;
     border: 2px solid rgba(var(--dynamic-dominant-color-rgb), 0.4);
+}
+
+/* override when the generic controlGroup helper is composed inside an overlay */
+.overlayContainer .skillsGridIcons.controlGroup {
+    /* keep wrapping but allow scrolling inside the overlay */
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
 .skillItem:hover {
@@ -383,7 +411,7 @@
     }
 
     .overlayFooter {
-        padding: 1rem;
+        padding: 0.5rem 1.5rem;
         gap: 1rem;
     }
 
