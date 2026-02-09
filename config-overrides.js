@@ -14,6 +14,11 @@ module.exports = override(
     }),
   ]),
   (config) => {
+    // Disable source maps in production (Cloudflare Pages 25 MiB limit)
+    if (process.env.NODE_ENV === 'production' && process.env.GENERATE_SOURCEMAP === 'false') {
+      config.devtool = false;
+    }
+
     config.resolve.fallback = {
       ...config.resolve.fallback,
       buffer: require.resolve('buffer/'),

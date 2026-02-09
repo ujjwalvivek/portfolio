@@ -42,7 +42,17 @@ jobs:
           GENERATE_SOURCEMAP: "false"
 
       - name: Remove source maps (try 2)
-        run: find build -name "*.map" -delete
+        run: npm run clean:maps
+
+      - name: Verify no oversized files (25 MiB limit)
+        run: |
+          oversized=$(find build -type f -size +25M)
+          if [ -n "$oversized" ]; then
+            echo "ERROR: Files exceed Cloudflare Pages 25 MiB limit:"
+            echo "$oversized" | while read f; do du -h "$f"; done
+            exit 1
+          fi
+          echo "All files under 25 MiB ✓"
 
       - name: Deploy main site to Cloudflare Pages
         uses: cloudflare/pages-action@v1
