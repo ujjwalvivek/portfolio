@@ -1,24 +1,29 @@
 ---
-title: "From Web to Native: The Synclippy Architecture Pivot"
+title: "System Architecture: Evaluating Web & Native Security Constraints"
 date: 2025-07-22
-summary: Why I'm Rebuilding My Clipboard Sync Tool (And Why Web APIs Aren't Enough)
+summary: An architectural post-mortem on browser sandboxing limits, and the strategic pivot to a Rust-based (Tauri) local-first ecosystem.
 slug: proj_0005_the_synclippy
 ---
-:::danger
-Under Development
+:::tip
+Architecture Migration (Active)
 
-Pivoting from web-only to hybrid native approach <br/>
-**Next Milestone**: Native desktop app MVP with basic clipboard sync <br/>
+Currently executing a strategic pivot from **Web-Only** to **Hybrid Native (Tauri/Rust)** to resolve browser sandboxing constraints. <br/>
+**Current Phase:** Architecture Analysis & Native Prototyping
+**Next Milestone:** Native Desktop MVP (Q3 2026) <br/>
 :::
 
 
 [`Synclippy Repository`](https://github.com/ujjwalvivek/Synclippy)
 
-## Lets Start.
+![Thumbnail](https://cdn.ujjwalvivek.com/posts/media/tech_stack_1-1.webp)
+
+## The Hypothesis
 
 Picture this: 
 
 You're working on a complex project, switching between your MacBook and Windows desktop. You copy a crucial code snippet on one machine, switch to the other, and... it's gone. So you start building a universal clipboard sync tool. Should be simple, right?
+
+I started with the assumption that modern Web APIs (navigator.clipboard) were sufficient for background synchronization.
 
 <mark>**Spoiler**: The web fought back, hard.</mark>
 
@@ -35,7 +40,7 @@ Surely that's enough? Right?
 
 ## Research Time
 
-### The Web Clipboard API Reality Check
+### Technical Constraints & Blocker Analysis
 
 The browser clipboard APIs are fundamentally **crippled by design**:
 
@@ -45,9 +50,9 @@ The browser clipboard APIs are fundamentally **crippled by design**:
 - Zero background clipboard monitoring meaning browsers simply won't allow it.
 - Security sandboxing prevents the rich clipboard experiences anyone would expect.
 
----
-
 This isn't a limitation I can code around. It's an architectural choice by browser vendors prioritizing security over functionality. 
+
+**Verdict**: The Web Platform is architecturally incompatible with background system monitoring.
 
 ```bash
 
@@ -85,7 +90,7 @@ This isn't a limitation I can code around. It's an architectural choice by brows
 >Clipboard security vs. functionality is a deliberate trade-off.
 
 
-### The Rabbit Hole Deepens
+### Comparative Analysis: 8 Architecture Candidates
 
 As I researched alternatives, I fell into the fascinating world of clipboard synchronization approaches. There are **eight distinct architectures**, each with unique trade-offs:
 
@@ -108,6 +113,9 @@ This is what the data shows ⇒
 Legend: 4 = Excellent, 3 = Good, 2 = Fair, 1 = Poor
 
 ```
+
+- **Selected Architecture**: Tauri (Rust + Web). 
+- **Rationale**: Optimal balance of Security (Sandboxed UI) and Performance (Native Backend).
 
 ## Tech Stack Transformation
 
@@ -166,7 +174,7 @@ services like auction cache and database.
 ```
 
 
-## Security & Privacy First Approach
+## Security Architecture: Zero-Trust Principles
 
 <mark>One critical finding</mark>
 
@@ -213,6 +221,9 @@ Synclippy Security Layers
 └─────────────────────────────────────────────────────┘
 ```
 
+## The Build vs. Buy Decision
+
+Why not use existing tools? Existing solutions rely on centralized cloud relays. I identified a market gap for a Privacy-Centric, Peer-to-Peer alternative.
 
 ## What Now? We Pivot!
 
@@ -347,6 +358,8 @@ privacy by default and instant LAN transfers with E2EE
 ```
 
 *Local-first* with optional cloud relay means **privacy by default** and **instant LAN transfers**. End-to-end encryption keeps sensitive clipboard data, passwords, crypto keys, love poems? All **safe from prying eyes**.
+
+Ensures PII (Personally Identifiable Information) remains strictly local-first.
 
 #### Technology Stack
 

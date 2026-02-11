@@ -1,7 +1,7 @@
 ---
-title: "Going Open Source: The Journey"
+title: "Going Open Source: System Architecture & Algorithms"
 date: 2025-07-25
-summary: I'll guide you through the guts of this thing, chatty road trip diary style. Expect snark, a few ASCII blueprints, and plenty of code confessions. Its a LONG read, but I swear it’ll be worth your time.
+summary: "A deep dive into the mathematical models behind the procedural background engine. Documenting the 3D-to-2D projection matrices, recursive circuit generation, the quantum entanglement logic, the challenges faced, and the lessons learned along the way."
 slug: log_0003_going_open_source
 ---
 
@@ -37,7 +37,9 @@ slug: log_0003_going_open_source
 ```
 
 
-## Re-Booting the Site (Why Open Source?)
+## Open Sourcing the Engine: Why Now?
+
+When I launched this site, it was a personal project built in isolation. I wanted to create something unique without worrying about external opinions. But now, two years later, I feel ready to share the inner workings with the world.
 
 Welcome to the _Open Source Launch_! Remember when two posts ago I pushed my blog out of a fog of imposter syndrome, and last time I was literally patching on caffeine? Tonight, I'm doing the unthinkable.
 

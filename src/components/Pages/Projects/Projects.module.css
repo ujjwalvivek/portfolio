@@ -511,6 +511,8 @@
   position: relative;
   display: flex;
   gap: 0.5rem;
+  flex-wrap: nowrap;
+  white-space: nowrap;
 }
 
 .tag {
@@ -589,6 +591,8 @@
 .buttonContainer.split .openAppBtn {
   flex: 1;
   max-width: calc(50% - 0.25rem);
+  padding-left: 0.4rem;
+  padding-right: 0.4rem;
 }
 
 .buttonContainer.fullPrimary,

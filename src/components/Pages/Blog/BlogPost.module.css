@@ -928,6 +928,7 @@
   box-sizing: border-box;
   padding: 0.2rem;
   background: rgba(var(--background-color-rgb), 0.04);
+  margin-top: 1rem;
 }
 
 .lightbox {

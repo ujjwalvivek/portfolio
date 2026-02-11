@@ -96,7 +96,7 @@ const Projects = () => {
     if (contentLinks?.notionEmbed) {
       secondary.push({
         type: 'secondary',
-        label: 'Details',
+        label: 'Case Study',
         icon: <SiNotion className={styles.journeyIcon} />,
         action: () => setActiveWindow(project.id + '-embed'),
         className: 'openAppBtn'

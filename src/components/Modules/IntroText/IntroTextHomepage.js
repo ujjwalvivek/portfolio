@@ -241,10 +241,11 @@ const InteractiveIntroText = () => {
             <div className={styles.outputLine}>{renderGlow("Hi, I'm Vivek.")}</div>
             <div className={styles.outputLine}>{renderGlow("Based out of Bengaluru, India")}</div>
             <div className={styles.outputLine}>{renderGlow(" ")}</div>
-            <div className={styles.outputLine}>{renderGlow("While my title says Technical Product Manager with a 3+ years of experience,")}</div>
-            <div className={styles.outputLine}>{renderGlow("I’ve been programming for over a decade albeit with a minimal footprint. I'm here to change that.")}</div>
+            <div className={styles.outputLine}>{renderGlow("My title says Technical Product Manager, but my commit history says Systems Engineer.")}</div>
+            <div className={styles.outputLine}>{renderGlow("I’ve been programming for over a decade. I don't just manage roadmaps; I validate architecture.")}</div>
+            <div className={styles.outputLine}>{renderGlow("I've been bridging the gap between \"Business Requirements\" and \"Technical Constraints\" for 3+ years.")}</div>
             <div className={styles.outputLine}>{renderGlow(" ")}</div>
-            <div className={styles.outputLine}>{renderGlow("Welcome to my corner where I try to build weird shit and fail at it wonderfully; Until I don't.")}</div>
+            <div className={styles.outputLine}>{renderGlow("Welcome to my corner where I build performant systems and break them just to see how they work.")}</div>
             <div className={styles.outputLine}>{renderGlow(" ")}</div>
             <div className={styles.outputLine}>{renderGlow("^C")}</div>
             <div className={styles.outputLine}>{renderGlow("Before you move on, do check out my recent logs below.")}</div>

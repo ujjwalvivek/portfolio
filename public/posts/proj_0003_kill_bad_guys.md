@@ -1,7 +1,7 @@
 ---
-title: "Inside the Unity Coordination Framework"
+title: "Deterministic Architecture: Input-Lockstep & Data-Driven Tooling"
 date: 2025-07-23
-summary: Deterministic input-lockstep can make a singleplayer Unity scene feel like a LAN match while sending only a handful of bytes per frame. Read on to find out what's up.
+summary: Analyzing the bandwidth efficiency of deterministic state synchronization vs. snapshot interpolation. Plus, a look at decoupling gameplay logic using ScriptableObjects for rapid prototyping. Read on to find out what's up.
 slug: proj_0003_kill_bad_guys
 ---
 :::tip
@@ -10,22 +10,32 @@ Open with
 **Unity 2020.3 LTS or newer**
 :::
 
-![Thumbnail](https://cdn.ujjwalvivek.com/posts/media/fake_mp.webp)
+![Thumbnail](https://cdn.ujjwalvivek.com/posts/media/fake_mp_1.webp)
 
-## Fake Multiplayer, Real Lessons 
+## The Problem: Network Bandwidth vs. Simulation Fidelity 
+
+Traditional state sync requires serializing transforms for every entity, leading to exponential bandwidth growth. By implementing a deterministic lockstep model, we transmit only user inputs, reducing network payload by 90%.
 
 **Deterministic input-lockstep** can make a singleplayer Unity scene feel like a LAN match while sending only a **handful of bytes** per frame. 
 
 Couple that with a **ScriptableObject-driven FPS toolkit** and you get a compact playground for learning advanced architecture without spinning up servers or Photon rooms. 
 
+<mark>System Constraints</mark>
+
+- **Bandwidth Target**: < 2KB/s per client (Cellular Data friendly).
+- **Architecture**: Peer-to-Peer (No dedicated server costs).
+- **Latency Tolerance**: High (Acceptable for co-op/strategy, unacceptable for competitive twitch shooters).
+
 This post dissects both halves of the project:
 
-- Task A (coordination)
-- Task B (weapon inventory)
+- Module 1 (minimal byte coordination system)
+- Module 2 (weapon system with ScriptableObjects)
 
 and distills transferable patterns you can graft onto your own games.
 
-## Why Bother Faking Multiplayer?
+## Architectural Constraints: The Case for Lockstep
+
+Lockstep minimizes bandwidth but introduces input latency. This project explores that constraint boundary.
 
 Real-time networking is heavy. You must serialize `world state`, `reconcile divergent timelines`, and take care of `latency spikes`. 
 
@@ -33,7 +43,7 @@ Real-time networking is heavy. You must serialize `world state`, `reconcile dive
 
 If you only need the *feeling* of online play (e.g., classroom demos, single-player roguelikes that replay friends’ ghosts, or early prototyping), the savings are dramatic, honestly measured in kilobytes per minute rather than megabytes.
 
-## Task A: Minimal-Byte Coordination System
+## Module 1: Deterministic State Synchronization
 
 ### 1. Input Harvesting
 
@@ -98,10 +108,10 @@ Coordination System Data Flow
 :::note
 Takeaway
 
-When simulation is deterministic, *any* machine can be the **server**. By simply mirroring inputs you gain split-screen style co-op without sockets or peer discovery.
+When simulation is deterministic, *any* machine can be the **server**. By syncing inputs instead of object states, network bandwidth scales with Player Count (O(n)) rather than Entity Count (O(e)) without sockets or peer discovery. In a game with 100 bullets and 2 players, we send 2 packets, not 102.
 :::
 
-## Task B: Modular Weapon \& Inventory Toolkit
+## Module 2: Data-Driven Content Pipeline
 
 ### 1. Data-Driven Architecture
 
@@ -215,11 +225,15 @@ cd UnityCoordinationFramework
 
 * **Create a shotgun:** Duplicate a `WeaponData`, crank `fireRate`, widen bullet spread, and assign a new muzzle flash prefab.
 
-## Pitfalls \& Best Practices
+## Critical Trade-offs & Limitations
 
-Cross-platform determinism fails if you rely on Unity physics; consider DOTS Physics or a fixed-point library when porting to mobile-desktop cross-play.
+Cross-platform determinism fails if you rely on Unity physics; Floating Point Determinism is a major challenge, consider DOTS Physics or a fixed-point library when porting to mobile-desktop cross-play.
 
 **Rollback vs. Lockstep:** Lockstep halts on missing inputs, whereas modern games hybridize with client-side prediction and server reconciliation to mask jitter.
+
+- **Pros**: Extremely low bandwidth; Cheating is harder (simulation is deterministic).
+- **Cons**: Input Lag. Since the simulation must wait for inputs from all peers, the game feels sluggish on high-latency connections (>150ms ping).
+- **Verdict**: Ideal for RTS, Turn-Based, or LAN Co-op. Not viable for Competitive FPS without adding Rollback Netcode (GGPO).
 
 ## Conclusion
 

@@ -1,7 +1,7 @@
 ---
-title: "GreedySnek: A 3D Snake Game"
+title: "Multiplayer Sync: A Post-Mortem on Bandwidth & State Management"
 date: 2025-07-21
-summary: Sometimes the simplest concepts lead to the most complex solutions. This project is now archived, but the lessons it taught me about game development, networking, and knowing when to stop are still very much alive.
+summary: Analyzing the architectural challenges of real-time state synchronization in a server-authoritative environment. A deep dive into race conditions, O(n^2) performance bottlenecks, and the cost of over-engineering. Read on to find out what's up.
 slug: proj_0002_greedysnek
 ---
 
@@ -14,13 +14,14 @@ slug: proj_0002_greedysnek
 >**Last Commit**: March 2023 <br/>
 >**Networking**: Mirror <br/>
 >**License**: MIT <br/>
-## What Started as a Weekend Project
+
+## The Engineering Challenge: 3D Network Replication
 
 GreedySnek began with a deceptively simple premise: 
 
 ---
 
-`Take the classic Nokia snake game we all know and lovee, throw it into a 3D space, and add multiplayer functionality. "How hard could it be?" I thought.` 
+**Objective**: Port a 2D distinct-state game (Snake) into a 3D continuous-state environment while maintaining deterministic synchronization across high-latency clients. "How hard could it be?" I thought. 
 
 ---
 
@@ -30,9 +31,9 @@ The result was a **3D multiplayer snake game** built in Unity with C\#, featurin
 
 Here's what I actually learned from building something that nobody plays; with the actual code that shows both the good decisions and the mistakes.
 
-## The Architecture That Grew
+## Modular Architecture
 
-What makes GreedySnek interesting isn't just the 3D snake mechanics; it's how the project evolved into a well-structured learning exercise in Unity development:
+What makes GreedySnek interesting isn't just the 3D snake mechanics; it's how the project evolved into a well-structured **Microservices** learning exercise in Unity development:
 
 ### Clean Separation of Concerns
 
@@ -66,7 +67,7 @@ This wasn't just good organization; it was **survival architecture** for a dev
 
 **Why the underscore prefixes?** Simple. They force these folders to the top of Unity's Project window, making navigation faster during development.
 
-### What Each Module Contains
+### Microservices (well, sort of)
 
 `_Home/ - The Hub`  
 Contains all main menu scripts, UI elements, and navigation logic. This handles the three-button interface mentioned in the repository:
@@ -90,7 +91,7 @@ Mirror networking implementation, server-client architecture, and all the networ
 `Plugins/ - The Over Engineering`  
 Custom Java plugin for Unity Android alerts. Two weeks of work for something Unity's built-in notification system could have handled. Classic case of solving the wrong problem.
 
-## The Technical Implementation
+## Core Mechanics: Handling 3D State Vectors
 
 ### Core Snake Mechanics in 3D Space
 
@@ -129,6 +130,9 @@ private void MoveSnek()
     
     snekPos.Rotate(Vector3.up * (steerDirection * steerSpeed * Time.deltaTime));
 }
+
+// Optimization Note: Using a Queue<Vector3> for history prevents O(n) position recalculations per frame.
+
 ```
 
 <mark> Key Implementation Detail </mark>
@@ -157,7 +161,7 @@ foreach (var body in bodyParts)
 }
 ```
 
-### The Mirror Networking Caveat
+### Network Architecture: Server Authority vs. Client Prediction
 
 The multiplayer implementation uses Mirror networking with a `server-authoritative approach` instead of the more robust Photon Fusion. 
 
@@ -195,7 +199,7 @@ public class SnakeMovement : NetworkBehaviour
 ```
 
 The Server Authority Model setup reveals the complexity hidden beneath simple concepts:
--  Snake head position is server-authoritative
+- Snake head position is server-authoritative
 - Client prediction for movement smoothness
 - Server-client architecture with IP-based connections
 - Real-time synchronization of multiple growing snakes in 3D space
@@ -261,11 +265,11 @@ void OnTriggerEnter(Collider other)
 Notice the `hasCollided` flag? This was my hacky solution to prevent duplicate collision detection, but it creates a race condition when multiple players hit the same food simultaneously.
 
 
-## What Actually Went Wrong
+## Performance Analysis & Bottlenecks
 
-### The Food Synchronization Bug
+### Race Conditions in State Synchronization.
 
-The most embarrassing bug that's still unfixed after 2+ years. When multiple players grab food simultaneously, the server needs to decide who gets it. My implementation has a race condition that occasionally spawns duplicate food items.
+The most embarrassing bug that's still unfixed after 2+ years. When multiple players grab food simultaneously, the server needs to decide who gets it. My implementation has a race condition that occasionally spawns duplicate food items. Atomic transactions were missing.
 
 ```csharp
 void ServerHandleFoodEaten(GameObject playerWhoAte)
@@ -287,9 +291,9 @@ if (food.isConsumed) return; // Check food state first
 food.isConsumed = true;      // Atomic flag on the food object
 ```
 
-### Performance Crater
+### The O(n) Instantiation Cost.
 
-The game runs at 60fps with 2 players. With 4 players and longer snakes, it drops to 20fps. The culprit? **Inefficient mesh generation for snake bodies**. I'm regenerating the entire snake mesh every frame instead of using a more intelligent segmented approach.
+The game runs at 60fps with 2 players. With 4 players and longer snakes, it drops to 20fps. The culprit? **Inefficient mesh generation for snake bodies** and **Memory Fragmentation** caused by Instantiate and Destroy. I'm regenerating the entire snake mesh every frame instead of using a more intelligent segmented approach.
 
 Looking at the body spawning system, the performance problem becomes obvious:
 
@@ -327,7 +331,7 @@ Look Out!
 `LookAt()` involves quaternion calculations (ffs) expensive operations happening hundreds of times per frame. Use it wisely.
 :::
 
-### Networking Bandwidth
+### Bandwidth Saturation.
 
 Each snake broadcasts its position data to all clients. For a 4-player game with 30-segment snakes, that's **120 position updates per frame** across the network. I never implemented proper data compression or delta updates. Every snake position gets synchronized via Mirror's automatic `SyncVar` system:
 
@@ -338,11 +342,11 @@ float speed = 3f;  // This syncs every time it changes
 
 <mark>The Bandwidth Problem</mark> 
 
-Each snake's transform is being synchronized to all clients every frame. With 4 players, that's **4 position Updates × 4 clients × 60fps = 960 network Messages Per Second** for just basic movement.
+Each snake's transform (Vector3 + Quaternion) is being synchronized to all clients every frame. With 4 players, that's **4 position Updates × 4 clients × 60fps = 960 network Messages Per Second = ~28KB/s per client** for just basic movement.
 
 <mark>What I Should Have Done</mark>
 
-Delta compression, sending only rotation changes, or interpolation between fewer updates.
+Delta compression, sending only rotation changes, or interpolation between fewer updates could reduce this by 90%.
 
 ### Android Plugin Overkill
 
@@ -350,7 +354,7 @@ I wrote a custom Java plugin to handle Android notifications. This was completel
 
 ```c#
 // What I built: Custom native plugin integration
-// What I needed: Unity's built-in notification system
+ // What I needed: Unity's built-in notification system
 ```
 
 >Was it necessary? Probably not. Did I learn about Unity's native plugin system? Absolutely.
@@ -430,7 +434,9 @@ Skip the modular approach for a project this small.
 Web build would have been faster to iterate.
 :::
 
-## Why Did I Archive It?
+## Conclusion: The Cost of Technical Debt
+
+This project serves as a case study in **Premature Optimization** (The Android Plugin) vs. **Deferred Maintenance** (The Network Code).
 
 GreedySnek taught me that **shipping something functional beats perfecting something unused**. The game works well enough to demonstrate 3D snake mechanics and multiplayer networking, but poorly enough to highlight every optimization mistake.
 

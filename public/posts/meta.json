@@ -2,16 +2,17 @@
   {
     "id": 9,
     "filename": "log_0003_going_open_source.md",
-    "title": "Going Open Source: The Journey",
+    "title": "Going Open Source: System Architecture & Algorithms",
     "date": "2025-07-25",
-    "description": "Documenting the process of making my projects open source, the challenges faced, and the lessons learned along the way.",
+    "description": "A deep dive into the mathematical models behind the procedural background engine. Documenting the 3D-to-2D projection matrices, recursive circuit generation, the quantum entanglement logic, the challenges faced, and the lessons learned along the way.",
     "tags": [
-      "Javascript",
-      "Vanilla CSS",
-      "Origin",
-      "Site Build",
-      "Portfolio",
-      "Open Source"
+      "React",
+      "Canvas API",
+      "System Design",
+      "Performance Optimization",
+      "Algorithms",
+      "Accessibility",
+      "patch v1.4"
     ],
     "readingTime": "16 min read",
     "thumbnail": "https://cdn.ujjwalvivek.com/posts/media/very_nice.webp"
@@ -19,48 +20,51 @@
   {
     "id": 7,
     "filename": "proj_0003_kill_bad_guys.md",
-    "title": "Inside the Unity Coordination Framework",
+    "title": "Deterministic Architecture: Input-Lockstep & Data-Driven Tooling",
     "date": "2025-07-23",
-    "description": "Deterministic input-lockstep can make a singleplayer Unity scene feel like a LAN match while sending only a handful of bytes per frame. Read on to find out what's up.",
+    "description": "Analyzing the bandwidth efficiency of deterministic state synchronization vs. snapshot interpolation. Plus, a look at decoupling gameplay logic using ScriptableObjects for rapid prototyping. Read on to find out what's up.",
     "tags": [
       "C#",
-      "Inventory",
+      "System Architecture",
       "Simulation",
-      "Networking",
-      "Prototype",
+      "Developer Tools",
+      "Data-Driven Design",
       "Unity"
     ],
     "readingTime": "6 min read",
-    "thumbnail": "https://cdn.ujjwalvivek.com/posts/media/fake_mp.webp"
+    "thumbnail": "https://cdn.ujjwalvivek.com/posts/media/fake_mp_1.webp"
   },
   {
     "id": 8,
     "filename": "proj_0005_the_synclippy.md",
-    "title": "From Web to Native: The Synclippy Architecture Pivot",
+    "title": "System Architecture: Evaluating Web & Native Security Constraints",
     "date": "2025-07-22",
-    "description": "Why I'm Rebuilding My Clipboard Sync Tool (And Why Web APIs Aren't Enough)",
+    "description": "An architectural post-mortem on browser sandboxing limits, and the strategic pivot to a Rust-based (Tauri) local-first ecosystem.",
     "tags": [
-      "Rust",
+      "Tauri",
       "Go",
-      "Javascript",
-      "cross-platform",
-      "Meltdown"
+      "Cross-Platform",
+      "System Security",
+      "Architecture Pivot",
+      "Local-First"
     ],
     "readingTime": "11 min read",
-    "thumbnail": "https://cdn.ujjwalvivek.com/posts/media/tech_stack.webp"
+    "thumbnail": "https://cdn.ujjwalvivek.com/posts/media/tech_stack_1-1.webp"
   },
   {
     "id": 6,
     "filename": "proj_0002_greedysnek.md",
-    "title": "GreedySnek: A 3D Snake Game",
+    "title": "Multiplayer Sync: A Post-Mortem on Bandwidth & State Management",
     "date": "2025-07-21",
-    "description": "Sometimes the simplest concepts lead to the most complex solutions. This project is now archived, but the lessons it taught me about game development, networking, and knowing when to stop are still very much alive.",
+    "description": "Analyzing the architectural challenges of real-time state synchronization in a server-authoritative environment. A deep dive into race conditions, O(n^2) performance bottlenecks, and the cost of over-engineering. Read on to find out what's up.",
     "tags": [
       "C#",
       "Mirror",
       "Unity",
-      "multiplayer",
-      "snake"
+      "Network Architecture",
+      "3D",
+      "Client-Side Prediction",
+      "Optimization"
     ],
     "readingTime": "12 min read",
     "thumbnail": "https://cdn.ujjwalvivek.com/posts/media/greedysnek.webp"
@@ -68,16 +72,17 @@
   {
     "id": 3,
     "filename": "log_0002_midnight_patchdrop.md",
-    "title": "Patch Notes v1.1 on a Friday Midnight",
+    "title": "Performance Case Study: Optimizing Canvas for Mobile",
     "date": "2025-07-13",
-    "description": "I launched. Got rekt. Didn't cry. Just patched the damn thing. Building something beautiful on the web is never as easy as it looks. But every bug, every crash, and every “why is this so slow?!” moment taught me something new.",
+    "description": "Initial load testing revealed significant thermal throttling on mobile devices due to uncapped Canvas re-renders. The goal is to maintain visual fidelity without melting the user's CPU. Here's an Optimization Report on the performance challenges of using Canvas for procedural backgrounds, and the midnight patch that saved the day.",
     "tags": [
-      "Javascript",
-      "Vanilla CSS",
-      "Portfolio",
-      "Patch",
+      "React",
+      "Canvas API",
+      "System Design",
+      "Performance Optimization",
+      "Algorithms",
       "Accessibility",
-      "Meltdown"
+      "patch v1.1"
     ],
     "readingTime": "5 min read",
     "thumbnail": "https://cdn.ujjwalvivek.com/posts/media/webgpu.svg"
@@ -85,15 +90,17 @@
   {
     "id": 1,
     "filename": "log_0000_boot_sequence.md",
-    "title": "Boot Sequence (And Why It Took 2 Years to Run)",
+    "title": "Product Vision: The 'Terminal' Design System",
     "date": "2025-07-07",
-    "description": "Why I built this terminal-shaped mirror of my mind. And why you're inside it now. This site didn't take two years to build. It took me two years to become someone who could finish it.",
+    "description": "Defining the design philosophy and technical constraints for a performance-first, zero-tracker personal platform. Why I chose a custom Markdown engine over standard CMS solutions. This site didn't take two years to build. It took me two years to become someone who could finish it.",
     "tags": [
-      "Javascript",
-      "Vanilla CSS",
-      "Origin",
-      "Site Build",
-      "Portfolio"
+      "React",
+      "Canvas API",
+      "System Design",
+      "Performance Optimization",
+      "Algorithms",
+      "Accessibility",
+      "portfolio"
     ],
     "readingTime": "5 min read",
     "thumbnail": "https://cdn.ujjwalvivek.com/posts/media/old_website_haunted.webp"

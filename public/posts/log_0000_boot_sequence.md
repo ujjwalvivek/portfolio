@@ -1,8 +1,8 @@
 ---
-title: "Boot Sequence (And Why It Took 2 Years to Run)"
+title: "Product Vision: The 'Terminal' Design System"
 date: "2025-07-07"
 slug: "log_0000_boot_sequence"
-description: "Why I built this terminal-shaped mirror of my mind. And why you're inside it now. This site didn't take two years to build. It took me two years to become someone who could finish it."
+description: "Defining the design philosophy and technical constraints for a performance-first, zero-tracker personal platform. Why I chose a custom Markdown engine over standard CMS solutions. This site didn't take two years to build. It took me two years to become someone who could finish it."
 ---
 
 ```javascript
@@ -14,7 +14,7 @@ description: "Why I built this terminal-shaped mirror of my mind. And why you're
 
 ---
 
-## Not Another Blog
+## The Design Philosophy
 
 This isn't a blog or a personal site. This is me pulling cables out of my brain and wiring them into a screen. You're inside a **system** I built.
 
@@ -22,31 +22,31 @@ This interface, this blur, the boot prompt vibe? They're what my mind looks like
 
 Symptoms of what you might ask?
 Symptoms of a brain that couldn't sit still.  
-Symptoms of being fired three times for asking too many questions.  
 Symptoms of someone who didn't want to make content but needed to **make contact**.
 
 I tried blending in. Really. Tried my best.
 
-I made decks. Wrote product specs. Most importantly? I innovated.
+I made systems. Wrote product specs. Most importantly? I innovated.
 I smiled in meetings where everyone was allergic to hard questions.
 But under all of that, I was yelling into a terminal only I could see.
 
 Now you see it too.
 
----
-
-## What You're Standing In
+## System Specifications & Tech Stack
 
 This isn't a portfolio.
-This is a scratch disk for my brain.
+
+This is a scratch disk for my playground.
 Logs. Refactors. Burnt code and sharper thoughts.
+
+Built on React for component modularity, but bypassing the Virtual DOM for the background engine to ensure raw 60FPS Canvas performance.
 
 ```javascript
 [ WHATS RUNNING UNDER THE HOOD? ]
-- React, Firebase
+- React (Custom Component Architecture)
 - No CSS Frameworks
-- Custom markdown engine
-- Procedural background generation engine
+- Custom markdown engine (No Database)
+- Procedural background generation engine built on HTML5 Canvas (No WebGL libraries)
 - Easter Egg (yes, find it)
 - PDF resume viewer with theme sync (you're welcome)
 ```
@@ -64,8 +64,6 @@ This site fits me. So I made it.
 If this fits someone else too? Cool.
 But I'm not gonna shrink it to fit an algorithm.
 
----
-
 ## Why the Terminal vibe?
 
 Because my thoughts start at a prompt.  
@@ -79,8 +77,6 @@ npm run logs:flush
 cd help  
 curiosity deploy  
 ```
-
----
 
 ## What even is this Website?
 
@@ -109,16 +105,6 @@ This site is still booting
 Things will glitch. Some commands won't work.  That's part of the ritual.
 :::
 
----
-
-## What Comes Next?
-
-- **log_0001_darknet.md** → How exploring the hidden web rewired my values  
-- **log_0002_terminalstory.md** → The command line narrative I hid under the hood.
-- **log_0003_rustGameEngine.md** → The engine that was originally supposed to be built to power the website you're on. It has evolved since then.
-- and more...
-
----
 
 ## No Analytics. No Cookies. No Noise.
 
@@ -186,12 +172,7 @@ Buut maybe, that's been the whole point.
 So here we are.
 
 ```bash
-> whoami  
-ujjwal vivek  
-builder.pm
-rust.engine.dev 
-logs=/[
-{ label: "Apr '25", event: "Rust engine conception" },
+> logs=/[
 { label: "Jun '25", event: "Terminal site prototype booted" },
 { label: "Jul '25", event: "ujjwalvivek.com goes live" }
 ]

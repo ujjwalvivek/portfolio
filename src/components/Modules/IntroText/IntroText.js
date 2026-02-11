@@ -154,7 +154,6 @@ const InteractiveIntroText = () => {
   const blink = backgroundConfig.type !== 'none' ? styles.blink : '';
   const flicker = backgroundConfig.type !== 'none' ? styles.flicker : '';
   const scrollText = backgroundConfig.type !== 'none' ? styles.scrollText : '';
-  const vibrate = backgroundConfig.type !== 'none' ? styles.vibrateText : '';
   const [useSpanize] = React.useState(() => backgroundConfig.type !== 'none');
   const [isCompactStarship, setIsCompactStarship] = React.useState(false);
 
@@ -290,14 +289,14 @@ const InteractiveIntroText = () => {
             </div>
             <div className={styles.outputLine}>
               {renderGlow("curiosity.chaos ‎")}
-              <span className={`${styles.statusWarn} ${vibrate} ${styles.refBadge}`}>{renderGlow("unstable", { delay: 0.02 })}</span>
+              <span className={`${styles.statusOk} ${flicker} ${styles.refBadge}`}>{renderGlow("managed", { delay: 0.02 })}</span>
             </div>
             <div className={styles.outputLine}>
               {renderGlow("memory.usage ‎")}
               <span className={`${styles.statusRam} ${scrollText} ${styles.refBadge}`}>{renderGlow("98%", { delay: 0.02 })}</span>
             </div>
             <div className={styles.outputLine}>
-              <span className={`${styles.statusRam} ${styles.refBadge}`}>{renderGlow("2%_reserved_for_self_doubt", { delay: 0.02 })}</span>
+              <span className={`${styles.statusRam} ${styles.refBadge}`}>{renderGlow("2%_reserved_for_physics_simulations", { delay: 0.02 })}</span>
             </div>
             <div className={styles.outputLine}>
               {renderGlow("uptime ‎")}
@@ -309,16 +308,16 @@ const InteractiveIntroText = () => {
         <div className={styles.commandBlock}>
           <StarshipPrompt />{commands[2]}
           <div className={styles.output}>
-            <div className={styles.outputLine}>{renderGlow("TPM pretending to be a systems engineer, or the other way around")}</div>
+            <div className={styles.outputLine}>{renderGlow("TPM who speaks fluent Engineer (and Translate-to-Executive)")}</div>
             <div className={styles.outputLine}>
-              {renderGlow("built VR training simulations that real people actually used - ")}
+              {renderGlow("built VR training simulations and orchestrated deployments for 65k+ users - ")}
               <a
                 className={`${styles.refBadge} ${styles.statusWarn}`}
                 href="https://www.autovrse.com/case-study-ultratech"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <span className={styles.refBadgeText}>{renderGlow("like, a lot of people!", { delay: 0.02 })}</span>
+                <span className={styles.refBadgeText}>{renderGlow("like a lot of people!", { delay: 0.02 })}</span>
               </a>
             </div>
             <div className={styles.outputLine}>
@@ -350,10 +349,11 @@ const InteractiveIntroText = () => {
         <div className={styles.commandBlock}>
           <StarshipPrompt />{commands[3]}
           <div className={styles.output}>
-            <div className={styles.outputLine}>{renderGlow("can understand chromium codebase with ease")}</div>
-            <div className={styles.outputLine}>{renderGlow("i've segfaulted a browser tab before")}</div>
-            <div className={styles.outputLine}>{renderGlow("avid enjoyer of Infra as Code")}</div>
-            <div className={styles.outputLine}>{renderGlow("my databases almost remains persistent, thank you.")}</div>
+            <div className={styles.outputLine}>{renderGlow("can understand chromium source without crying")}</div>
+            <div className={styles.outputLine}>{renderGlow("i've segfaulted a browser tab before (for science)")}</div>
+            <div className={styles.outputLine}>{renderGlow("avid enjoyer of Infra as Code (Docker/Tailscale)")}</div>
+            <div className={styles.outputLine}>{renderGlow("my databases adhere strictly to eventual consistency")}</div>
+            <div className={styles.outputLine}>{renderGlow("currently fighting the borrow checker in Rust - will update when I win")}</div>
           </div>
         </div>
 
@@ -362,19 +362,19 @@ const InteractiveIntroText = () => {
           <div className={styles.output}>
             <div className={styles.outputLine}>
               <span className={`${styles.statusWarn} ${blink}`}>{renderGlow(<RiErrorWarningFill />)}</span>
-              <span className={styles.statusWarn}>{renderGlow("fired x3 - not for underperforming, for refusing to mute the uncomfortable truth")}</span>
+              <span className={styles.statusWarn}>{renderGlow("allocates 0% CPU to office politics.")}</span>
             </div>
             <div className={styles.outputLine}>
               <span className={`${styles.statusOk} ${flicker}`}>{renderGlow(<PiChecksBold />)}</span>
-              <span className={styles.statusOk}>{renderGlow("still asking the annoying questions")}</span>
+              <span className={styles.statusOk}>{renderGlow("still asking the questions that delay the meeting but save the sprint.")}</span>
             </div>
             <div className={styles.outputLine}>
               <span className={`${styles.statusOk} ${flicker}`}>{renderGlow(<PiChecksBold />)}</span>
-              <span className={styles.statusOk}>{renderGlow("still building even when it feels like pushing a boulder made of Jira tickets")}</span>
+              <span className={styles.statusOk}>{renderGlow("still building even when the ticket description is empty.")}</span>
             </div>
             <div className={styles.outputLine}>
               <span className={`${styles.statusOk} ${flicker}`}>{renderGlow(<PiChecksBold />)}</span>
-              <span className={styles.statusOk}>{renderGlow("still believe that if the meeting could be a state machine, let it.")}</span>
+              <span className={styles.statusOk}>{renderGlow("still believe that if the meeting could be a state machine, let it be.")}</span>
             </div>
           </div>
         </div>

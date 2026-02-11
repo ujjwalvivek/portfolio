@@ -1,7 +1,7 @@
 ---
-title: "Patch Notes v1.1 on a Friday midnight"
+title: "Performance Case Study: Optimizing Canvas for Mobile"
 date: "2025-07-13"
-summary: "I launched. Got rekt. Didn't cry. Just patched the damn thing. Building something beautiful on the web is never as easy as it looks. But every bug, every crash, and every \"why is this so slow?!\" moment taught me something new."
+summary: "Initial load testing revealed significant thermal throttling on mobile devices due to uncapped Canvas re-renders. The goal is to maintain visual fidelity without melting the user's CPU. Here's an Optimization Report on the performance challenges of using Canvas for procedural backgrounds, and the midnight patch that saved the day."
 slug: "log_0002_midnight_patchdrop"   
 ---
 
@@ -36,7 +36,7 @@ So that I self sabotage my weekend plans? <br>Human brain is weird. <br>Not real
 
 ### Here's Some Highlights 
 
-#### Performance Improvements
+#### Optimization Strategy: Frame Throttling
 
 ![webGPU](https://cdn.ujjwalvivek.com/posts/media/webgpu.svg)
 `{the above svg is a prime example of how webkit doesnt play nice with anything.}`
@@ -62,7 +62,7 @@ After a lot of trial and error (and a few existential crises), I got it working.
 FPS capped at ~20/~30, enough for a smooth viewing experience <br><br>No resource hogging. No random heatups. Probably. <br><br>All while still being CPU-bound. For now. <br><br>WebGPU is something to look forward to. **A great success!**
 ::::
 
-#### Low Chaos Mode™
+#### Low Chaos Mode™ - Accessibility Architecture
 
 What about folks who get dizzy from motion? <br>Some users need less motion, more contrast, or just a calmer vibe.  <br><br>So I reduced motion detection accompanied by a zen-like **Low Chaos Mode™**. <br>No animations. No glitchiness. Just pure calm.
 
