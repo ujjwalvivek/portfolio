@@ -15,12 +15,16 @@
  *                                                        
  */
 
-.devSpidey.noanimated *,
-.devSpidey.noanimated *::before,
-.devSpidey.noanimated *::after,
 .heroArt.noanimated,
 .resumeBar.noanimated * {
   animation: none !important;
+  transition: none !important;
+}
+
+.stormtrooperContainer.noanimated *,
+.stormtrooperContainer.noanimated *::before,
+.stormtrooperContainer.noanimated *::after {
+  animation-play-state: paused !important;
   transition: none !important;
 }
 
@@ -160,6 +164,7 @@
   width: 100%;
   max-width: 1000px;
   position: relative;
+  overflow: hidden;
 }
 
 .terminalSection::before,
@@ -252,309 +257,26 @@
   background: rgba(var(--background-color-rgb), 1) !important;
 }
 
-/**
- * ██████╗ ███████╗██╗   ██╗                   
- * ██╔══██╗██╔════╝██║   ██║                   
- * ██║  ██║█████╗  ██║   ██║                   
- * ██║  ██║██╔══╝  ╚██╗ ██╔╝                   
- * ██████╔╝███████╗ ╚████╔╝                    
- * ╚═════╝ ╚══════╝  ╚═══╝                     
- *                                             
- * ███████╗██████╗ ██╗██████╗ ███████╗██╗   ██╗
- * ██╔════╝██╔══██╗██║██╔══██╗██╔════╝╚██╗ ██╔╝
- * ███████╗██████╔╝██║██║  ██║█████╗   ╚████╔╝ 
- * ╚════██║██╔═══╝ ██║██║  ██║██╔══╝    ╚██╔╝  
- * ███████║██║     ██║██████╔╝███████╗   ██║   
- * ╚══════╝╚═╝     ╚═╝╚═════╝ ╚══════╝   ╚═╝   
- *   
- * https://codepen.io/aitchiss      
- *                                    
- */
+/**----------------------
+ *    Stormtrooper
+ *------------------------**/
 
-.devSpidey {
-  position: fixed;
-  top: 2.5vh;
-  right: 1vw;
-}
-
-.boxCanvas {
-  position: relative;
-  margin: auto;
-  display: block;
-  width: 350px;
-  height: 100%;
-}
-
-.inner {
-  margin: 100px;
+.stormtrooperContainer {
   position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 1000px;
   height: 100px;
-  width: 150px;
-}
-
-.circle {
-  position: absolute;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  box-shadow: 4px 0 0 rgba(var(--primary-color-rgb), 0.4);
-}
-
-.circle:nth-child(1) {
-  bottom: 0;
-  transform: rotate(-45deg);
-}
-
-.circle:nth-child(2) {
-  bottom: -25px;
-  left: 50px;
-  transform: rotate(-90deg);
-}
-
-.circle:nth-child(3) {
-  bottom: 0;
-  left: 100px;
-  transform: rotate(-135deg);
-}
-
-.circle:nth-child(4) {
-  top: -8px;
-  transform: rotate(45deg);
-}
-
-.circle:nth-child(5) {
-  top: -33px;
-  left: 50px;
-  transform: rotate(90deg);
-}
-
-.circle:nth-child(6) {
-  top: -8px;
-  left: 100px;
-  transform: rotate(135deg);
-}
-
-.circle::before {
-  content: '';
-  position: absolute;
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  box-shadow: 4px 0 0 rgba(var(--primary-color-rgb), 0.4);
-  left: -100px;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-.circle:nth-child(1)::before {
-  top: calc(50% - 20px);
-}
-
-.circle:nth-child(3)::before {
-  top: calc(50% + 20px);
-}
-
-.circle:nth-child(4)::before {
-  top: calc(50% + 20px);
-}
-
-.circle:nth-child(6)::before {
-  top: calc(50% - 20px);
-}
-
-.line {
-  position: absolute;
-  width: 340px;
-  height: 3px;
-  background: rgba(var(--primary-color-rgb), 0.4);
-
-}
-
-.line:nth-child(2) {
-  transform: rotate(59deg);
-  transform-origin: top left;
-  left: 90px;
-}
-
-.line:nth-child(3) {
-  transform: rotate(-59deg);
+  overflow: hidden;
+  pointer-events: none;
   transform-origin: top right;
-  left: -80px;
+  transform: rotate(-90deg) translateY(-100%);
+  border-bottom: 2px dashed var(--dynamic-dominant-color);
 }
 
-.line:nth-child(4) {
-  top: 145px;
-}
-
-.spider {
-  --spider-color: rgba(var(--dynamic-dominant-color-rgb), 0.7);
-  position: absolute;
-  width: 75px;
-  height: 175px;
-  left: 50%;
-  transform: translateX(-50%);
-  transform-origin: center top;
-  top: 148px;
-  animation: swing 1s infinite ease-in-out;
-  animation-direction: alternate-reverse;
-}
-
-@keyframes swing {
-  0% {
-    transform: translateX(-50%) rotate(25deg);
-  }
-
-  100% {
-    transform: translateX(-50%) rotate(-25deg);
-  }
-}
-
-.spider::before {
-  content: '';
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 1px;
-  height: 100px;
-  background: rgba(var(--dynamic-dominant-color-rgb), 0.7);
-}
-
-.body {
-  position: absolute;
-  width: 30px;
-  height: 40px;
-  border-radius: 50% 50% 40% 40%;
-  background: var(--spider-color);
-  left: 50%;
-  top: 100px;
-  transform: translateX(-50%);
-}
-
-.body::before {
-  content: '';
-  position: absolute;
-  width: 5px;
-  height: 5px;
-  background: black;
-  border-radius: 50%;
-  border: 3px solid var(--dynamic-hsl-average);
-  bottom: 6px;
-  left: 3px;
-  animation: blinkEyes 2.5s infinite ease-in-out;
-}
-
-
-.body::after {
-  content: '';
-  position: absolute;
-  width: 5px;
-  height: 5px;
-  background: black;
-  border-radius: 50%;
-  border: 3px solid var(--dynamic-hsl-average);
-  bottom: 6px;
-  right: 3px;
-  animation: blinkEyes 2.5s infinite ease-in-out;
-}
-
-@keyframes blinkEyes {
-  0% {
-    opacity: 1;
-  }
-
-  80% {
-    opacity: 1;
-  }
-
-  85% {
-    opacity: 0;
-  }
-
-  90% {
-    opacity: 1;
-  }
-
-  95% {
-    opacity: 0;
-  }
-
-  100% {
-    opacity: 1;
-  }
-}
-
-.leg {
-  position: absolute;
-  top: 10px;
-  width: 30px;
-  height: 10px;
-  border-radius: 50%;
-  box-shadow: 0 -3px 0 var(--spider-color);
-}
-
-.leg.left {
-  left: -25px;
-}
-
-.leg.right {
-  right: -25px;
-}
-
-.leg::before {
-  content: '';
-  position: absolute;
-  top: 10px;
-  width: 30px;
-  height: 10px;
-  border-radius: 50%;
-  box-shadow: 0 -3px 0 var(--spider-color);
-  animation: spiderLegs 3s infinite ease-in-out;
-}
-
-
-.leg::after {
-  content: '';
-  position: absolute;
-  top: 20px;
-  width: 20px;
-  height: 10px;
-  border-radius: 50%;
-  box-shadow: 0 -3px 0 var(--spider-color);
-  animation: spiderLegs 3s infinite ease-in-out;
-}
-
-.leg.left::after {
-  left: 8px;
-}
-
-.leg.right::after {
-  right: 8px;
-}
-
-@keyframes spiderLegs {
-  0% {
-    transform: rotate(0deg);
-  }
-
-  25% {
-    transform: rotate(-10deg);
-  }
-
-  50% {
-    transform: rotate(10deg);
-  }
-
-  75% {
-    transform: rotate(-10deg);
-  }
-
-  100% {
-    transform: rotate(0deg);
-  }
-}
-
-@media (max-width: 900px) {
-  .devSpidey {
+@media (max-width: 800px) {
+  .stormtrooperContainer {
     display: none;
   }
 }

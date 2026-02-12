@@ -5,6 +5,7 @@ import InteractiveIntroText from '../../Modules/IntroText/IntroText';
 import RecentProjects from '../../Modules/RecentProjects/RecentProjects';
 import ResumeBar from '../../Modules/ResumeViewer/ResumeBar';
 import { useBackground } from '../../Background/BackgroundContext';
+import trooperStyles from './Stormtrooper.module.css';
 
 
 const About = () => {
@@ -25,26 +26,9 @@ const About = () => {
         </div>
       </section>
       <section className={styles.terminalSection}>
-        <div className={`${styles.devSpidey} ${noAnim}`} title='Codepen by Suzanne Aitchison'>
-          <div className={styles.boxCanvas}>
-            <div className={styles.inner}>
-              <div className={styles.circle}></div>
-              <div className={styles.circle}></div>
-              <div className={styles.circle}></div>
-              <div className={styles.circle}></div>
-              <div className={styles.circle}></div>
-              <div className={styles.circle}></div>
-            </div>
-            <div className={styles.line}></div>
-            <div className={styles.line}></div>
-            <div className={styles.line}></div>
-            <div className={styles.spider}>
-              <div className={styles.body}>
-                <div className={`${styles.leg} ${styles.left}`}></div>
-                <div className={`${styles.leg} ${styles.right}`}></div>
-              </div>
-            </div>
-          </div >
+        <div className={`${styles.stormtrooperContainer} ${noAnim}`} title='Codepen by Yusuf Bakir'>
+          <div className={trooperStyles.soldier}></div>
+          <div className={`${trooperStyles.soldier} ${trooperStyles.mini}`}></div>
         </div>
         <InteractiveIntroText />
         <span className={styles.border}></span>

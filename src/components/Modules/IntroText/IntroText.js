@@ -342,7 +342,7 @@ const InteractiveIntroText = () => {
                 <span className={styles.refBadgeText}>{renderGlow("saved us a lot of time!", { delay: 0.02 })}</span>
               </a>
             </div>
-            <div className={styles.outputLine}>{renderGlow("currently writing a Rust-powered game engine")} <span className={styles.warning}>{renderGlow("because I almost like Rust")}</span></div>
+            <div className={styles.outputLine}>{renderGlow("currently writing local-first systems in Rust")} <span className={styles.warning}>{renderGlow("because I almost like Rust")}</span></div>
           </div>
         </div>
 
