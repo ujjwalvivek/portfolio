@@ -3,6 +3,7 @@ import React, { useContext } from 'react';
 import styles from './IntroText.module.css';
 import { IoIosGitBranch } from "react-icons/io";
 import { ThemeContext } from '../../Utils/ThemeSwitcher/ThemeContext';
+import JourneyBadge from '../JourneyBadge/JourneyBadge';
 
 const BIRTH_DATE = new Date('1997-09-21T00:00:00Z');
 
@@ -240,6 +241,7 @@ const InteractiveIntroText = () => {
           <div className={styles.output}>
             <div className={styles.outputLine}>{renderGlow("Hi, I'm Vivek.")}</div>
             <div className={styles.outputLine}>{renderGlow("Based out of Bengaluru, India")}</div>
+            <div className={styles.outputLine}>{renderGlow("Currently building a high-performance graphics engine in Rust.")}</div>
             <div className={styles.outputLine}>{renderGlow(" ")}</div>
             <div className={styles.outputLine}>{renderGlow("My title says Technical Product Manager, but my commit history says Systems Engineer.")}</div>
             <div className={styles.outputLine}>{renderGlow("I’ve been programming for over a decade. I don't just manage roadmaps; I validate architecture.")}</div>
@@ -249,6 +251,7 @@ const InteractiveIntroText = () => {
             <div className={styles.outputLine}>{renderGlow(" ")}</div>
             <div className={styles.outputLine}>{renderGlow("^C")}</div>
             <div className={styles.outputLine}>{renderGlow("Before you move on, do check out my recent logs below.")}</div>
+            <div className={styles.outputLine}><JourneyBadge /></div>
           </div>
         </div>
       </div>

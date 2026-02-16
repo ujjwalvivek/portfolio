@@ -104,5 +104,23 @@
     ],
     "readingTime": "5 min read",
     "thumbnail": "https://cdn.ujjwalvivek.com/posts/media/old_website_haunted.webp"
+  },
+    {
+    "id": 10,
+    "filename": "proj_0004_rust_game_engine.md",
+    "title": "Engineered from Scratch: A High-Performance 2D Game Engine in Rust",
+    "date": "2026-02-16",
+    "description": "A technical deep-dive into building a cross-platform rendering engine. Architected using Rust, wGPU, and a custom Entity Component System (ECS) to achieve sub-16ms frame times. Features a decoupled rendering pipeline that targets both native desktop and WebAssembly (WASM) from a single codebase.",
+    "tags": [
+      "Rust",
+      "wGPU",
+      "WASM",
+      "ECS",
+      "System Architecture",
+      "Game Dev",
+      "Cross-Platform"
+    ],
+    "readingTime": "8 min read",
+    "thumbnail": "https://cdn.ujjwalvivek.com/posts/media/journey.webp"
   }
 ]

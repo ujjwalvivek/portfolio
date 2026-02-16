@@ -28,7 +28,7 @@ export const ProjectsData = [
   },
 
   {
-    id: 'dev-1',
+    id: 'dev-2',
     title: 'Procedural Graphics Engine & React Architecture',
     content: ['Engineered a custom procedural rendering engine using HTML5 Canvas to visualize mathematical concepts without heavy 3D libraries. Architected a React-based performance-first portfolio site around this engine that prioritizes performant canvas rendering over standard DOM manipulation. The result is a unique blend of terminal aesthetics and interactive visuals, all while maintaining accessibility and cross-device performance.'],
     tags: ['Algorithms', 'Canvas API', 'System Design', 'Performance Optimization', 'React', 'Accessibility'],
@@ -37,21 +37,23 @@ export const ProjectsData = [
       githubRepo: 'https://github.com/ujjwalvivek/portfolio',
     },
   },
-  // {
-  //   id: 'dev-2',
-  //   title: 'Crash-Proof Engine in Rust: My Safety-First Quest [MASSIVE WIP]',
-  //   content: ['[Open Source Soon] A game engine built in Rust where performance meets safety. Currently exploring the intersection of zero-cost abstractions and creative expression. This is what happens when you believe games shouldn\'t crash, ever.'],
-  //   tags: ['Rust', 'wGPU', 'Engine', 'Performance', 'Safety', 'Crash-Free'],
-  //   contentLinks: {
-  //     blogPost: '/blog/proj_0004_rust_game_engine.md',
-  //     githubRepo: 'https://github.com/ujjwalvivek/********', // waiting to open source
-  //   },
-  // },
+  {
+    id: 'dev-1',
+    title: 'Journey: High-Performance 2D ECS Engine in Rust',
+    content: ['A handcrafted, cross-platform game engine built from scratch to master systems design. Architected using Rust and wGPU with a custom Entity Component System (ECS) for maximum data locality. Features a fully decoupled rendering pipeline that targets desktop natively and the web via WebAssembly (WASM), delivering consistent 60 FPS performance without a heavy runtime.'],
+    tags: ['Rust', 'wGPU', 'WASM', 'ECS', 'System Architecture', 'Game Dev', 'Cross-Platform'],
+    visibleTags: 3,
+    contentLinks: {
+      blogPost: '/blog/proj_0004_rust_game_engine.md',
+      githubRepo: 'https://github.com/ujjwalvivek/journey', // waiting to open source
+    },
+  },
   {
     id: 'dev-3',
     title: 'Cross-Platform Architecture & Security Analysis',
     content: ['Conducted a comparative architectural analysis of Web vs. Native clipboard APIs. Pivoted from a Web-only approach to a hybrid Tauri (Rust) architecture to bypass browser security sandboxing, enabling secure, local-first background synchronization. Read on to find more about this project.'],
     tags: ['Tauri', 'Go', 'Cross-Platform', 'System Security', 'Architecture Pivot', 'Local-First'],
+    visibleTags: 3,
     contentLinks: {
       blogPost: '/blog/proj_0005_the_synclippy.md',
       githubRepo: 'https://github.com/ujjwalvivek/Synclippy',
@@ -62,6 +64,7 @@ export const ProjectsData = [
     title: 'Real-Time Multiplayer Architecture: Mirror & Optimizations',
     content: ['Developed a server-authoritative multiplayer game using Unity & Mirror. Implemented client-side prediction for latency masking and architected a modular codebase to separate core logic from networking, learning critical lessons in bandwidth management and O(n) performance scaling.'],
     tags: ['C#', 'Mirror', 'Unity', 'Network Architecture', '3D', 'Client-Side Prediction', 'Optimization'],
+    visibleTags: 3,
     contentLinks: {
       blogPost: '/blog/proj_0002_greedysnek.md',
       githubRepo: 'https://github.com/ujjwalvivek/GreedySnek',

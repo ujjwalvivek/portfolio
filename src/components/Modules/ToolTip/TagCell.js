@@ -34,12 +34,12 @@ function PortalTooltip({ show, mousePos, children }) {
   );
 }
 
-export function TagCell({ tags }) {
+export function TagCell({ tags, visibleCount = 2 }) {
   const [show, setShow] = useState(false);
   const [mousePos, setMousePos] = useState(null);
   const ref = useRef();
-  const visibleTags = tags.slice(0, 2);
-  const hiddenTags = tags.slice(2);
+  const visibleTags = tags.slice(0, visibleCount);
+  const hiddenTags = tags.slice(visibleCount);
 
   const handleMouseMove = e => {
     setMousePos({ x: e.clientX, y: e.clientY });

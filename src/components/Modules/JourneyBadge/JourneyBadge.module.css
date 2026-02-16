@@ -1,0 +1,160 @@
+.container {
+  width: 100%;
+  margin: 1rem auto;
+  font-family: var(--font-mono);
+}
+
+.card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 2px;
+  border: 1px solid var(--dynamic-dominant-color);
+  background-color: rgba(var(--background-color-rgb), 0.8);
+}
+
+.topGlow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(to right, var(--dynamic-dominant-color), var(--dynamic-hsl-average), var(--dynamic-dominant-color));
+  opacity: 0.5;
+}
+
+.content {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+}
+
+.titleSection {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.titleRow {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.iconMain {
+  color: var(--dynamic-dominant-color);
+  width: 20px;
+  height: 20px;
+}
+
+.titleText {
+  font-size: 1.125rem;
+  font-weight: 700;
+  letter-spacing: -0.025rem;
+  color: var(--dynamic-dominant-color);
+  margin: 0;
+}
+
+.subtitle {
+  font-size: 0.75rem;
+  color: var(--dynamic-dominant-color);
+  font-family: monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding-left: 1.75rem;
+  margin: 0;
+}
+
+.statusSection {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem; 
+  padding-left: 1.5rem;
+  font-size: 0.875rem; 
+}
+
+.phaseDone {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--status-ok-color); 
+}
+
+.dotContainer {
+  position: relative;
+  display: flex;
+  width: 12px;
+  height: 12px;
+}
+
+.ping {
+  position: absolute;
+  display: inline-flex;
+  height: 100%;
+  width: 100%;
+  border-radius: 9999px;
+  background-color: var(--status-ok-color);
+  opacity: 0.75;
+  animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+.dot {
+  position: relative;
+  display: inline-flex;
+  border-radius: 9999px;
+  height: 12px;
+  width: 12px;
+  background-color: var(--status-ok-color);
+}
+
+.phaseWip {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--status-warn-color); 
+}
+
+.spinner {
+  color: var(--status-warn-color); 
+  width: 14px;
+  height: 14px;
+  min-width: 14px;
+  animation: spin 1s linear infinite;
+}
+
+.badgeWip {
+  font-size: 10px;
+  background-color: rgba(var(--dynamic-dominant-color-rgb), 0.4); 
+  color: var(--dynamic-dominant-color); 
+  padding: 0.125rem 0.375rem;
+  border-radius: 2px;
+  border: 1px solid rgba(var(--dynamic-dominant-color-rgb), 0.5);
+  font-family: monospace;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes ping {
+  75%, 100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+@media (max-width: 600px) {
+  .content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .statusSection {
+    border-left: none;
+    padding-left: 0;
+    gap: 0.5rem;
+  }
+}

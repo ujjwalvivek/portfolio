@@ -281,7 +281,7 @@ const Projects = () => {
                         </DescriptionCell>
                       </td>
                       <td className={styles.cell}>
-                        <TagCell tags={project.tags} />
+                        <TagCell tags={project.tags} visibleCount={project.visibleTags} />
                       </td>
                       <td className={styles.cell}>
                         <ButtonGroup project={project} />
@@ -307,7 +307,7 @@ const Projects = () => {
                       </div>
                     </div>
                     <div className={styles.cell}>
-                      <TagCell tags={project.tags} />
+                      <TagCell tags={project.tags} visibleCount={project.visibleTags} />
                     </div>
                     <ButtonGroup project={project} />
                   </div>
