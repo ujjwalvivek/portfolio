@@ -311,7 +311,7 @@
 
 .markdown ul li {
   position: relative;
-  padding-left: 1.5rem;
+  padding-left: 0rem;
   margin-bottom: 0.7em;
   line-height: 1.5;
   cursor: default;
@@ -1253,7 +1253,11 @@
 @media (max-width: 600px) {
 
   .markdown {
-    font-size: 0.8rem;
+    font-size: 0.9rem;
+  }
+
+  .markdown p {
+    font-size: 0.9rem;
   }
 
   .postStatus {
@@ -1261,16 +1265,3 @@
   }
 }
 
-@media (max-width: 500px) {
-
-  .markdown {
-    font-size: 0.7rem;
-  }
-}
-
-@media (max-width: 400px) {
-
-  .markdown {
-    font-size: 0.6rem;
-  }
-}
