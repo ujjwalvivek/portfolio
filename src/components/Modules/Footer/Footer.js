@@ -7,7 +7,7 @@ import { ThemeContext } from '../../Utils/ThemeSwitcher/ThemeContext';
 import { RiStackFill } from "react-icons/ri";
 import BackgroundTest from '../../Utils/BackgroundTest/BackgroundTest';
 import { TfiLinkedin } from "react-icons/tfi";
-import { FaDev } from "react-icons/fa";
+import { FaYCombinator } from "react-icons/fa";
 import { TbBrandGithubFilled } from "react-icons/tb";
 import { FaMarkdown, FaConfluence, FaJira, FaGit, FaUnity, FaNodeJs, FaCss3Alt, FaFileExcel } from 'react-icons/fa';
 import { SiRust, SiWgpu, SiMixpanel, SiUnrealengine, SiLinear } from 'react-icons/si';
@@ -99,8 +99,8 @@ const Footer = ({ showOverlay, setShowOverlay }) => {
                         </div>
                     </div>
                     <div className={`${styles.statusBarItem} ${styles.vibeIndicatorVariant}`}>
-                        <div className={styles.statusBarIcon} onClick={() => window.open("https://dev.to/ujjwalvivek", "_blank")} target="_blank" rel="noopener noreferrer">
-                            <FaDev />
+                        <div className={styles.statusBarIcon} onClick={() => window.open("https://news.ycombinator.com/threads?id=ujjwalvivek", "_blank")} target="_blank" rel="noopener noreferrer">
+                            <FaYCombinator />
                         </div>
                     </div>
                     <div className={`${styles.statusBarItem} ${styles.vibeIndicatorVariant}`}>

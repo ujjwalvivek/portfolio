@@ -105,7 +105,7 @@
     "readingTime": "5 min read",
     "thumbnail": "https://cdn.ujjwalvivek.com/posts/media/old_website_haunted.webp"
   },
-    {
+  {
     "id": 10,
     "filename": "proj_0004_rust_game_engine.md",
     "title": "Engineered from Scratch: A High-Performance 2D Game Engine in Rust",
@@ -122,5 +122,22 @@
     ],
     "readingTime": "8 min read",
     "thumbnail": "https://cdn.ujjwalvivek.com/posts/media/journey.webp"
+  },
+  {
+  "id": 4,
+  "filename": "log_0004_journey_updates.md",
+  "title": "Journey Engine v0.3.2: A Technical Post-Mortem",
+  "date": "2026-02-26",
+  "description": "A technical deep dive into building a dual-mode ASCII level editor, deterministic fixed-timestep physics, and browser-safe audio for a custom 2D Rust engine.",
+  "tags": [
+    "Rust",
+    "wGPU",
+    "WASM",
+    "Game Engine",
+    "Physics",
+    "Architecture"
+  ],
+  "readingTime": "15 min read",
+  "thumbnail": "https://cdn.ujjwalvivek.com/posts/media/journey_v0.3.2.webp"
   }
 ]

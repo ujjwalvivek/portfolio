@@ -6,6 +6,7 @@ import TerminalMail from "../../Modules/TerminalMail/TerminalMail";
 import InteractiveIntroText from "../../Modules/IntroText/IntroTextHomepage";
 import RecentLogs from "../../Modules/RecentLogs/RecentLogs";
 import LemmingCanvas from './Lemming';
+import JourneyBadge from '../../Modules/JourneyBadge/JourneyBadge';
 
 const Home = () => {
     const { backgroundConfig } = useBackground();
@@ -62,6 +63,10 @@ const Home = () => {
                 <Link to="/projects" className={styles.cta}>
                     <span className="cta-link-span">&lt;</span>Projects<span className="cta-link-span">/&gt;</span>
                 </Link>
+            </div>
+
+            <div className={styles.journeyStatusContainer}>
+                <JourneyBadge />
             </div>
 
             <div className={styles.introTextContainer}>

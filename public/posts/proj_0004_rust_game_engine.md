@@ -6,15 +6,11 @@ slug: proj_0004_rust_game_engine
 ---
 
 :::warning
-v0.2.0 Live Demo
+v0.3.2 Live Demo
 
-https://journey.ujjwalvivek.com - OR - SCROLL DOWN
+Check the new version here:
+https://journey.ujjwalvivek.com
 :::
-
-<iframe src="https://journey.ujjwalvivek.com" width="100%" height="500px"></iframe>
-
-Use WASD to move, Shift to Run, and Alt to Dodge. Mouse clicks Attack and Parries. 
-
 ## Introduction
 
 As a Technical Product Manager, the standard advice is almost always **Buy** (or in this case, use an existing engine like `Unity` or `Godot`). Why reinvent the wheel when you need to ship a product?

@@ -3,7 +3,6 @@ import React, { useContext } from 'react';
 import styles from './IntroText.module.css';
 import { IoIosGitBranch } from "react-icons/io";
 import { ThemeContext } from '../../Utils/ThemeSwitcher/ThemeContext';
-import JourneyBadge from '../JourneyBadge/JourneyBadge';
 
 const BIRTH_DATE = new Date('1997-09-21T00:00:00Z');
 
@@ -251,7 +250,6 @@ const InteractiveIntroText = () => {
             <div className={styles.outputLine}>{renderGlow(" ")}</div>
             <div className={styles.outputLine}>{renderGlow("^C")}</div>
             <div className={styles.outputLine}>{renderGlow("Before you move on, do check out my recent logs below.")}</div>
-            <div className={styles.outputLine}><JourneyBadge /></div>
           </div>
         </div>
       </div>

@@ -377,6 +377,16 @@ This component is used to send terminal-like email directly from within the webs
     margin-bottom: 3rem;
 }
 
+.journeyStatusContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 1000px;
+  box-sizing: border-box;
+  position: relative;
+}
+
 /*
 =========================================================================================
 Responsive Styles
