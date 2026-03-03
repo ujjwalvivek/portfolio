@@ -1,5 +1,4 @@
 import React from "react";
-import DinoGame from "../DinoGame/DinoGame";
 import styles from "./CrashOverlay.module.css";
 import { MdOutlineBugReport } from "react-icons/md";
 
@@ -33,7 +32,9 @@ const CrashOverlay = ({ onRestart }) => {
           )}
           <div className={styles.crashTextMain + ' ' + styles.blink}>{"> session.crashed _"}</div>
           <div className={styles.crashTextSub}>logs flushed. session configurations saved. play the game.</div>
-          <DinoGame />
+          <div className={styles.dinoWhereabouts + ' ' + styles.flicker}>
+            If you have arrived here in search of the Dino, he has moved on to greener pastures. He's one with the logs now.
+          </div>
         </div>
         <div className={styles.crashFooter}>
           <div className={styles.crashFooterText + ' ' + styles.flicker} style={{ textShadow: '0 0 0.5rem rgba(82, 255, 39, 0.8)' }}>ujjwalvivek.com ⊗ no trackers ⊗ no cookies ⊗ no analytics</div>

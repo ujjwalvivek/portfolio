@@ -82,7 +82,7 @@
 .phaseLabel {
   font-weight: 500;
   white-space: nowrap;
-  transform: translateY(1px);
+  transform: translateY(-1px);
 }
 
 .spinner {
@@ -103,6 +103,7 @@
   border: 1px solid rgba(var(--dynamic-dominant-color-rgb), 0.5);
   font-family: monospace;
   line-height: 1;
+  transform: translateY(-1px);
 }
 
 .telemetryRow {

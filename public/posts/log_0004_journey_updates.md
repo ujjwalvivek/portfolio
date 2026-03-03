@@ -8,10 +8,10 @@ slug: log_0004_journey_updates
 :::warning
 v0.3.2 Live Demo
 
-https://journey.ujjwalvivek.com - OR - SCROLL DOWN
+https://journey.ujjwalvivek.com/?v=0.3.2 - OR - SCROLL DOWN
 :::
 
-<iframe src="https://journey.ujjwalvivek.com" title="Journey Engine v0.3.2 Demo" width="100%" style="aspect-ratio: 16/9;"></iframe>
+<iframe src="https://journey.ujjwalvivek.com/?v=0.3.2" title="Journey Engine v0.3.2 Demo" width="100%" style="aspect-ratio: 16/9;"></iframe>
 
 Use WASD to move, Shift to Run, and Alt to Dodge. Mouse clicks Attack and Parries.
 

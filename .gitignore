@@ -1,6 +1,5 @@
 # others
 .idea/
-.vscode/
 node_modules/
 build/
 .DS_Store

@@ -4,20 +4,24 @@ import styles from "./DinoGame.module.css";
 const GAME_WIDTH = Math.min(window.innerWidth * 0.98, 400);
 const GAME_HEIGHT = 150;
 
-const DinoGame = () => {
+const DinoGame = ({ embedded = false }) => {
   const [dinoY, setDinoY] = React.useState(0);
   const [isJumping, setIsJumping] = React.useState(false);
-  const [obstacles, setObstacles] = React.useState([{ x: 400, height: 32, passed: false }]); // <-- missing passed: false
+  const [obstacles, setObstacles] = React.useState([{ x: 400, height: 32, passed: false }]);
   const [score, setScore] = React.useState(0);
   const [gameOver, setGameOver] = React.useState(false);
   const dinoRef = React.useRef();
   const [jumpStart, setJumpStart] = React.useState(null);
   const [jumpPower, setJumpPower] = React.useState(0);
   const [gameStarted, setGameStarted] = React.useState(false);
-  const [windowPos, setWindowPos] = React.useState({
-    x: (window.innerWidth - GAME_WIDTH) / 2,
-    y: (window.innerHeight - GAME_HEIGHT) / 2 + 200,
-  });
+  const [windowPos, setWindowPos] = React.useState(
+    embedded
+      ? { x: 0, y: 0 }
+      : {
+        x: (window.innerWidth - GAME_WIDTH) / 2,
+        y: (window.innerHeight - GAME_HEIGHT) / 2 + 200,
+      }
+  );
   const [dragging, setDragging] = React.useState(false);
   const dragOffset = React.useRef({ x: 0, y: 0 });
   const draggingRef = React.useRef(false);
@@ -286,19 +290,19 @@ const DinoGame = () => {
     <div
       className={styles.dinoGameWrapper}
       style={{
-        position: "fixed",
+        position: embedded ? "absolute" : "fixed",
         left: windowPos.x,
         top: windowPos.y,
-        zIndex: 10000,
+        zIndex: embedded ? 10 : 10000,
         userSelect: dragging ? "none" : "auto",
       }}
     >
       {/* Draggable Window Bar */}
       <div
         className={styles.gameWindowBar}
-        style={{ cursor: dragging ? "grabbing" : "grab" }}
-        onMouseDown={handleBarMouseDown}
-        onTouchStart={handleBarTouchStart}
+        style={embedded ? undefined : { cursor: dragging ? "grabbing" : "grab" }}
+        onMouseDown={embedded ? undefined : handleBarMouseDown}
+        onTouchStart={embedded ? undefined : handleBarTouchStart}
       >
         <span className={styles.gameWindowBarDot} style={{ background: '#ff5f56' }} onClick={() => { }} />
         <span className={styles.gameWindowBarDot} style={{ background: '#ffbd2e' }} onClick={() => { }} />
@@ -327,9 +331,7 @@ const DinoGame = () => {
             </div>
           </div>
         )}
-        {/* Dino */}
         <div ref={dinoRef} className={styles.dino} style={{ bottom: 10 + dinoY }}>
-          {/* 🦖 */}
           <img
             src="https://cdn.ujjwalvivek.com/images/dino.svg"
             alt="Dino"

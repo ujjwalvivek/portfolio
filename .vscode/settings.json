@@ -1,0 +1,22 @@
+{
+    "todo-tree.tree.disableCompactFolders": true,
+    "todo-tree.tree.scanMode": "open files",
+    "claudeCodeChat.permissions.yoloMode": true,
+    "markdown.validate.enabled": true,
+    "liveServer.settings.port": 5500,
+    "folder-color.pathColors": [
+        {
+            "folderPath": "portfolio/src/components/Pages/Projects/"
+        }
+    ],
+    "files.exclude": {
+        "**/build": true,
+        "**/node_modules": true,
+        "**/*-lock.json": true,
+        "**/.obsidian": true,
+    },
+    "files.watcherExclude": {
+        "**/node_modules/**": true,
+        "**/build/**": true,
+    }
+}

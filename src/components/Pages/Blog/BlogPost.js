@@ -23,6 +23,58 @@ import { GrTooltip } from "react-icons/gr";
 import { MdDangerous } from "react-icons/md";
 import { AiTwotoneStar } from "react-icons/ai";
 import { PiHashStraightFill } from "react-icons/pi";
+import DinoGame from '../../Modules/DinoGame/DinoGame';
+
+const IframeEmbed = ({ src, title, width, height, style, caption, ...rest }) => {
+  const isExternal = src && (src.startsWith('http://') || src.startsWith('https://'));
+  const [active, setActive] = React.useState(!isExternal);
+
+  const parsedStyle = typeof style === 'string'
+    ? Object.fromEntries(style.split(';').filter(Boolean).map(s => {
+      const [k, ...v] = s.split(':');
+      return [k.trim().replace(/-([a-z])/g, (_, c) => c.toUpperCase()), v.join(':').trim()];
+    }))
+    : (style || {});
+
+  if (!isExternal) {
+    return (
+      <figure className={styles.iframeEmbedFigure}>
+        <iframe src={src} title={title} width={width} style={parsedStyle} loading="lazy" {...rest} />
+        {caption && <figcaption className={styles.iframeCaption}>{caption}</figcaption>}
+      </figure>
+    );
+  }
+
+  return (
+    <figure className={styles.iframeEmbedFigure}>
+      <div className={styles.iframeEmbedWrapper} style={{ aspectRatio: parsedStyle.aspectRatio }}>
+        <iframe
+          src={active ? src : undefined}
+          title={title}
+          width="100%"
+          style={{ display: 'block', width: '100%', height: '100%' }}
+          loading="lazy"
+          {...rest}
+        />
+        {!active && (
+          <div
+            onClick={() => setActive(true)}
+            style={{
+              position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column',
+              alignItems: 'center', justifyContent: 'center', gap: '0.75rem',
+              color: '#fff', fontFamily: 'monospace',
+              cursor: 'pointer', aspectRatio: parsedStyle.aspectRatio,
+            }}
+          >
+            <img src="https://cdn.ujjwalvivek.com/posts/media/engine_load.webp" alt="Click to load" />
+          </div>
+        )}
+      </div>
+      {caption && <figcaption className={styles.iframeCaption}>{caption}</figcaption>}
+    </figure>
+  );
+};
+
 // Simple reading time calculation function
 const calculateReadingTime = (text) => {
   const wordsPerMinute = 200;
@@ -213,6 +265,7 @@ const BlogPost = () => {
 
   const components = {
     code: CodeBlock,
+    iframe: (props) => <IframeEmbed {...props} />,
     img: ({ src, alt }) => (
       <img
         src={src}
@@ -222,6 +275,27 @@ const BlogPost = () => {
       />
     ),
     div: (props) => {
+      if (props.node.properties.className?.includes('dino-game')) {
+        return (
+          <>
+            <div style={{
+              position: 'relative',
+              width: '100%',
+              height: '128px',
+              overflow: 'hidden',
+              border: '2px solid var(--dynamic-dominant-color)',
+              borderRadius: '2px',
+              marginTop: '1rem',
+              marginBottom: '1rem',
+            }}>
+              <DinoGame embedded />
+            </div>
+            <figcaption className={styles.iframeCaption} style={{ marginBottom: '1rem' }}>
+              The OG, ~800 lines of code, no frameworks, just good old HTML5 Canvas and JavaScript.
+            </figcaption>
+          </>
+        );
+      }
       if (props.node.properties.className?.includes('remark-directive-container')) {
         return <Admonition {...props} />;
       }

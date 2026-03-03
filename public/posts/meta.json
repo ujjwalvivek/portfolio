@@ -139,5 +139,21 @@
   ],
   "readingTime": "15 min read",
   "thumbnail": "https://cdn.ujjwalvivek.com/posts/media/journey_v0.3.2.webp"
+  },
+  {
+  "id": 5,
+  "filename": "log_0005_finally_it_happened.md",
+  "title": "Finally, it happened",
+  "date": "2026-03-03",
+  "description": "I didn’t plan to build an engine. I just didn’t want to live with the shortcut anymore. What followed was months of building something I wasn’t sure anyone needed.",
+  "tags": [
+    "Rust",
+    "Journey Engine",
+    "WASM",
+    "Reflection",
+    "Game Dev"
+  ],
+  "readingTime": "6 min read",
+  "thumbnail": "https://cdn.ujjwalvivek.com/posts/media/dino-blink.webp"
   }
 ]

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dino Blink</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body {
+      width: 100%;
+      height: 100%;
+      background: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    body.pre-start, body.pre-start * { cursor: pointer !important; }
+    canvas {
+      display: block;
+      max-width: 100%;
+      max-height: 100%;
+      cursor: default !important;
+      user-select: none !important;
+    }
+  </style>
+</head>
+<body>
+  <script>
+    const _nativeFocus = HTMLElement.prototype.focus;
+    HTMLElement.prototype.focus = function(options) {
+      _nativeFocus.call(this, { ...options, preventScroll: true });
+    };
+  </script>
+  <script type="module">
+    import init from 'https://cdn.jsdelivr.net/npm/@ujjwalvivek/dino-blink@1.0.0/dino_blink.js';
+    await init();
+  </script>
+  <script>
+    let started = false;
+    document.body.classList.add('pre-start');
+
+    document.addEventListener('click', () => {
+      if (started) return;
+      started = true;
+      document.body.classList.remove('pre-start');
+
+      const canvas = document.querySelector('canvas');
+      const target = canvas || document.body;
+
+      const down = new KeyboardEvent('keydown', { key: ' ', code: 'Space', keyCode: 32, which: 32, bubbles: true });
+      const up   = new KeyboardEvent('keyup',   { key: ' ', code: 'Space', keyCode: 32, which: 32, bubbles: true });
+      target.dispatchEvent(down);
+      setTimeout(() => target.dispatchEvent(up), 80);
+    });
+  </script>
+</body>
+</html>

@@ -28,7 +28,7 @@ export const ProjectsData = [
   },
 
   {
-    id: 'dev-2',
+    id: 'dev-3',
     title: 'Procedural Graphics Engine & React Architecture',
     content: ['Engineered a custom procedural rendering engine using HTML5 Canvas to visualize mathematical concepts without heavy 3D libraries. Architected a React-based performance-first portfolio site around this engine that prioritizes performant canvas rendering over standard DOM manipulation. The result is a unique blend of terminal aesthetics and interactive visuals, all while maintaining accessibility and cross-device performance.'],
     tags: ['Algorithms', 'Canvas API', 'System Design', 'Performance Optimization', 'React', 'Accessibility'],
@@ -39,6 +39,17 @@ export const ProjectsData = [
   },
   {
     id: 'dev-1',
+    title: 'A 2D Game in Journey Engine: Engine Capabilities',
+    content: ['Port of the Dino Blink game (Easter Egg) to the Journey Engine, showcasing the engine’s capabilities in a real-world project. This project involved implementing core gameplay mechanics, optimizing performance for web deployment, and iterating on design.'],
+    tags: ['Journey', 'Engine', 'WASM', '2D', 'Game Dev', 'Cross-Platform'],
+    visibleTags: 3,
+    contentLinks: {
+      blogPost: '/blog/log_0005_finally_it_happened.md',
+      githubRepo: 'https://github.com/ujjwalvivek/dino-blink', // waiting to open source
+    },
+  },
+  {
+    id: 'dev-2',
     title: 'Journey: High-Performance 2D ECS Engine in Rust',
     content: ['A handcrafted, cross-platform game engine built from scratch to master systems design. Architected using Rust and wGPU with a custom Entity Component System (ECS) for maximum data locality. Features a fully decoupled rendering pipeline that targets desktop natively and the web via WebAssembly (WASM), delivering consistent 60 FPS performance without a heavy runtime.'],
     tags: ['Rust', 'wGPU', 'WASM', 'ECS', 'System Architecture', 'Game Dev', 'Cross-Platform'],
@@ -49,7 +60,7 @@ export const ProjectsData = [
     },
   },
   {
-    id: 'dev-3',
+    id: 'dev-4',
     title: 'Cross-Platform Architecture & Security Analysis',
     content: ['Conducted a comparative architectural analysis of Web vs. Native clipboard APIs. Pivoted from a Web-only approach to a hybrid Tauri (Rust) architecture to bypass browser security sandboxing, enabling secure, local-first background synchronization. Read on to find more about this project.'],
     tags: ['Tauri', 'Go', 'Cross-Platform', 'System Security', 'Architecture Pivot', 'Local-First'],
@@ -60,7 +71,7 @@ export const ProjectsData = [
     },
   },
   {
-    id: 'dev-4',
+    id: 'dev-5',
     title: 'Real-Time Multiplayer Architecture: Mirror & Optimizations',
     content: ['Developed a server-authoritative multiplayer game using Unity & Mirror. Implemented client-side prediction for latency masking and architected a modular codebase to separate core logic from networking, learning critical lessons in bandwidth management and O(n) performance scaling.'],
     tags: ['C#', 'Mirror', 'Unity', 'Network Architecture', '3D', 'Client-Side Prediction', 'Optimization'],
@@ -71,7 +82,7 @@ export const ProjectsData = [
     },
   },
   {
-    id: 'dev-6',
+    id: 'dev-7',
     title: 'Nine Years… and Still Kicking: An IEEE website',
     content: ['Architected the IEEE Manipal digital platform with a focus on zero-maintenance durability. The static site architecture has served 10,000+ students with 99.9% uptime for 9 years, validating the \'Simple by Design\' engineering philosophy over complex frameworks.'],
     tags: ['Legacy', 'System Reliability', 'Maintainability', 'Architecture'],
@@ -81,7 +92,7 @@ export const ProjectsData = [
     },
   },
   {
-    id: 'dev-5',
+    id: 'dev-6',
     title: 'Deterministic Architecture & Weapon Tooling',
     content: ['Engineered a deterministic input-lockstep simulation framework to achieve minimal-bandwidth state synchronization (2 floats/frame). Integrated a ScriptableObject-driven weapon pipeline, decoupling game design data from engineering logic to accelerate content iteration.'],
     tags: ['C#', 'System Architecture', 'Simulation', 'Developer Tools', 'Data-Driven Design', 'unity'],
@@ -91,7 +102,7 @@ export const ProjectsData = [
     },
   },
   {
-    id: 'dev-7',
+    id: 'dev-8',
     title: 'Multiplayer FPS Architecture: A Development Resource',
     content: ['Engineered the core networking and gameplay stack for a squad-based FPS. Architected a scalable RoomManager and Lobby system for seamless matchmaking, and implemented a custom Raycast Combat model with client-side prediction. developed a 3D spatial audio framework to drive immersive horror mechanics.'],
     tags: ['Unity', 'System Architecture', 'Multiplayer', 'Game Systems', 'Networking'],

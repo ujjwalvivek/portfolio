@@ -197,6 +197,43 @@
   }
 }
 
+.dinoWhereabouts {
+  color: #92dab3;
+  font-size: 1rem;
+  opacity: 0.9;
+  text-align: center;
+  letter-spacing: -0.5px;
+  display: flex;
+  margin-bottom: 2rem;
+  max-width: 800px;
+}
+
+.flicker {
+  animation: flickerAnim 1.2s infinite alternate;
+}
+
+@keyframes flickerAnim {
+  0% {
+    opacity: 1;
+  }
+
+  80% {
+    opacity: 0.85;
+  }
+
+  85% {
+    opacity: 0.6;
+  }
+
+  90% {
+    opacity: 0.95;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
 @media (max-width: 1500px) {
   .crashTextMain {
     font-size: 6rem;
@@ -227,6 +264,10 @@
     font-size: 2.9rem;
     letter-spacing: -1px;
   }
+
+  .dinoWhereabouts {
+  font-size: 0.8rem;
+}
 }
 
 @media (max-width: 600px) {
@@ -282,4 +323,5 @@
     font-size: 0.5rem;
     padding: 0.5rem 0.7rem;
   }
+
 }
