@@ -15,19 +15,6 @@ const Home = () => {
     useEffect(() => {
         const override = localStorage.getItem('lowChaosOverride');
         if (override === 'true') {
-            // Show notification once
-            setTimeout(() => {
-                window.alert(
-                    "Accessibility Notice:\n" +
-                    "We detected your system prefers reduced motion. " +
-                    "Low Chaos Mode has been automatically enabled for a calmer, distraction-free experience.\n" +
-                    "You can change this anytime from the Background Settings (⌘KP or Ctrl+KP)."
-                );
-            }, 800); // Delay so it shows after landing crossfade completes
-            //Patch v2.0.1
-            //window.alert is a blocking modal and can be disruptive for keyboard users and assistive tech. Prefer a non-blocking in-app toast/dialog with proper focus management (or an ARIA live region) and provide a way to dismiss/opt out.
-
-            // Clear flag so alert doesn't show again
             localStorage.removeItem('lowChaosOverride');
         }
     }, []);

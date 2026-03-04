@@ -275,24 +275,22 @@ const BackgroundTest = ({ onClose }) => {
     }
 
     const resetAllSettings = () => {
-        if (window.confirm('Reset all background settings to defaults? This will clear your saved preferences.')) {
-            const defaultBgId = 'psychedelic';
-            const deviceClass = getDeviceClass();
-            const smartDefaults = getSmartDefaults(defaultBgId, deviceClass);
-            const defaults = { ...smartDefaults, colorMode: 'cyber', customColor: '#f78fb3' };
+        const defaultBgId = 'psychedelic';
+        const deviceClass = getDeviceClass();
+        const smartDefaults = getSmartDefaults(defaultBgId, deviceClass);
+        const defaults = { ...smartDefaults, colorMode: 'cyber', customColor: '#f78fb3' };
 
-            // update all local states
-            setCurrentBg(defaultBgId);
-            setOpacity(defaults.opacity);
-            setAnimationSpeed(defaults.animationSpeed);
-            setDensity(defaults.density);
-            setColorMode(defaults.colorMode);
-            setCustomColor(defaults.customColor);
-            setIsAnimated(defaults.isAnimated);
+        // update all local states
+        setCurrentBg(defaultBgId);
+        setOpacity(defaults.opacity);
+        setAnimationSpeed(defaults.animationSpeed);
+        setDensity(defaults.density);
+        setColorMode(defaults.colorMode);
+        setCustomColor(defaults.customColor);
+        setIsAnimated(defaults.isAnimated);
 
-            // update global context
-            updateBackgroundConfig(defaults);
-        }
+        // update global context
+        updateBackgroundConfig(defaults);
     };
 
     const controlValues = { opacity, animationSpeed, density };
