@@ -5,11 +5,9 @@ summary: An architectural post-mortem on browser sandboxing limits, and the stra
 slug: proj_0005_the_synclippy
 ---
 :::tip
-Architecture Migration (Active)
+Status Update
 
-Currently executing a strategic pivot from **Web-Only** to **Hybrid Native (Tauri/Rust)** to resolve browser sandboxing constraints. <br/>
-**Current Phase:** Architecture Analysis & Native Prototyping
-**Next Milestone:** Native Desktop MVP (Q3 2026) <br/>
+I killed the Tauri roadmap. The Go/JS web MVP solved the problem perfectly, and building desktop clients for this was massive scope creep. Read the updated GitHub [README.md](https://github.com/ujjwalvivek/Synclippy/blob/main/README.md) for the final state.
 :::
 
 
