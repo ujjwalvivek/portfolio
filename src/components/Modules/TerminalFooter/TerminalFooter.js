@@ -50,7 +50,6 @@ const TerminalFooter = ({ showTerminal }) => {
 
   const { backgroundConfig } = useBackground();
   const { toggleBackground } = useBackground();
-  // Only add glitch/pulse/flicker if background is not "none"
   const flicker = backgroundConfig.type !== 'none' ? styles.flicker : '';
   const dimmed = backgroundConfig.type !== 'none' ? styles.dimmed : '';
   const alert = backgroundConfig.type !== 'none' ? styles.alert : '';
@@ -63,7 +62,7 @@ const TerminalFooter = ({ showTerminal }) => {
     }
     let output = '';
 
-    // Context-aware "hint"
+    //? Context-aware "hint"
     if (cmd.trim() === "hint") {
       let output = `Psst! Here's one especially for you :)\n\n>> Type 'start' to begin the journey.`;
       if (backgroundConfig.type === "none") {
@@ -78,7 +77,6 @@ const TerminalFooter = ({ showTerminal }) => {
       return;
     }
 
-    // Context-aware "maximumfun"
     if (cmd.trim() === "maximumfun") {
       if (backgroundConfig.type === "none") {
         toggleBackground();
@@ -97,7 +95,6 @@ const TerminalFooter = ({ showTerminal }) => {
       return;
     }
 
-    // Context-aware "minimumfun"
     if (cmd.trim() === "minimumfun") {
       if (backgroundConfig.type !== "none") {
         toggleBackground();
@@ -116,7 +113,7 @@ const TerminalFooter = ({ showTerminal }) => {
       return;
     }
 
-    // Handle other commands
+    //? Handle other commands
     if (cmd.trim() === "help") {
       output = 'Available commands: whoami, clear, hint';
     } else if (cmd.trim() === "whoami") {
@@ -167,7 +164,7 @@ const TerminalFooter = ({ showTerminal }) => {
   React.useEffect(() => {
     if (crashed) {
       console.log(
-        "👀 Welcome curious dev. You found the logs under the logs. Just refresh the page and it should restart."
+        "Welcome curious dev. You found the logs under the logs. Just refresh the page and it should restart."
       );
     }
   }, [crashed]);
@@ -185,7 +182,6 @@ const TerminalFooter = ({ showTerminal }) => {
       </div>
       <div className={styles.terminalFooterScroll} ref={scrollRef}>
         {history.map((item, i) => {
-          // Detect keywords for effects
           let extraClass = "";
           if (
             item.text.includes("The terminal dims") ||

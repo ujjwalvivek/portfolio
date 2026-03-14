@@ -1,0 +1,29 @@
+name = "echopoint"
+main = "src/index.js"
+compatibility_date = "2024-01-01"
+
+routes = [
+  { pattern = "echopoint.ujjwalvivek.com", custom_domain = true }
+]
+
+[assets]
+directory = "dashboard/dist"
+binding = "ASSETS"
+
+[[kv_namespaces]]
+binding = "echopoint_kv"
+id = "077d52e3fea44aa89d8a28c8229d088c"
+preview_id = "b8bc97efaa034901a8d6f560e4fa26e1"
+
+[durable_objects]
+bindings = [
+  { name = "CLICKER", class_name = "ClickerDO" }
+]
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["ClickerDO"]
+
+# free KV tier = 1k writes/day
+[triggers]
+crons = ["0 */2 * * *"]

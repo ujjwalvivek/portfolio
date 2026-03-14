@@ -202,7 +202,6 @@
 }
 
 .overlayContainer {
-    /* layout: header (fixed) + scrollable body + footer (fixed) */
     display: flex;
     flex-direction: column;
     border-radius: 4px;
@@ -210,7 +209,6 @@
     max-width: 952px;
     max-height: 70vh;
     overflow: hidden;
-    /* container itself shouldn't scroll */
     -webkit-overflow-scrolling: touch;
     animation: slideIn 0.3s ease-out;
     backdrop-filter: blur(16px) saturate(180%);
@@ -218,7 +216,6 @@
     background: rgba(var(--bit-dark-color-rgb), 1);
 }
 
-/* ensure header/footer remain pinned and don't shrink */
 .overlayContainer .header,
 .overlayContainer .overlayFooter {
     flex: 0 0 auto;
@@ -244,11 +241,8 @@
     align-items: center;
     margin: 0.5rem auto;
     padding: 0 0.5rem;
-
-    /* when used inside the overlay, allow the grid to grow and scroll */
     flex: 1 1 auto;
     min-height: 0;
-    /* required for flex children to overflow correctly */
     overflow-y: auto;
     overflow-x: hidden;
     -webkit-overflow-scrolling: touch;
@@ -278,9 +272,7 @@
     border: 2px solid rgba(var(--dynamic-dominant-color-rgb), 0.4);
 }
 
-/* override when the generic controlGroup helper is composed inside an overlay */
 .overlayContainer .skillsGridIcons.controlGroup {
-    /* keep wrapping but allow scrolling inside the overlay */
     overflow: auto;
     -webkit-overflow-scrolling: touch;
 }
@@ -332,7 +324,7 @@
     outline: none;
     color: rgba(var(--text-color-rgb), 0.8);
     font-size: 1rem;
-    font-family: var(--font-mono);
+    font-family: var(--font-neon);
     font-weight: 700;
     cursor: default;
 }
@@ -340,7 +332,7 @@
 .shortcut {
     color: rgba(var(--dynamic-dominant-color-rgb), 0.8);
     font-size: 0.8rem;
-    font-family: var(--font-mono);
+    font-family: var(--font-neon);
     padding: 0.2rem 0.4rem;
     border-radius: 2px;
     border: 1px solid rgba(var(--dynamic-dominant-color-rgb), 0.5);
@@ -354,7 +346,7 @@
     gap: 1.5rem;
     font-size: 0.75rem;
     color: rgba(var(--text-color-rgb), 0.7);
-    font-family: 'SF Mono', 'Monaco', 'Consolas', monospace;
+    font-family: var(--font-neon);
     flex-wrap: wrap;
     align-items: center;
 }
@@ -368,7 +360,7 @@
     margin: 0 0.1rem;
     color: rgba(var(--text-color-rgb), 0.9);
     font-weight: 800;
-    font-family: inherit;
+    font-family: var(--font-neon);
     margin-right: 0.3rem;
 }
 
@@ -383,27 +375,17 @@
     justify-content: space-between;
 }
 
-/* When the skills grid is composed with the generic controlGroup helper
-   allow wrapping and disable the clipping so icons can flow to multiple
-   rows instead of being forced into a single, clipped line. */
 .skillsGridIcons.controlGroup {
     display: flex;
-    /* keep existing layout rules */
     flex-wrap: wrap;
-    /* allow wrapping */
     overflow: visible;
-    /* don't clip wrapped items */
     justify-content: center;
-    /* center across rows */
     gap: 0.8rem;
     width: 100%;
     box-sizing: border-box;
     padding: 0.6rem 1rem;
     max-width: 960px;
-    /* keep the overlay's max width in mind */
 }
-
-/* ------- WEB BREAKPOINTS ------- */
 
 @media (max-width: 768px) {
     .Footer {
@@ -430,7 +412,6 @@
         font-size: 0.6em;
     }
 
-    /* Skills grid: 5 icons per row, smaller icons */
     .skillsGridIcons {
         grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
         gap: 1rem;

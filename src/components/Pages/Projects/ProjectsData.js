@@ -1,5 +1,108 @@
 export const ProjectsData = [
   {
+    id: 'dev-1',
+    title: 'An Ephemeral Sharing Utility: Synclippy',
+    content: ['A tiny ephemeral sharing tool for moving text or small files between devices. Synclippy started as a clipboard sync system but eventually collapsed into something simpler, temporary three-word rooms that live in memory and expire after a few minutes.'],
+    tags: ['Go', 'Typescript', 'Cloudflare Workers', 'Durable Objects', 'Cross-Platform', 'Local-First'],
+    visibleTags: 3,
+    contentLinks: {
+      blogPost: '/blog/log_0006_simpleclippy.md',
+      githubRepo: 'https://github.com/ujjwalvivek/synclippy',
+    },
+  },
+  {
+    id: 'dev-2',
+    title: 'A 2D Game in Journey Engine: Engine Capabilities',
+    content: ['Port of the Dino Blink game (Easter Egg) to the Journey Engine, showcasing the engine’s capabilities in a real-world project. This project involved implementing core gameplay mechanics, optimizing performance for web deployment, and iterating on design.'],
+    tags: ['Journey', 'Engine', 'WASM', '2D', 'Game Dev', 'Cross-Platform'],
+    visibleTags: 3,
+    contentLinks: {
+      blogPost: '/blog/log_0005_finally_it_happened.md',
+      githubRepo: 'https://github.com/ujjwalvivek/dino-blink',
+    },
+  },
+  {
+    id: 'dev-3',
+    title: 'Journey: High-Performance 2D ECS Engine in Rust',
+    content: ['A handcrafted, cross-platform game engine built from scratch to master systems design. Architected using Rust and wGPU with a custom Entity Component System (ECS) for maximum data locality. Features a fully decoupled rendering pipeline that targets desktop natively and the web via WebAssembly (WASM), delivering consistent 60 FPS performance without a heavy runtime.'],
+    tags: ['Rust', 'wGPU', 'WASM', 'ECS', 'System Architecture', 'Game Dev', 'Cross-Platform'],
+    visibleTags: 3,
+    contentLinks: {
+      blogPost: '/blog/proj_0004_rust_game_engine.md',
+      githubRepo: 'https://github.com/ujjwalvivek/journey',
+    },
+  },
+  {
+    id: 'dev-4',
+    title: 'Procedural Graphics Engine & React Architecture',
+    content: ['Engineered a custom procedural rendering engine using HTML5 Canvas to visualize mathematical concepts without heavy 3D libraries. Architected a React-based performance-first portfolio site around this engine that prioritizes performant canvas rendering over standard DOM manipulation. The result is a unique blend of terminal aesthetics and interactive visuals, all while maintaining accessibility and cross-device performance.'],
+    tags: ['Algorithms', 'Canvas API', 'System Design', 'Performance Optimization', 'React', 'Accessibility'],
+    contentLinks: {
+      blogPost: '/blog/log_0000_boot_sequence.md',
+      githubRepo: 'https://github.com/ujjwalvivek/portfolio',
+    },
+  },
+  {
+    id: 'dev-5',
+    title: 'Cross-Platform Architecture & Security Analysis',
+    content: ['Conducted a comparative architectural analysis of Web vs. Native clipboard APIs. Pivoted from a Web-only approach to a hybrid Tauri (Rust) architecture to bypass browser security sandboxing, enabling secure, local-first background synchronization. Read on to find more about this project.'],
+    tags: ['Tauri', 'Go', 'Cross-Platform', 'System Security', 'Architecture Pivot', 'Local-First'],
+    visibleTags: 3,
+    contentLinks: {
+      blogPost: '/blog/proj_0005_the_synclippy.md',
+      githubRepo: 'https://github.com/ujjwalvivek/Synclippy',
+    },
+  },
+  {
+    id: 'dev-6',
+    title: 'Real-Time Multiplayer Architecture: Mirror & Optimizations',
+    content: ['Developed a server-authoritative multiplayer game using Unity & Mirror. Implemented client-side prediction for latency masking and architected a modular codebase to separate core logic from networking, learning critical lessons in bandwidth management and O(n) performance scaling.'],
+    tags: ['C#', 'Mirror', 'Unity', 'Network Architecture', '3D', 'Client-Side Prediction', 'Optimization'],
+    visibleTags: 3,
+    contentLinks: {
+      blogPost: '/blog/proj_0002_greedysnek.md',
+      githubRepo: 'https://github.com/ujjwalvivek/GreedySnek',
+    },
+  },
+  {
+    id: 'dev-7',
+    title: 'Deterministic Architecture & Weapon Tooling',
+    content: ['Engineered a deterministic input-lockstep simulation framework to achieve minimal-bandwidth state synchronization (2 floats/frame). Integrated a ScriptableObject-driven weapon pipeline, decoupling game design data from engineering logic to accelerate content iteration.'],
+    tags: ['C#', 'System Architecture', 'Simulation', 'Developer Tools', 'Data-Driven Design', 'unity'],
+    contentLinks: {
+      blogPost: '/blog/proj_0003_kill_bad_guys.md',
+      githubRepo: 'https://github.com/ujjwalvivek/UnityCoordinationFramework',
+    },
+  },
+  {
+    id: 'dev-8',
+    title: 'Nine Years… and Still Kicking: An IEEE website',
+    content: ['Architected the IEEE Manipal digital platform with a focus on zero-maintenance durability. The static site architecture has served 10,000+ students with 99.9% uptime for 9 years, validating the \'Simple by Design\' engineering philosophy over complex frameworks.'],
+    tags: ['Legacy', 'System Reliability', 'Maintainability', 'Architecture'],
+    contentLinks: {
+      githubRepo: 'https://github.com/IEEE-Manipal/IEEE-Manipal.github.io',
+      websiteLink: 'https://ieeemanipal.com/',
+    },
+  },
+  {
+    id: 'dev-9',
+    title: 'Multiplayer FPS Architecture: A Development Resource',
+    content: ['Engineered the core networking and gameplay stack for a squad-based FPS. Architected a scalable RoomManager and Lobby system for seamless matchmaking, and implemented a custom Raycast Combat model with client-side prediction. developed a 3D spatial audio framework to drive immersive horror mechanics.'],
+    tags: ['Unity', 'System Architecture', 'Multiplayer', 'Game Systems', 'Networking'],
+    contentLinks: {
+      githubRepo: 'https://github.com/ujjwalvivek/TheReckoning',
+    },
+  },
+  {
+    id: 'pm-1',
+    title: 'Enterprise VR Ecosystem: Large-Scale Deployment & Adoption',
+    content: ['Orchestrated the infrastructure and adoption strategy for UltraTech’s VR training initiative. Managed the end to end project and deployment across 55+ manufacturing plants, successfully standardizing safety protocols for 65,000 enterprise users.'],
+    tags: ['VR', 'Strategy', 'Operations Scale', 'Enterprise SaaS', 'Deployment'],
+    contentLinks: {
+      websiteLink: 'https://www.autovrse.com/case-study-ultratech',
+    },
+  },
+  {
     id: 'pm-2',
     title: 'Roblox Virtual Economy: Social Mechanics & Safety Architecture',
     content: ['Developed a comprehensive Product Spec for \'Pet Palooza,\' a Roblox educational MMO inspired by \'Adopt Me\' mechanics. modeled the virtual economy (currency sinks/faucets) to drive financial literacy KPIs while implementing a strict \'Safety-by-Design\' framework for COPPA/GDPR-K compliance.'],
@@ -24,99 +127,6 @@ export const ProjectsData = [
     tags: ['Enterprise', 'UX', 'Product Strategy', 'Stakeholder Management'],
     contentLinks: {
       figmaDesign: 'https://www.figma.com/proto/to1kH8909LmtMxPvnmtgJ2?node-id=866-8947&mode=design&t=llhEzrevnwVqVdxM-6',
-    },
-  },
-
-  {
-    id: 'dev-3',
-    title: 'Procedural Graphics Engine & React Architecture',
-    content: ['Engineered a custom procedural rendering engine using HTML5 Canvas to visualize mathematical concepts without heavy 3D libraries. Architected a React-based performance-first portfolio site around this engine that prioritizes performant canvas rendering over standard DOM manipulation. The result is a unique blend of terminal aesthetics and interactive visuals, all while maintaining accessibility and cross-device performance.'],
-    tags: ['Algorithms', 'Canvas API', 'System Design', 'Performance Optimization', 'React', 'Accessibility'],
-    contentLinks: {
-      blogPost: '/blog/log_0000_boot_sequence.md',
-      githubRepo: 'https://github.com/ujjwalvivek/portfolio',
-    },
-  },
-  {
-    id: 'dev-1',
-    title: 'A 2D Game in Journey Engine: Engine Capabilities',
-    content: ['Port of the Dino Blink game (Easter Egg) to the Journey Engine, showcasing the engine’s capabilities in a real-world project. This project involved implementing core gameplay mechanics, optimizing performance for web deployment, and iterating on design.'],
-    tags: ['Journey', 'Engine', 'WASM', '2D', 'Game Dev', 'Cross-Platform'],
-    visibleTags: 3,
-    contentLinks: {
-      blogPost: '/blog/log_0005_finally_it_happened.md',
-      githubRepo: 'https://github.com/ujjwalvivek/dino-blink', // waiting to open source
-    },
-  },
-  {
-    id: 'dev-2',
-    title: 'Journey: High-Performance 2D ECS Engine in Rust',
-    content: ['A handcrafted, cross-platform game engine built from scratch to master systems design. Architected using Rust and wGPU with a custom Entity Component System (ECS) for maximum data locality. Features a fully decoupled rendering pipeline that targets desktop natively and the web via WebAssembly (WASM), delivering consistent 60 FPS performance without a heavy runtime.'],
-    tags: ['Rust', 'wGPU', 'WASM', 'ECS', 'System Architecture', 'Game Dev', 'Cross-Platform'],
-    visibleTags: 3,
-    contentLinks: {
-      blogPost: '/blog/proj_0004_rust_game_engine.md',
-      githubRepo: 'https://github.com/ujjwalvivek/journey', // waiting to open source
-    },
-  },
-  {
-    id: 'dev-4',
-    title: 'Cross-Platform Architecture & Security Analysis',
-    content: ['Conducted a comparative architectural analysis of Web vs. Native clipboard APIs. Pivoted from a Web-only approach to a hybrid Tauri (Rust) architecture to bypass browser security sandboxing, enabling secure, local-first background synchronization. Read on to find more about this project.'],
-    tags: ['Tauri', 'Go', 'Cross-Platform', 'System Security', 'Architecture Pivot', 'Local-First'],
-    visibleTags: 3,
-    contentLinks: {
-      blogPost: '/blog/proj_0005_the_synclippy.md',
-      githubRepo: 'https://github.com/ujjwalvivek/Synclippy',
-    },
-  },
-  {
-    id: 'dev-5',
-    title: 'Real-Time Multiplayer Architecture: Mirror & Optimizations',
-    content: ['Developed a server-authoritative multiplayer game using Unity & Mirror. Implemented client-side prediction for latency masking and architected a modular codebase to separate core logic from networking, learning critical lessons in bandwidth management and O(n) performance scaling.'],
-    tags: ['C#', 'Mirror', 'Unity', 'Network Architecture', '3D', 'Client-Side Prediction', 'Optimization'],
-    visibleTags: 3,
-    contentLinks: {
-      blogPost: '/blog/proj_0002_greedysnek.md',
-      githubRepo: 'https://github.com/ujjwalvivek/GreedySnek',
-    },
-  },
-  {
-    id: 'dev-7',
-    title: 'Nine Years… and Still Kicking: An IEEE website',
-    content: ['Architected the IEEE Manipal digital platform with a focus on zero-maintenance durability. The static site architecture has served 10,000+ students with 99.9% uptime for 9 years, validating the \'Simple by Design\' engineering philosophy over complex frameworks.'],
-    tags: ['Legacy', 'System Reliability', 'Maintainability', 'Architecture'],
-    contentLinks: {
-      githubRepo: 'https://github.com/IEEE-Manipal/IEEE-Manipal.github.io',
-      websiteLink: 'https://ieeemanipal.com/',
-    },
-  },
-  {
-    id: 'dev-6',
-    title: 'Deterministic Architecture & Weapon Tooling',
-    content: ['Engineered a deterministic input-lockstep simulation framework to achieve minimal-bandwidth state synchronization (2 floats/frame). Integrated a ScriptableObject-driven weapon pipeline, decoupling game design data from engineering logic to accelerate content iteration.'],
-    tags: ['C#', 'System Architecture', 'Simulation', 'Developer Tools', 'Data-Driven Design', 'unity'],
-    contentLinks: {
-      blogPost: '/blog/proj_0003_kill_bad_guys.md',
-      githubRepo: 'https://github.com/ujjwalvivek/UnityCoordinationFramework',
-    },
-  },
-  {
-    id: 'dev-8',
-    title: 'Multiplayer FPS Architecture: A Development Resource',
-    content: ['Engineered the core networking and gameplay stack for a squad-based FPS. Architected a scalable RoomManager and Lobby system for seamless matchmaking, and implemented a custom Raycast Combat model with client-side prediction. developed a 3D spatial audio framework to drive immersive horror mechanics.'],
-    tags: ['Unity', 'System Architecture', 'Multiplayer', 'Game Systems', 'Networking'],
-    contentLinks: {
-      githubRepo: 'https://github.com/ujjwalvivek/TheReckoning',
-    },
-  },
-  {
-    id: 'pm-1',
-    title: 'Enterprise VR Ecosystem: Large-Scale Deployment & Adoption',
-    content: ['Orchestrated the infrastructure and adoption strategy for UltraTech’s VR training initiative. Managed the end to end project and deployment across 55+ manufacturing plants, successfully standardizing safety protocols for 65,000 enterprise users.'],
-    tags: ['VR', 'Strategy', 'Operations Scale', 'Enterprise SaaS', 'Deployment'],
-    contentLinks: {
-      websiteLink: 'https://www.autovrse.com/case-study-ultratech',
     },
   },
 ];

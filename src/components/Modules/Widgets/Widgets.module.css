@@ -1,0 +1,283 @@
+.widgetContainer {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1rem;
+    width: 100%;
+    max-width: 1000px;
+}
+
+.widgetCard {
+    aspect-ratio: 1 / 1;
+    backdrop-filter: blur(32px) saturate(180%);
+    -webkit-backdrop-filter: blur(32px) saturate(180%);
+    background: rgba(var(--background-color-rgb), 0.5);
+    border: 1px dashed rgba(var(--dynamic-dominant-color-rgb), 0.3);
+    border-radius: 2px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem 1rem;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.3s ease;
+}
+
+.widgetCard::before,
+.widgetCard::after {
+    height: 1.2rem;
+    width: 1.2rem;
+    position: absolute;
+    display: block;
+    content: '';
+    opacity: 1;
+    line-height: 1;
+}
+
+.widgetCard::before {
+    left: 0;
+    top: 0;
+    border-left: 2px solid rgba(var(--dynamic-dominant-color-rgb), 1);
+    border-top: 2px solid rgba(var(--dynamic-dominant-color-rgb), 1);
+    border-radius: 2px;
+}
+
+.widgetCard::after {
+    right: 0;
+    bottom: 0;
+    border-right: 2px solid rgba(var(--dynamic-dominant-color-rgb), 1);
+    border-bottom: 2px solid rgba(var(--dynamic-dominant-color-rgb), 1);
+    border-radius: 2px;
+}
+
+.widgetEmpty {
+    opacity: 0.3;
+    border-style: dashed;
+}
+
+.calendarImg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    padding: 0.8rem 1rem;
+    object-fit: cover;
+    object-position: 100% 100%;
+}
+
+.widgetTitle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-start;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    width: 100%;
+    text-align: left;
+    margin-bottom: 0.4rem;
+    opacity: 0.85;
+    gap: 0.5rem;
+    pointer-events: none;
+}
+
+.heatmapContainer,
+.mapContainer {
+    position: relative;
+    flex: 1;
+    width: 100%;
+    overflow: hidden;
+    border-radius: 2px;
+    border: 2px solid rgba(var(--dynamic-dominant-color-rgb), 0.5);
+    padding: 2px;
+}
+
+.heatmapContainer::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: linear-gradient(90deg, rgba(var(--dynamic-dominant-color-rgb), 0.5), transparent, transparent);
+}
+
+.mapImg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.7;
+    filter: brightness(0.8) contrast(1.1);
+    transition: all 0.3s ease-in-out;
+}
+
+.mapImg:hover {
+    transform: scale(1.02);
+}
+
+.mapLabel {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 0.9rem;
+    font-weight: 900;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: rgba(var(--text-color-rgb), 0.75);
+    pointer-events: none;
+}
+
+.locationFooter {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    font-size: 0.65rem;
+    opacity: 0.75;
+    margin-top: 0.2rem;
+    font-family: var(--font-neon);
+    align-items: center;
+    cursor: default;
+}
+
+.link {
+    display: flex;
+    align-items: center;
+    color: var(--text-color);
+    text-decoration: none;
+}
+
+.link:hover {
+    color: var(--dynamic-dominant-color);
+}
+
+.clickerContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    border-radius: 2px;
+    border: 2px solid rgba(var(--dynamic-dominant-color-rgb), 0.5);
+}
+
+/* scale container when button inside is pressed */
+.clickerContainer.pressed .clickerCount::before {
+    content: '+1';
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--dynamic-dominant-color);
+    position: absolute;
+    top: 1.2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    animation: popUp 0.6s ease forwards;
+}
+
+@keyframes popUp {
+    0% {
+        transform: translateX(-50%) translateY(0) scale(1);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateX(-50%) translateY(-1.5rem) scale(1.5);
+        opacity: 0;
+    }
+}
+
+.clickerContainer .cta {
+    font-size: 0.7rem;
+    font-weight: 700;
+    font-family: var(--font-neon);
+    opacity: 0.9;
+    text-transform: uppercase;
+    transition: background 0.2s ease, border-color 0.2s ease;
+    width: 100%;
+    border: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    position: relative;
+    cursor: pointer;
+    background: rgba(var(--background-color-rgb), 0.3);
+    flex: 1 1 0;
+
+    margin: 0;
+    text-decoration: none;
+    color: var(--text-color);
+    letter-spacing: 1px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-align: center;
+    border-radius: 2px;
+}
+
+.clickerContainer .cta::after {
+    background: var(--dynamic-hsl-average);
+    content: "";
+    height: 200px;
+    left: -75px;
+    opacity: 0.1;
+    position: absolute;
+    top: -50px;
+    transform: rotate(45deg);
+    transition: all 500ms cubic-bezier(0.19, 1, 0.22, 1);
+    width: 50px;
+    z-index: -1;
+    filter: blur(20px);
+}
+
+.clickerContainer .cta:hover::after {
+    left: 140%;
+    opacity: 0.2;
+    transition: all 500ms cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.clickerContainer .cta:hover {
+    background: rgba(var(--dynamic-dominant-color-rgb), 0.25);
+    border-color: rgba(var(--dynamic-dominant-color-rgb), 0.7);
+    color: var(--dynamic-dominant-color);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    transform: none;
+}
+
+.clickerContainer .cta:active {
+    transform: scale(1.04);
+    border: 5px solid rgba(var(--dynamic-hsl-average-rgb), 0.5);
+    filter: hue-rotate(180deg);
+}
+
+.clickerCount {
+    font-size: 2.2rem;
+    font-weight: 900;
+    font-family: var(--font-krypton);
+    letter-spacing: -0.04em;
+    opacity: 0.9;
+}
+
+.clickerPersonal {
+    margin-top: 0.4rem;
+    font-size: 0.6rem;
+    opacity: 0.5;
+    font-family: var(--font-neon);
+}
+
+@media (max-width: 1100px) {
+    .widgetContainer {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 500px) {
+    .widgetContainer {
+        grid-template-columns: 1fr;
+    }
+}

@@ -13,15 +13,7 @@
   src: url('https://cdn.ujjwalvivek.com/fonts/JetBrainsMono/Thin.woff2') format('woff2');
   font-weight: 100;
   font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'JetBrains Mono';
-  src: url('https://cdn.ujjwalvivek.com/fonts/JetBrainsMono/ThinItalic.woff2') format('woff2');
-  font-weight: 100;
-  font-style: italic;
-  font-display: swap;
+  font-display: block;
 }
 
 @font-face {
@@ -29,15 +21,7 @@
   src: url('https://cdn.ujjwalvivek.com/fonts/JetBrainsMono/ExtraLight.woff2') format('woff2');
   font-weight: 200;
   font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'JetBrains Mono';
-  src: url('https://cdn.ujjwalvivek.com/fonts/JetBrainsMono/ExtraLightItalic.woff2') format('woff2');
-  font-weight: 200;
-  font-style: italic;
-  font-display: swap;
+  font-display: block;
 }
 
 @font-face {
@@ -45,15 +29,7 @@
   src: url('https://cdn.ujjwalvivek.com/fonts/JetBrainsMono/Light.woff2') format('woff2');
   font-weight: 300;
   font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'JetBrains Mono';
-  src: url('https://cdn.ujjwalvivek.com/fonts/JetBrainsMono/LightItalic.woff2') format('woff2');
-  font-weight: 300;
-  font-style: italic;
-  font-display: swap;
+  font-display: block;
 }
 
 @font-face {
@@ -61,15 +37,7 @@
   src: url('https://cdn.ujjwalvivek.com/fonts/JetBrainsMono/Regular.woff2') format('woff2');
   font-weight: 400;
   font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'JetBrains Mono';
-  src: url('https://cdn.ujjwalvivek.com/fonts/JetBrainsMono/Italic.woff2') format('woff2');
-  font-weight: 400;
-  font-style: italic;
-  font-display: swap;
+  font-display: block;
 }
 
 @font-face {
@@ -77,15 +45,7 @@
   src: url('https://cdn.ujjwalvivek.com/fonts/JetBrainsMono/Medium.woff2') format('woff2');
   font-weight: 500;
   font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'JetBrains Mono';
-  src: url('https://cdn.ujjwalvivek.com/fonts/JetBrainsMono/MediumItalic.woff2') format('woff2');
-  font-weight: 500;
-  font-style: italic;
-  font-display: swap;
+  font-display: block;
 }
 
 @font-face {
@@ -93,15 +53,7 @@
   src: url('https://cdn.ujjwalvivek.com/fonts/JetBrainsMono/SemiBold.woff2') format('woff2');
   font-weight: 600;
   font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'JetBrains Mono';
-  src: url('https://cdn.ujjwalvivek.com/fonts/JetBrainsMono/SemiBoldItalic.woff2') format('woff2');
-  font-weight: 600;
-  font-style: italic;
-  font-display: swap;
+  font-display: block;
 }
 
 @font-face {
@@ -109,15 +61,7 @@
   src: url('https://cdn.ujjwalvivek.com/fonts/JetBrainsMono/Bold.woff2') format('woff2');
   font-weight: 700;
   font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'JetBrains Mono';
-  src: url('https://cdn.ujjwalvivek.com/fonts/JetBrainsMono/BoldItalic.woff2') format('woff2');
-  font-weight: 700;
-  font-style: italic;
-  font-display: swap;
+  font-display: block;
 }
 
 @font-face {
@@ -125,137 +69,7 @@
   src: url('https://cdn.ujjwalvivek.com/fonts/JetBrainsMono/ExtraBold.woff2') format('woff2');
   font-weight: 800;
   font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'JetBrains Mono';
-  src: url('https://cdn.ujjwalvivek.com/fonts/JetBrainsMono/ExtraBoldItalic.woff2') format('woff2');
-  font-weight: 800;
-  font-style: italic;
-  font-display: swap;
-}
-
-/**
- *     █████╗ ██████╗  ██████╗  ██████╗ ███╗   ██╗
- *    ██╔══██╗██╔══██╗██╔════╝ ██╔═══██╗████╗  ██║
- *    ███████║██████╔╝██║  ███╗██║   ██║██╔██╗ ██║
- *    ██╔══██║██╔══██╗██║   ██║██║   ██║██║╚██╗██║
- *    ██║  ██║██║  ██║╚██████╔╝╚██████╔╝██║ ╚████║
- *    ╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝  ╚═════╝ ╚═╝  ╚═══╝
- *                                                
- */
-
-@font-face {
-  font-family: 'Monaspace Argon';
-  src: url('https://cdn.ujjwalvivek.com/fonts/Monaspace/Argon/ExtraLight.woff2') format('woff2');
-  font-weight: 200;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Monaspace Argon';
-  src: url('https://cdn.ujjwalvivek.com/fonts/Monaspace/Argon/ExtraLightItalic.woff2') format('woff2');
-  font-weight: 200;
-  font-style: italic;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Monaspace Argon';
-  src: url('https://cdn.ujjwalvivek.com/fonts/Monaspace/Argon/Light.woff2') format('woff2');
-  font-weight: 300;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Monaspace Argon';
-  src: url('https://cdn.ujjwalvivek.com/fonts/Monaspace/Argon/LightItalic.woff2') format('woff2');
-  font-weight: 300;
-  font-style: italic;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Monaspace Argon';
-  src: url('https://cdn.ujjwalvivek.com/fonts/Monaspace/Argon/Regular.woff2') format('woff2');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Monaspace Argon';
-  src: url('https://cdn.ujjwalvivek.com/fonts/Monaspace/Argon/Italic.woff2') format('woff2');
-  font-weight: 400;
-  font-style: italic;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Monaspace Argon';
-  src: url('https://cdn.ujjwalvivek.com/fonts/Monaspace/Argon/Medium.woff2') format('woff2');
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Monaspace Argon';
-  src: url('https://cdn.ujjwalvivek.com/fonts/Monaspace/Argon/MediumItalic.woff2') format('woff2');
-  font-weight: 500;
-  font-style: italic;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Monaspace Argon';
-  src: url('https://cdn.ujjwalvivek.com/fonts/Monaspace/Argon/SemiBold.woff2') format('woff2');
-  font-weight: 600;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Monaspace Argon';
-  src: url('https://cdn.ujjwalvivek.com/fonts/Monaspace/Argon/SemiBoldItalic.woff2') format('woff2');
-  font-weight: 600;
-  font-style: italic;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Monaspace Argon';
-  src: url('https://cdn.ujjwalvivek.com/fonts/Monaspace/Argon/Bold.woff2') format('woff2');
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Monaspace Argon';
-  src: url('https://cdn.ujjwalvivek.com/fonts/Monaspace/Argon/BoldItalic.woff2') format('woff2');
-  font-weight: 700;
-  font-style: italic;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Monaspace Argon';
-  src: url('https://cdn.ujjwalvivek.com/fonts/Monaspace/Argon/ExtraBold.woff2') format('woff2');
-  font-weight: 800;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Monaspace Argon';
-  src: url('https://cdn.ujjwalvivek.com/fonts/Monaspace/Argon/ExtraBoldItalic.woff2') format('woff2');
-  font-weight: 800;
-  font-style: italic;
-  font-display: swap;
+  font-display: block;
 }
 
 /**
@@ -273,15 +87,7 @@
   src: url('https://cdn.ujjwalvivek.com/fonts/Monaspace/Neon/ExtraLight.woff2') format('woff2');
   font-weight: 200;
   font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Monaspace Neon';
-  src: url('https://cdn.ujjwalvivek.com/fonts/Monaspace/Neon/ExtraLightItalic.woff2') format('woff2');
-  font-weight: 200;
-  font-style: italic;
-  font-display: swap;
+  font-display: block;
 }
 
 @font-face {
@@ -289,15 +95,7 @@
   src: url('https://cdn.ujjwalvivek.com/fonts/Monaspace/Neon/Light.woff2') format('woff2');
   font-weight: 300;
   font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Monaspace Neon';
-  src: url('https://cdn.ujjwalvivek.com/fonts/Monaspace/Neon/LightItalic.woff2') format('woff2');
-  font-weight: 300;
-  font-style: italic;
-  font-display: swap;
+  font-display: block;
 }
 
 @font-face {
@@ -305,15 +103,7 @@
   src: url('https://cdn.ujjwalvivek.com/fonts/Monaspace/Neon/Regular.woff2') format('woff2');
   font-weight: 400;
   font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Monaspace Neon';
-  src: url('https://cdn.ujjwalvivek.com/fonts/Monaspace/Neon/Italic.woff2') format('woff2');
-  font-weight: 400;
-  font-style: italic;
-  font-display: swap;
+  font-display: block;
 }
 
 @font-face {
@@ -321,15 +111,7 @@
   src: url('https://cdn.ujjwalvivek.com/fonts/Monaspace/Neon/Medium.woff2') format('woff2');
   font-weight: 500;
   font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Monaspace Neon';
-  src: url('https://cdn.ujjwalvivek.com/fonts/Monaspace/Neon/MediumItalic.woff2') format('woff2');
-  font-weight: 500;
-  font-style: italic;
-  font-display: swap;
+  font-display: block;
 }
 
 @font-face {
@@ -337,15 +119,7 @@
   src: url('https://cdn.ujjwalvivek.com/fonts/Monaspace/Neon/SemiBold.woff2') format('woff2');
   font-weight: 600;
   font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Monaspace Neon';
-  src: url('https://cdn.ujjwalvivek.com/fonts/Monaspace/Neon/SemiBoldItalic.woff2') format('woff2');
-  font-weight: 600;
-  font-style: italic;
-  font-display: swap;
+  font-display: block;
 }
 
 @font-face {
@@ -353,15 +127,7 @@
   src: url('https://cdn.ujjwalvivek.com/fonts/Monaspace/Neon/Bold.woff2') format('woff2');
   font-weight: 700;
   font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Monaspace Neon';
-  src: url('https://cdn.ujjwalvivek.com/fonts/Monaspace/Neon/BoldItalic.woff2') format('woff2');
-  font-weight: 700;
-  font-style: italic;
-  font-display: swap;
+  font-display: block;
 }
 
 @font-face {
@@ -369,15 +135,7 @@
   src: url('https://cdn.ujjwalvivek.com/fonts/Monaspace/Neon/ExtraBold.woff2') format('woff2');
   font-weight: 800;
   font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Monaspace Neon';
-  src: url('https://cdn.ujjwalvivek.com/fonts/Monaspace/Neon/ExtraBoldItalic.woff2') format('woff2');
-  font-weight: 800;
-  font-style: italic;
-  font-display: swap;
+  font-display: block;
 }
 
 /**
@@ -392,7 +150,7 @@
 
 @font-face {
   font-family: 'Monaspace Krypton';
-  font-display: swap;
+  font-display: block;
   src: url('https://cdn.ujjwalvivek.com/fonts/Monaspace/Krypton/ExtraLight.woff2') format('woff2');
   font-weight: 200;
   font-style: normal;
@@ -400,15 +158,7 @@
 
 @font-face {
   font-family: 'Monaspace Krypton';
-  font-display: swap;
-  src: url('https://cdn.ujjwalvivek.com/fonts/Monaspace/Krypton/ExtraLightItalic.woff2') format('woff2');
-  font-weight: 200;
-  font-style: italic;
-}
-
-@font-face {
-  font-family: 'Monaspace Krypton';
-  font-display: swap;
+  font-display: block;
   src: url('https://cdn.ujjwalvivek.com/fonts/Monaspace/Krypton/Light.woff2') format('woff2');
   font-weight: 300;
   font-style: normal;
@@ -416,15 +166,7 @@
 
 @font-face {
   font-family: 'Monaspace Krypton';
-  font-display: swap;
-  src: url('https://cdn.ujjwalvivek.com/fonts/Monaspace/Krypton/LightItalic.woff2') format('woff2');
-  font-weight: 300;
-  font-style: italic;
-}
-
-@font-face {
-  font-family: 'Monaspace Krypton';
-  font-display: swap;
+  font-display: block;
   src: url('https://cdn.ujjwalvivek.com/fonts/Monaspace/Krypton/Regular.woff2') format('woff2');
   font-weight: 400;
   font-style: normal;
@@ -432,15 +174,7 @@
 
 @font-face {
   font-family: 'Monaspace Krypton';
-  font-display: swap;
-  src: url('https://cdn.ujjwalvivek.com/fonts/Monaspace/Krypton/Italic.woff2') format('woff2');
-  font-weight: 400;
-  font-style: italic;
-}
-
-@font-face {
-  font-family: 'Monaspace Krypton';
-  font-display: swap;
+  font-display: block;
   src: url('https://cdn.ujjwalvivek.com/fonts/Monaspace/Krypton/Medium.woff2') format('woff2');
   font-weight: 500;
   font-style: normal;
@@ -448,15 +182,7 @@
 
 @font-face {
   font-family: 'Monaspace Krypton';
-  font-display: swap;
-  src: url('https://cdn.ujjwalvivek.com/fonts/Monaspace/Krypton/MediumItalic.woff2') format('woff2');
-  font-weight: 500;
-  font-style: italic;
-}
-
-@font-face {
-  font-family: 'Monaspace Krypton';
-  font-display: swap;
+  font-display: block;
   src: url('https://cdn.ujjwalvivek.com/fonts/Monaspace/Krypton/SemiBold.woff2') format('woff2');
   font-weight: 600;
   font-style: normal;
@@ -464,15 +190,7 @@
 
 @font-face {
   font-family: 'Monaspace Krypton';
-  font-display: swap;
-  src: url('https://cdn.ujjwalvivek.com/fonts/Monaspace/Krypton/SemiBoldItalic.woff2') format('woff2');
-  font-weight: 600;
-  font-style: italic;
-}
-
-@font-face {
-  font-family: 'Monaspace Krypton';
-  font-display: swap;
+  font-display: block;
   src: url('https://cdn.ujjwalvivek.com/fonts/Monaspace/Krypton/Bold.woff2') format('woff2');
   font-weight: 700;
   font-style: normal;
@@ -480,270 +198,10 @@
 
 @font-face {
   font-family: 'Monaspace Krypton';
-  font-display: swap;
-  src: url('https://cdn.ujjwalvivek.com/fonts/Monaspace/Krypton/BoldItalic.woff2') format('woff2');
-  font-weight: 700;
-  font-style: italic;
-}
-
-@font-face {
-  font-family: 'Monaspace Krypton';
-  font-display: swap;
+  font-display: block;
   src: url('https://cdn.ujjwalvivek.com/fonts/Monaspace/Krypton/ExtraBold.woff2') format('woff2');
   font-weight: 800;
   font-style: normal;
-}
-
-@font-face {
-  font-family: 'Monaspace Krypton';
-  font-display: swap;
-  src: url('https://cdn.ujjwalvivek.com/fonts/Monaspace/Krypton/ExtraBoldItalic.woff2') format('woff2');
-  font-weight: 800;
-  font-style: italic;
-}
-
-/**
- *    ██████╗  █████╗ ██████╗  ██████╗ ███╗   ██╗
- *    ██╔══██╗██╔══██╗██╔══██╗██╔═══██╗████╗  ██║
- *    ██████╔╝███████║██║  ██║██║   ██║██╔██╗ ██║
- *    ██╔══██╗██╔══██║██║  ██║██║   ██║██║╚██╗██║
- *    ██║  ██║██║  ██║██████╔╝╚██████╔╝██║ ╚████║
- *    ╚═╝  ╚═╝╚═╝  ╚═╝╚═════╝  ╚═════╝ ╚═╝  ╚═══╝
- *                                               
- */
-
-@font-face {
-  font-family: 'Monaspace Radon';
-  font-display: swap;
-  src: url('https://cdn.ujjwalvivek.com/fonts/Monaspace/Radon/ExtraLight.woff2') format('woff2');
-  font-weight: 200;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'Monaspace Radon';
-  font-display: swap;
-  src: url('https://cdn.ujjwalvivek.com/fonts/Monaspace/Radon/ExtraLightItalic.woff2') format('woff2');
-  font-weight: 200;
-  font-style: italic;
-}
-
-@font-face {
-  font-family: 'Monaspace Radon';
-  font-display: swap;
-  src: url('https://cdn.ujjwalvivek.com/fonts/Monaspace/Radon/Light.woff2') format('woff2');
-  font-weight: 300;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'Monaspace Radon';
-  font-display: swap;
-  src: url('https://cdn.ujjwalvivek.com/fonts/Monaspace/Radon/LightItalic.woff2') format('woff2');
-  font-weight: 300;
-  font-style: italic;
-}
-
-@font-face {
-  font-family: 'Monaspace Radon';
-  font-display: swap;
-  src: url('https://cdn.ujjwalvivek.com/fonts/Monaspace/Radon/Regular.woff2') format('woff2');
-  font-weight: 400;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'Monaspace Radon';
-  font-display: swap;
-  src: url('https://cdn.ujjwalvivek.com/fonts/Monaspace/Radon/Italic.woff2') format('woff2');
-  font-weight: 400;
-  font-style: italic;
-}
-
-@font-face {
-  font-family: 'Monaspace Radon';
-  font-display: swap;
-  src: url('https://cdn.ujjwalvivek.com/fonts/Monaspace/Radon/Medium.woff2') format('woff2');
-  font-weight: 500;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'Monaspace Radon';
-  font-display: swap;
-  src: url('https://cdn.ujjwalvivek.com/fonts/Monaspace/Radon/MediumItalic.woff2') format('woff2');
-  font-weight: 500;
-  font-style: italic;
-}
-
-@font-face {
-  font-family: 'Monaspace Radon';
-  font-display: swap;
-  src: url('https://cdn.ujjwalvivek.com/fonts/Monaspace/Radon/SemiBold.woff2') format('woff2');
-  font-weight: 600;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'Monaspace Radon';
-  font-display: swap;
-  src: url('https://cdn.ujjwalvivek.com/fonts/Monaspace/Radon/SemiBoldItalic.woff2') format('woff2');
-  font-weight: 600;
-  font-style: italic;
-}
-
-@font-face {
-  font-family: 'Monaspace Radon';
-  font-display: swap;
-  src: url('https://cdn.ujjwalvivek.com/fonts/Monaspace/Radon/Bold.woff2') format('woff2');
-  font-weight: 700;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'Monaspace Radon';
-  font-display: swap;
-  src: url('https://cdn.ujjwalvivek.com/fonts/Monaspace/Radon/BoldItalic.woff2') format('woff2');
-  font-weight: 700;
-  font-style: italic;
-}
-
-@font-face {
-  font-family: 'Monaspace Radon';
-  font-display: swap;
-  src: url('https://cdn.ujjwalvivek.com/fonts/Monaspace/Radon/ExtraBold.woff2') format('woff2');
-  font-weight: 800;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'Monaspace Radon';
-  font-display: swap;
-  src: url('https://cdn.ujjwalvivek.com/fonts/Monaspace/Radon/ExtraBoldItalic.woff2') format('woff2');
-  font-weight: 800;
-  font-style: italic;
-}
-
-/**
- *    ██╗  ██╗███████╗███╗   ██╗ ██████╗ ███╗   ██╗
- *    ╚██╗██╔╝██╔════╝████╗  ██║██╔═══██╗████╗  ██║
- *     ╚███╔╝ █████╗  ██╔██╗ ██║██║   ██║██╔██╗ ██║
- *     ██╔██╗ ██╔══╝  ██║╚██╗██║██║   ██║██║╚██╗██║
- *    ██╔╝ ██╗███████╗██║ ╚████║╚██████╔╝██║ ╚████║
- *    ╚═╝  ╚═╝╚══════╝╚═╝  ╚═══╝ ╚═════╝ ╚═╝  ╚═══╝
- *                                                 
- */
-
-@font-face {
-  font-family: 'Monaspace Xenon';
-  font-display: swap;
-  src: url('https://cdn.ujjwalvivek.com/fonts/Monaspace/Xenon/ExtraLight.woff2') format('woff2');
-  font-weight: 200;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'Monaspace Xenon';
-  font-display: swap;
-  src: url('https://cdn.ujjwalvivek.com/fonts/Monaspace/Xenon/ExtraLightItalic.woff2') format('woff2');
-  font-weight: 200;
-  font-style: italic;
-}
-
-@font-face {
-  font-family: 'Monaspace Xenon';
-  font-display: swap;
-  src: url('https://cdn.ujjwalvivek.com/fonts/Monaspace/Xenon/Light.woff2') format('woff2');
-  font-weight: 300;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'Monaspace Xenon';
-  font-display: swap;
-  src: url('https://cdn.ujjwalvivek.com/fonts/Monaspace/Xenon/LightItalic.woff2') format('woff2');
-  font-weight: 300;
-  font-style: italic;
-}
-
-@font-face {
-  font-family: 'Monaspace Xenon';
-  font-display: swap;
-  src: url('https://cdn.ujjwalvivek.com/fonts/Monaspace/Xenon/Regular.woff2') format('woff2');
-  font-weight: 400;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'Monaspace Xenon';
-  font-display: swap;
-  src: url('https://cdn.ujjwalvivek.com/fonts/Monaspace/Xenon/Italic.woff2') format('woff2');
-  font-weight: 400;
-  font-style: italic;
-}
-
-@font-face {
-  font-family: 'Monaspace Xenon';
-  font-display: swap;
-  src: url('https://cdn.ujjwalvivek.com/fonts/Monaspace/Xenon/Medium.woff2') format('woff2');
-  font-weight: 500;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'Monaspace Xenon';
-  font-display: swap;
-  src: url('https://cdn.ujjwalvivek.com/fonts/Monaspace/Xenon/MediumItalic.woff2') format('woff2');
-  font-weight: 500;
-  font-style: italic;
-}
-
-@font-face {
-  font-family: 'Monaspace Xenon';
-  font-display: swap;
-  src: url('https://cdn.ujjwalvivek.com/fonts/Monaspace/Xenon/SemiBold.woff2') format('woff2');
-  font-weight: 600;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'Monaspace Xenon';
-  font-display: swap;
-  src: url('https://cdn.ujjwalvivek.com/fonts/Monaspace/Xenon/SemiBoldItalic.woff2') format('woff2');
-  font-weight: 600;
-  font-style: italic;
-}
-
-@font-face {
-  font-family: 'Monaspace Xenon';
-  font-display: swap;
-  src: url('https://cdn.ujjwalvivek.com/fonts/Monaspace/Xenon/Bold.woff2') format('woff2');
-  font-weight: 700;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'Monaspace Xenon';
-  font-display: swap;
-  src: url('https://cdn.ujjwalvivek.com/fonts/Monaspace/Xenon/BoldItalic.woff2') format('woff2');
-  font-weight: 700;
-  font-style: italic;
-}
-
-@font-face {
-  font-family: 'Monaspace Xenon';
-  font-display: swap;
-  src: url('https://cdn.ujjwalvivek.com/fonts/Monaspace/Xenon/ExtraBold.woff2') format('woff2');
-  font-weight: 800;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'Monaspace Xenon';
-  font-display: swap;
-  src: url('https://cdn.ujjwalvivek.com/fonts/Monaspace/Xenon/ExtraBoldItalic.woff2') format('woff2');
-  font-weight: 800;
-  font-style: italic;
 }
 
 /**
@@ -756,12 +214,12 @@
  *                                                                                
  */
 
-@font-face {
+/* @font-face {
   font-family: 'Noto Emoji';
   src: url('https://cdn.ujjwalvivek.com/fonts/NotoEmoji/Light.woff2') format('woff2');
   font-weight: 300;
   font-style: normal;
-  font-display: swap;
+  font-display: block;
 }
 
 @font-face {
@@ -769,7 +227,7 @@
   src: url('https://cdn.ujjwalvivek.com/fonts/NotoEmoji/Regular.woff2') format('woff2');
   font-weight: 400;
   font-style: normal;
-  font-display: swap;
+  font-display: block;
 }
 
 @font-face {
@@ -777,7 +235,7 @@
   src: url('https://cdn.ujjwalvivek.com/fonts/NotoEmoji/Medium.woff2') format('woff2');
   font-weight: 500;
   font-style: normal;
-  font-display: swap;
+  font-display: block;
 }
 
 @font-face {
@@ -785,7 +243,7 @@
   src: url('https://cdn.ujjwalvivek.com/fonts/NotoEmoji/SemiBold.woff2') format('woff2');
   font-weight: 600;
   font-style: normal;
-  font-display: swap;
+  font-display: block;
 }
 
 @font-face {
@@ -793,8 +251,8 @@
   src: url('https://cdn.ujjwalvivek.com/fonts/NotoEmoji/Bold.woff2') format('woff2');
   font-weight: 700;
   font-style: normal;
-  font-display: swap;
-}
+  font-display: block;
+} */
 
 /**
  *    ██████╗  ██████╗  ██████╗ ████████╗     ██████╗ ██████╗ ███╗   ██╗███████╗██╗ ██████╗ 
@@ -843,26 +301,14 @@
   /* Font and Layout Variables */
   --font-sans: 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
-  --font-argon: 'Monaspace Argon', monospace;
-  --font-emoji: 'Noto Emoji', sans-serif;
   --font-krypton: 'Monaspace Krypton', monospace;
-  --font-xenon: 'Monaspace Xenon', monospace;
-  --font-radon: 'Monaspace Radon', monospace;
+  --font-neon: 'Monaspace Neon', monospace;
+  --font-emoji: 'Noto Emoji', sans-serif;
 
   /* Spacing */
   --spacing-unit: 8px;
   --main-content-width: 1000px;
 }
-
-/**
- *    ██████╗  █████╗ ██████╗ ██╗  ██╗███╗   ███╗ ██████╗ ██████╗ ███████╗
- *    ██╔══██╗██╔══██╗██╔══██╗██║ ██╔╝████╗ ████║██╔═══██╗██╔══██╗██╔════╝
- *    ██║  ██║███████║██████╔╝█████╔╝ ██╔████╔██║██║   ██║██║  ██║█████╗  
- *    ██║  ██║██╔══██║██╔══██╗██╔═██╗ ██║╚██╔╝██║██║   ██║██║  ██║██╔══╝  
- *    ██████╔╝██║  ██║██║  ██║██║  ██╗██║ ╚═╝ ██║╚██████╔╝██████╔╝███████╗
- *    ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝     ╚═╝ ╚═════╝ ╚═════╝ ╚══════╝
- *                                                                        
- */
 
 body.dark-mode {
   /* Base Colors */
@@ -906,35 +352,13 @@ body {
   color: var(--text-color);
   margin: 0;
   font-family: var(--font-mono);
+  text-shadow: 0 0 1px rgba(var(--dynamic-dominant-color-rgb), 1);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/**
- *    ██████╗ ██╗   ██╗████████╗████████╗ ██████╗ ███╗   ██╗███████╗
- *    ██╔══██╗██║   ██║╚══██╔══╝╚══██╔══╝██╔═══██╗████╗  ██║██╔════╝
- *    ██████╔╝██║   ██║   ██║      ██║   ██║   ██║██╔██╗ ██║███████╗
- *    ██╔══██╗██║   ██║   ██║      ██║   ██║   ██║██║╚██╗██║╚════██║
- *    ██████╔╝╚██████╔╝   ██║      ██║   ╚██████╔╝██║ ╚████║███████║
- *    ╚═════╝  ╚═════╝    ╚═╝      ╚═╝    ╚═════╝ ╚═╝  ╚═══╝╚══════╝
- *                                                                  
- */
-
 code {
   font-family: var(--font-mono);
-}
-
-.cta-link-span {
-  color: var(--primary-color);
-  font-weight: 700;
-  opacity: 0.7;
-  transition: opacity 0.3s ease, color 0.3s ease;
-}
-
-a:hover .cta-link-span,
-button:hover .cta-link-span {
-  opacity: 1;
-  color: rgba(var(--text-color-rgb), 0.8);
 }
 
 /**

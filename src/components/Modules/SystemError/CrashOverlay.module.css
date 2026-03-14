@@ -70,7 +70,7 @@
 }
 
 .crashTitle {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: var(--font-neon);
   font-size: 1rem;
   color: #fff;
   margin-left: auto;
@@ -96,7 +96,7 @@
   font-weight: 800;
   color: #202020;
   margin-bottom: 0.2rem;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: var(--font-neon);
   letter-spacing: -4px;
   text-shadow:
     -2px -2px 0 #ff5050,
@@ -153,7 +153,7 @@
   color: #fff;
   padding: 0.4rem 1.2rem;
   border-radius: 2px;
-  font-family: var(--font-mono);
+  font-family: var(--font-neon);
   font-size: 0.9rem;
   z-index: 10;
   pointer-events: none;
@@ -165,7 +165,7 @@
   border: none;
   border-radius: 2px;
   font-size: 1.2rem;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: var(--font-neon);
   font-weight: 400;
   cursor: pointer;
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.18);
@@ -253,6 +253,7 @@
     font-size: 4rem;
     letter-spacing: -1px;
   }
+
   .crashTextSub {
     font-size: 0.95rem;
     letter-spacing: -1px;
@@ -266,8 +267,8 @@
   }
 
   .dinoWhereabouts {
-  font-size: 0.8rem;
-}
+    font-size: 0.8rem;
+  }
 }
 
 @media (max-width: 600px) {

@@ -1,4 +1,3 @@
-/* --- Real Terminal Footer --- */
 .terminalFooterReal {
   margin: 0 auto;
   width: 100%;
@@ -9,7 +8,7 @@
     0 0 0 1px rgba(255, 255, 255, 0.05),
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
   border-radius: 4px;
-  font-family: var(--font-mono);
+  font-family: var(--font-neon);
   font-size: 0.95rem;
   overflow: hidden;
   position: relative;
@@ -58,7 +57,6 @@
   flex: 1 1 auto;
 }
 
-/* Input prompt that YOU type into */
 .terminalInputLine {
   display: flex;
   align-items: center;
@@ -67,7 +65,6 @@
   margin-bottom: 0.1em;
 }
 
-/* > symbol for the input prompt that YOU type into */
 .terminalPromptReal {
   color: var(--dynamic-hsl-average);
   font-weight: 700;
@@ -87,24 +84,19 @@
   transition: border-color 0.2s;
   color: var(--dynamic-dominant-color);
   caret-color: var(--dynamic-dominant-color);
-  /* Cursor color */
 }
 
 .terminalInputReal:focus {
   font-weight: 700;
 }
 
-/* Output lines that appear in the terminal */
 .terminalOutputLine {
   color: var(--dynamic-dominant-color);
   font-family: inherit;
   margin-bottom: 0.1rem;
   white-space: pre-wrap;
-  /* Preserve whitespace and line breaks */
   text-shadow: #707070 0 0 0px;
 }
-
-/* --- Flicker/Dim/Alert/Glitch Effects --- */
 
 .flicker {
   animation: flickerAnim 2.5s infinite alternate;
@@ -234,7 +226,6 @@
 
 @media (max-width: 600px) {
 
-  /* Terminal footer */
   .terminalFooterReal {
     max-width: 99vw;
     height: 300px;

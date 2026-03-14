@@ -7,10 +7,9 @@ const CommandHint = ({ onDismiss }) => {
     const [dismissed, setDismissed] = useState(false);
     const [progress, setProgress] = useState(100);
 
-    const DISMISS_DURATION = 5000; // 5 seconds
+    const DISMISS_DURATION = 5000; //* 5 seconds
 
     useEffect(() => {
-        // Check if user has seen the hint before
         const hasSeenHint = localStorage.getItem('command-palette-hint-seen');
 
         if (!hasSeenHint) {
@@ -25,7 +24,6 @@ const CommandHint = ({ onDismiss }) => {
 
     useEffect(() => {
         if (visible) {
-            // Start progress bar countdown
             const startTime = Date.now();
 
             const progressInterval = setInterval(() => {
@@ -39,7 +37,7 @@ const CommandHint = ({ onDismiss }) => {
                     clearInterval(progressInterval);
                     handleDismiss();
                 }
-            }, 50); // Update every 50ms for smooth animation
+            }, 50); //* Update every 50ms for smooth animation
             return () => clearInterval(progressInterval);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps

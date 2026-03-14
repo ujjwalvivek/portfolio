@@ -35,7 +35,7 @@ Because in Unity, I was hitting "Black Box" limitations. I knew *how* to use a `
 
 ### Architectural Choice and Data-Oriented Design (ECS)
 
-The first major decision was the architecture. Standard Object-Oriented Programming **(OOP)** where a `Player` class inherits from a `Character` class—often leads to *cache misses* in high-performance computing. The CPU has to jump around memory to find data. I chose an **Entity Component System (ECS)** architecture to solve this.
+The first major decision was the architecture. Standard Object-Oriented Programming **(OOP)** where a `Player` class inherits from a `Character` class, often leads to *cache misses* in high-performance computing. The CPU has to jump around memory to find data. I chose an **Entity Component System (ECS)** architecture to solve this.
 
 * **Entities:** Just an ID (e.g., `Entity(42)`).
 * **Components:** Pure data structs (e.g., `Position { x, y }`, `Velocity { dx, dy }`).

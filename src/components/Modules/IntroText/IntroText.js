@@ -3,13 +3,12 @@ import React, { useContext } from 'react';
 import styles from './IntroText.module.css';
 import { IoIosGitBranch } from "react-icons/io";
 import { ThemeContext } from '../../Utils/ThemeSwitcher/ThemeContext';
-import { RiErrorWarningFill } from "react-icons/ri";
-import { PiChecksBold } from "react-icons/pi";
+import trooperStyles from './Stormtrooper.module.css';
+
 
 const BIRTH_DATE = new Date('1997-09-21T00:00:00Z');
 
 function computeAge(birthDate, now = new Date()) {
-  // compute Y/M/D/H/M/S components
   let y = now.getFullYear() - birthDate.getFullYear();
   let m = now.getMonth() - birthDate.getMonth();
   let d = now.getDate() - birthDate.getDate();
@@ -21,8 +20,8 @@ function computeAge(birthDate, now = new Date()) {
   if (mm < 0) { mm += 60; hh -= 1; }
   if (hh < 0) { hh += 24; d -= 1; }
   if (d < 0) {
-    // borrow days from previous month
-    const prev = new Date(now.getFullYear(), now.getMonth(), 0); // last day of prev month
+    //? borrow days from previous month
+    const prev = new Date(now.getFullYear(), now.getMonth(), 0); //? last day of prev month
     d += prev.getDate();
     m -= 1;
   }
@@ -81,6 +80,7 @@ function UptimeCounter({ startDate }) {
 const InteractiveIntroText = () => {
   const { darkMode } = useContext(ThemeContext);
   const { backgroundConfig } = useBackground();
+  const noAnim = backgroundConfig.type !== 'none' ? '' : styles.noanimated || trooperStyles.noanimated;
 
   const [dominantColor, setDominantColor] = React.useState('');
 
@@ -151,9 +151,7 @@ const InteractiveIntroText = () => {
   };
 
   const shades = React.useMemo(() => generateShades(dominantColor, 11), [dominantColor]);
-  const blink = backgroundConfig.type !== 'none' ? styles.blink : '';
   const flicker = backgroundConfig.type !== 'none' ? styles.flicker : '';
-  const scrollText = backgroundConfig.type !== 'none' ? styles.scrollText : '';
   const [useSpanize] = React.useState(() => backgroundConfig.type !== 'none');
   const [isCompactStarship, setIsCompactStarship] = React.useState(false);
 
@@ -257,49 +255,38 @@ const InteractiveIntroText = () => {
     <span><span className={styles.command}>{`boot`}</span><span className={styles.commandParam}>{` --system`}</span></span>,
     <span><span className={styles.command}>{`tail`}</span> <span className={styles.commandParam}>{`--lines 4 /var/syslog`}</span></span>,
     <span><span className={styles.command}>{`summarize`}</span> <span className={styles.commandParam}>{`--experience`}</span></span>,
-    <span><span className={styles.command}>{`grep`}</span> <span className={styles.commandParam}>{`--skills /var/random`}</span></span>,
-    <span><span className={styles.command}>{`logs`}</span> <span className={styles.commandParam}>{`--incident`}</span></span>,
-    <span><span className={styles.command}>{`echo`}</span> <span className={styles.commandParam}>{`--whats-next`}</span></span>,
+    <span><span className={styles.command}>{`lsd`}</span> <span className={styles.commandParam}>{`--skills /var/random`}</span></span>,
+    <span><span className={styles.command}>{`cat`}</span> <span className={styles.commandParam}>{`--whats-next --exit`}</span></span>,
   ];
 
   return (
     <>
+      <div className={`${trooperStyles.stormtrooperContainer} ${noAnim}`} title='Codepen by Yusuf Bakir'>
+        <div className={trooperStyles.soldier}></div>
+        <div className={`${trooperStyles.soldier} ${trooperStyles.mini}`}></div>
+      </div>
       <div className={styles.terminalContainer}>
+        <span className={styles.border}></span>
         <div className={styles.commandBlock}>
           <StarshipPrompt />{commands[0]}
           <div className={styles.output}>
             <div className={styles.outputLine}>
-              <span className={styles.statusOk}>{renderGlow("... initializing core modules")}</span>
-            </div>
-            <div className={styles.outputLine}>
-              <span className={styles.statusOk}>{renderGlow("... mounting logs/public")}</span>
-            </div>
-            <div className={styles.outputLine}>
-              <span className={styles.statusWarn}>{renderGlow("... retrieving memories")}</span>
-            </div>
-          </div>
-        </div>
-
-        <div className={styles.statusSection}>
-          <StarshipPrompt />{commands[1]}
-          <div className={styles.output}>
-            <div className={styles.outputLine}>
-              {renderGlow("logs.pipeline ‎")}
+              {renderGlow("core.modules ")}
               <span className={`${styles.statusOk} ${flicker} ${styles.refBadge}`}>{renderGlow("active", { delay: 0.02 })}</span>
             </div>
             <div className={styles.outputLine}>
-              {renderGlow("curiosity.chaos ‎")}
-              <span className={`${styles.statusOk} ${flicker} ${styles.refBadge}`}>{renderGlow("managed", { delay: 0.02 })}</span>
+              {renderGlow("logs.pipeline ")}
+              <span className={`${styles.statusOk} ${flicker} ${styles.refBadge}`}>{renderGlow("operational", { delay: 0.02 })}</span>
             </div>
             <div className={styles.outputLine}>
-              {renderGlow("memory.usage ‎")}
-              <span className={`${styles.statusRam} ${scrollText} ${styles.refBadge}`}>{renderGlow("98%", { delay: 0.02 })}</span>
+              {renderGlow("memory.usage ")}
+              <span className={`${styles.statusRam} ${flicker} ${styles.refBadge}`}>{renderGlow("high", { delay: 0.02 })}</span>
             </div>
             <div className={styles.outputLine}>
               <span className={`${styles.statusRam} ${styles.refBadge}`}>{renderGlow("2%_reserved_for_physics_simulations", { delay: 0.02 })}</span>
             </div>
             <div className={styles.outputLine}>
-              {renderGlow("uptime ‎")}
+              {renderGlow("uptime ")}
               <span className={`${styles.statusInfo} ${styles.refBadge}`}>{renderGlow(<UptimeCounter startDate={new Date('2023-02-04T00:00:00Z')} />, { delay: 0.02 })}</span>
             </div>
           </div>
@@ -308,86 +295,46 @@ const InteractiveIntroText = () => {
         <div className={styles.commandBlock}>
           <StarshipPrompt />{commands[2]}
           <div className={styles.output}>
-            <div className={styles.outputLine}>{renderGlow("TPM who speaks fluent Engineer (and Translate-to-Executive)")}</div>
+            <div className={styles.outputLine}><span className={`${styles.refBadgeText} ${styles.statusWarn} ${styles.statusBold}`} style={{ marginLeft: '0' }}>{renderGlow("TPM", { delay: 0.02 })}</span>{renderGlow("speaks fluent Engineer")}<span className={`${styles.refBadgeText} ${styles.statusWarn} ${styles.statusBold}`}>{renderGlow("(and Translate-to-Executive)", { delay: 0.02 })}</span></div>
             <div className={styles.outputLine}>
-              {renderGlow("built VR training simulations and orchestrated deployments for 65k+ users - ")}
+              {renderGlow("built")}<span className={`${styles.refBadgeText} ${styles.statusWarn} ${styles.statusBold}`}>{renderGlow("VR training sims", { delay: 0.02 })}</span>{renderGlow("for like a lot of people!")}
               <a
-                className={`${styles.refBadge} ${styles.statusWarn}`}
+                className={`${styles.refBadge} ${styles.statusWarn} ${styles.statusBold}`}
                 href="https://www.autovrse.com/case-study-ultratech"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <span className={styles.refBadgeText}>{renderGlow("like a lot of people!", { delay: 0.02 })}</span>
+                <span className={styles.refBadgeText}>{renderGlow("(65k+ users)", { delay: 0.02 })}</span>
               </a>
             </div>
             <div className={styles.outputLine}>
-              {renderGlow("built some cool kids an edtech gaming platform - ")}
-              <a
-                className={`${styles.refBadge} ${styles.statusWarn}`}
-                href="https://letsterra.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <span className={styles.refBadgeText}>{renderGlow("it was a hit!", { delay: 0.02 })}</span>
-              </a>
+              {renderGlow("can understand")}<span className={`${styles.refBadgeText} ${styles.statusWarn} ${styles.statusBold}`} >{renderGlow("chromium source", { delay: 0.02 })}</span>{renderGlow("without crying")}
             </div>
             <div className={styles.outputLine}>
-              {renderGlow("automated ops at a quick-commerce so humans could stop being cron jobs - ")}
-              <a
-                className={`${styles.refBadge} ${styles.statusWarn}`}
-                href="https://www.instagram.com/originfresh.in"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <span className={styles.refBadgeText}>{renderGlow("saved us a lot of time!", { delay: 0.02 })}</span>
-              </a>
+              {renderGlow("currently writing a")}<span className={`${styles.refBadgeText} ${styles.statusWarn} ${styles.statusBold}`} >{renderGlow("cross-platform game-engine", { delay: 0.02 })}</span>{renderGlow("in")}<span className={`${styles.refBadgeText} ${styles.statusWarn} ${styles.statusBold}`} style={{ marginRight: '0' }} >{renderGlow("Rust and WASM", { delay: 0.02 })}</span>
             </div>
-            <div className={styles.outputLine}>{renderGlow("currently writing local-first systems in Rust")} <span className={styles.warning}>{renderGlow("because I almost like Rust")}</span></div>
           </div>
         </div>
 
         <div className={styles.commandBlock}>
           <StarshipPrompt />{commands[3]}
           <div className={styles.output}>
-            <div className={styles.outputLine}>{renderGlow("can understand chromium source without crying")}</div>
-            <div className={styles.outputLine}>{renderGlow("i've segfaulted a browser tab before (for science)")}</div>
-            <div className={styles.outputLine}>{renderGlow("avid enjoyer of Infra as Code (Docker/Tailscale)")}</div>
-            <div className={styles.outputLine}>{renderGlow("my databases adhere strictly to eventual consistency")}</div>
-            <div className={styles.outputLine}>{renderGlow("currently fighting the borrow checker in Rust - will update when I win")}</div>
+            <div className={styles.outputLine}>{renderGlow("i've")}<span className={`${styles.refBadgeText} ${styles.statusWarn} ${styles.statusBold}`} >{renderGlow("segfaulted", { delay: 0.02 })}</span>{renderGlow("a browser tab before (for science).")}</div>
+            <div className={styles.outputLine}>{renderGlow("avid enjoyer of ")}<span className={`${styles.refBadgeText} ${styles.statusWarn} ${styles.statusBold}`} >{renderGlow("Infra as Code", { delay: 0.02 })}</span>{renderGlow("(Docker/Tailscale).")}</div>
+            <div className={styles.outputLine}>{renderGlow("allocates")}<span className={`${styles.refBadgeText} ${styles.statusWarn} ${styles.statusBold}`} >{renderGlow("0% CPU", { delay: 0.02 })}</span>{renderGlow("to office politics.")}</div>
+            <div className={styles.outputLine}>{renderGlow("still believe if the ")}<span className={`${styles.refBadgeText} ${styles.statusWarn} ${styles.statusBold}`} >{renderGlow("meeting=state_machine,", { delay: 0.02 })}</span>{renderGlow("let it.")}</div>
           </div>
         </div>
 
         <div className={styles.commandBlock}>
           <StarshipPrompt />{commands[4]}
           <div className={styles.output}>
-            <div className={styles.outputLine}>
-              <span className={`${styles.statusWarn} ${blink}`}>{renderGlow(<RiErrorWarningFill />)}</span>
-              <span className={styles.statusWarn}>{renderGlow("allocates 0% CPU to office politics.")}</span>
-            </div>
-            <div className={styles.outputLine}>
-              <span className={`${styles.statusOk} ${flicker}`}>{renderGlow(<PiChecksBold />)}</span>
-              <span className={styles.statusOk}>{renderGlow("still asking the questions that delay the meeting but save the sprint.")}</span>
-            </div>
-            <div className={styles.outputLine}>
-              <span className={`${styles.statusOk} ${flicker}`}>{renderGlow(<PiChecksBold />)}</span>
-              <span className={styles.statusOk}>{renderGlow("still building even when the ticket description is empty.")}</span>
-            </div>
-            <div className={styles.outputLine}>
-              <span className={`${styles.statusOk} ${flicker}`}>{renderGlow(<PiChecksBold />)}</span>
-              <span className={styles.statusOk}>{renderGlow("still believe that if the meeting could be a state machine, let it be.")}</span>
-            </div>
+            <div className={styles.outputLine}>{renderGlow("feel free to check out some of my projects below")}</div>
+            <div className={styles.outputLine}>{renderGlow("could also navigate back to check out my blogs")}</div>
           </div>
         </div>
 
-        <div className={styles.commandBlock}>
-          <StarshipPrompt />{commands[5]}
-          <div className={styles.output}>
-            <div className={styles.outputLine}>{renderGlow("feel free to check out some of my projects below")}</div>
-            <div className={styles.outputLine}>{renderGlow("could also navigate back to check out my blogs")}</div>
-            <div className={`${styles.outputLine} ${styles.statusWarn}`}>{renderGlow("^C")}</div>
-          </div>
-        </div>
-      </div>
+      </div >
     </>
   );
 }

@@ -14,8 +14,8 @@
   transform: translateY(-50%);
   background: rgba(var(--dynamic-dominant-color-rgb), 0.2);
   border: 1px dashed rgba(var(--dynamic-dominant-color-rgb), 0.4);
-  font-family: var(--font-mono);
-  font-size: 0.9rem;
+  font-family: var(--font-neon);
+  font-size: 0.7rem;
   font-weight: 800;
   color: rgba(var(--dynamic-dominant-color-rgb), 1);
   opacity: 0.75;
@@ -35,14 +35,12 @@
 
 .searchInput {
   width: 100%;
-  padding: calc(var(--spacing-unit) * 1.5) calc(var(--spacing-unit) * 2);
-  padding-right: calc(var(--spacing-unit) * 5);
-  padding-left: calc(var(--spacing-unit) * 6);
+  padding: 0.7rem 3rem 0.8rem 3rem;
   border: 2px solid rgba(var(--dynamic-dominant-color-rgb), 1);
   border-radius: 2px;
   color: var(--text-color);
-  font-size: 1rem;
-  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-family: var(--font-neon);
   transition: all 0.2s ease;
   box-sizing: border-box;
   opacity: 0.9;
@@ -69,13 +67,13 @@
   transform: translateY(-50%);
   background: rgba(var(--dynamic-dominant-color-rgb), 0.2);
   border: 1px dashed rgba(var(--dynamic-dominant-color-rgb), 0.4);
-  font-family: var(--font-mono);
-  font-size: 0.9rem;
+  font-family: var(--font-neon);
+  font-size: 0.7rem;
   font-weight: 800;
   color: rgba(var(--dynamic-dominant-color-rgb), 1);
   opacity: 0.75;
   cursor: pointer;
-  padding: 0.25rem 0.5rem;
+  padding: 0.2rem 0.4rem;
   border-radius: 2px;
   transition: all 0.2s ease;
   display: inline-flex;
@@ -98,21 +96,20 @@
   height: 1.2rem;
 }
 
-.kbdButton,
-.actionButton {
+.kbdButton {
   position: absolute;
   right: 0.6rem;
   top: 50%;
   transform: translateY(-50%);
   background: rgba(var(--dynamic-dominant-color-rgb), 0.2);
   border: 1px dashed rgba(var(--dynamic-dominant-color-rgb), 0.4);
-  font-family: var(--font-mono);
-  font-size: 0.9rem;
+  font-family: var(--font-neon);
+  font-size: 0.8rem;
   font-weight: 800;
   color: rgba(var(--dynamic-dominant-color-rgb), 1);
   opacity: 0.75;
   cursor: pointer;
-  padding: 0.25rem 0.5rem;
+  padding: 0.2rem 0.4rem;
   border-radius: 2px;
   transition: all 0.2s ease;
   display: inline-flex;
@@ -130,8 +127,7 @@
   height: 1rem;
 }
 
-.kbdButton:hover,
-.actionButton:hover {
+.kbdButton:hover {
   opacity: 1;
   background: rgba(var(--dynamic-dominant-color-rgb), 0.3);
   border: 1px dashed rgba(var(--dynamic-dominant-color-rgb), 0.2);
@@ -142,7 +138,7 @@
   border: 1px solid rgba(var(--dynamic-dominant-color-rgb), 0.5);
   padding: 2px 6px;
   border-radius: 3px;
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   line-height: 1;
 }
 
@@ -155,8 +151,6 @@
   pointer-events: none;
 }
 
-/* Reduce controls on very small screens */
-
 @media (max-width: 768px) {
   .kbdButton {
     display: none;
@@ -167,6 +161,6 @@
   .searchInput {
     padding-left: calc(var(--spacing-unit) * 6);
     padding-right: calc(var(--spacing-unit) * 4.5);
-    font-size: 0.9rem;
+    font-size: 0.8rem;
   }
 }

@@ -2,33 +2,53 @@ import { useState, useEffect } from "react";
 import styles from './RecentLogs.module.css';
 import { Link } from 'react-router-dom';
 
-const RecentLogs = () => {
-    // State for latest posts and toggling social links
-    const [latestPosts, setLatestPosts] = useState([]);
+let latestPostsCache = null;
 
-    // Fetch posts on mount
+const RecentLogs = ({ posts }) => {
+    const [latestPosts, setLatestPosts] = useState(() => {
+        if (posts && posts.length) {
+            return posts.slice(0, 4);
+        }
+        return latestPostsCache || [];
+    });
+
     useEffect(() => {
+        //? honour incoming prop updates
+        if (posts && posts.length) {
+            setLatestPosts(posts.slice(0, 4));
+            return;
+        }
+
+        if (latestPostsCache) {
+            setLatestPosts(latestPostsCache);
+            return;
+        }
+
         const fetchPosts = async () => {
             const response = await fetch('/posts/meta.json');
             const postsData = await response.json();
-            // Sort posts by date, newest first
             postsData.sort((a, b) => new Date(b.date) - new Date(a.date));
-            setLatestPosts(postsData.slice(0, 4)); // Only show 4 latest
+            const slice = postsData.slice(0, 4);
+            latestPostsCache = slice;
+            setLatestPosts(slice);
         };
 
         fetchPosts();
-    }, []);
+    }, [posts]);
 
     return (
         <div className={styles.latestLogs}>
             <div className={styles.logsContent}>
+
                 <ul>
                     {latestPosts.slice(0, 2).map((post, idx) => {
                         const maxLen = 50;
-                        // Truncate long titles
                         const shortTitle = post.title.length > maxLen ? post.title.slice(0, maxLen) + '...' : post.title;
                         return (
                             <li key={post.slug || post.filename || idx}>
+                                <span className={styles.border_2}></span>
+                                <span className={styles.border_1}></span>
+                                <span className={styles.border}></span>
                                 <Link to={`/blog/${post.filename}`}>
                                     <div className={styles.postHeader}>
                                         <span className={styles.postDate}>
@@ -36,11 +56,6 @@ const RecentLogs = () => {
                                         </span>
                                         <span className={styles.postTitle}> {shortTitle} </span>
                                     </div>
-                                    {post.description && (
-                                        <div className={styles.postDescription}>
-                                            {post.description}
-                                        </div>
-                                    )}
 
                                     {post.tags && post.tags.length > 0 && (
                                         <div className={styles.postTags}>
@@ -49,6 +64,12 @@ const RecentLogs = () => {
                                                     {tag}
                                                 </span>
                                             ))}
+                                        </div>
+                                    )}
+
+                                    {post.description && (
+                                        <div className={styles.postDescription}>
+                                            {post.description}
                                         </div>
                                     )}
                                 </Link>

@@ -19,7 +19,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
  *========================================================================**/
 import { ThemeProvider } from '../Utils/ThemeSwitcher/ThemeContext';
 import { BackgroundProvider, useBackground } from '../Background/BackgroundContext';
-import { useCommandPalette } from '../Utils/Command Palette/useCommandPalette';
+import { useCommandPalette } from '../Modules/Command Palette/useCommandPalette';
 import { RealTimeColorChange } from '../Background/ColorUtils';
 
 /**========================================================================
@@ -36,9 +36,9 @@ import Projects from '../Pages/Projects/Projects';
 import Blog from '../Pages/Blog/Blog';
 import Footer from '../Modules/Footer/Footer';
 import TopBar from '../Modules/TopBar/TopBar';
-import BackgroundTest from '../Utils/BackgroundTest/BackgroundTest';
+import BackgroundTest from '../Modules/BackgroundTest/BackgroundTest';
 import GlobalBackground from '../Background/GlobalBackground';
-import CommandPalette from '../Utils/Command Palette/CommandPalette';
+import CommandPalette from '../Modules/Command Palette/CommandPalette';
 import LandingPage from '../Pages/Landing/LandingPage';
 import GithubNavigator from '../Modules/Github Navigator/GithubNavigator';
 import CommandHint from '../Modules/Tip/CommandHint';
@@ -62,10 +62,7 @@ function AppContent() {
       className={styles.App}
       style={{ backgroundColor: backgroundConfig.type === 'none' ? 'var(--background-color)' : 'transparent' }}
     >
-      {/* Global background is applied here, it will cover the entire app. */}
       <GlobalBackground />
-
-      {/* This is the main content area, where all pages will be rendered. */}
       <TopBar />
       <main id="main-content" className={styles.mainContent}>
         <Routes>
@@ -80,11 +77,7 @@ function AppContent() {
         showOverlay={showBackgroundTest}
         setShowOverlay={setShowBackgroundTest}
       />
-
-      {/* Command Shortcuts Overlay */}
       <CommandHint />
-
-      {/* Command Palette and GitHub Navigator */}
       <CommandPalette
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
@@ -101,7 +94,6 @@ function AppContent() {
         isOpen={isGithubOpen}
         onClose={() => setIsGithubOpen(false)}
       />
-
     </div>
   );
 }
@@ -114,7 +106,7 @@ function App() {
     return localStorage.getItem('hasVisitedLanding') !== 'true';
   });
 
-  // Landing page is set to show on the first load ONLY.
+  //? Landing page is set to show on the first load ONLY.
   const handleEnter = () => {
     localStorage.setItem('hasVisitedLanding', 'true');
     setShowLanding(false);

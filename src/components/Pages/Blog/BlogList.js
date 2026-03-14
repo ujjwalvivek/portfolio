@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import styles from './BlogList.module.css';
+import postStyles from './BlogPost.module.css';
 import SearchBar, { searchPost } from '../../Modules/SearchBar/SearchBar';
 import { useBackground } from '../../Background/BackgroundContext';
 import { FaCalendarAlt, FaExpand } from "react-icons/fa";
@@ -13,12 +14,12 @@ const BlogList = () => {
   const [posts, setPosts] = useState([]);
   const [filteredPosts, setFilteredPosts] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
-  const [visibleCount, setVisibleCount] = useState(8); // Start with 8 posts visible
+  const [visibleCount, setVisibleCount] = useState(8);
   const [isLoading, setIsLoading] = useState(true);
   const loaderRef = useRef(null);
   const handlePostLinkHover = (filename) => fetch(`/posts/${filename}`);
   const handleSearch = (query) => setSearchQuery(query);
-  const handleClearSearch = () => setSearchQuery('');
+  // const handleClearSearch = () => setSearchQuery('');
   const visiblePosts = filteredPosts.filter(p => p.filename && p.filename.trim());
   const { backgroundConfig } = useBackground();
   const noAnim = backgroundConfig.type !== 'none' ? '' : styles.noanimated;
@@ -44,18 +45,18 @@ const BlogList = () => {
   useEffect(() => {
     if (!searchQuery.trim()) {
       setFilteredPosts(posts);
-      setVisibleCount(8); // Reset to original default
+      setVisibleCount(8);
     } else {
       const searchResults = posts
         .map(post => {
           const result = searchPost(searchQuery.trim(), post);
           return { ...post, searchScore: result.score, hasMatch: result.match };
         })
-        .filter(post => post.hasMatch && post.searchScore > 0) // Only include actual matches
-        .sort((a, b) => b.searchScore - a.searchScore); // Sort by relevance
+        .filter(post => post.hasMatch && post.searchScore > 0) //? Only include actual matches
+        .sort((a, b) => b.searchScore - a.searchScore); //? Sort by relevance
 
       setFilteredPosts(searchResults);
-      setVisibleCount(searchResults.length); // Show all search results
+      setVisibleCount(searchResults.length); //? Show all search results
     }
   }, [searchQuery, posts]);
 
@@ -70,7 +71,7 @@ const BlogList = () => {
   }, [posts]);
 
   useEffect(() => {
-    if (searchQuery) return; // Don't lazy load when searching
+    if (searchQuery) return; //? Don't lazy load when searching
     const observer = new window.IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting) {
@@ -83,12 +84,11 @@ const BlogList = () => {
     return () => observer.disconnect();
   }, [visiblePosts.length, searchQuery]);
 
-  // Show loading state
   if (isLoading) {
     return (
-      <div>
-        <div>
-          <h1>Loading...</h1>
+      <div className={postStyles.blogContainer}>
+        <div className={postStyles.loadingState}>
+          <p>Loading...</p>
         </div>
       </div>
     );
@@ -125,10 +125,8 @@ const BlogList = () => {
         />
         {visiblePosts.length === 0 && searchQuery.trim() ? (
           <div className={styles.noResults}>
-            <TbFaceIdError />
-            <p>No matches found for <span className={styles.highlight}>{searchQuery}</span></p>
-            <p>Try a different search term or browse all Logs below.</p>
-            <button onClick={() => handleClearSearch()} className={styles.readMoreButtonButton}>Browse All Logs</button>
+            <p><TbFaceIdError className={styles.nrIcon} /> guess you've hit a dead end with <span className={styles.highlight}>{searchQuery}</span></p>
+            {/* <button onClick={() => handleClearSearch()} className={styles.readMoreButtonButton}>Browse All Logs</button> */}
           </div>
         ) : null}
         <ul>

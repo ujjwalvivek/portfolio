@@ -16,7 +16,7 @@ const searchPost = (query, post) => {
   let score = 0;
   let hasMatch = false;
 
-  // Exact phrase match (highest priority)
+  //? Exact phrase match (highest priority)
   if (title.includes(queryLower)) {
     score += 100;
     hasMatch = true;
@@ -30,9 +30,8 @@ const searchPost = (query, post) => {
     hasMatch = true;
   }
 
-  // Word boundary matches - only if we haven't found exact matches
   if (!hasMatch) {
-    // Common stopwords that shouldn't be searched individually
+    //? Common stopwords that shouldn't be searched individually
     const stopwords = new Set([
       'the', 'a', 'an', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for',
       'of', 'with', 'by', 'as', 'is', 'are', 'was', 'were', 'be', 'been',
@@ -45,14 +44,14 @@ const searchPost = (query, post) => {
     const words = queryLower.split(/\s+/)
       .filter(word => word.length > 0)
       .filter(word => {
-        // Keep meaningful short words and programming terms
+        //? Keep meaningful short words and programming terms
         if (['c#', 'go', 'js', 'ai', 'ml', 'ui', 'ux', 'db'].includes(word)) return true;
-        // Filter out stopwords and very short words
+        //? Filter out stopwords and very short words
         if (word.length < 2 || stopwords.has(word)) return false;
         return true;
       });
 
-    // If after filtering stopwords, no meaningful words remain, treat as no match
+    //? If after filtering stopwords, no meaningful words remain, treat as no match
     if (words.length === 0) {
       return { match: false, score: 0 };
     }
@@ -62,7 +61,6 @@ const searchPost = (query, post) => {
       const descWords = description.split(/\s+/).filter(w => w.length > 0);
       const tagWords = tags.split(/\s+/).filter(w => w.length > 0);
 
-      // Exact word matches (higher score)
       if (titleWords.some(w => w === word)) {
         score += 40;
         hasMatch = true;
@@ -89,9 +87,8 @@ const searchPost = (query, post) => {
     });
   }
 
-  // More strict fuzzy matching - only for single meaningful words 3+ characters
   if (!hasMatch && queryLower.length >= 3) {
-    // Common stopwords that shouldn't be searched individually
+    //? Common stopwords that shouldn't be searched individually
     const stopwords = new Set([
       'the', 'a', 'an', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for',
       'of', 'with', 'by', 'as', 'is', 'are', 'was', 'were', 'be', 'been',
@@ -101,23 +98,21 @@ const searchPost = (query, post) => {
       'her', 'us', 'them', 'my', 'your', 'his', 'its', 'our', 'their'
     ]);
 
-    // Only apply fuzzy matching to single meaningful words (no spaces, no stopwords)
+    //? Only apply fuzzy matching to single meaningful words (no spaces, no stopwords)
     const words = queryLower.split(/\s+/)
       .filter(word => word.length > 0)
       .filter(word => {
-        // Keep meaningful short words and programming terms
         if (['c#', 'go', 'js', 'ai', 'ml', 'ui', 'ux', 'db'].includes(word)) return true;
-        // Filter out stopwords and very short words
         if (word.length < 3 || stopwords.has(word)) return false;
         return true;
       });
 
-    // Only do fuzzy matching if there's exactly one meaningful word
+    //? Only do fuzzy matching if there's exactly one meaningful word
     if (words.length === 1) {
       const searchTerm = words[0];
       const allText = `${title} ${description} ${tags}`;
 
-      // Only match if at least 80% of characters are found in close proximity
+      //? Only match if at least 80% of characters are found in close proximity
       const threshold = Math.ceil(searchTerm.length * 0.8);
       let matchedChars = 0;
       let lastMatchIndex = -1;

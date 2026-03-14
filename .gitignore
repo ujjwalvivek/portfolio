@@ -29,6 +29,9 @@ yarn-error.log*
 # production
 /build
 
+#Wrangler Artifacts
+.wrangler
+
 # misc
 .DS_Store
 .env
@@ -37,7 +40,6 @@ yarn-error.log*
 .env.test.local
 .env.production.local
 .env.example
-
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*

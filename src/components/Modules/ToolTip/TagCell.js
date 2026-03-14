@@ -1,23 +1,21 @@
-import React, { useState, useRef } from "react";
+import { useState, useRef } from "react";
 import { createPortal } from "react-dom";
 import styles from "../../Pages/Projects/Projects.module.css";
 
 function PortalTooltip({ show, mousePos, children }) {
   if (!show || !mousePos) return null;
 
-  // Tooltip width estimate (px)
   const tooltipWidth = 250;
   const padding = 12;
   let left = mousePos.x;
   const isMobile = window.innerWidth <= 800;
 
   if (isMobile) {
-    // Clamp to screen edge on mobile
     const min = padding + tooltipWidth / 2 + 44;
     const max = window.innerWidth - padding - tooltipWidth / 2;
     left = Math.max(min, Math.min(mousePos.x, max));
   } else {
-    // Desktop: use previous logic
+    //? Desktop: use previous logic
     const maxLeft = window.innerWidth - tooltipWidth / 2 - padding - 72;
     const minLeft = tooltipWidth / 2 + padding + 46;
     left = Math.max(minLeft, Math.min(mousePos.x, maxLeft));

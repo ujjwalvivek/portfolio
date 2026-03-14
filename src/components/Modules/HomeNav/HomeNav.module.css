@@ -1,0 +1,117 @@
+.ctaContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+    width: 100%;
+    margin: 2.5rem 0;
+    border: 2px solid transparent;
+}
+
+.cta {
+    margin: 0;
+    padding: 0.6rem 1.2rem;
+    border: 2px solid var(--dynamic-dominant-color);
+    text-decoration: none;
+    color: var(--text-color);
+    font-family: var(--font-krypton);
+    font-weight: 700;
+    font-size: 1.05rem;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    white-space: nowrap;
+    min-width: 120px;
+    flex: 1 1 0;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    background: rgba(var(--background-color-rgb), 0.3);
+    text-align: center;
+    border-radius: 2px;
+}
+
+.cta:hover {
+    color: var(--dynamic-dominant-color);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(32px) saturate(180%);
+    -webkit-backdrop-filter: blur(32px) saturate(180%);
+}
+
+.cta::after {
+    background: var(--dynamic-hsl-average);
+    content: "";
+    height: 155px;
+    left: -75px;
+    opacity: 0.1;
+    position: absolute;
+    top: -50px;
+    transform: rotate(45deg);
+    transition: all 500ms cubic-bezier(0.19, 1, 0.22, 1);
+    width: 50px;
+    z-index: -1;
+    filter: blur(20px);
+}
+
+.cta:hover::after {
+    left: 120%;
+    opacity: 0.2;
+    transition: all 500ms cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.linkSpan {
+    color: var(--primary-color);
+    font-weight: 700;
+    opacity: 0.7;
+    transition: opacity 0.3s ease, color 0.3s ease;
+}
+
+a:hover .linkSpan,
+button:hover .linkSpan {
+    opacity: 1;
+    color: rgba(var(--text-color-rgb), 0.8);
+}
+
+@media (max-width: 900px) {
+    .ctaContainer {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 1rem;
+        width: 100%;
+        margin: 1rem 0;
+        justify-items: stretch;
+        align-items: stretch;
+    }
+
+    .cta,
+    button.cta {
+        min-width: 0;
+        width: 100%;
+        font-size: 0.98rem;
+        padding: 0.9rem 0.5rem;
+        box-sizing: border-box;
+        margin: 0;
+    }
+}
+
+@media (max-width: 680px) {
+    .ctaContainer {
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 1rem;
+        width: 100%;
+        margin: 1rem 0;
+        justify-items: stretch;
+        align-items: stretch;
+    }
+}
+
+@media (max-width: 580px) {
+    .ctaContainer {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        width: 100%;
+        margin: 1rem 0;
+        justify-items: stretch;
+        align-items: stretch;
+    }
+}

@@ -12,7 +12,6 @@ const EasterEgg = () => {
 
   const { backgroundConfig } = useBackground();
 
-  // Only add glitch/pulse/flicker if background is not "none"
   const glitchyClasses = backgroundConfig.type !== 'none' ? `${styles.blink} ${styles.flicker}` : '';
 
   useEffect(() => {

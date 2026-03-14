@@ -1,0 +1,256 @@
+.homeHeader {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    background: rgba(var(--background-color-rgb), 0.3);
+    backdrop-filter: blur(32px) saturate(180%);
+    -webkit-backdrop-filter: blur(32px) saturate(180%);
+    padding: 7rem 2rem;
+    border: 2px dashed rgba(var(--dynamic-dominant-color-rgb), 1);
+    border-bottom: 4px solid rgba(var(--dynamic-dominant-color-rgb), 1);
+    gap: 0.5rem;
+}
+
+.lemmingCanvas {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 2rem;
+    margin: 0 auto;
+    opacity: 0.9;
+}
+
+.homeHeader h1 {
+    font-family: var(--font-krypton);
+    font-size: 6rem;
+    font-weight: 800;
+    text-align: center;
+    margin: 0 auto;
+    text-shadow: 0px 0px 16px rgba(255, 255, 255, 0.3);
+    letter-spacing: -0.3rem;
+    line-height: 0.9;
+    word-spacing: -2rem;
+}
+
+.homeHeader h2 {
+    font-family: var(--font-krypton);
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: 0px;
+    text-align: center;
+    line-height: 0.7;
+    margin: 0 auto;
+}
+
+.glitch {
+    position: relative;
+    text-align: center;
+}
+
+.glitch::before,
+.glitch::after {
+    content: attr(data-text);
+    position: absolute;
+    left: 0;
+    width: 100%;
+    overflow: hidden;
+}
+
+.glitch::before {
+    animation: glitchTop 2s infinite linear alternate-reverse;
+    color: var(--primary-color);
+    z-index: 1;
+    top: -0.1rem;
+}
+
+.glitch::after {
+    animation: glitchBot 2s infinite linear alternate-reverse;
+    color: var(--text-color);
+    z-index: 1;
+    top: 0.1rem;
+}
+
+@keyframes glitchTop {
+    0% {
+        left: 0;
+    }
+
+    20% {
+        left: 0.5px;
+    }
+
+    40% {
+        left: -0.5px;
+    }
+
+    60% {
+        left: 0.5px;
+    }
+
+    80% {
+        left: -0.25px;
+    }
+
+    100% {
+        left: 0;
+    }
+}
+
+@keyframes glitchBot {
+    0% {
+        left: 0;
+    }
+
+    20% {
+        left: -0.5px;
+    }
+
+    40% {
+        left: 0.5px;
+    }
+
+    60% {
+        left: -0.25px;
+    }
+
+    80% {
+        left: 0.5px;
+    }
+
+    100% {
+        left: 0;
+    }
+}
+
+.shadowPulse {
+    text-align: center;
+    color: var(--text-color);
+    text-shadow: 0 0 0px var(--dynamic-dominant-color), 0 0 4px var(--dynamic-hsl-average);
+    animation: pulseShadow 4s infinite alternate;
+}
+
+@keyframes pulseShadow {
+    0% {
+        text-shadow: 0 0 2px var(--dynamic-dominant-color), 0 0 8px var(--dynamic-hsl-average);
+    }
+
+    100% {
+        text-shadow: 0 0 8px var(--dynamic-dominant-color), 0 0 16px var(--dynamic-hsl-average);
+    }
+}
+
+.neonFlicker {
+    font-family: var(--font-krypton);
+    font-size: 4rem;
+    font-weight: 800;
+    text-align: center;
+    color: var(--dynamic-dominant-color);
+    letter-spacing: 2px;
+    text-shadow:
+        0 0 2px var(--dynamic-dominant-color),
+        0 0 6px var(--dynamic-dominant-color);
+    animation: flicker 3s infinite alternate;
+}
+
+@keyframes flicker {
+
+    0%,
+    100% {
+        opacity: 1;
+        text-shadow:
+            0 0 2px var(--dynamic-dominant-color),
+            0 0 6px var(--dynamic-dominant-color);
+    }
+
+    80% {
+        opacity: 0.7;
+        text-shadow:
+            0 0 1px var(--dynamic-dominant-color),
+            0 0 2px var(--dynamic-dominant-color);
+    }
+
+    85% {
+        opacity: 0.5;
+        text-shadow: none;
+    }
+
+    90% {
+        opacity: 0.8;
+        text-shadow:
+            0 0 2px var(--dynamic-dominant-color);
+    }
+}
+
+@media (max-width: 1000px) {
+    .homeHeader h1 {
+        font-size: 5.8rem;
+    }
+}
+
+@media (max-width: 900px) {
+    .homeHeader h1 {
+        font-size: 5.6rem;
+    }
+
+    .homeHeader h2 {
+        font-size: 1.4rem;
+    }
+}
+
+@media (max-width: 800px) {
+    .homeHeader h1 {
+        font-size: 5rem;
+    }
+
+    .homeHeader h2 {
+        font-size: 1.3rem;
+    }
+}
+
+@media (max-width: 700px) {
+    .homeHeader h1 {
+        font-size: 4.3rem;
+        word-spacing: -1.5rem;
+    }
+
+    .homeHeader h2 {
+        font-size: 1.1rem;
+    }
+}
+
+@media (max-width: 600px) {
+    .homeHeader h1 {
+        font-size: 3.3rem;
+        letter-spacing: -0.2rem;
+        word-spacing: -1rem;
+    }
+
+    .homeHeader h2 {
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 500px) {
+    .homeHeader h1 {
+        font-size: 2.4rem;
+        word-spacing: -0.8rem;
+        letter-spacing: -0.1rem;
+    }
+
+    .homeHeader h2 {
+        font-size: 0.75rem;
+    }
+}
+
+@media (max-width: 400px) {
+    .homeHeader h1 {
+        font-size: 2.1rem;
+    }
+
+    .homeHeader h2 {
+        font-size: 0.7rem;
+    }
+}

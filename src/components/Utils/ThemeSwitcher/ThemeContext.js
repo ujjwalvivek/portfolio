@@ -1,27 +1,3 @@
-/**
- * ████████╗██╗  ██╗███████╗███╗   ███╗███████╗                 
- * ╚══██╔══╝██║  ██║██╔════╝████╗ ████║██╔════╝                 
- *    ██║   ███████║█████╗  ██╔████╔██║█████╗                   
- *    ██║   ██╔══██║██╔══╝  ██║╚██╔╝██║██╔══╝                   
- *    ██║   ██║  ██║███████╗██║ ╚═╝ ██║███████╗                 
- *    ╚═╝   ╚═╝  ╚═╝╚══════╝╚═╝     ╚═╝╚══════╝                 
- *                                                              
- * ███████╗██╗    ██╗██╗████████╗ ██████╗██╗  ██╗               
- * ██╔════╝██║    ██║██║╚══██╔══╝██╔════╝██║  ██║               
- * ███████╗██║ █╗ ██║██║   ██║   ██║     ███████║               
- * ╚════██║██║███╗██║██║   ██║   ██║     ██╔══██║               
- * ███████║╚███╔███╔╝██║   ██║   ╚██████╗██║  ██║               
- * ╚══════╝ ╚══╝╚══╝ ╚═╝   ╚═╝    ╚═════╝╚═╝  ╚═╝               
- *                                                              
- *  ██████╗ ██████╗ ███╗   ██╗████████╗███████╗██╗  ██╗████████╗
- * ██╔════╝██╔═══██╗████╗  ██║╚══██╔══╝██╔════╝╚██╗██╔╝╚══██╔══╝
- * ██║     ██║   ██║██╔██╗ ██║   ██║   █████╗   ╚███╔╝    ██║   
- * ██║     ██║   ██║██║╚██╗██║   ██║   ██╔══╝   ██╔██╗    ██║   
- * ╚██████╗╚██████╔╝██║ ╚████║   ██║   ███████╗██╔╝ ██╗   ██║   
- *  ╚═════╝ ╚═════╝ ╚═╝  ╚═══╝   ╚═╝   ╚══════╝╚═╝  ╚═╝   ╚═╝   
- *                                                              
- */
-
 import { createContext, useState, useEffect } from 'react';
 
 export const ThemeContext = createContext();
@@ -33,7 +9,7 @@ export const ThemeProvider = ({ children }) => {
       return savedMode ? JSON.parse(savedMode) : true;
     } catch (e) {
       console.error("Error accessing localStorage:", e);
-      return true; // Fallback
+      return true; //? Fallback
     }
   });
 
@@ -44,7 +20,7 @@ export const ThemeProvider = ({ children }) => {
       document.body.classList.remove('dark-mode');
     }
 
-    // Safari dark mode bug: toggling overflow forces a repaint so theme changes apply instantly
+    //? toggling overflow forces a repaint
     document.documentElement.style.overflow = 'hidden';
     setTimeout(() => { document.documentElement.style.overflow = ''; }, 1);
 

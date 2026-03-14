@@ -14,7 +14,6 @@ import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 import remarkDirective from 'remark-directive';
 import { visit } from 'unist-util-visit';
-import RelatedPosts from '../../Modules/RelatedPosts/RelatedPosts';
 import { ThemeContext } from '../../Utils/ThemeSwitcher/ThemeContext';
 import { MdTipsAndUpdates } from "react-icons/md";
 import { IoIosWarning } from "react-icons/io";
@@ -24,6 +23,9 @@ import { MdDangerous } from "react-icons/md";
 import { AiTwotoneStar } from "react-icons/ai";
 import { PiHashStraightFill } from "react-icons/pi";
 import DinoGame from '../../Modules/DinoGame/DinoGame';
+import { FaSquareCaretRight } from "react-icons/fa6";
+import { GiHollowCat } from "react-icons/gi";
+import RecentLogs from '../../Modules/RecentLogs/RecentLogs';
 
 const IframeEmbed = ({ src, title, width, height, style, caption, ...rest }) => {
   const isExternal = src && (src.startsWith('http://') || src.startsWith('https://'));
@@ -62,7 +64,7 @@ const IframeEmbed = ({ src, title, width, height, style, caption, ...rest }) => 
             style={{
               position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column',
               alignItems: 'center', justifyContent: 'center', gap: '0.75rem',
-              color: '#fff', fontFamily: 'monospace',
+              color: '#fff', fontFamily: 'var(--font-neon)',
               cursor: 'pointer', aspectRatio: parsedStyle.aspectRatio,
             }}
           >
@@ -75,7 +77,7 @@ const IframeEmbed = ({ src, title, width, height, style, caption, ...rest }) => 
   );
 };
 
-// Simple reading time calculation function
+//? Simple reading time calculation function
 const calculateReadingTime = (text) => {
   const wordsPerMinute = 200;
   const words = text.trim().split(/\s+/).length;
@@ -83,7 +85,6 @@ const calculateReadingTime = (text) => {
   return `${minutes} min read`;
 };
 
-// Custom code block component with copy functionality
 const CodeBlock = ({ node, inline, className, children, ...props }) => {
   const [copied, setCopied] = useState(false);
   const match = /language-(\w+)/.exec(className || '');
@@ -118,17 +119,16 @@ const CodeBlock = ({ node, inline, className, children, ...props }) => {
   );
 };
 
-// Enhanced admonition component with custom title support
 const Admonition = ({ node, children }) => {
-  const type = node.properties.className[1]; // note, warning, tip, danger
-  let title = type.charAt(0).toUpperCase() + type.slice(1); // Default title
+  const type = node.properties.className[1]; //* note, warning, tip, danger
+  let title = type.charAt(0).toUpperCase() + type.slice(1); //? Default title
   let content = children;
 
-  // Check for custom title in node attributes first
+  //? Check for custom title in node attributes first
   if (node.attributes && node.attributes.title) {
     title = node.attributes.title;
   }
-  // Check if first paragraph contains the title
+  //? Check if first paragraph contains the title
   else if (
     Array.isArray(children) &&
     children[0] &&
@@ -137,7 +137,7 @@ const Admonition = ({ node, children }) => {
   ) {
     const firstChild = children[0].props.children;
 
-    // Handle different content structures
+    //? Handle different content structures
     let firstText = '';
     if (typeof firstChild === 'string') {
       firstText = firstChild;
@@ -145,13 +145,13 @@ const Admonition = ({ node, children }) => {
       firstText = firstChild[0];
     }
 
-    // If first text looks like a title (short line, followed by more content)
+    //? If first text looks like a title (short line, followed by more content)
     if (
       firstText &&
       firstText.length > 0 &&
-      firstText.length < 60 && // Reasonable title length
-      !firstText.includes('\n') && // Single line
-      children.length > 1 // Has content after title
+      firstText.length < 60 && //? Reasonable title length
+      !firstText.includes('\n') && //? Single line
+      children.length > 1 //? Has content after title
     ) {
       title = firstText.trim();
       content = children.slice(1);
@@ -173,8 +173,6 @@ const Admonition = ({ node, children }) => {
   );
 };
 
-
-// Helper function for icons
 const getAdmonitionIcon = (type) => {
   const icons = {
     note: <MdTipsAndUpdates />,
@@ -186,7 +184,6 @@ const getAdmonitionIcon = (type) => {
   return icons[type] || <AiTwotoneStar />;
 };
 
-// BlogPost component to render individual blog posts
 const BlogPost = () => {
   const { filename } = useParams();
   const [post, setPost] = useState({ content: '', data: {}, readingTime: '' });
@@ -194,12 +191,14 @@ const BlogPost = () => {
   const [lightboxImage, setLightboxImage] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const blogPostRef = useRef(null);
+  const fetched = useRef(false);
 
   useEffect(() => {
+    if (fetched.current) return;
+    fetched.current = true;
     const fetchPost = async () => {
       setIsLoading(true);
       try {
-        // Fetch all posts metadata
         const allPostsRes = await fetch('/posts/meta.json');
         const allPosts = await allPostsRes.json();
 
@@ -213,11 +212,11 @@ const BlogPost = () => {
 
           setPost({ content, data, readingTime: readingTimeText });
 
-          // Find related posts (by tags)
+          //? Find related posts (by tags)
           const related = allPosts.filter(p =>
             p.id !== currentPostMeta.id &&
             p.tags.some(tag => currentPostMeta.tags.includes(tag))
-          ).slice(0, 3); // Get top 3 related posts
+          ).slice(0, 3); //? Get top 3 related posts
           setRelatedPosts(related);
         }
       } catch (error) {
@@ -230,7 +229,6 @@ const BlogPost = () => {
     fetchPost();
   }, [filename]);
 
-  // Show loading state
   if (isLoading) {
     return (
       <div className={styles.blogContainer}>
@@ -241,7 +239,7 @@ const BlogPost = () => {
     );
   }
 
-  // Don't render anything if no post data
+  //? Don't render anything if no post data
   if (!post.data.title) {
     return (
       <div className={styles.blogContainer}>
@@ -252,7 +250,7 @@ const BlogPost = () => {
     );
   }
 
-  // Safe date formatting
+  //? Safe date formatting
   const formatDate = (dateString) => {
     if (!dateString) return '';
     try {
@@ -261,6 +259,75 @@ const BlogPost = () => {
     } catch (error) {
       return '';
     }
+  };
+
+  const TableOfContents = ({ containerRef }) => {
+    const [items, setItems] = useState([]);
+    const [isCollapsed, setIsCollapsed] = useState(true);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    useEffect(() => {
+      if (!containerRef.current) return;
+      const heads = Array.from(
+        containerRef.current.querySelectorAll('h2,h3,h4')
+      );
+
+      const buildTree = (headings) => {
+        const root = { children: [] };
+        const stack = [{ node: root, level: 1 }];
+
+        headings.forEach((h) => {
+          const level = parseInt(h.tagName[1], 10);
+          const node = { id: h.id, text: h.textContent, level, children: [] };
+
+          while (stack.length > 1 && stack[stack.length - 1].level >= level) {
+            stack.pop();
+          }
+
+          stack[stack.length - 1].node.children.push(node);
+          stack.push({ node, level });
+        });
+
+        return root.children;
+      };
+
+      setItems(buildTree(heads));
+    }, [containerRef]);
+
+    const renderItems = (nodes) => {
+      return (
+        <ul className={styles.tocListNested}>
+          {nodes.map(it => (
+            <li key={it.id} className={styles.tocItemNested}>
+              <div className={styles.tocLinkWrapper}>
+                <a href={`#${it.id}`} className={styles[`tocLinkLevel${it.level}`]} data-label={`h${it.level - 1}`}>
+                  {it.text}
+                </a>
+              </div>
+              {it.children && it.children.length > 0 && renderItems(it.children)}
+            </li>
+          ))}
+        </ul>
+      );
+    };
+
+    if (items.length === 0) return null;
+
+    return (
+      <nav className={`${styles.tableOfContents} ${isCollapsed ? styles.tocCollapsed : styles.tocExpanded}`}>
+        <button
+          className={styles.tocToggle}
+          onClick={() => setIsCollapsed(prev => !prev)}
+          aria-expanded={!isCollapsed}
+        >
+          <span className={styles.tocToggleIcon}><GiHollowCat /></span>
+          <span>Table of Contents</span>
+        </button>
+        <div className={styles.tocListContainer}>
+          {renderItems(items)}
+        </div>
+      </nav>
+    );
   };
 
   const components = {
@@ -326,6 +393,15 @@ const BlogPost = () => {
         <span className={styles.headingText}>{children}</span>
       </h4>
     ),
+    h5: ({ node, children, ...props }) => (
+      <h5 className={styles.headingWithIcon} {...props}>
+        <span className={styles.headingIcons}>
+          <FaSquareCaretRight className={styles.headingIcon} aria-hidden="true" />
+        </span>
+        <span className={styles.headingText}>{children}</span>
+      </h5>
+    ),
+    tableofcontents: (props) => <TableOfContents containerRef={blogPostRef} {...props} />
   };
 
   const remarkPlugins = [
@@ -338,6 +414,10 @@ const BlogPost = () => {
           const data = node.data || (node.data = {});
           data.hName = 'div';
           data.hProperties = { className: ['remark-directive-container', node.name] };
+        }
+        if (node.name === 'toc') {
+          const data = node.data || (node.data = {});
+          data.hName = 'TableOfContents';
         }
       });
     },
@@ -381,7 +461,7 @@ const BlogPost = () => {
             </p>
           </div>
           <div className={styles.relatedPostsSection}>
-            <RelatedPosts posts={relatedPosts} />
+            <RecentLogs posts={relatedPosts} />
           </div>
         </div>
       </div>

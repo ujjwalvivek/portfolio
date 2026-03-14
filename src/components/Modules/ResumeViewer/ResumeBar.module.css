@@ -15,6 +15,11 @@
  *                                                            
  */
 
+.noanimated * {
+    animation: none !important;
+    transition: none !important;
+}
+
 .resumeBar {
     width: 100%;
     display: flex;
@@ -23,9 +28,10 @@
     justify-content: space-between;
     backdrop-filter: blur(32px) saturate(180%);
     -webkit-backdrop-filter: blur(32px) saturate(180%);
-    background: linear-gradient(180deg, rgba(var(--dynamic-hsl-average-rgb), 0.03), rgba(var(--dynamic-dominant-color-rgb), 0.05));
-    border-radius: 4px;
+    background: rgba(var(--background-color-rgb), 0.5);
+    border-radius: 2px;
     padding: 1rem 1rem;
+    border: 1px dashed rgba(var(--dynamic-dominant-color-rgb), 1);
 }
 
 .resumeThumbnail {
@@ -111,7 +117,7 @@
 
 .resumeTitle {
     flex: 1;
-    font-family: var(--font-mono);
+    font-family: var(--font-neon);
     color: var(--text-color);
     display: flex;
     align-items: flex-start;
@@ -137,12 +143,12 @@
     align-items: center;
     gap: 0.6rem;
     padding: 0.5rem 1rem;
-    letter-spacing: 1px;
+    letter-spacing: 0.3px;
     color: var(--text-color);
     border: 2px solid var(--dynamic-dominant-color);
     border-radius: 2px;
     color: var(--text-color);
-    font-family: var(--font-mono);
+    font-family: var(--font-mneonono);
     font-size: 0.9rem;
     font-weight: 500;
     text-decoration: none;

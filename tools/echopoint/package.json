@@ -1,0 +1,15 @@
+{
+  "name": "echopoint",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Telemetry caching worker. Fetch once, serve from cache",
+  "scripts": {
+    "dev": "wrangler dev",
+    "build:fonts": "node src/svg/scripts/generateFonts.js",
+    "build:dashboard": "cd dashboard && npm run build",
+    "deploy": "npm run build:fonts && npm run build:dashboard && wrangler deploy"
+  },
+  "devDependencies": {
+    "wrangler": "^4.71.0"
+  }
+}

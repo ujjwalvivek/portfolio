@@ -1,13 +1,9 @@
-/* ═══════════════════════════════════════════════════════
-   Landing Page V2
-   ═══════════════════════════════════════════════════════ */
-
 .stagingRoot {
   position: fixed;
   inset: 0;
   z-index: 9999;
   background: #030303;
-  font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+  font-family: var(--font-neon);
   display: flex;
   flex-direction: column;
   overflow: hidden;

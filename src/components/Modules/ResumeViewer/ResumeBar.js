@@ -4,6 +4,8 @@ import ResumeOverlay from '../../Modules/ResumeViewer/ResumeOverlay';
 import ArrowPointer from '../ArrowPointer/ArrowPointer';
 import { ThemeContext } from '../../Utils/ThemeSwitcher/ThemeContext';
 import { FaFileDownload, FaExpand } from "react-icons/fa";
+import GenericCachedImg from '../../Utils/EchopointImg/GenericCachedImg';
+import { useBackground } from '../../Background/BackgroundContext';
 
 const ResumeBar = () => {
     const [resumeOpen, setResumeOpen] = React.useState(false);
@@ -13,6 +15,8 @@ const ResumeBar = () => {
     const pdfTheme = darkMode ? 'dark' : 'light';
     const downloadBtnRef = useRef(null);
     const resumeBarRef = useRef(null);
+    const { backgroundConfig } = useBackground();
+    const noAnim = backgroundConfig.type !== 'none' ? '' : styles.noanimated;
 
     // Arrow visibility based on resumeBar hover
     useEffect(() => {
@@ -58,7 +62,7 @@ const ResumeBar = () => {
         <>
             <ResumeOverlay open={resumeOpen} onClose={() => setResumeOpen(false)} />
             <ArrowPointer targetRef={downloadBtnRef} isActive={showArrow && !isHoveringThumbnail} />
-            <section ref={resumeBarRef} className={styles.resumeBar}>
+            <section ref={resumeBarRef} className={`${styles.resumeBar} ${noAnim}`}>
                 <div
                     className={styles.resumeThumbnail}
                     onClick={() => setResumeOpen(true)}
@@ -66,9 +70,9 @@ const ResumeBar = () => {
                     onMouseLeave={() => setIsHoveringThumbnail(false)}
                 >
                     {darkMode ? (
-                        <img src="https://cdn.ujjwalvivek.com/docs/thumbnail-dark.jpg" alt="View Resume" />
+                        <GenericCachedImg src="https://cdn.ujjwalvivek.com/docs/thumbnail-dark.jpg" alt="View Resume" />
                     ) : (
-                        <img src="https://cdn.ujjwalvivek.com/docs/thumbnail-light.jpg" alt="View Resume" />
+                        <GenericCachedImg src="https://cdn.ujjwalvivek.com/docs/thumbnail-light.jpg" alt="View Resume" />
                     )}
                     <div className={styles.thumbOverlay} aria-hidden="true">
                         <FaExpand className={styles.thumbIcon} />

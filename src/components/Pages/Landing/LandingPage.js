@@ -13,22 +13,18 @@ const LandingPage = ({ onEnter }) => {
     const [stepExiting, setStepExiting] = useState(false);
     const [isLeaving, setIsLeaving] = useState(false);
 
-    // Shuffling card state
     const [shuffleIndex, setShuffleIndex] = useState(0);
-    const [shuffling, setShuffling] = useState(false); // Will be enabled below if needed
+    const [shuffling, setShuffling] = useState(false);
     const wallpaperTypes = useMemo(() => getAllWallpaperTypes(), []);
     const rootRef = useRef(null);
     const sequenceDone = useRef(false);
 
-    // Stable wallpaper selection — override with 'none' if reduced motion detected
     const optimalWallpaper = useMemo(() => {
-        // Reduced motion takes priority — set low chaos mode
         if (prefersReducedMotion) {
             localStorage.setItem('lowChaosOverride', 'true');
             return 'none';
         }
 
-        // Otherwise, device-aware selection
         if (isMobile) {
             if (deviceClass === 'lowEnd') return 'circuit';
             if (deviceClass === 'midRange') return 'hologram';
@@ -39,7 +35,7 @@ const LandingPage = ({ onEnter }) => {
         return 'psychedelic';
     }, [prefersReducedMotion, isMobile, deviceClass]);
 
-    // Preview configs for the shuffling wallpaper
+    //? Preview configs for the shuffling wallpaper
     const landingPresets = useMemo(() => {
         const presets = {};
         const types = getAllWallpaperTypes();
@@ -61,7 +57,7 @@ const LandingPage = ({ onEnter }) => {
         return presets;
     }, []);
 
-    // Full-screen configs applied when entering the main site
+    //? Full-screen configs applied when entering the main site
     const mainPresets = useMemo(() => {
         const presets = {};
         const types = getAllWallpaperTypes();
@@ -82,7 +78,6 @@ const LandingPage = ({ onEnter }) => {
         return presets;
     }, []);
 
-    // Steps depend only on stable memoized values
     const steps = useMemo(() => {
         const wallpaperLabel = optimalWallpaper === 'none'
             ? 'Low Chaos Mode (auto-enabled)'
@@ -92,24 +87,21 @@ const LandingPage = ({ onEnter }) => {
             { text: "Probing hardware capabilities...", duration: 400 },
             { text: "Analyzing GPU performance...", duration: 400 },
             { text: "Optimizing visual settings...", duration: 400 },
-            { text: `Device: ${deviceClass} — ${isMobile ? 'Mobile' : 'Desktop'}`, duration: 200 },
+            { text: `Device: ${deviceClass} - ${isMobile ? 'Mobile' : 'Desktop'}`, duration: 200 },
             { text: `Wallpaper: ${wallpaperLabel}`, duration: 200 },
         ];
     }, [deviceClass, isMobile, optimalWallpaper]);
 
-    // Enable shuffling only if NOT in Low Chaos Mode
     useEffect(() => {
         if (optimalWallpaper !== 'none') {
             setShuffling(true);
         }
     }, [optimalWallpaper]);
 
-    // Crossfade exit — stable callback, no function recreation issues
     const exitLanding = useCallback(() => {
         if (sequenceDone.current) return;
         sequenceDone.current = true;
 
-        // Apply wallpaper before fading out (use 'minimal' key for 'none')
         const configKey = optimalWallpaper === 'none' ? 'minimal' : optimalWallpaper;
         updateBackgroundConfig(mainPresets[configKey]);
 
@@ -117,14 +109,13 @@ const LandingPage = ({ onEnter }) => {
         const selectedIndex = wallpaperTypes.indexOf(optimalWallpaper);
         setShuffleIndex(selectedIndex);
 
-        // Start crossfade
+        //? Start crossfade
         setIsLeaving(true);
         setTimeout(() => {
             onEnter();
-        }, 500); // matches CSS transition duration
+        }, 500);
     }, [mainPresets, optimalWallpaper, updateBackgroundConfig, onEnter, wallpaperTypes]);
 
-    // Shuffle wallpaper cards
     useEffect(() => {
         if (!shuffling) return;
         const interval = setInterval(() => {
@@ -133,7 +124,6 @@ const LandingPage = ({ onEnter }) => {
         return () => clearInterval(interval);
     }, [shuffling, wallpaperTypes.length]);
 
-    // Run the boot step sequence
     useEffect(() => {
         let cancelled = false;
 
@@ -141,7 +131,7 @@ const LandingPage = ({ onEnter }) => {
             for (let i = 0; i < steps.length; i++) {
                 if (cancelled) return;
 
-                // Fade out previous step
+                //? Fade out previous step
                 if (i > 0) {
                     setStepExiting(true);
                     await new Promise(r => setTimeout(r, 200));
@@ -151,7 +141,7 @@ const LandingPage = ({ onEnter }) => {
                 setStepExiting(false);
                 setCurrentStep(i);
 
-                // Stop shuffling and lock wallpaper on the last step
+                //? Stop shuffling and lock wallpaper on the last step
                 if (i === steps.length - 1) {
                     setShuffling(false);
                     const selectedIndex = wallpaperTypes.indexOf(optimalWallpaper);

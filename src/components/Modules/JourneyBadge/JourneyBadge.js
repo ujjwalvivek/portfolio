@@ -1,18 +1,56 @@
 import { useState, useEffect } from 'react';
-import { SiNpm, SiGithub } from "react-icons/si";
 import styles from './JourneyBadge.module.css';
-import { FaRust, FaWindows, FaCheck } from "react-icons/fa";
-import { IoGameController } from "react-icons/io5";
+import { FaRust, FaCheck } from "react-icons/fa";
 import { IoCopySharp } from "react-icons/io5";
+import { SiWebassembly, SiWebgpu, SiGo, SiTypescript } from "react-icons/si";
+import EchopointImg from '../../Utils/EchopointImg/EchopointImg';
+import { useBackground } from '../../Background/BackgroundContext';
+
+const ECHOPOINT = 'https://echopoint.ujjwalvivek.com';
+const repoDescCache = {};
+
+export function useRepoDescription(repo) {
+  const [description, setDescription] = useState(repoDescCache[repo] || '');
+
+  useEffect(() => {
+    if (repoDescCache[repo]) return;
+    fetch(`${ECHOPOINT}/v1/store/github:${repo}:repo`)
+      .then(r => r.json())
+      .then(data => {
+        if (data.description) {
+          repoDescCache[repo] = data.description;
+          setDescription(data.description);
+        }
+      })
+      .catch(() => { });
+  }, [repo]);
+
+  return description;
+}
 
 const JourneyBadge = () => {
-  const [version, setVersion] = useState("v...");
-  const [stars, setStars] = useState(null);
-  const [lastUpdated, setLastUpdated] = useState("Active");
-  const [ghRelease, setGhRelease] = useState("v...");
-  const [releaseUrl, setReleaseUrl] = useState("https://github.com/ujjwalvivek/journey/releases");
   const [copiedNpm, setCopiedNpm] = useState(false);
   const [copiedGit, setCopiedGit] = useState(false);
+  const [accentHex, setAccentHex] = useState('');
+  const [averageHex, setAverageHex] = useState('');
+  const { backgroundConfig } = useBackground();
+
+  const noAnim = backgroundConfig.type !== 'none' ? '' : styles.noanimated;
+
+
+  useEffect(() => {
+    const readAccent = () => {
+      const root = getComputedStyle(document.documentElement);
+      const d = root.getPropertyValue('--dynamic-dominant-color').trim();
+      const a = root.getPropertyValue('--dynamic-hsl-average').trim();
+      setAccentHex(d.replace(/^#/, ''));
+      setAverageHex(a.replace(/^#/, ''));
+    };
+    readAccent();
+    const observer = new MutationObserver(readAccent);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['style'] });
+    return () => observer.disconnect();
+  }, []);
 
   const handleCopy = (text, setCopiedState) => {
     navigator.clipboard.writeText(text);
@@ -20,101 +58,117 @@ const JourneyBadge = () => {
     setTimeout(() => setCopiedState(false), 2000);
   };
 
-  //? Fetch NPM version, GitHub stars, last update time, and latest release on mount
-  useEffect(() => {
-    const getRelativeTime = (dateString) => {
-      const diff = Math.floor((new Date().getTime() - new Date(dateString).getTime()) / (1000 * 60 * 60 * 24));
-      if (diff === 0) return "Updated today";
-      if (diff === 1) return "Updated yesterday";
-      return `Updated ${diff}d ago`;
-    };
+  const description = useRepoDescription('journey');
 
-    fetch('https://registry.npmjs.org/@ujjwalvivek/journey-engine/latest')
-      .then((res) => res.json())
-      .then((data) => { if (data?.version) setVersion(`v${data.version}`); })
-      .catch(() => setVersion("v0.3.2"));
-
-    fetch('https://api.github.com/repos/ujjwalvivek/journey')
-      .then((res) => res.json())
-      .then((data) => {
-        if (data?.stargazers_count !== undefined) setStars(data.stargazers_count);
-        if (data?.pushed_at) setLastUpdated(getRelativeTime(data.pushed_at));
-      })
-      .catch((err) => console.error("GitHub repo fetch failed:", err));
-
-    fetch('https://api.github.com/repos/ujjwalvivek/journey/releases/latest')
-      .then((res) => res.json())
-      .then((data) => {
-        if (data?.tag_name) {
-          setGhRelease(data.tag_name);
-          if (data?.html_url) setReleaseUrl(data.html_url);
-        }
-      })
-      .catch((err) => console.error("GitHub Release fetch failed:", err));
-  }, []);
+  const techStack = [
+    { name: "Tech Stack", icon: 'Stack' },
+    { name: "Rust", icon: <FaRust /> },
+    { name: "wGPU", icon: <SiWebgpu /> },
+    { name: "Golang", icon: <SiGo /> },
+    { name: "WebAssembly", icon: <SiWebassembly /> },
+    { name: "TypeScript", icon: <SiTypescript /> },
+  ];
 
   return (
-    <section className={styles.container}>
+    <section className={`${styles.container} ${styles.journeyStatusContainer}`}>
+      <span className={styles.border}></span>
       <div className={styles.card}>
         <span className={styles.topGlow} />
         <div className={styles.content}>
           <div className={styles.infoBlock}>
-
-            <div className={styles.titleRow}>
-              <FaRust className={styles.iconMain} />
+            <div className={styles.titleContainer}>
               <span className={styles.titleText}>Journey Engine</span>
               <span className={styles.phaseWip}>
-                <svg className={styles.spinner} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                  <circle opacity="0.25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                  <path opacity="0.75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
-                </svg>
-                <span className={styles.phaseLabel}>v2</span>
-                <span className={styles.badgeWip}>WIP</span>
+                <span className={`${styles.spinner} ${noAnim}`}>
+                  <span className={styles.phaseLabel}>v2</span>
+                </span>
               </span>
             </div>
+            <span className={styles.descText}>{description}</span>
+            <span className={`${styles.techStack} ${styles.fromJourney}`}>
+              {techStack.map((tech) => (
+                <span key={tech.name} className={styles.techIcon} title={tech.name}>
+                  {tech.icon}
+                </span>
+              ))}
+            </span>
 
-            <nav className={styles.telemetryRow}>
-              <a href="https://www.npmjs.com/package/@ujjwalvivek/journey-engine" target="_blank" rel="noreferrer" className={`${styles.pill} ${styles.pillNpm}`}>
-                <SiNpm className={styles.pillIcon} />
-                <span>NPM {version}</span>
+            <div className={styles.telemetryRowPill}>
+              <a href="https://journey.ujjwalvivek.com/" target="_blank" rel="noreferrer">
+                <EchopointImg src={`${ECHOPOINT}/svg/badges/custom?leftText=Tech+Demo&logo=npm&bg=ffffff00`} alt="Tech Demo" className={styles.badgeImg} fallbackHeight={20} />
               </a>
-              <a href={releaseUrl} target="_blank" rel="noreferrer" className={`${styles.pill} ${styles.pillRelease}`}>
-                <FaWindows className={styles.pillIcon} />
-                <span>Native {ghRelease}</span>
+              <a href="https://journey.ujjwalvivek.com/blog/proj_0004_rust_game_engine.md" target="_blank" rel="noreferrer">
+                <EchopointImg src={`${ECHOPOINT}/svg/badges/custom?leftText=Devlog&logo=book&bg=ffffff00`} alt="Devlog" className={styles.badgeImg} fallbackHeight={20} />
               </a>
-              <a href="https://github.com/ujjwalvivek/journey" target="_blank" rel="noreferrer" className={`${styles.pill} ${styles.pillGh}`}>
-                <SiGithub className={styles.pillIcon} />
-                <span>{stars !== null ? `${stars} Stars` : "Repo"}</span>
+              <a href="https://www.github.com/ujjwalvivek/journey" target="_blank" rel="noreferrer">
+                <EchopointImg src={`${ECHOPOINT}/svg/badges/updated?repo=journey&logo=clock`} alt="Updated" className={styles.badgeImg} fallbackHeight={20} />
               </a>
-              <a href="https://journey.ujjwalvivek.com/" target="_blank" rel="noreferrer" className={`${styles.pill} ${styles.pillDemo}`}>
-                <IoGameController className={styles.pillIcon} />
-                <span>Play Web Build</span>
-              </a>
-              <span className={`${styles.pill} ${styles.pillTime}`}>
-                <span className={styles.pulseDot} />
-                <span>{lastUpdated}</span>
-              </span>
-            </nav>
-          </div>
-
-          <div className={styles.commandSection}>
-            <div
-              className={styles.commandBox}
-              onClick={() => handleCopy("npm i @ujjwalvivek/journey-engine", setCopiedNpm)}
-              title="Copy NPM install command"
-            >
-              <span className={styles.prompt}>$</span>
-              <code className={styles.codeText}>npm i @ujjwalvivek/journey-engine</code>
-              <span className={styles.copyAction}>{copiedNpm ? <FaCheck className={styles.copyIcon} /> : <IoCopySharp className={styles.copyIcon} />}</span>
             </div>
-            <div
-              className={styles.commandBox}
-              onClick={() => handleCopy("git clone https://github.com/ujjwalvivek/journey.git", setCopiedGit)}
-              title="Copy git clone command"
-            >
-              <span className={styles.prompt}>$</span>
-              <code className={styles.codeText}>git clone https://github.com/ujjwalvivek/journey.git</code>
-              <span className={styles.copyAction}>{copiedGit ? <FaCheck className={styles.copyIcon} /> : <IoCopySharp className={styles.copyIcon} />}</span>
+            <div className={styles.activitySection}>
+              <span className={styles.sectionTitle}>Recent Releases</span>
+              <div className={styles.releaseImgContainer}>
+                <EchopointImg src={`${ECHOPOINT}/svg/releases?repo=journey&bg=none&borderWidth=0&limit=2${accentHex ? `&textColor=${accentHex}&accentColor=${averageHex}&lineColor=${accentHex}` : ''}&px=8&py=8`} alt="Recent Releases" width="100%" className={styles.releaseImg} fallbackHeight={90} />
+              </div>
+            </div>
+
+            <div className={styles.commandSection}>
+              <div
+                className={styles.commandBox}
+                onClick={() => handleCopy("npm i @ujjwalvivek/journey-engine", setCopiedNpm)}
+                title="Copy NPM install command"
+              >
+                <span className={styles.prompt}>$</span>
+                <code className={styles.codeText}>npm i @ujjwalvivek/journey-engine</code>
+                <span className={styles.copyAction}>{copiedNpm ? <FaCheck className={styles.copyIcon} /> : <IoCopySharp className={styles.copyIcon} />}</span>
+              </div>
+              <div className={styles.telemetryRowPill}>
+                <a href="https://www.npmjs.com/package/@ujjwalvivek/journey-engine" target="_blank" rel="noreferrer">
+                  <EchopointImg src={`${ECHOPOINT}/svg/badges/npm?package=journey-engine&leftText=WASM&logo=npm`} alt="WASM version" className={styles.badgeImg} fallbackHeight={20} />
+                </a>
+                <a href="https://www.npmjs.com/package/@ujjwalvivek/dino-blink" target="_blank" rel="noreferrer">
+                  <EchopointImg src={`${ECHOPOINT}/svg/badges/npm?package=dino-blink&leftText=Dino+Blink&logo=npm`} alt="Dino Blink version" className={styles.badgeImg} fallbackHeight={20} />
+                </a>
+                <a href="https://ujjwalvivek.itch.io/dino-blink" target="_blank" rel="noreferrer">
+                  <EchopointImg src={`${ECHOPOINT}/svg/badges/custom?leftText=Dino_Blink&logo=bolt&bg=ffffff00`} alt="Dino Blink" className={styles.badgeImg} fallbackHeight={20} />
+                </a>
+              </div>
+              <div className={styles.commandBox}>
+                <span className={styles.prompt}>$</span>
+                <code className={styles.codeText}>cargo add journey-engine</code>
+                <span className={styles.copyAction}>{copiedNpm ? <FaCheck className={styles.copyIcon} /> : <IoCopySharp className={styles.copyIcon} />}</span>
+              </div>
+              <div className={styles.telemetryRowPill}>
+                <a href="https://crates.io/crates/journey-engine" target="_blank" rel="noreferrer">
+                  <EchopointImg src={`${ECHOPOINT}/svg/badges/cargo?crate=journey-engine&logo=rust`} alt="Cargo version" className={styles.badgeImg} fallbackHeight={20} />
+                </a>
+                <a href="https://docs.journey.ujjwalvivek.com/" target="_blank" rel="noreferrer">
+                  <EchopointImg src={`${ECHOPOINT}/svg/badges/docs?logo=book`} alt="Docs" className={styles.badgeImg} fallbackHeight={20} />
+                </a>
+              </div>
+              <div
+                className={styles.commandBox}
+                onClick={() => handleCopy("git clone https://github.com/ujjwalvivek/journey.git", setCopiedGit)}
+                title="Copy git clone command"
+              >
+                <span className={styles.prompt}>$</span>
+                <code className={styles.codeText}>git clone https://github.com/ujjwalvivek/journey.git</code>
+                <span className={styles.copyAction}>{copiedGit ? <FaCheck className={styles.copyIcon} /> : <IoCopySharp className={styles.copyIcon} />}</span>
+              </div>
+              <div className={styles.telemetryRowPill}>
+                <a href="https://github.com/ujjwalvivek/journey/releases" target="_blank" rel="noreferrer">
+                  <EchopointImg src={`${ECHOPOINT}/svg/badges/release?repo=journey&leftText=Native&logo=windows`} alt="Native release" className={styles.badgeImg} fallbackHeight={20} />
+                </a>
+                <a href="https://github.com/ujjwalvivek/journey" target="_blank" rel="noreferrer">
+                  <EchopointImg src={`${ECHOPOINT}/svg/badges/stars?repo=journey&logo=star`} alt="Stars" className={styles.badgeImg} fallbackHeight={20} />
+                </a>
+              </div>
+            </div>
+
+            <div className={styles.activitySection}>
+              <span className={styles.sectionTitle}>Recent Activiti</span>
+              <div className={styles.releaseImgContainer}>
+                <EchopointImg src={`${ECHOPOINT}/svg/commits?repo=journey&bg=none&borderWidth=0&limit=3${accentHex ? `&textColor=${accentHex}&accentColor=${averageHex}&lineColor=${accentHex}` : ''}&px=8&py=8`} alt="Recent Commits" width="100%" className={styles.releaseImg} fallbackHeight={135} />
+              </div>
             </div>
           </div>
         </div>

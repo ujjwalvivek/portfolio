@@ -1,407 +1,800 @@
-/* src/components/TerminalMail/TerminalMail.module.css */
-
 .terminalContainer {
-  font-family: var(--font-mono);
-  border-radius: 4px;
-  overflow: hidden;
-  box-shadow:
-    0 20px 40px rgba(0, 0, 0, 0.4),
-    0 0 0 1px rgba(255, 255, 255, 0.05),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1);
-  max-width: 1000px;
-  backdrop-filter: blur(32px) saturate(180%);
-  -webkit-backdrop-filter: blur(32px) saturate(180%);
-  position: relative;
-  height: 100%;
-  max-height: 400px;
-  display: flex;
-  flex-direction: column;
-}
-
-.terminalContainer::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  pointer-events: none;
+    border-radius: 2px;
+    overflow: hidden;
+    max-width: 1000px;
+    backdrop-filter: blur(32px) saturate(180%);
+    -webkit-backdrop-filter: blur(32px) saturate(180%);
+    background: rgba(var(--background-color-rgb), 0.3);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
 }
 
 .terminalHeader {
-  background: rgba(var(--bit-dark-color-rgb), 1);
-  padding: 0.4rem 1rem;
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  position: relative;
+    background: rgba(var(--bit-dark-color-rgb), 1);
+    padding: 0.4rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    position: relative;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.terminalHeader::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg,
+            var(--dynamic-dominant-color),
+            var(--dynamic-hsl-average),
+            var(--dynamic-dominant-color));
+    z-index: 10;
+    opacity: 0.8;
 }
 
 .terminalButtons {
-  display: flex;
-  gap: 0.5rem;
-  z-index: 2;
+    display: flex;
+    gap: 0.5rem;
+    z-index: 2;
 }
 
 .closeButton,
 .minimizeButton,
 .maximizeButton {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  transition: all 0.2s ease;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+    transform: translateY(-1px);
 }
 
 .closeButton {
-  background: linear-gradient(135deg, var(--status-ram-color) 0%, var(--status-ram-color) 100%);
+    background: var(--status-ram-color);
 }
 
 .minimizeButton {
-  background: linear-gradient(135deg, var(--status-warn-color) 0%, var(--status-warn-color) 100%);
+    background: var(--status-warn-color);
 }
 
 .maximizeButton {
-  background: linear-gradient(135deg, var(--status-ok-color) 0%, var(--status-ok-color) 100%);
+    background: var(--status-ok-color);
 }
 
 .closeButton:hover,
 .minimizeButton:hover,
 .maximizeButton:hover {
-  transform: scale(1.1);
-  box-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+    transform: scale(1.15);
 }
 
 .terminalTitle {
-  color: var(--text-color);
-  font-size: 0.75rem;
-  font-weight: 500;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  flex: 1;
-  text-shadow: 0 0 10px rgba(56, 139, 253, 0.3);
-  line-height: 0.6rem;
-  font-family: var(--font-mono);
+    color: var(--text-color);
+    font-size: 0.75rem;
+    font-weight: 300;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex: 1;
+    letter-spacing: 0.5px;
+    font-family: var(--font-krypton);
+    text-transform: uppercase;
 }
 
 .titleIcon {
-  font-size: 1rem;
-  align-items: center;
-}
-
-.titleDomain {
-  color: var(--status-ok-color);
-  font-weight: 400;
-  line-height: 0.6rem;
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    color: var(--dynamic-dominant-color);
+    transform: translateY(-1px);
 }
 
 .terminalStatus {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
 }
 
 .statusDot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  transition: all 0.3s ease;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    transform: translateY(-1px);
 }
 
 .statusDot.ready {
-  background: var(--status-ok-color);
-  box-shadow: 0 0 6px rgba(63, 185, 80, 0.6);
+    background: var(--status-ok-color);
+    box-shadow: 0 0 6px rgba(var(--status-ok-color-rgb), 0.6);
 }
 
 .statusDot.sending {
-  background: var(--status-ram-color);
-  animation: pulse 1.5s infinite;
+    background: var(--status-warn-color);
+    animation: pulse 1.5s infinite;
+}
+
+.terminalBody {
+    display: grid;
+    grid-template-columns: 126px 1fr;
+    grid-template-rows: 1fr auto;
+    gap: 0;
+    padding: 1rem;
+    height: 350px;
+    overflow: hidden;
+}
+
+.tuiPanel {
+    border: 2px solid rgba(var(--dynamic-dominant-color-rgb), 0.5);
+    border-radius: 2px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+    box-sizing: border-box;
+}
+
+.tuiPanelFocused {
+    border-color: rgba(var(--dynamic-dominant-color-rgb), 0.5);
+}
+
+.tuiPanelUnfocused {
+    border-color: rgba(var(--dynamic-dominant-color-rgb), 0.5);
+}
+
+.tuiPanelHeader {
+    display: flex;
+    align-items: center;
+    padding: 0;
+    font-size: 0.75rem;
+    color: var(--primary-color);
+    overflow: hidden;
+}
+
+.tuiPanelTitle {
+    padding: 0.2rem 0.4rem;
+    font-family: var(--font-neon);
+    color: var(--dynamic-dominant-color);
+    font-weight: 500;
+    font-size: 0.65rem;
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+    background: rgba(var(--dynamic-dominant-color-rgb), 0.3);
+    width: 100%;
+    border-bottom: 1px solid rgba(var(--dynamic-dominant-color-rgb), 0.5);
+}
+
+.tuiPanelBody {
+    flex: 1;
+    overflow: hidden;
+}
+
+.stepSidebar {
+    padding: 0.5rem 0 0 0;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: space-between;
+}
+
+.stepList {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+}
+
+.stepItem {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.2rem 0.6rem;
+    border: none;
+    background: transparent;
+    color: var(--primary-color);
+    font-family: var(--font-neon);
+    font-size: 0.75rem;
+    cursor: default;
+    transition: all 0.2s ease;
+    text-align: left;
+    width: 100%;
+}
+
+.catWrapper {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    width: 100%;
+    overflow: hidden;
+    margin: 0 auto;
+}
+
+.companion {
+    width: 110px;
+    height: 110px;
+    image-rendering: pixelated;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    overflow: hidden;
+    margin-top: auto;
+}
+
+.stepItem:disabled {
+    cursor: default;
+    opacity: 1;
+}
+
+.stepItem:not(:disabled) {
+    cursor: pointer;
+}
+
+.stepItem:not(:disabled):hover {
+    background: rgba(var(--dynamic-dominant-color-rgb), 0.08);
+}
+
+.stepActive {
+    color: var(--dynamic-dominant-color);
+    background: rgba(var(--dynamic-dominant-color-rgb), 0.1);
+}
+
+.stepDone {
+    color: var(--status-ok-color);
+}
+
+.stepDone:not(:disabled):hover {
+    background: rgba(var(--status-ok-color-rgb), 0.1);
+}
+
+.stepMarker {
+    font-size: 0.6rem;
+    line-height: 1;
+    width: 0.7rem;
+    text-align: center;
+    flex-shrink: 0;
+    transform: translateY(1px);
+}
+
+.stepActive .stepMarker {
+    color: var(--dynamic-dominant-color);
+    text-shadow: 0 0 6px rgba(var(--dynamic-dominant-color-rgb), 0.5);
+}
+
+.stepDone .stepMarker {
+    color: var(--status-ok-color);
+}
+
+.stepLabel {
+    flex: 1;
+}
+
+.composePane {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+}
+
+.composeOutput {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 0.6rem 0.75rem;
+    font-size: 0.8rem;
+    line-height: 1.6;
+    color: var(--text-color);
+    font-family: var(--font-neon);
+    font-weight: 100;
+}
+
+.composeLine {
+    white-space: pre-wrap;
+    word-break: break-word;
+    margin-bottom: 0.2rem;
+    animation: lineSlide 0.15s ease-out;
+    border-left: 3px solid rgba(var(--dynamic-dominant-color-rgb), 0.25);
+    border-radius: 2px;
+    padding-left: 0.5rem;
+}
+
+.composeLineSuccess {
+    color: var(--status-ok-color);
+}
+
+.composeLineError {
+    color: var(--status-ram-color);
+}
+
+.composeLineInput {
+    color: var(--dynamic-dominant-color);
+}
+
+.lineUser {
+    color: var(--dynamic-dominant-color);
+}
+
+.lineSystem {
+    color: var(--text-color);
+    font-family: var(--font-krypton);
+    letter-spacing: -0.3px;
+}
+
+.linePrompt {
+    color: var(--status-info-color);
+}
+
+.lineSuccess {
+    color: var(--status-ok-color);
+}
+
+.lineError {
+    color: var(--status-ram-color);
+}
+
+.lineWarn {
+    color: var(--status-warn-color);
+}
+
+.lineInfo {
+    color: var(--text-color);
+    opacity: 0.8;
+}
+
+.lineBlank {
+    line-height: 0.2rem;
+    border: none;
+}
+
+@keyframes lineSlide {
+    from {
+        opacity: 0;
+        transform: translateY(4px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.composeInputRow {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 0.75rem;
+    gap: 0.5rem;
+    flex-shrink: 0;
+    font-family: var(--font-neon);
+    border: 1px dashed rgba(var(--dynamic-dominant-color-rgb), 0.5);
+    border-radius: 2px;
+}
+
+.composePrompt {
+    display: flex;
+    align-items: center;
+    font-size: 0.8rem;
+    color: var(--dynamic-dominant-color);
+    flex-shrink: 0;
+    gap: 0;
+}
+
+.promptTilde {
+    color: var(--dynamic-hsl-average);
+}
+
+.promptSlash {
+    color: rgba(var(--primary-color-rgb), 0.5);
+}
+
+.promptStep {
+    color: var(--dynamic-dominant-color);
+    font-weight: 600;
+}
+
+.promptCaret {
+    color: var(--status-ok-color);
+}
+
+.spinner {
+    color: var(--status-warn-color);
+    font-size: 0.9rem;
+    animation: spinnerGlow 0.8s ease-in-out infinite;
+}
+
+@keyframes spinnerGlow {
+
+    0%,
+    100% {
+        text-shadow: 0 0 4px rgba(var(--status-warn-color-rgb), 0.3);
+    }
+
+    50% {
+        text-shadow: 0 0 8px rgba(var(--status-warn-color-rgb), 0.6);
+    }
+}
+
+.composeInput {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--text-color);
+    font-family: var(--font-neon);
+    font-size: 0.8rem;
+    caret-color: var(--dynamic-dominant-color);
+    min-width: 0;
+}
+
+.composeInput::placeholder {
+    color: rgba(var(--primary-color-rgb), 0.5);
+    font-style: normal;
+}
+
+.composeInput:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.helpBar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.4rem 1rem;
+    border-top: 1px solid rgba(var(--dynamic-dominant-color-rgb), 0.1);
+    background: rgba(var(--bit-dark-color-rgb), 1);
+    gap: 1rem;
+    position: relative;
+}
+
+.helpBar::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg,
+            var(--dynamic-dominant-color),
+            var(--dynamic-hsl-average),
+            var(--dynamic-dominant-color));
+    z-index: 10;
+    opacity: 0.8;
+}
+
+.helpHints,
+.previewHints {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    font-family: var(--font-neon);
+}
+
+.previewHints {
+    flex: 1;
+}
+
+.helpHint {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.helpKey {
+    font-family: var(--font-neon);
+    font-size: 0.6rem;
+    padding: 0.1rem 0.35rem;
+    border: 1px dashed rgba(var(--dynamic-dominant-color-rgb), 0.25);
+    border-radius: 1px;
+    background: rgba(var(--dynamic-dominant-color-rgb), 0.06);
+    color: var(--dynamic-dominant-color);
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.helpLabel {
+    font-size: 0.6rem;
+    color: var(--primary-color);
+    white-space: nowrap;
+}
+
+.previewGrid {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    overflow: hidden;
+}
+
+.previewField {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.7rem;
+    min-width: 0;
+}
+
+.previewLabel {
+    color: var(--dynamic-dominant-color);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 0.6rem;
+    flex-shrink: 0;
+}
+
+.previewLabel::after {
+    content: ':';
+}
+
+.previewValue {
+    color: var(--text-color);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transform: translateY(-1px);
+    max-width: 100px;
+    white-space: nowrap;
+    min-width: 0;
+}
+
+
+.previewWaiting {
+    color: rgba(var(--primary-color-rgb), 0.4);
+}
+
+.previewDim {
+    color: rgba(var(--primary-color-rgb), 0.5);
 }
 
 @keyframes pulse {
 
-  0%,
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
+    0%,
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
 
-  50% {
-    opacity: 0.7;
-    transform: scale(1.2);
-  }
+    50% {
+        opacity: 0.7;
+        transform: scale(1.2);
+    }
 }
 
-.terminalContent {
-  overflow-y: visible;
-  padding: 1.5rem;
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  height: 400px;
-  overflow-y: auto;
-  overflow-x: hidden;
+@keyframes stepFadeIn {
+    from {
+        opacity: 0;
+        transform: translateX(6px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
 }
 
-.terminalContent::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  pointer-events: none;
+.composePaneEnter {
+    animation: stepFadeIn 0.25s ease-out;
 }
 
-.terminalOutput {
-  flex: 1;
-  color: var(--dynamic-dominant-color);
-  line-height: 1.6;
-  font-size: 0.9rem;
-  position: relative;
-  z-index: 1;
+.sendSuccess {
+    animation: successFlash 0.6s ease-out;
 }
 
-.outputLine {
-  margin-bottom: 0.3rem;
-  white-space: pre-wrap;
-  word-break: break-word;
-  text-shadow: 0 0 2px rgba(125, 211, 252, 0.3);
+.sendError {
+    animation: errorFlash 0.5s ease-out;
 }
 
-.inputContainer {
-  display: flex;
-  align-items: center;
-  margin-top: 1rem;
-  position: relative;
-  z-index: 1;
+@keyframes successFlash {
+    0% {
+        box-shadow: inset 0 0 0 1px var(--status-ok-color);
+    }
+
+    50% {
+        box-shadow: inset 0 0 20px rgba(var(--status-ok-color-rgb), 0.15);
+    }
+
+    100% {
+        box-shadow: none;
+    }
 }
 
-.prompt {
-  color: var(--status-ok-color);
-  margin-right: 0.75rem;
-  font-weight: 400;
-  display: flex;
-  align-items: center;
-  text-shadow: 0 0 4px rgba(88, 166, 255, 0.4);
-  font-size: 0.9rem;
+@keyframes errorFlash {
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    20% {
+        transform: translateX(-3px);
+    }
+
+    40% {
+        transform: translateX(3px);
+    }
+
+    60% {
+        transform: translateX(-2px);
+    }
+
+    80% {
+        transform: translateX(2px);
+    }
 }
 
-.promptUser {
-  color: var(--dynamic-hsl-average);
+.sidebarPanel {
+    grid-column: 1;
+    grid-row: 1;
+    margin-right: 0.75rem;
 }
 
-.promptSeparator {
-  color: var(--dynamic-dominant-color);
-  margin: 0 0.2rem;
+.composePanel {
+    grid-column: 2;
+    grid-row: 1;
 }
 
-.promptHost {
-  color: var(--dynamic-dominant-color);
-}
-
-.promptPath {
-  color: var(--dynamic-dominant-color);
-  margin-left: 0.2rem;
-  font-style: normal;
-}
-
-.terminalInput {
-  flex: 1;
-  background: transparent;
-  border: none;
-  outline: none;
-  color: var(--text-color);
-  font-family: inherit;
-  font-size: 0.9rem;
-  caret-color: var(--dynamic-dominant-color);
-  text-shadow: 0 0 2px rgba(240, 246, 252, 0.3);
-  display: flex;
-  align-items: center;
-}
-
-.terminalInput::placeholder {
-  color: var(--primary-color);
-  font-style: normal;
-}
-
-.terminalInput:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.terminalFooter {
-  border-top: 1px solid rgba(var(--dynamic-dominant-color-rgb), 0.2);
-}
-
-.statusBar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.5rem 1rem;
-  font-size: 0.75rem;
-  color: var(--primary-color);
-  gap: 3rem;
-}
-
-.statusItem {
-  display: flex;
-  align-items: center;
-  gap: 0.3rem;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.statusIcon {
-  font-size: 0.6rem;
-  color: var(--status-info-color);
-}
-
-/* Scrollbar styling */
-.terminalContent::-webkit-scrollbar {
-  width: 2px;
-}
-
-.terminalContent::-webkit-scrollbar-track {
-  background: rgba(13, 17, 23, 0.5);
-}
-
-.terminalContent::-webkit-scrollbar-thumb {
-  background: white;
-  border-radius: 0px;
-}
-
-.terminalContent::-webkit-scrollbar-thumb:hover {
-  background: grey;
-}
-
-/* Responsive design */
-@media (max-width: 1200px) {
-  .terminalContent {
-    padding: 1.3rem;
-  }
+.composeInputRow {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    margin-top: 0.75rem;
 }
 
 @media (max-width: 900px) {
-  .terminalContent {
-    padding: 1.2rem;
-  }
+    .terminalBody {
+        grid-template-columns: 126px 1fr;
+        padding: 0.75rem;
+        min-height: 280px;
+    }
 
-  .terminalOutput {
-    font-size: 0.85rem;
-  }
+    .composeOutput {
+        font-size: 0.78rem;
+    }
 
-  .terminalHeader {
-    padding: 0.5rem 1rem;
-  }
-
-  .statusBar {
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    padding: 0.5rem 1rem;
-  }
-
-  .statusItem {
-    font-size: 0.75rem;
-  }
-
-  .prompt {
-    font-size: 0.85rem;
-  }
-
-  .terminalInput {
-    font-size: 0.85rem;
-  }
+    .composeInput {
+        font-size: 0.78rem;
+    }
 }
 
 @media (max-width: 700px) {
-  .terminalContent {
-    padding: 1.1rem;
-  }
+    .terminalBody {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 1fr auto;
+        min-height: 300px;
+        max-height: 480px;
+    }
 
-  .terminalOutput {
-    font-size: 0.8rem;
-  }
+    .companion {
+        display: none;
+    }
 
-  .terminalHeader {
-    padding: 0.5rem 1rem;
-  }
+    .sidebarPanel {
+        grid-column: 1;
+        grid-row: 1;
+        margin-right: 0;
+        margin-bottom: 0.5rem;
+    }
 
-  .statusBar {
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    padding: 0.5rem 1rem;
-  }
+    .stepSidebar {
+        padding: 0.5rem 0;
+    }
 
-  .statusItem {
-    font-size: 0.7rem;
-  }
+    .stepList {
+        flex-direction: row;
+        gap: 0.25rem;
+        flex-wrap: wrap;
+        margin-left: 0.7rem;
+    }
 
-  .prompt {
-    font-size: 0.8rem;
-  }
+    .stepItem {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.65rem;
+        border-radius: 2px;
+        border: 1px solid rgba(var(--primary-color-rgb), 0.15);
+        width: auto;
+    }
 
-  .terminalInput {
-    font-size: 0.8rem;
-  }
+    .stepActive {
+        border-color: rgba(var(--dynamic-dominant-color-rgb), 0.4);
+        background: rgba(var(--dynamic-dominant-color-rgb), 0.1);
+    }
+
+    .stepDone {
+        border-color: rgba(var(--status-ok-color-rgb), 0.3);
+    }
+
+    .stepArrow {
+        display: none;
+    }
+
+    .composePanel {
+        grid-column: 1;
+        grid-row: 2;
+    }
+
+    .composeInputRow {
+        grid-column: 1;
+        grid-row: 3;
+        margin-top: 0.5rem;
+    }
+
+    .composeOutput {
+        font-size: 0.75rem;
+    }
+
+    .composeInput {
+        font-size: 0.75rem;
+    }
+
+    .helpBar {
+        padding: 0.35rem 0.75rem;
+    }
+
+    .helpKey {
+        font-size: 0.55rem;
+    }
+
+    .helpLabel {
+        font-size: 0.55rem;
+    }
+
+    .helpBar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .previewValue {
+        transform: translateY(0px);
+    }
 }
 
 @media (max-width: 500px) {
-  .terminalContent {
-    min-height: 250px;
-    max-height: 350px;
-    padding: 1rem;
-  }
+    .terminalBody {
+        padding: 0.5rem;
+        min-height: 260px;
+        max-height: 420px;
+    }
 
-  .terminalOutput {
-    font-size: 0.75rem;
-  }
+    .terminalHeader {
+        padding: 0.4rem 0.75rem;
+    }
 
-  .terminalHeader {
-    padding: 0.5rem 1rem;
-  }
+    .titleDomain {
+        display: none;
+    }
 
-  .statusBar {
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    padding: 0.5rem 1rem;
-  }
+    .previewGrid {
+        gap: 0.5rem;
+    }
 
-  .statusItem {
-    font-size: 0.65rem;
-  }
+    .previewField {
+        font-size: 0.6rem;
+    }
 
-  .prompt {
-    font-size: 0.7rem;
-  }
+    .previewLabel {
+        font-size: 0.55rem;
+    }
 
-  .terminalInput {
-    font-size: 0.7rem;
-  }
-}
+    .composeOutput {
+        font-size: 0.7rem;
+        padding: 0.4rem 0.5rem;
+    }
 
-@media (max-width: 495px) {
-  .titleDomain {
-    display: none;
-  }
-}
+    .composeInput {
+        font-size: 0.7rem;
+    }
 
-/* Animation for terminal boot effect */
-@keyframes terminalBoot {
-  0% {
-    opacity: 0;
-    transform: scale(0.95);
-  }
+    .composePrompt {
+        font-size: 0.7rem;
+    }
 
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-.terminalContainer {
-  animation: terminalBoot 0.5s ease-out;
+    .helpHints {
+        gap: 0.4rem;
+    }
 }

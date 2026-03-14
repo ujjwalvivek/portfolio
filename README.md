@@ -1,9 +1,11 @@
-# TECH ISN'T THE HARD PART. Systems, behaviour, and questions are.
+# TECH ISN'T THE HARD PART. <br> Systems, behaviour, and questions are.
+
+![Echopoint SVG](https://echopoint.ujjwalvivek.com/svg/badges/custom?leftText=Javascript&badgeColor=003780&logo=javascript) ![Echopoint SVG](https://echopoint.ujjwalvivek.com/svg/badges/custom?leftText=CSS&badgeColor=9e0000&logo=css) ![Echopoint SVG](https://echopoint.ujjwalvivek.com/svg/badges/custom?leftText=React&badgeColor=006275&textColor=ffffff&logo=react) ![Echopoint SVG](https://echopoint.ujjwalvivek.com/svg/badges/custom?leftText=HTML&badgeColor=9d00d6&textColor=ffffff&logo=html)
 
 Welcome, wanderer.
 
 You’ve booted into a personal portfolio rendered as an interactive terminal and a markdown blog.  
-This isn’t just a portfolio. I like to call it an `experiment playground` rather.  
+Not just a portfolio. I like to call it an `experiment playground` rather.  
 
 I build, break, and rebuild systems, across code, teams, and products.  
 This is where I log those experiments, the questions they raise, and the answers they sometimes yield.
@@ -32,14 +34,6 @@ npm start
 npm run build
 ```
 
-## Testing & QA checklist
-- Start app and verify routes: `/`, `/about`, `/projects`, `/blog`
-- Open Command Palette, run commands, and confirm shortcuts
-- Verify `GlobalBackground` themes and `RealTimeColorChange` behavior
-- Test reduced-motion: system setting + `UsePrefersReducedMotion` module
-- Mobile/responsive: ensure TopBar, Footer, and Terminal interactions are usable
-- Run Lighthouse: aim for no critical accessibility regressions
-
 ## Contributing
 This is a personal log. PRs accepted selectively.
 
@@ -55,4 +49,4 @@ MIT License `Do what you want, credit appreciated`
 
 Happy building.
 
-`v2.0.0 update`
+`v3.0.0 update`

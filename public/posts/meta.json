@@ -155,5 +155,22 @@
   ],
   "readingTime": "6 min read",
   "thumbnail": "https://cdn.ujjwalvivek.com/posts/media/dino-blink.webp"
+  },
+  {
+  "id": 2,
+  "filename": "log_0006_simpleclippy.md",
+  "title": "How Synclippy Got Simpler (and Better)",
+  "date": "2026-03-07",
+  "description": "A technical story about how a clipboard sync project slowly turned into a distributed system, and why deleting most of that architecture made sense.",
+  "tags": [
+    "Go",
+    "Typescript",
+    "Cloudflare Workers",
+    "Durable Objects",
+    "Cross-Platform",
+    "Local-First"
+  ],
+  "readingTime": "11 min read",
+  "thumbnail": "https://cdn.ujjwalvivek.com/posts/media/synclippy.webp"
   }
 ]

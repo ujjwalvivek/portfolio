@@ -9,21 +9,21 @@
  */
 
 .blogContainer {
-  font-family: var(--font-sans);
+  font-family: var(--font-neon);
   max-width: var(--main-content-width);
   margin: 0 auto;
 }
 
 .blogPostContainer {
   padding: 0 1.5rem;
-  font-family: var(--font-sans);
+  font-family: var(--font-neon);
   max-width: var(--main-content-width);
   width: 100vw;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  font-family: var(--font-mono);
+  font-family: var(--font-neon);
   max-width: 1000px;
   margin-bottom: 2.05rem;
 }
@@ -92,27 +92,27 @@
 
 .postTitle {
   font-size: 1rem;
-  font-weight: 500;
+  font-weight: 700;
   display: flex;
   align-items: center;
   gap: 0.5rem;
   flex: 1;
   text-shadow: 0 0 10px rgba(56, 139, 253, 0.3);
-  font-family: var(--font-mono);
+  font-family: var(--font-krypton);
 }
 
 .postStatus {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   font-weight: 400;
 }
 
 .postDate,
 .readingTime {
   color: var(--text-color);
-  font-family: var(--font-mono);
+  font-family: var(--font-krypton);
   margin-bottom: 0;
   border: 1px solid rgba(var(--dynamic-hsl-average-rgb), 0.3);
   padding: 0.1rem 0.3rem;
@@ -123,9 +123,8 @@
 }
 
 .blogPost {
-  background: linear-gradient(135deg, rgba(var(--dynamic-dominant-color-rgb), 0.05) 0%, rgba(var(--background-color-rgb), 0.05) 100%);
-  border-radius: 0 0 4px 4px;
-  box-shadow: 0 8px 32px 0 rgba(var(--background-color-rgb), 0.18);
+  background: rgba(var(--background-color-rgb), 0.4);
+  border-radius: 0 0 2px 2px;
   padding: 0 1.5rem;
   max-width: 1000px;
   width: 100%;
@@ -140,14 +139,6 @@
   backdrop-filter: blur(32px) saturate(180%);
   -webkit-backdrop-filter: blur(32px) saturate(180%);
   z-index: -1;
-}
-
-.blogPost p {
-  font-family: var(--font-mono);
-  line-height: 1.6;
-  color: rgba(var(--text-color-rgb), 0.9);
-  margin-bottom: calc(var(--spacing-unit) * 2);
-  font-weight: 400;
 }
 
 /**
@@ -169,11 +160,12 @@
 
 .markdown {
   color: var(--text-color);
-  font-family: var(--font-mono);
+  font-family: var(--font-neon);
   word-break: break-word;
   margin: 0 auto;
   max-width: 964px;
   overflow-x: hidden;
+  text-shadow: 0 0 1.5px rgba(var(--dynamic-dominant-color-rgb), 1);
 }
 
 .markdown strong {
@@ -186,11 +178,24 @@
 .markdown h2,
 .markdown h3,
 .markdown h4 {
-  font-family: var(--font-mono);
+  font-family: var(--font-neon);
   font-weight: 700;
   cursor: default;
   line-height: 1.2;
 }
+
+.markdown h2 {
+  font-size: 1.3rem;
+}
+
+.markdown h3 {
+  font-size: 1.1rem;
+}
+
+.markdown h4 {
+  font-size: 0.9rem;
+}
+
 
 .headingWithIcon {
   display: inline-flex;
@@ -225,14 +230,31 @@
   transform: scale(0.95) translateY(-1px);
 }
 
+.headingWithIcon h5 .headingIcon {
+  transform: scale(0.9) translateY(-1px);
+}
+
+h5.headingWithIcon {
+  border-radius: 2px;
+  border: 2px solid rgba(var(--dynamic-dominant-color-rgb), 0.2);
+  background: rgba(var(--bit-dark-color-rgb), 0.8);
+  max-width: 600px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-weight: 500;
+}
+
+.blogPost p,
 .markdown p {
-  font-size: 1rem;
+  font-size: 0.95rem;
   text-align: left;
-  line-height: 1.6;
-  font-weight: 300;
+  line-height: 1.5;
+  font-weight: 100;
   cursor: default;
   color: rgba(var(--text-color-rgb), 0.9);
-  font-family: var(--font-mono);
+  font-family: var(--font-neon);
+  letter-spacing: -0.1px;
 }
 
 .markdown a {
@@ -260,7 +282,7 @@
   text-decoration: none !important;
   cursor: pointer;
   border: 1px solid var(--status-ok-color);
-  font-family: var(--font-sans);
+  font-family: var(--font-neon);
   line-height: 1;
   min-width: 0.3rem;
   min-height: 0.3rem;
@@ -276,7 +298,7 @@
   padding: calc(var(--spacing-unit) *0.5);
   border-radius: 2px;
   overflow-x: auto;
-  margin: 2.5rem 0;
+  margin: 1rem 0;
 }
 
 .markdown hr {
@@ -300,16 +322,16 @@
  *                                     
  */
 
-.markdown ul {
+.markdown ul:not(.tocListNested) {
   margin: calc(var(--spacing-unit) * 2) 0;
   padding-left: 1rem;
-  font-family: var(--font-mono);
+  font-family: var(--font-neon);
   color: var(--text-color);
   list-style: none;
   cursor: default;
 }
 
-.markdown ul li {
+.markdown ul:not(.tocListNested) li {
   position: relative;
   padding-left: 0rem;
   margin-bottom: 0.7em;
@@ -317,7 +339,7 @@
   cursor: default;
 }
 
-.markdown ul li::before {
+.markdown ul:not(.tocListNested) li::before {
   content: '○';
   position: absolute;
   left: 0;
@@ -329,19 +351,19 @@
   transition: all 0.3s ease;
 }
 
-.markdown ul li:hover::before {
+.markdown ul:not(.tocListNested) li:hover::before {
   content: '●';
   color: var(--status-ok-color);
   filter: drop-shadow(0 0 6px var(--primary-color));
 }
 
 /* Hide bullets only for checkbox items */
-.markdown ul li:has(input[type="checkbox"])::before {
+.markdown ul:not(.tocListNested) li:has(input[type="checkbox"])::before {
   display: none;
 }
 
 /* Cyberpunk checkbox styling */
-.markdown ul li input[type="checkbox"] {
+.markdown ul:not(.tocListNested) li input[type="checkbox"] {
   appearance: none;
   width: 22px;
   height: 22px;
@@ -355,7 +377,7 @@
   vertical-align: top;
 }
 
-.markdown ul li input[type="checkbox"]:hover {
+.markdown ul:not(.tocListNested) li input[type="checkbox"]:hover {
   border-color: var(--status-ok-color);
   box-shadow:
     0 0 10px rgba(0, 255, 65, 0.3),
@@ -363,7 +385,7 @@
   animation: glitch 0.3s ease-in-out;
 }
 
-.markdown ul li input[type="checkbox"]:checked {
+.markdown ul:not(.tocListNested) li input[type="checkbox"]:checked {
   background: linear-gradient(45deg, var(--primary-color), #00ff41);
   border-color: var(--status-ok-color);
   box-shadow:
@@ -371,7 +393,7 @@
     inset 0 0 15px rgba(0, 255, 65, 0.2);
 }
 
-.markdown ul li input[type="checkbox"]:checked::after {
+.markdown ul:not(.tocListNested) li input[type="checkbox"]:checked::after {
   content: '▦';
   position: absolute;
   left: 50%;
@@ -397,6 +419,170 @@
     transform: translateX(-1px);
   }
 }
+
+.tableOfContents {
+  font-family: var(--font-neon);
+  margin: 1rem 0;
+  padding: 0;
+  background: rgba(var(--background-color-rgb), 0.7);
+  border: 2px solid rgba(var(--dynamic-dominant-color-rgb), 0.3);
+  border-radius: 2px;
+  font-size: inherit;
+  overflow: hidden;
+}
+
+/* Toggle button */
+.tocToggle {
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.2rem 0.8rem;
+  background: rgba(var(--bit-dark-color-rgb), 0.6);
+  border: none;
+  border-bottom: 1px solid rgba(var(--dynamic-dominant-color-rgb), 0.2);
+  color: var(--text-color);
+  font-family: var(--font-neon);
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  line-height: 1;
+}
+
+.tocToggle:hover {
+  background: rgba(var(--dynamic-dominant-color-rgb), 0.1);
+}
+
+.tocToggleIcon {
+  color: var(--dynamic-dominant-color);
+  font-size: 1.8rem;
+  line-height: 1;
+  transition: transform 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.tocCollapsed .tocListContainer {
+  max-height: 0;
+  opacity: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  overflow: hidden;
+  transition: max-height 0.35s ease, opacity 0.25s ease, padding-top 0.35s, padding-bottom 0.35s;
+}
+
+.tocCollapsed .tocToggle {
+  border-bottom: none;
+}
+
+.tocExpanded .tocListContainer {
+  max-height: 1200px;
+  opacity: 1;
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+  overflow: hidden;
+  transition: max-height 0.45s ease, opacity 0.3s ease 0.05s, padding-top 0.45s, padding-bottom 0.45s;
+}
+
+.tocListContainer {
+  padding: 0 1rem;
+}
+
+.tocListNested {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  position: relative;
+}
+
+.tocListNested .tocListNested {
+  margin-left: 0.8rem;
+}
+
+.tocItemNested {
+  position: relative;
+  margin: 0;
+  padding: 0;
+}
+
+.tocListNested .tocListNested .tocItemNested::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  border-left: 1px dashed rgba(var(--dynamic-dominant-color-rgb), 0.35);
+}
+
+.tocListNested .tocListNested .tocItemNested:last-child::before {
+  bottom: auto;
+  height: 1.25rem;
+}
+
+.tocListNested .tocListNested .tocItemNested::after {
+  content: '';
+  position: absolute;
+  top: 1.25rem;
+  left: 0;
+  width: 1rem;
+  border-top: 1px dashed rgba(var(--dynamic-dominant-color-rgb), 0.35);
+}
+
+.tocLinkWrapper {
+  display: flex;
+  align-items: center;
+  padding: 0.3rem 0;
+  padding-left: 1.4rem;
+}
+
+.tocListContainer>.tocListNested>.tocItemNested>.tocLinkWrapper {
+  padding-left: 0;
+}
+
+.tocLinkWrapper a {
+  color: var(--text-color);
+  transition: all 0.2s ease;
+  text-decoration: none !important;
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid rgba(var(--dynamic-dominant-color-rgb), 0.3);
+  padding: 0.2rem 0.4rem 0.2rem 2.2rem;
+  position: relative;
+  font-size: 0.9em;
+}
+
+.tocLinkWrapper a:hover {
+  border-color: rgba(var(--dynamic-dominant-color-rgb), 0.8);
+  background: rgba(var(--dynamic-dominant-color-rgb), 0.05);
+}
+
+.tocLinkWrapper a::before {
+  content: attr(data-label);
+  position: absolute;
+  left: 0.3rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: rgba(var(--dynamic-dominant-color-rgb), 0.7);
+  font-weight: 200;
+  font-size: 0.75em;
+  background-color: rgba(var(--background-color-rgb), 0.7);
+  padding: 0.1rem 0.25rem;
+  border: 1px dashed rgba(var(--dynamic-dominant-color-rgb), 0.3);
+  transition: all 0.2s ease;
+}
+
+.tocLinkWrapper a:hover::before {
+  border-color: rgba(var(--dynamic-dominant-color-rgb), 0.8);
+}
+
+.tableOfContents a {
+  list-style: none;
+}
+
 
 /**
  * ███╗   ███╗██████╗                               
@@ -424,7 +610,7 @@
   border: 1px solid rgba(var(--primary-color-rgb), 0.3);
   border-radius: 0.15rem;
   overflow: hidden;
-  font-family: var(--font-mono);
+  font-family: var(--font-neon);
   position: relative;
   box-shadow: 0 4px 12px rgba(var(--primary-color-rgb), 0.08);
 }
@@ -526,8 +712,8 @@
 
 .markdown code {
   border-radius: 4px;
-  font-size: 0.9em;
-  font-family: var(--font-mono);
+  font-size: 0.95em;
+  font-family: var(--font-neon);
   font-weight: 400;
   transition: background 0.2s;
   border: 1px dashed var(--primary-color);
@@ -543,18 +729,14 @@
   border: none;
   padding: 0.2rem 0.5rem;
   background: none;
-  font-size: 0.9em;
+  font-size: 0.95em;
   font-family: inherit;
   background: linear-gradient(135deg, rgba(var(--dynamic-dominant-color-rgb), 0.05) 0%, rgba(var(--background-color-rgb), 0.05) 100%);
 }
 
-.markdown pre {
-  margin: 2rem auto;
-}
-
 .codeBlock {
   position: relative;
-  font-size: 1rem;
+  font-size: 0.9rem;
   border-radius: 2px;
   background: rgba(var(--bit-dark-color-rgb), 0.8);
 }
@@ -634,7 +816,7 @@
   padding: 0.25rem 0.5rem;
   border-radius: 2px;
   cursor: pointer;
-  font-family: var(--font-mono);
+  font-family: var(--font-neon);
   font-size: 0.75rem;
   font-weight: 500;
   transition: all 0.2s ease-in-out;
@@ -682,7 +864,7 @@
       transparent,
       var(--primary-color)) 1;
   border-radius: 0.3rem;
-  font-family: var(--font-mono);
+  font-family: var(--font-neon);
   position: relative;
 }
 
@@ -757,7 +939,7 @@
   border-radius: 0.15rem;
   box-decoration-break: clone;
   -webkit-box-decoration-break: clone;
-  font-size: 1rem;
+  font-size: 0.95rem;
 }
 
 .markdown mark {
@@ -767,7 +949,7 @@
   background-size: cover, cover;
   background-position: center, center;
   border: 1px solid rgba(var(--dynamic-dominant-color-rgb), 0.5);
-  font-family: var(--font-mono);
+  font-family: var(--font-neon);
   font-weight: 400;
   text-shadow: 0 0 4px rgba(var(--primary-color-rgb), 0.4);
 }
@@ -793,29 +975,30 @@
   gap: 0.6rem;
   font-weight: 700;
   color: var(--primary-color);
-  font-family: var(--font-mono);
-  font-size: 1.1rem;
+  font-family: var(--font-neon);
+  font-size: 0.95rem;
   letter-spacing: 0.5px;
   text-transform: uppercase;
 }
 
 .admonitionIcon {
-  font-size: 1rem;
+  font-size: 0.95rem;
   filter: drop-shadow(0 0 2px rgba(var(--primary-color-rgb), 0.3));
   display: flex;
   align-items: center;
+  transform: translateY(-1px);
 }
 
 .admonitionContent {
   color: var(--text-color);
-  font-family: var(--font-mono);
-  line-height: 1.6;
+  font-family: var(--font-neon);
+  line-height: 1.5;
 }
 
 .admonitionContent p {
   margin-top: 0.5rem;
   margin-bottom: 0.7rem;
-  font-size: 1rem;
+  font-size: 0.9rem;
 }
 
 .admonitionContent p:last-child {
@@ -951,7 +1134,7 @@
 .iframeCaption {
   display: block;
   background: rgba(var(--dynamic-dominant-color-rgb), 0.5);
-  font-family: var(--font-mono);
+  font-family: var(--font-neon);
   font-size: 0.8rem;
   color: rgba(var(--text-color-rgb), 0.5);
   text-align: center;
@@ -966,7 +1149,7 @@
   border: none !important;
   margin: 0 !important;
   max-height: 500px !important;
-  background: rgba(10,10,13, 1) !important;
+  background: rgba(10, 10, 13, 1) !important;
 }
 
 .iframeEmbedWrapper img {
@@ -1039,7 +1222,7 @@
 }
 
 .loadingState p {
-  font-family: var(--font-mono);
+  font-family: var(--font-neon);
   font-size: 0.9rem;
   font-weight: 300;
   position: relative;
@@ -1141,7 +1324,7 @@
   display: flex;
   align-items: flex-start;
   padding: 0.5rem 1rem;
-  font-size: 1.1rem;
+  font-size: 1rem;
   max-width: 1000px;
   width: 100%;
 }
@@ -1149,8 +1332,8 @@
 .authorSignature::before {
   content: "";
   display: inline-block;
-  width: 48px;
-  height: 48px;
+  width: 42px;
+  height: 42px;
   border-radius: 2px;
   background: linear-gradient(135deg, var(--primary-color), #fff 80%);
   margin-right: 1rem;
@@ -1163,8 +1346,8 @@
 }
 
 .authorSignature p {
-  font-family: var(--font-sans);
-  font-size: 1.08rem;
+  font-family: var(--font-neon);
+  font-size: 0.9rem;
   color: var(--primary-color);
   margin: 0;
   letter-spacing: 0.01em;
@@ -1214,8 +1397,8 @@
   color: var(--background-color);
   padding: 0.5rem 1rem;
   border-radius: 2px;
-  font-family: var(--font-mono);
-  font-size: 0.8rem;
+  font-family: var(--font-neon);
+  font-size: 0.75rem;
   font-weight: 400;
   display: flex;
   align-items: center;
@@ -1284,7 +1467,7 @@
 
 @media (max-width: 768px) {
   .markdown table {
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     margin: 1.5rem 0;
   }
 
@@ -1302,15 +1485,14 @@
 @media (max-width: 600px) {
 
   .markdown {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
   }
 
   .markdown p {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
   }
 
   .postStatus {
     display: none;
   }
 }
-

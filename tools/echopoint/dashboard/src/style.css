@@ -1,0 +1,527 @@
+@font-face {
+    font-family: 'Monaspace Neon';
+    src: url('https://cdn.ujjwalvivek.com/fonts/Monaspace/Neon/Regular.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: block;
+}
+
+@font-face {
+    font-family: 'Monaspace Neon';
+    src: url('https://cdn.ujjwalvivek.com/fonts/Monaspace/Neon/Bold.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+    font-display: block;
+}
+
+@font-face {
+    font-family: 'Monaspace Neon';
+    src: url('https://cdn.ujjwalvivek.com/fonts/Monaspace/Neon/SemiBold.woff2') format('woff2');
+    font-weight: 600;
+    font-style: normal;
+    font-display: block;
+}
+
+@font-face {
+    font-family: 'Monaspace Neon';
+    src: url('https://cdn.ujjwalvivek.com/fonts/Monaspace/Neon/ExtraBold.woff2') format('woff2');
+    font-weight: 800;
+    font-style: normal;
+    font-display: block;
+}
+
+@font-face {
+    font-family: 'Monaspace Krypton';
+    src: url('https://cdn.ujjwalvivek.com/fonts/Monaspace/Krypton/Regular.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: block;
+}
+
+@font-face {
+    font-family: 'Monaspace Krypton';
+    src: url('https://cdn.ujjwalvivek.com/fonts/Monaspace/Krypton/Bold.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+    font-display: block;
+}
+
+@font-face {
+    font-family: 'Monaspace Krypton';
+    src: url('https://cdn.ujjwalvivek.com/fonts/Monaspace/Krypton/SemiBold.woff2') format('woff2');
+    font-weight: 600;
+    font-style: normal;
+    font-display: block;
+}
+
+@font-face {
+    font-family: 'Monaspace Krypton';
+    src: url('https://cdn.ujjwalvivek.com/fonts/Monaspace/Krypton/ExtraBold.woff2') format('woff2');
+    font-weight: 800;
+    font-style: normal;
+    font-display: block;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Monaspace Neon', 'Monaspace Krypton', monospace;
+    background: var(--bg-base);
+    color: var(--text);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+    color: var(--accent-blue);
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+code,
+pre {
+    font-family: 'Monaspace Krypton', monospace;
+    font-size: 0.8em;
+}
+
+::selection {
+    background: var(--accent-blue);
+    color: var(--bg-base);
+}
+
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--surface1);
+    border-radius: 2px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--surface2);
+}
+
+:root,
+[data-theme="mocha"] {
+    --bg-base: #1e1e2e;
+    --bg-mantle: #181825;
+    --bg-crust: #11111b;
+    --surface0: #313244;
+    --surface1: #45475a;
+    --surface2: #585b70;
+    --overlay0: #6c7086;
+    --overlay1: #7f849c;
+    --text: #cdd6f4;
+    --text-sub: #a6adc8;
+    --text-muted: #6c7086;
+
+    --accent-rosewater: #f5e0dc;
+    --accent-flamingo: #f2cdcd;
+    --accent-pink: #f5c2e7;
+    --accent-mauve: #cba6f7;
+    --accent-red: #f38ba8;
+    --accent-maroon: #eba0ac;
+    --accent-peach: #fab387;
+    --accent-yellow: #f9e2af;
+    --accent-green: #a6e3a1;
+    --accent-teal: #94e2d5;
+    --accent-sky: #89dceb;
+    --accent-sapphire: #74c7ec;
+    --accent-blue: #89b4fa;
+    --accent-lavender: #b4befe;
+
+    --border: #313244;
+    --radius: 2px;
+    --radius-small: 1px;
+}
+
+[data-theme="macchiato"] {
+    --bg-base: #24273a;
+    --bg-mantle: #1e2030;
+    --bg-crust: #181926;
+    --surface0: #363a4f;
+    --surface1: #494d64;
+    --surface2: #5b6078;
+    --overlay0: #6e738d;
+    --overlay1: #8087a2;
+    --text: #cad3f5;
+    --text-sub: #a5adcb;
+    --text-muted: #6e738d;
+
+    --accent-rosewater: #f4dbd6;
+    --accent-flamingo: #f0c6c6;
+    --accent-pink: #f5bde6;
+    --accent-mauve: #c6a0f6;
+    --accent-red: #ed8796;
+    --accent-maroon: #ee99a0;
+    --accent-peach: #f5a97f;
+    --accent-yellow: #eed49f;
+    --accent-green: #a6da95;
+    --accent-teal: #8bd5ca;
+    --accent-sky: #91d7e3;
+    --accent-sapphire: #7dc4e4;
+    --accent-blue: #8aadf4;
+    --accent-lavender: #b7bdf8;
+
+    --border: #363a4f;
+}
+
+[data-theme="frappe"] {
+    --bg-base: #303446;
+    --bg-mantle: #292c3c;
+    --bg-crust: #232634;
+    --surface0: #414559;
+    --surface1: #51576d;
+    --surface2: #626880;
+    --overlay0: #737994;
+    --overlay1: #838ba7;
+    --text: #c6d0f5;
+    --text-sub: #a5adce;
+    --text-muted: #737994;
+
+    --accent-rosewater: #f2d5cf;
+    --accent-flamingo: #eebebe;
+    --accent-pink: #f4b8e4;
+    --accent-mauve: #ca9ee6;
+    --accent-red: #e78284;
+    --accent-maroon: #ea999c;
+    --accent-peach: #ef9f76;
+    --accent-yellow: #e5c890;
+    --accent-green: #a6d189;
+    --accent-teal: #81c8be;
+    --accent-sky: #99d1db;
+    --accent-sapphire: #85c1dc;
+    --accent-blue: #8caaee;
+    --accent-lavender: #babbf1;
+
+    --border: #414559;
+}
+
+[data-theme="latte"] {
+    --bg-base: #eff1f5;
+    --bg-mantle: #e6e9ef;
+    --bg-crust: #dce0e8;
+    --surface0: #ccd0da;
+    --surface1: #bcc0cc;
+    --surface2: #acb0be;
+    --overlay0: #9ca0b0;
+    --overlay1: #8c8fa1;
+    --text: #4c4f69;
+    --text-sub: #5c5f77;
+    --text-muted: #9ca0b0;
+
+    --accent-rosewater: #dc8a78;
+    --accent-flamingo: #dd7878;
+    --accent-pink: #ea76cb;
+    --accent-mauve: #8839ef;
+    --accent-red: #d20f39;
+    --accent-maroon: #e64553;
+    --accent-peach: #fe640b;
+    --accent-yellow: #df8e1d;
+    --accent-green: #40a02b;
+    --accent-teal: #179299;
+    --accent-sky: #04a5e5;
+    --accent-sapphire: #209fb5;
+    --accent-blue: #1e66f5;
+    --accent-lavender: #7287fd;
+
+    --border: #ccd0da;
+}
+
+[data-theme="mono"] {
+    --bg-base: #0e0e0e;
+    --bg-mantle: #0a0a0a;
+    --bg-crust: #060606;
+    --surface0: #1a1a1a;
+    --surface1: #262626;
+    --surface2: #333333;
+    --overlay0: #555555;
+    --overlay1: #777777;
+    --text: #d4d4d4;
+    --text-sub: #999999;
+    --text-muted: #555555;
+
+    --accent-rosewater: #d4d4d4;
+    --accent-flamingo: #bbbbbb;
+    --accent-pink: #cccccc;
+    --accent-mauve: #aaaaaa;
+    --accent-red: #999999;
+    --accent-maroon: #888888;
+    --accent-peach: #bbbbbb;
+    --accent-yellow: #cccccc;
+    --accent-green: #aaaaaa;
+    --accent-teal: #999999;
+    --accent-sky: #bbbbbb;
+    --accent-sapphire: #aaaaaa;
+    --accent-blue: #cccccc;
+    --accent-lavender: #bbbbbb;
+
+    --border: #1a1a1a;
+}
+
+.shell {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1.5rem;
+    height: 2.5rem;
+    background: var(--bg-mantle);
+    border-bottom: 2px solid var(--border);
+    flex-shrink: 0;
+}
+
+.topbarLeft {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.topbar h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    font-family: 'Monaspace Krypton';
+    cursor: default;
+    letter-spacing: 0.1px;
+    text-transform: uppercase;
+}
+
+.topbarRight {
+    display: flex;
+    align-items: center;
+}
+
+.themeSquares {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.hamburgerBtn {
+    display: none;
+    background: transparent;
+    border: none;
+    color: var(--text);
+    cursor: pointer;
+    padding: 0.5rem;
+}
+
+.hamburgerBtn:hover {
+    color: var(--accent-blue);
+}
+
+.themeSquare {
+    width: 1.3rem;
+    height: 1.3rem;
+    border-radius: 2px;
+    cursor: pointer;
+    border: 1.5px dashed transparent;
+    transition: transform 0.1s, border-color 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.themeSquare:hover {
+    transform: scale(1.1);
+}
+
+.themeSquare.activeTheme {
+    border-color: var(--accent-blue);
+}
+
+.themeSquare.mocha {
+    background: #1e1e2e;
+}
+
+.themeSquare.macchiato {
+    background: #24273a;
+}
+
+.themeSquare.frappe {
+    background: #303446;
+}
+
+.themeSquare.latte {
+    background: #eff1f5;
+}
+
+.themeSquare.mono {
+    background: #0e0e0e;
+}
+
+.randomBtn {
+    background: var(--surface1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    color: var(--text-sub);
+}
+
+.randomBtn svg {
+    width: 0.8rem;
+    height: 0.8rem;
+}
+
+.randomBtn:hover {
+    color: var(--text);
+}
+
+.mainContent {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    position: relative;
+}
+
+.loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    animation: pulse 1.5s infinite;
+}
+
+.clickerWidget {
+    margin: auto 1.5rem 1.5rem;
+    background: var(--bg-crust);
+    border: 1px dashed var(--border);
+    border-radius: var(--radius);
+    padding: 1rem;
+    text-align: center;
+    margin-top: 2rem;
+}
+
+.clickerTitle {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.clickerCount {
+    font-size: 1.5rem;
+    font-weight: 800;
+    font-family: 'Monaspace Krypton', monospace;
+    color: var(--accent-mauve);
+    margin-bottom: 0.75rem;
+}
+
+.clickerBtn {
+    background: var(--surface1);
+    color: var(--text);
+    border: 1px solid var(--border);
+    padding: 0.4rem 1rem;
+    border-radius: var(--radius);
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.1s;
+    width: 100%;
+}
+
+.clickerBtn:hover {
+    background: var(--accent-mauve);
+    color: var(--bg-base);
+    border-color: var(--accent-mauve);
+}
+
+.clickerBtn:active {
+    transform: scale(0.95);
+}
+
+@media (max-width: 768px) {
+    .clickerWidget {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        padding: 0.3rem 0.5rem;
+        margin: 0;
+        border-color: transparent;
+    }
+
+    .clickerTitle {
+        display: none;
+    }
+
+    .clickerCount {
+        margin-bottom: 0;
+        font-size: 1.3rem;
+    }
+
+    .clickerBtn {
+        width: auto;
+        padding: 0.3rem 1rem;
+    }
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+}
+
+@media (max-width: 768px) {
+    .hamburgerBtn {
+        display: block;
+    }
+
+    .topbarRight {
+        position: absolute;
+        top: 2.5rem;
+        right: 0;
+        background: var(--surface0);
+        border: 1px solid var(--border);
+        border-top: none;
+        padding: 1rem;
+        border-radius: 0 0 0 var(--radius);
+        box-shadow: -4px 4px 12px rgba(0, 0, 0, 0.2);
+        display: none;
+        z-index: 100;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .topbarRight.open {
+        display: flex;
+    }
+}

@@ -7,7 +7,6 @@ import { ThemeContext } from '../../Utils/ThemeSwitcher/ThemeContext';
 const BIRTH_DATE = new Date('1997-09-21T00:00:00Z');
 
 function computeAge(birthDate, now = new Date()) {
-  // compute Y/M/D/H/M/S components
   let y = now.getFullYear() - birthDate.getFullYear();
   let m = now.getMonth() - birthDate.getMonth();
   let d = now.getDate() - birthDate.getDate();
@@ -19,8 +18,7 @@ function computeAge(birthDate, now = new Date()) {
   if (mm < 0) { mm += 60; hh -= 1; }
   if (hh < 0) { hh += 24; d -= 1; }
   if (d < 0) {
-    // borrow days from previous month
-    const prev = new Date(now.getFullYear(), now.getMonth(), 0); // last day of prev month
+    const prev = new Date(now.getFullYear(), now.getMonth(), 0);
     d += prev.getDate();
     m -= 1;
   }
@@ -229,27 +227,79 @@ const InteractiveIntroText = () => {
   };
 
   const commands = [
-    <span><span className={styles.command}>{`whoami`}</span><span className={styles.commandParam}>{` --verbose`}</span></span>
+    <span><span className={styles.command}>{`whoami`}</span><span className={styles.commandParam}>{` --verbose --exit`}</span></span>
   ];
 
   return (
     <>
       <div className={styles.terminalContainer}>
+        <span className={styles.border}></span>
         <div className={styles.commandBlock}>
           <StarshipPrompt />{commands[0]}
           <div className={styles.output}>
-            <div className={styles.outputLine}>{renderGlow("Hi, I'm Vivek.")}</div>
-            <div className={styles.outputLine}>{renderGlow("Based out of Bengaluru, India")}</div>
-            <div className={styles.outputLine}>{renderGlow("Currently building a high-performance graphics engine in Rust.")}</div>
+            <div className={styles.outputLine}>
+              {renderGlow("hi, i'm")}
+              <span className={`${styles.refBadgeText} ${styles.statusWarn} ${styles.statusBold}`}>
+                {renderGlow("Vivek.", { delay: 0.02 })}
+              </span>
+            </div>
+            <div className={styles.outputLine}>
+              {renderGlow("currently writing a")}
+              <span className={`${styles.refBadgeText} ${styles.statusWarn} ${styles.statusBold}`} >
+                {renderGlow("cross-platform game-engine", { delay: 0.02 })}
+              </span>
+              {renderGlow("in")}
+              <span className={`${styles.refBadgeText} ${styles.statusWarn} ${styles.statusBold}`} style={{ marginRight: '0' }} >
+                {renderGlow("Rust and WASM", { delay: 0.02 })}
+              </span>
+            </div>
             <div className={styles.outputLine}>{renderGlow(" ")}</div>
-            <div className={styles.outputLine}>{renderGlow("My title says Technical Product Manager, but my commit history says Systems Engineer.")}</div>
-            <div className={styles.outputLine}>{renderGlow("I’ve been programming for over a decade. I don't just manage roadmaps; I validate architecture.")}</div>
-            <div className={styles.outputLine}>{renderGlow("I've been bridging the gap between \"Business Requirements\" and \"Technical Constraints\" for 3+ years.")}</div>
+            <div className={styles.outputLine}>
+              {renderGlow("my title says")}
+              <span className={`${styles.refBadgeText} ${styles.statusWarn} ${styles.statusBold}`} >
+                {renderGlow("Technical Product Manager,", { delay: 0.02 })}
+              </span>
+              {renderGlow("but my commits say")}
+              <span className={`${styles.refBadgeText} ${styles.statusWarn} ${styles.statusBold}`} style={{ marginRight: '0' }} >
+                {renderGlow("Systems Engineer.", { delay: 0.02 })}
+              </span>
+            </div>
+            <div className={styles.outputLine}>
+              {renderGlow("i’ve been programming for over a")}
+              <span className={`${styles.refBadgeText} ${styles.statusWarn} ${styles.statusBold}`} >
+                {renderGlow("decade.", { delay: 0.02 })}
+              </span>
+              {renderGlow("architecture first, roadmaps second.")}
+            </div>
+            <div className={styles.outputLine}>
+              {renderGlow("i’ve been bridging the gap between")}
+              <span className={`${styles.refBadgeText} ${styles.statusWarn} ${styles.statusBold}`} >
+                {renderGlow("Business Requirements", { delay: 0.02 })}
+              </span>
+              {renderGlow("and")}
+              <span className={`${styles.refBadgeText} ${styles.statusWarn} ${styles.statusBold}`} >
+                {renderGlow("Technical Constraints", { delay: 0.02 })}
+              </span>
+              {renderGlow("for 3+ years.")}
+            </div>
             <div className={styles.outputLine}>{renderGlow(" ")}</div>
-            <div className={styles.outputLine}>{renderGlow("Welcome to my corner where I build performant systems and break them just to see how they work.")}</div>
-            <div className={styles.outputLine}>{renderGlow(" ")}</div>
-            <div className={styles.outputLine}>{renderGlow("^C")}</div>
-            <div className={styles.outputLine}>{renderGlow("Before you move on, do check out my recent logs below.")}</div>
+            <div className={styles.outputLine}>
+              {renderGlow("welcome to my corner where I")}
+              <span className={`${styles.refBadgeText} ${styles.statusWarn} ${styles.statusBold}`} >
+                {renderGlow("build", { delay: 0.02 })}
+              </span>
+              {renderGlow("performant systems and")}
+              <span className={`${styles.refBadgeText} ${styles.statusWarn} ${styles.statusBold}`} >
+                {renderGlow("break", { delay: 0.02 })}
+              </span>
+              {renderGlow("them just to see how they work.")}
+            </div>
+            <div className={styles.outputLine}>
+              {renderGlow("before you move on, do check out my")}
+              <span className={`${styles.refBadgeText} ${styles.statusWarn} ${styles.statusBold}`} >
+                {renderGlow("recent logs below.", { delay: 0.02 })}
+              </span>
+            </div>
           </div>
         </div>
       </div>

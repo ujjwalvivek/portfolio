@@ -52,7 +52,7 @@
   justify-content: center;
   backdrop-filter: blur(20px) saturate(180%);
   animation: resumeOverlayFadeIn 0.25s cubic-bezier(.4, 0, .2, 1);
-  font-family: var(--font-mono);
+  font-family: var(--font-neon);
 }
 
 .resumeOverlayModal {
@@ -151,7 +151,7 @@
   gap: 0.5rem;
   flex: 1;
   text-shadow: 0 0 10px rgba(56, 139, 253, 0.3);
-  font-family: var(--font-mono);
+  font-family: var(--font-neon);
 }
 
 .headerButtons {
@@ -172,7 +172,7 @@
   box-sizing: border-box;
   line-height: 1;
   color: var(--text-color);
-  font-family: var(--font-mono);
+  font-family: var(--font-neon);
   margin-bottom: 0;
   border: 1px solid rgba(var(--dynamic-dominant-color-rgb), 0.9);
   border-radius: 2px;

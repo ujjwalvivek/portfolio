@@ -1,17 +1,12 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import styles from './Projects.module.css';
 import { DescriptionCell } from "../../Modules/ToolTip/DescriptionCell";
 import { TagCell } from "../../Modules/ToolTip/TagCell";
-import { VscGithubInverted } from "react-icons/vsc";
 import PdfViewer from "../../Modules/PDFViewer/PdfViewer";
 import { ProjectsData } from './ProjectsData';
 import { useBackground } from '../../Background/BackgroundContext';
-import { BsJournalText } from 'react-icons/bs';
-import { SiFigma, SiNotion } from "react-icons/si";
-import { PiFilePdfFill } from "react-icons/pi";
-import { TbWorldWww } from "react-icons/tb";
-import { BsHourglassSplit } from 'react-icons/bs';
 import { RiArchiveFill } from "react-icons/ri";
+import ButtonGroup from '../../Modules/RecentProjects/ButtonGroup';
 
 const Projects = () => {
 
@@ -40,7 +35,7 @@ const Projects = () => {
 
   const [showDelay, setShowDelay] = useState(true);
   useEffect(() => {
-    const t = setTimeout(() => setShowDelay(false), 2000); // change 1200 -> 2000 for 2s
+    const t = setTimeout(() => setShowDelay(false), 2000);
     return () => clearTimeout(t);
   }, []);
 
@@ -79,107 +74,6 @@ const Projects = () => {
     const counts = { all: ProjectsData.length, pm: pmProjects.length, dev: devProjects.length };
     return counts[projectFilter];
   }, [projectFilter, pmProjects.length, devProjects.length]);
-
-  const getButtonLayout = useCallback((project) => {
-    const { contentLinks } = project;
-
-    const primary = contentLinks?.blogPost ? {
-      type: 'primary',
-      label: 'Blog',
-      icon: <BsJournalText className={styles.journeyIcon} />,
-      action: () => window.open(contentLinks.blogPost, '_blank'),
-      className: 'openAppBtn'
-    } : null;
-
-    const secondary = [];
-
-    if (contentLinks?.notionEmbed) {
-      secondary.push({
-        type: 'secondary',
-        label: 'Case Study',
-        icon: <SiNotion className={styles.journeyIcon} />,
-        action: () => setActiveWindow(project.id + '-embed'),
-        className: 'openAppBtn'
-      });
-    }
-    if (contentLinks?.pdfDocument) {
-      secondary.push({
-        type: 'secondary',
-        label: 'Docs',
-        icon: <PiFilePdfFill className={styles.journeyIcon} />,
-        action: () => setActiveWindow(project.id + '-embed'),
-        className: 'openAppBtn'
-      });
-    }
-    if (contentLinks?.figmaDesign) {
-      secondary.push({
-        type: 'secondary',
-        label: 'Design',
-        icon: <SiFigma className={styles.journeyIcon} />,
-        action: () => window.open(contentLinks.figmaDesign, '_blank'),
-        className: 'openAppBtn'
-      });
-    }
-    if (contentLinks?.githubRepo) {
-      secondary.push({
-        type: 'secondary',
-        label: 'Code',
-        icon: <VscGithubInverted className={styles.journeyIcon} />,
-        action: () => window.open(contentLinks.githubRepo, '_blank'),
-        className: 'openAppBtn'
-      });
-    }
-    if (contentLinks?.websiteLink) {
-      secondary.push({
-        type: 'secondary',
-        label: 'Web',
-        icon: <TbWorldWww className={styles.journeyIcon} />,
-        action: () => window.open(contentLinks.websiteLink, '_blank'),
-        className: 'openAppBtn'
-      });
-    }
-
-    // Layout logic
-    if (primary && secondary.length > 0) {
-      return { layout: 'split', buttons: [primary, secondary[0]] };
-    } else if (primary && secondary.length === 0) {
-      return { layout: 'fullPrimary', buttons: [primary] };
-    } else if (!primary && secondary.length === 1) {
-      return { layout: 'fullSecondary', buttons: [secondary[0]] };
-    } else if (!primary && secondary.length >= 2) {
-      return { layout: 'splitSecondary', buttons: [secondary[0], secondary[1]] };
-    }
-
-    return {
-      layout: 'wip',
-      buttons: [{
-        type: 'wip',
-        label: 'WIP. Devlog Soon.',
-        icon: <BsHourglassSplit />,
-        action: () => { },
-        className: 'wipBtn'
-      }]
-    };
-  }, []);
-
-  const ButtonGroup = ({ project }) => {
-    const { layout, buttons } = getButtonLayout(project);
-    if (buttons.length === 0) return null;
-
-    return (
-      <div className={`${styles.buttonContainer} ${styles[layout]}`}>
-        {buttons.map((button, index) => (
-          <button
-            key={index}
-            className={styles[button.className]}
-            onClick={button.action}
-          >
-            {button.icon} {" "} {button.label}
-          </button>
-        ))}
-      </div>
-    );
-  };
 
   return (
     <div className={styles.projectsRoot}>
@@ -263,15 +157,11 @@ const Projects = () => {
           )}
         </div>
 
-        <div className={styles.tableStats}>
-
-        </div>
-
         {!isMobile ? (
           <table className={styles.projectsTable}>
-            <tbody>
+            <tbody key={projectFilter}>
               {filteredSections.map(section => (
-                <React.Fragment key={section.title}>
+                <React.Fragment key={section.section}>
                   {section.projects.map((project, idx) => (
                     <tr key={project.id} className={styles.glassRow} id={`project-card-${section.section}-${idx}`}>
                       <td className={styles.cell}><RiArchiveFill /></td>
@@ -284,7 +174,11 @@ const Projects = () => {
                         <TagCell tags={project.tags} visibleCount={project.visibleTags} />
                       </td>
                       <td className={styles.cell}>
-                        <ButtonGroup project={project} />
+                        <ButtonGroup
+                          project={project}
+                          onEmbed={(id) => setActiveWindow(id + '-embed')}
+                          classNames={{ container: styles.buttonContainer, primary: styles.openAppBtn, secondary: styles.openAppBtn, wip: styles.wipBtn }}
+                        />
                       </td>
                     </tr>
                   ))}
@@ -293,9 +187,9 @@ const Projects = () => {
             </tbody>
           </table>
         ) : (
-          <div>
+          <div key={projectFilter}>
             {filteredSections.map(section => (
-              <React.Fragment key={section.title}>
+              <React.Fragment key={section.section}>
                 {section.projects.map((project, idx) => (
                   <div key={project.id} className={styles.projectCard} id={`project-card-${section.section}-${idx}`}>
                     <div className={styles.cardHeader}>
@@ -309,7 +203,11 @@ const Projects = () => {
                     <div className={styles.cell}>
                       <TagCell tags={project.tags} visibleCount={project.visibleTags} />
                     </div>
-                    <ButtonGroup project={project} />
+                    <ButtonGroup
+                      project={project}
+                      onEmbed={(id) => setActiveWindow(id + '-embed')}
+                      classNames={{ container: styles.buttonContainer, primary: styles.openAppBtn, secondary: styles.openAppBtn, wip: styles.wipBtn }}
+                    />
                   </div>
                 ))}
               </React.Fragment>
@@ -318,7 +216,7 @@ const Projects = () => {
         )}
       </div>
 
-      <div className={styles.stats} style={{ width: '100%', padding: '1rem' }}>
+      <div className={styles.stats} style={{ width: '100%', padding: '1rem 0' }}>
         <div className={styles.tableEnd} data-count={projectCount}></div>
       </div>
 

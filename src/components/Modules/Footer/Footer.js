@@ -5,7 +5,7 @@ import { FaCode } from "react-icons/fa6";
 import { CgDarkMode } from "react-icons/cg";
 import { ThemeContext } from '../../Utils/ThemeSwitcher/ThemeContext';
 import { RiStackFill } from "react-icons/ri";
-import BackgroundTest from '../../Utils/BackgroundTest/BackgroundTest';
+import BackgroundTest from '../BackgroundTest/BackgroundTest';
 import { TfiLinkedin } from "react-icons/tfi";
 import { FaYCombinator } from "react-icons/fa";
 import { TbBrandGithubFilled } from "react-icons/tb";
@@ -45,7 +45,7 @@ const Footer = ({ showOverlay, setShowOverlay }) => {
     const isMobile = useMemo(() => {
         if (typeof navigator === "undefined" || typeof window === "undefined") return false;
         const ua = navigator.userAgent;
-        // iPadOS 13+ masquerades as Mac, but has touch events and a small screen
+        //? iPadOS 13+ masquerades as Mac, but has touch events and a small screen
         const isIpad = (
             /iPad/.test(ua) ||
             (ua.includes("Macintosh") && ('ontouchstart' in window || navigator.maxTouchPoints > 1))

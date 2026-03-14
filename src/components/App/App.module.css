@@ -44,6 +44,7 @@ html {
   color: var(--text-color);
   transition: background-color 0.3s ease, color 0.3s ease;
   position: relative;
+  scrollbar-gutter: stable;
 }
 
 .mainContent {
@@ -51,9 +52,7 @@ html {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  /* vertical center */
   align-items: center;
-  /* horizontal center */
   padding: 8rem 0 0 0;
   margin: 0 auto;
   width: 100%;

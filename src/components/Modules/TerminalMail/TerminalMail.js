@@ -22,20 +22,25 @@
  *                                                                  
  */
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import emailjs from '@emailjs/browser';
 import styles from './TerminalMail.module.css';
 import { RiTerminalBoxFill } from "react-icons/ri";
 
-// EmailJS Configuration
+import TUIPanel from './TUIPanel';
+import StepSidebar from './StepSidebar';
+import InputPane from './InputPane';
+import ComposePane from './ComposePane';
+import HelpBar from './HelpBar';
+//? EmailJS Configuration
 const SERVICE_ID = 'service_1uxgvw6';
 const TEMPLATE_ID = 'terminal_mail';
 const PUBLIC_KEY = '7NdaPgOh1ikiQfrW9';
 
-// Turnstile Configuration (Invisible mode)
+//? Turnstile Configuration (Invisible mode)
 const TURNSTILE_SITE_KEY = '0x4AAAAAABmjbZtkf8GEbgrw';
 
-// Conversation steps
+//? Conversation steps
 const STEPS = {
     WELCOME: 'welcome',
     SUBJECT: 'subject',
@@ -48,83 +53,36 @@ const STEPS = {
     COMPLETE: 'complete'
 };
 
-function getAsciiHeader(width) {
-    if (width < 400) {
-        return [
-            '╔══[  MAIL ME  ]══════╗',
-            '║  MAIL TERMINAL v1.0 ║',
-            '╚═════════════════════╝',
-        ];
-    } else if (width < 700) {
-        return [
-            '╔═══[  SEND ME A MESSAGE  ]═══╗',
-            '║   MAIL TERMINAL  ·   v1.0   ║',
-            '╚═════════════════════════════╝',
-        ];
-    } else {
-        return [
-            '╔═════[  SEND ME A MESSAGE  ]═══════════════════╗',
-            '║     MAIL TERMINAL  ·   v1.0  ·   ENCRYPTED    ║',
-            '╚═══════════════════════════════════════════════╝',
-        ];
-    }
-}
-
 export default function TerminalMail() {
-    // Conversation state
-    const [currentStep, setCurrentStep] = useState(STEPS.WELCOME);
-    const [history, setHistory] = useState([]);
+    //? Conversation state
+    const [currentStep, setCurrentStep] = useState(STEPS.SUBJECT);
+    const [history, setHistory] = useState([
+        { message: 'encrypted connection established', type: 'system' },
+        { message: ' ', type: 'system' }
+    ]);
     const [input, setInput] = useState('');
 
-    // Message data
+    //? Message data
     const [subject, setSubject] = useState('');
     const [bodyLines, setBodyLines] = useState([]);
     const [needsContact, setNeedsContact] = useState(false);
-    const [contactMethod, setContactMethod] = useState(''); // 'email' or 'social'
+    const [contactMethod, setContactMethod] = useState(''); //* 'email' or 'social'
     const [contactInfo, setContactInfo] = useState('');
 
-    // UI state
+    //? UI state
     const [sending, setSending] = useState(false);
     const [turnstileToken, setTurnstileToken] = useState('');
     const [commandHistory, setCommandHistory] = useState([]);
     const [historyIndex, setHistoryIndex] = useState(-1);
+    const [sendResult, setSendResult] = useState(null); //* 'success' | 'error' | null
 
-    const inputRef = useRef(null);
     const terminalRef = useRef(null);
-    const invisibleRef = useRef(null); // ✅ NEW: Proper Turnstile container
+    const invisibleRef = useRef(null);
     const turnstileWidgetId = useRef(null);
 
-    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-
-    useEffect(() => {
-        const handleResize = () => setWindowWidth(window.innerWidth);
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
-    }, []);
-
-    // Initialize welcome message
-    useEffect(() => {
-        const welcomeMessages = [
-            ...getAsciiHeader(windowWidth),
-            '',
-            'Encrypted connection established via Turnstile',
-            'Connecting to Vivek\'s mail server',
-            'Ready to transmit your message',
-            '',
-            '┌─ Let\'s compose your message ─┐',
-            '',
-            'What\'s the subject of your message?'
-        ];
-
-        setHistory(welcomeMessages);
-        setCurrentStep(STEPS.SUBJECT);
-    }, [windowWidth]);
-
-    // Initialize Turnstile properly after DOM is ready
+    //? Initialize Turnstile properly after DOM is ready
     useEffect(() => {
         if (!invisibleRef.current || !window.turnstile) return;
-
-        // Guard: avoid double-render
         if (turnstileWidgetId.current) return;
 
         try {
@@ -134,33 +92,60 @@ export default function TerminalMail() {
                 callback: (token) => {
                     setTurnstileToken(token);
                 },
-                'error-callback': (error) => {
-                    appendHistory('✗ Security verification failed');
-                    appendHistory('  Please try again...');
+                'error-callback': () => {
+                    appendHistory('failed. try again...', 'error');
                     setSending(false);
-                    setTurnstileToken(''); // Clear failed token
+                    setTurnstileToken('');
                 },
                 'expired-callback': () => {
                     setTurnstileToken('');
-                    appendHistory('⚠ Security token expired. Reissuing...');
+                    appendHistory('reissuing token...', 'warn');
                 }
             });
         } catch (error) {
             console.warn('Turnstile initialization failed:', error);
         }
-    }, []); // Run once after first DOM paint
+    }, []);
 
-    // Auto-focus and scroll
-    useEffect(() => {
-        //inputRef.current?.focus();
-        if (terminalRef.current) {
-            terminalRef.current.scrollTop = terminalRef.current.scrollHeight;
-        }
-    }, [history]);
-
-    const appendHistory = (line) => {
-        setHistory(prev => [...prev, line]);
+    const appendHistory = (line, type = 'system') => {
+        setHistory(prev => [...prev, { message: line, type }]);
     };
+
+    //? Jump back to a completed step for editing
+    const handleJumpToStep = useCallback((sidebarKey) => {
+        const jumpMap = {
+            subject: () => {
+                appendHistory(' ', 'prompt');
+                appendHistory('editing subject...', 'system');
+                setCurrentStep(STEPS.SUBJECT);
+            },
+            body: () => {
+                setBodyLines([]);
+                appendHistory(' ', 'prompt');
+                appendHistory('editing body...', 'system');
+                setCurrentStep(STEPS.BODY);
+            },
+            contact: () => {
+                setContactMethod('');
+                setContactInfo('');
+                setNeedsContact(false);
+                appendHistory(' ', 'prompt');
+                appendHistory('editing contact (y/n)...', 'system');
+                setCurrentStep(STEPS.CONTACT_PREFERENCE);
+            },
+        };
+        if (jumpMap[sidebarKey]) {
+            jumpMap[sidebarKey]();
+            setInput('');
+        }
+    }, []);
+
+    //? Clear send result flash after animation
+    useEffect(() => {
+        if (!sendResult) return;
+        const timer = setTimeout(() => setSendResult(null), 700);
+        return () => clearTimeout(timer);
+    }, [sendResult]);
 
     const isValidEmail = (email) => {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -197,21 +182,19 @@ export default function TerminalMail() {
         const userInput = input.trim();
         if (!userInput) return;
 
-        // Add to history
         setCommandHistory(prev => [...prev, userInput]);
         setHistoryIndex(-1);
 
-        // Display user input
-        appendHistory(`> ${userInput}`);
+        if (currentStep !== STEPS.BODY || userInput.toLowerCase() === 'done') {
+            appendHistory(`${userInput}`, 'user');
+        }
         setInput('');
 
-        // Handle reset command at any time
         if (userInput.toLowerCase() === 'reset') {
             resetConversation();
             return;
         }
 
-        // Process based on current step
         switch (currentStep) {
             case STEPS.SUBJECT:
                 handleSubjectInput(userInput);
@@ -232,50 +215,42 @@ export default function TerminalMail() {
                 handleSendInput(userInput);
                 break;
             default:
-                appendHistory('✗ Unexpected input');
+                appendHistory('invalid input', 'error');
         }
     };
 
     const handleSubjectInput = (input) => {
         if (input.length < 3) {
-            appendHistory('✗ Subject too short (minimum 3 characters)');
-            appendHistory('What\'s the subject of your message?');
+            appendHistory('minimum 3 characters', 'error');
             return;
         }
 
         setSubject(input);
-        appendHistory(`✓ Subject set: "${input}"`);
-        appendHistory('');
-        appendHistory('Now, let\'s write your message body.');
-        appendHistory('Type your message (you can add multiple lines)');
-        appendHistory('When finished, type "done"');
-        appendHistory('');
+        appendHistory(' ', 'prompt');
+        appendHistory('type your message (you can add multiple lines)', 'prompt');
         setCurrentStep(STEPS.BODY);
     };
 
     const handleBodyInput = (input) => {
         if (input.toLowerCase() === 'done') {
             if (bodyLines.length === 0) {
-                appendHistory('✗ Message body cannot be empty');
-                appendHistory('Please write at least one line, then type "done"');
+                appendHistory('minimum one line"', 'error');
                 return;
             }
 
-            appendHistory(`✓ Message body completed (${bodyLines.length} lines)`);
-            appendHistory('');
-            appendHistory('Should I be able to contact you back?');
-            appendHistory('Type "y" for yes or "n" for no');
+            appendHistory(' ', 'prompt');
+            appendHistory('should i be able to contact you back? (y/n)', 'prompt');
             setCurrentStep(STEPS.CONTACT_PREFERENCE);
             return;
         }
 
-        if (input.length < 1) {
-            appendHistory('✗ Line cannot be empty');
+        if (input.length === 0) {
+            appendHistory('minimum one line"', 'error');
             return;
         }
 
         setBodyLines(prev => [...prev, input]);
-        appendHistory(`✓ Line ${bodyLines.length + 1} added`);
+        appendHistory(`+ ${input}`, 'info');
     };
 
     const handleContactPreferenceInput = (input) => {
@@ -283,18 +258,16 @@ export default function TerminalMail() {
 
         if (answer === 'n' || answer === 'no') {
             setNeedsContact(false);
-            appendHistory('✓ Got it, no contact info needed');
-            appendHistory('');
-            appendHistory('Ready to send! Type "send" to transmit your message');
+            appendHistory(' ', 'prompt');
+            appendHistory('ready! type "send" to transmit your message', 'prompt');
             setCurrentStep(STEPS.READY_TO_SEND);
         } else if (answer === 'y' || answer === 'yes') {
             setNeedsContact(true);
-            appendHistory('✓ Perfect! How should I contact you?');
-            appendHistory('');
-            appendHistory('Type "email" or "social"');
+            appendHistory(' ', 'prompt');
+            appendHistory('perfect! choose one. type "email" or "social"', 'prompt');
             setCurrentStep(STEPS.CONTACT_METHOD);
         } else {
-            appendHistory('✗ Please type "y" for yes or "n" for no');
+            appendHistory('invalid. choose one y/n', 'error');
         }
     };
 
@@ -303,47 +276,42 @@ export default function TerminalMail() {
 
         if (method === 'email') {
             setContactMethod('email');
-            appendHistory('✓ Email selected');
-            appendHistory('');
-            appendHistory('What\'s your email address?');
+            appendHistory(' ', 'prompt');
+            appendHistory('what\'s your email?', 'prompt');
             setCurrentStep(STEPS.CONTACT_INFO);
         } else if (method === 'social') {
             setContactMethod('social');
-            appendHistory('✓ Social media selected');
-            appendHistory('');
-            appendHistory('Enter your social handle in format:');
-            appendHistory('platform@username (e.g., twitter@ujjwalvivekx)');
-            appendHistory('Supported: twitter, instagram, telegram, discord, linkedin');
+            appendHistory(' ', 'prompt');
+            appendHistory('enter your socials as platform@username, like twitter@ujjwalvivekx', 'prompt');
+            appendHistory('Supported: twitter, instagram, telegram, discord, linkedin', 'info');
             setCurrentStep(STEPS.CONTACT_INFO);
         } else {
-            appendHistory('✗ Please type "email" or "social"');
+            appendHistory('invalid. choose "email" or "social"', 'error');
         }
     };
 
     const handleContactInfoInput = (input) => {
         if (contactMethod === 'email') {
             if (!isValidEmail(input)) {
-                appendHistory('✗ Invalid email format');
-                appendHistory('Please enter a valid email address');
+                appendHistory(' ', 'prompt');
+                appendHistory('enter a valid email address', 'error');
                 return;
             }
 
             setContactInfo(input);
-            appendHistory(`✓ Email set: ${input}`);
         } else if (contactMethod === 'social') {
             if (!isValidSocial(input)) {
-                appendHistory('✗ Invalid social format');
-                appendHistory('Use format: platform@username');
-                appendHistory('Example: twitter@ujjwalvivekx');
+                appendHistory(' ', 'prompt');
+                appendHistory('use format platform@username', 'error');
                 return;
             }
 
             setContactInfo(input);
-            appendHistory(`✓ Social handle set: ${input}`);
+            appendHistory(` `, 'success');
         }
 
-        appendHistory('');
-        appendHistory('Ready to send! Type "send" to transmit your message');
+        appendHistory(' ', 'prompt');
+        appendHistory('ready! type "send" to transmit your message', 'prompt');
         setCurrentStep(STEPS.READY_TO_SEND);
     };
 
@@ -351,7 +319,8 @@ export default function TerminalMail() {
         if (input.toLowerCase() === 'send') {
             initiateSend();
         } else {
-            appendHistory('✗ Type "send" to transmit your message');
+            appendHistory(' ', 'prompt');
+            appendHistory('invalid. type "send"', 'error');
         }
     };
 
@@ -359,39 +328,32 @@ export default function TerminalMail() {
         setSending(true);
         setCurrentStep(STEPS.SENDING);
 
-        appendHistory('');
-        appendHistory('Initiating secure transmission...');
-        appendHistory('Performing security verification...');
-
-        // Check if we already have a valid token
+        //? Check if we already have a valid token
         if (turnstileToken) {
-            // Token exists, proceed immediately
             setTimeout(() => {
-                appendHistory('✓ Security verification completed');
+                appendHistory(' ', 'prompt');
+                appendHistory('security verification completed', 'success');
                 proceedWithSend(turnstileToken);
             }, 1000);
         } else {
-            // Need to execute Turnstile to get token
             if (window.turnstile && turnstileWidgetId.current) {
                 try {
-                    // Execute Turnstile and wait for callback
                     window.turnstile.execute(turnstileWidgetId.current);
 
-                    // Set up a one-time listener for when token is received
                     const checkForToken = setInterval(() => {
                         if (turnstileToken) {
                             clearInterval(checkForToken);
-                            appendHistory('✓ Security verification completed');
+                            appendHistory(' ', 'prompt');
+                            appendHistory('security verification completed', 'success');
                             proceedWithSend(turnstileToken);
                         }
                     }, 100);
 
-                    // Timeout after 10 seconds
+                    //? Timeout after 10 seconds
                     setTimeout(() => {
                         clearInterval(checkForToken);
                         if (!turnstileToken) {
-                            appendHistory('✗ Verification timeout');
-                            appendHistory('Please try again');
+                            appendHistory('timeout. try again...', 'error');
                             setSending(false);
                             setCurrentStep(STEPS.READY_TO_SEND);
                         }
@@ -399,16 +361,16 @@ export default function TerminalMail() {
 
                 } catch (error) {
                     console.warn('Turnstile execute failed:', error);
-                    // Fallback: send without turnstile
+                    //? Fallback: send without turnstile
                     setTimeout(() => {
-                        appendHistory('⚠ Proceeding without verification');
+                        appendHistory('proceeding without verification', 'warn');
                         proceedWithSend('');
                     }, 1000);
                 }
             } else {
-                // Fallback: send without turnstile
+                //? Fallback: send without turnstile
                 setTimeout(() => {
-                    appendHistory('⚠ Proceeding without verification');
+                    appendHistory('proceeding without verification', 'warn');
                     proceedWithSend('');
                 }, 1000);
             }
@@ -416,10 +378,9 @@ export default function TerminalMail() {
     };
 
     const proceedWithSend = (token) => {
-        appendHistory('Establishing connection to mail server...');
-        appendHistory('Transmitting encrypted message...');
+        appendHistory('transmitting encrypted message...', 'system');
 
-        // Prepare template params
+        //? Prepare template params
         const templateParams = {
             subject: subject,
             message: bodyLines.join('\n'),
@@ -431,26 +392,21 @@ export default function TerminalMail() {
 
         emailjs.send(SERVICE_ID, TEMPLATE_ID, templateParams, PUBLIC_KEY)
             .then(() => {
-                appendHistory('MESSAGE TRANSMITTED SUCCESSFULLY');
-                appendHistory('');
-                appendHistory('Your message has been delivered securely');
+                appendHistory(' ', 'prompt');
+                appendHistory('thank you for reaching out!', 'success');
                 if (needsContact) {
-                    appendHistory(`I'll get back to you via ${contactMethod}: ${contactInfo}`);
+                    appendHistory(`i'll get back to you on ${contactInfo}`, 'info');
                 }
-                appendHistory('');
-                appendHistory('Thank you for reaching out!');
-                appendHistory('');
-                appendHistory('Type "reset" to send another message');
+                appendHistory(' ', 'system');
+                appendHistory('type "reset" to send another message', 'prompt');
                 setCurrentStep(STEPS.COMPLETE);
+                setSendResult('success');
             })
             .catch((error) => {
                 console.error('EmailJS Error:', error);
-                appendHistory('TRANSMISSION FAILED');
-                appendHistory(`Error: ${error.text || 'Network error'}`);
-                appendHistory('');
-                appendHistory('Please try again or check your connection');
-                appendHistory('Type "send" to retry');
+                appendHistory('failed. type "send" to retry', 'error');
                 setCurrentStep(STEPS.READY_TO_SEND);
+                setSendResult('error');
             })
             .finally(() => {
                 setSending(false);
@@ -474,106 +430,77 @@ export default function TerminalMail() {
         setSending(false);
         setCommandHistory([]);
         setHistoryIndex(-1);
+        setSendResult(null);
 
         setHistory([
-            'Terminal reset',
-            '',
-            'What\'s the subject of your message?'
+            { message: 'encrypted connection established', type: 'system' },
+            { message: ' ', type: 'system' }
         ]);
         setCurrentStep(STEPS.SUBJECT);
     };
 
-    const getStatusText = () => {
-        switch (currentStep) {
-            case STEPS.SUBJECT: return 'Awaiting subject';
-            case STEPS.BODY: return 'Composing body';
-            case STEPS.CONTACT_PREFERENCE: return 'Contact preference';
-            case STEPS.CONTACT_METHOD: return 'Contact method';
-            case STEPS.CONTACT_INFO: return 'Contact details';
-            case STEPS.READY_TO_SEND: return 'Ready to send';
-            case STEPS.SENDING: return 'Transmitting...';
-            case STEPS.COMPLETE: return 'Complete';
-            default: return 'Ready';
-        }
-    };
+    const flashClass = sendResult === 'success'
+        ? styles.sendSuccess
+        : sendResult === 'error'
+            ? styles.sendError
+            : '';
 
     return (
-        <div className={styles.terminalContainer}>
+        <div className={`${styles.terminalContainer} ${flashClass}`}>
             <div ref={invisibleRef} style={{ display: 'none' }} />
 
             <div className={styles.terminalHeader}>
                 <div className={styles.terminalButtons}>
-                    <div className={styles.closeButton}></div>
-                    <div className={styles.minimizeButton}></div>
-                    <div className={styles.maximizeButton}></div>
+                    <div className={styles.closeButton} />
+                    <div className={styles.minimizeButton} />
+                    <div className={styles.maximizeButton} />
                 </div>
                 <div className={styles.terminalTitle}>
                     <span className={styles.titleIcon}><RiTerminalBoxFill /></span>
-                    securemail@ujjwalvivek
+                    terminalmail@ujjwalvivek
                 </div>
-                <div className={styles.terminalStatus}>
-                    <span className={styles.titleDomain}>e2ee_connection_on</span>
-                    <span className={`${styles.statusDot} ${sending ? styles.sending : styles.ready}`}></span>
-                </div>
+                <span className={`${styles.statusDot} ${sending ? styles.sending : styles.ready}`} />
             </div>
 
-            <div
-                ref={terminalRef}
-                className={styles.terminalContent}
-            >
-                <div className={styles.terminalOutput}>
-                    {history.map((line, i) => (
-                        <div key={i} className={styles.outputLine}>
-                            {line}
-                        </div>
-                    ))}
-                </div>
+            <div className={styles.terminalBody}>
 
-                <div className={styles.inputContainer}>
-                    <span className={styles.prompt}>
-                        <span className={styles.promptUser}>root</span>
-                        <span className={styles.promptSeparator}>@</span>
-                        <span className={styles.promptHost}>securemail</span>
-                        <span className={styles.promptPath}>:#</span>
-                    </span>
-                    <input
-                        ref={inputRef}
-                        name='terminalInput'
-                        type="text"
-                        value={input}
-                        onChange={(e) => setInput(e.target.value)}
-                        onKeyDown={handleKeyDown}
-                        className={styles.terminalInput}
-                        placeholder={
-                            sending ? "Processing..." :
-                                currentStep === STEPS.COMPLETE ? "Type 'reset' for new message..." :
-                                    "Type your response..."
-                        }
-                        disabled={sending}
-                        autoComplete="off"
-                        spellCheck="false"
+                <TUIPanel
+                    title="jump back"
+                    focused={false}
+                    className={styles.sidebarPanel}
+                >
+                    <StepSidebar
+                        currentStep={currentStep}
+                        onJumpToStep={handleJumpToStep}
                     />
-                </div>
-            </div>
+                </TUIPanel>
 
-            <div className={styles.terminalFooter}>
-                <div className={styles.statusBar}>
-                    <span className={styles.statusItem}>
-                        <span className={styles.statusIcon}>●</span>
-                        {getStatusText()}
-                    </span>
-                    <span className={styles.statusItem}>
-                        {subject && `Subject: ${subject.slice(0, 20)}${subject.length > 20 ? '...' : ''}`}
-                    </span>
-                    <span className={styles.statusItem}>
-                        Lines: {bodyLines.length}
-                    </span>
-                    <span className={styles.statusItem}>
-                        <span className={styles.statusIcon}>●</span>
-                        Ready
-                    </span>
-                </div>
+                <TUIPanel
+                    title="compose"
+                    focused={true}
+                    className={styles.composePanel}
+                >
+                    <ComposePane
+                        history={history}
+                        terminalRef={terminalRef}
+                    />
+                </TUIPanel>
+                <InputPane
+                    input={input}
+                    setInput={setInput}
+                    onKeyDown={handleKeyDown}
+                    sending={sending}
+                    currentStep={currentStep}
+                />
             </div>
+            <HelpBar
+                currentStep={currentStep}
+                subject={subject}
+                bodyLines={bodyLines}
+                contactMethod={contactMethod}
+                contactInfo={contactInfo}
+                needsContact={needsContact}
+            />
         </div>
     );
 }

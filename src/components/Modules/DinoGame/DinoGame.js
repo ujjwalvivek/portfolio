@@ -27,8 +27,8 @@ const DinoGame = ({ embedded = false }) => {
   const draggingRef = React.useRef(false);
   const windowPosRef = React.useRef(windowPos);
   // eslint-disable-next-line
-  const [gameSpeed, setGameSpeed] = React.useState(20); // initial speed in px/sec
-  const speedRef = React.useRef(20); // initial speed
+  const [gameSpeed, setGameSpeed] = React.useState(20); //* initial speed in px/sec
+  const speedRef = React.useRef(20); //* initial speed
 
   // Spacebar jump logic
   React.useEffect(() => {
@@ -69,7 +69,7 @@ const DinoGame = ({ embedded = false }) => {
     };
   }, [isJumping, gameOver, jumpStart, gameStarted]);
 
-  // Handle jump
+  //? Handle jump
   React.useEffect(() => {
     if (jumpPower > 0) {
       const jumpHeight = -40 - jumpPower * 40;
@@ -82,7 +82,7 @@ const DinoGame = ({ embedded = false }) => {
     }
   }, [jumpPower]);
 
-  // Collision detection
+  //? Collision detection
   React.useEffect(() => {
     if (gameOver || !gameStarted) return;
     for (let o of obstacles) {
@@ -97,7 +97,7 @@ const DinoGame = ({ embedded = false }) => {
     }
   }, [obstacles, dinoY, gameOver, gameStarted]);
 
-  // Unified jump handler
+  //? Unified jump handler
   const handleJump = () => {
     if (!gameStarted) {
       setGameStarted(true);
@@ -106,7 +106,7 @@ const DinoGame = ({ embedded = false }) => {
     if (!isJumping && !gameOver && jumpStart === null) {
       setJumpStart(Date.now());
       setIsJumping(true);
-      // Instantly set jump power for mouse click
+      //? Instantly set jump power for mouse click
       const power = 1;
       setJumpPower(power);
       setJumpStart(null);
@@ -153,7 +153,7 @@ const DinoGame = ({ embedded = false }) => {
       x: e.clientX - dragOffset.current.x,
       y: e.clientY - dragOffset.current.y,
     };
-    // Force a re-render by updating state, but throttle with requestAnimationFrame for smoothness
+    //? Force a re-render by updating state, but throttle with requestAnimationFrame for smoothness
     if (!handleBarMouseMove.raf) {
       handleBarMouseMove.raf = requestAnimationFrame(() => {
         setWindowPos({ ...windowPosRef.current });
@@ -165,12 +165,12 @@ const DinoGame = ({ embedded = false }) => {
   const handleBarMouseUp = () => {
     setDragging(false);
     draggingRef.current = false;
-    setWindowPos({ ...windowPosRef.current }); // Final update
+    setWindowPos({ ...windowPosRef.current }); //* Final update
     window.removeEventListener("mousemove", handleBarMouseMove);
     window.removeEventListener("mouseup", handleBarMouseUp);
   };
 
-  // Touch support
+  //? Touch support
   const handleBarTouchStart = (e) => {
     if (e.touches.length !== 1) return;
     setDragging(true);
@@ -197,7 +197,7 @@ const DinoGame = ({ embedded = false }) => {
     window.removeEventListener("touchend", handleBarTouchEnd);
   };
 
-  // Reset speed on game start/restart
+  //? Reset speed on game start/restart
   React.useEffect(() => {
     if (gameStarted && !gameOver) {
       setGameSpeed(5);
@@ -205,7 +205,7 @@ const DinoGame = ({ embedded = false }) => {
     }
   }, [gameStarted, gameOver]);
 
-  // Game loop for obstacle movement and speed adjustment
+  //? Game loop for obstacle movement and speed adjustment
   React.useEffect(() => {
     if (gameOver || !gameStarted) return;
 
@@ -214,7 +214,7 @@ const DinoGame = ({ embedded = false }) => {
 
     const SPEED_INCREMENT = 20;
     const BASE_SPEED = 200;
-    // Breakpoints for speed adjustment
+    //? Breakpoints for speed adjustment
     const BREAKPOINT_START = 2;
     const BREAKPOINT_STEP = 6;
     const BREAKPOINT_COUNT = 100;
@@ -238,7 +238,7 @@ const DinoGame = ({ embedded = false }) => {
       const delta = (now - lastTime) / 1000;
       lastTime = now;
 
-      // Set speed based on score
+      //? Set speed based on score
       const currentSpeed = getSpeedForScore(score);
       speedRef.current = currentSpeed;
       setGameSpeed(currentSpeed);
@@ -246,7 +246,7 @@ const DinoGame = ({ embedded = false }) => {
       setObstacles((obs) => {
         let newObs = obs.map((o) => ({ ...o, x: o.x - currentSpeed * delta }));
 
-        // Add new obstacles as before
+        //? Add new obstacles as before
         if (
           newObs.length === 0 ||
           newObs[newObs.length - 1].x < 200 + Math.random() * 80
@@ -254,17 +254,16 @@ const DinoGame = ({ embedded = false }) => {
           newObs.push({
             x: 400 + Math.random() * 100,
             height: 24 + Math.floor(Math.random() * 32),
-            passed: false, // <-- add this
+            passed: false,
           });
         }
 
-        // Filter out obstacles that have left the screen
         newObs = newObs.filter((o) => o.x > -20);
 
-        // Count obstacles passed
+        //? Count obstacles passed
         let passedCount = 0;
         newObs = newObs.map((o) => {
-          if (!o.passed && o.x + 10 < 0) { // x+width < 0, adjust as needed
+          if (!o.passed && o.x + 10 < 0) { // x+width < 0
             passedCount += 1;
             return { ...o, passed: true };
           }
@@ -284,7 +283,7 @@ const DinoGame = ({ embedded = false }) => {
     animationFrame = requestAnimationFrame(loop);
 
     return () => cancelAnimationFrame(animationFrame);
-  }, [gameOver, gameStarted, score]); // <-- do NOT add gameSpeed here!
+  }, [gameOver, gameStarted, score]);
 
   return (
     <div

@@ -420,49 +420,49 @@ go run main.go                 # Start backend server (separate terminal)
 ## Next Steps ToDo
 
 <ul class="markdown"> 
-<li> <input type="checkbox" id="task-1" /> 
+<li> <input type="checkbox" checked  id="task-1" /> 
 <span>Research clipboard APIs and limitations</span> 
 </li>  
-<li> <input type="checkbox" id="task-2" /> 
+<li> <input type="checkbox" checked id="task-2" /> 
 <span>IMPLEMENT LOCAL NETWORK DISCOVERY and device pairing</span> 
 </li> 
-<li> <input type="checkbox" id="task-3" /> 
+<li> <input type="checkbox" checked id="task-3" /> 
 <span>Migrate existing Go backend to serve native apps</span> 
 </li> 
-<li> <input type="checkbox" id="task-4" /> 
+<li> <input type="checkbox" checked id="task-4" /> 
 <span>Build basic desktop app with clipboard monitoring</span> 
 </li> 
-<li> <input type="checkbox" id="task-5" /> 
+<li> <input type="checkbox" checked id="task-5" /> 
 <span>Implement local network discovery and device pairing</span> 
 </li> 
-<li> <input type="checkbox" id="task-6" /> 
+<li> <input type="checkbox" checked id="task-6" /> 
 <span>Create web management interface</span> 
 </li> 
-<li> <input type="checkbox" id="task-7" /> 
+<li> <input type="checkbox" checked id="task-7" /> 
 <span>Add remote clipboard history access</span> 
 </li> 
-<li> <input type="checkbox" id="task-8" /> 
+<li> <input type="checkbox" checked id="task-8" /> 
 <span>Basic user authentication</span> 
 </li> 
-<li> <input type="checkbox" id="task-9" /> 
+<li> <input type="checkbox" checked id="task-9" /> 
 <span>Implement secure device authentication</span> 
 </li> 
-<li> <input type="checkbox" id="task-10" /> 
+<li> <input type="checkbox" checked id="task-10" /> 
 <span>Remote device management</span> 
 </li> 
-<li> <input type="checkbox" id="task-11" /> 
+<li> <input type="checkbox" checked id="task-11" /> 
 <span>Rich content support (images, files, formatted text)</span> 
 </li> 
-<li> <input type="checkbox" id="task-12" /> 
+<li> <input type="checkbox" checked id="task-12" /> 
 <span>Advanced clipboard history with search and categorization</span> 
 </li> 
-<li> <input type="checkbox" id="task-13" /> 
+<li> <input type="checkbox" checked id="task-13" /> 
 <span>Encryption and security hardening</span> 
 </li> 
-<li> <input type="checkbox" id="task-14" /> 
+<li> <input type="checkbox" checked id="task-14" /> 
 <span>Optional cloud sync with strong encryption</span> 
 </li> 
-<li> <input type="checkbox" id="task-15" /> 
+<li> <input type="checkbox" checked id="task-15" /> 
 <span>Mobile app development, Flutter wrappers around Rust core.</span> 
 </li> 
 </ul>
