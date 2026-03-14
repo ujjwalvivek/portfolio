@@ -24,6 +24,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Install Dashboard dependencies
+        run: npm ci --prefix dashboard
+
       - name: Build Fonts
         run: npm run build:fonts
 
