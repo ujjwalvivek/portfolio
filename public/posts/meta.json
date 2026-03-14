@@ -172,5 +172,22 @@
     ],
     "readingTime": "11 min read",
     "thumbnail": "https://cdn.ujjwalvivek.com/posts/media/synclippy.webp"
+  },
+  {
+    "id": 12,
+    "filename": "log_0007_chaotic_week.md",
+    "title": "The Week I Pushed 140 Files To Main",
+    "date": "2026-03-14",
+    "description": "How  chaotic refactor led to a much cleaner architecture for my portfolio project, and why sometimes you just have to push through the fear of breaking everything.",
+    "tags": [
+      "Refactoring",
+      "Echopoint",
+      "Telemetry",
+      "Terminal UI",
+      "Edge Computing",
+      "Web Development"
+    ],
+    "readingTime": "4 min read",
+    "thumbnail": "https://cdn.ujjwalvivek.com/posts/media/echopoint_start.webp"
   }
 ]

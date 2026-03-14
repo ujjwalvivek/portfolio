@@ -212,11 +212,16 @@ const BlogPost = () => {
 
           setPost({ content, data, readingTime: readingTimeText });
 
-          //? Find related posts (by tags)
-          const related = allPosts.filter(p =>
+          //? Find related posts (by tags), always excluding the current post
+          const tagRelated = allPosts.filter(p =>
             p.id !== currentPostMeta.id &&
             p.tags.some(tag => currentPostMeta.tags.includes(tag))
-          ).slice(0, 3); //? Get top 3 related posts
+          ).slice(0, 3);
+
+          //? Fall back to recent posts (excl. current) if no tag matches
+          const related = tagRelated.length > 0
+            ? tagRelated
+            : allPosts.filter(p => p.id !== currentPostMeta.id).slice(0, 3);
           setRelatedPosts(related);
         }
       } catch (error) {
