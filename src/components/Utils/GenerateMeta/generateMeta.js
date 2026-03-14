@@ -1,8 +1,18 @@
 const fs = require('fs');
 const path = require('path');
 
-const POSTS_DIR = path.join(__dirname, '../public/posts');
+const POSTS_DIR = path.resolve(__dirname, '../../../../public/posts');
 const META_FILE = path.join(POSTS_DIR, 'meta.json');
+
+if (!fs.existsSync(POSTS_DIR)) {
+  console.warn(`Posts directory not found: ${POSTS_DIR}`);
+  process.exit(0);
+}
+
+if (!fs.existsSync(META_FILE)) {
+  fs.writeFileSync(META_FILE, '[]', 'utf-8');
+}
+
 
 function calculateReadingTime(text) {
   const wordsPerMinute = 200;

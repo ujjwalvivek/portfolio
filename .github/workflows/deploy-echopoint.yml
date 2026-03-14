@@ -27,6 +27,9 @@ jobs:
       - name: Build Fonts
         run: npm run build:fonts
 
+      - name: Build Dashboard
+        run: npm run build:dashboard
+
       - name: Deploy Worker
         uses: cloudflare/wrangler-action@v3
         with:

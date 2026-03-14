@@ -14,7 +14,7 @@
       "Accessibility",
       "patch v1.4"
     ],
-    "readingTime": "16 min read",
+    "readingTime": "17 min read",
     "thumbnail": "https://cdn.ujjwalvivek.com/posts/media/very_nice.webp"
   },
   {
@@ -31,7 +31,7 @@
       "Data-Driven Design",
       "Unity"
     ],
-    "readingTime": "6 min read",
+    "readingTime": "7 min read",
     "thumbnail": "https://cdn.ujjwalvivek.com/posts/media/fake_mp_1.webp"
   },
   {
@@ -124,53 +124,53 @@
     "thumbnail": "https://cdn.ujjwalvivek.com/posts/media/journey.webp"
   },
   {
-  "id": 4,
-  "filename": "log_0004_journey_updates.md",
-  "title": "Journey Engine v0.3.2: A Technical Post-Mortem",
-  "date": "2026-02-26",
-  "description": "A technical deep dive into building a dual-mode ASCII level editor, deterministic fixed-timestep physics, and browser-safe audio for a custom 2D Rust engine.",
-  "tags": [
-    "Rust",
-    "wGPU",
-    "WASM",
-    "Game Engine",
-    "Physics",
-    "Architecture"
-  ],
-  "readingTime": "15 min read",
-  "thumbnail": "https://cdn.ujjwalvivek.com/posts/media/journey_v0.3.2.webp"
+    "id": 4,
+    "filename": "log_0004_journey_updates.md",
+    "title": "Journey Engine v0.3.2: A Technical Post-Mortem",
+    "date": "2026-02-26",
+    "description": "A technical deep dive into building a dual-mode ASCII level editor, deterministic fixed-timestep physics, and browser-safe audio for a custom 2D Rust engine.",
+    "tags": [
+      "Rust",
+      "wGPU",
+      "WASM",
+      "Game Engine",
+      "Physics",
+      "Architecture"
+    ],
+    "readingTime": "15 min read",
+    "thumbnail": "https://cdn.ujjwalvivek.com/posts/media/journey_v0.3.2.webp"
   },
   {
-  "id": 5,
-  "filename": "log_0005_finally_it_happened.md",
-  "title": "Finally, it happened",
-  "date": "2026-03-03",
-  "description": "I didn’t plan to build an engine. I just didn’t want to live with the shortcut anymore. What followed was months of building something I wasn’t sure anyone needed.",
-  "tags": [
-    "Rust",
-    "Journey Engine",
-    "WASM",
-    "Reflection",
-    "Game Dev"
-  ],
-  "readingTime": "6 min read",
-  "thumbnail": "https://cdn.ujjwalvivek.com/posts/media/dino-blink.webp"
+    "id": 5,
+    "filename": "log_0005_finally_it_happened.md",
+    "title": "Finally, it happened",
+    "date": "2026-03-03",
+    "description": "I didn’t plan to build an engine. I just didn’t want to live with the shortcut anymore. What followed was months of building something I wasn’t sure anyone needed.",
+    "tags": [
+      "Rust",
+      "Journey Engine",
+      "WASM",
+      "Reflection",
+      "Game Dev"
+    ],
+    "readingTime": "6 min read",
+    "thumbnail": "https://cdn.ujjwalvivek.com/posts/media/dino-blink.webp"
   },
   {
-  "id": 2,
-  "filename": "log_0006_simpleclippy.md",
-  "title": "How Synclippy Got Simpler (and Better)",
-  "date": "2026-03-07",
-  "description": "A technical story about how a clipboard sync project slowly turned into a distributed system, and why deleting most of that architecture made sense.",
-  "tags": [
-    "Go",
-    "Typescript",
-    "Cloudflare Workers",
-    "Durable Objects",
-    "Cross-Platform",
-    "Local-First"
-  ],
-  "readingTime": "11 min read",
-  "thumbnail": "https://cdn.ujjwalvivek.com/posts/media/synclippy.webp"
+    "id": 2,
+    "filename": "log_0006_simpleclippy.md",
+    "title": "How Synclippy Got Simpler (and Better)",
+    "date": "2026-03-07",
+    "description": "A technical story about how a clipboard sync project slowly turned into a distributed system, and why deleting most of that architecture made sense.",
+    "tags": [
+      "Go",
+      "Typescript",
+      "Cloudflare Workers",
+      "Durable Objects",
+      "Cross-Platform",
+      "Local-First"
+    ],
+    "readingTime": "11 min read",
+    "thumbnail": "https://cdn.ujjwalvivek.com/posts/media/synclippy.webp"
   }
 ]
