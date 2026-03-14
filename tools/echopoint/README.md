@@ -33,8 +33,6 @@ Just drop these URLs into any `<img>` tag or markdown file!
 - **Unified Dashboard:** Contains an mdbook-style API reference, a live SVG builder with real-time preview, and a visual dump of all stored telemetry data.
 - **Theming System:** The dashboard features multiple built-in color palettes (based on Catppuccin and Monochrome) alongside a procedural HSL dark-mode theme generator.
 
----
-
 ## Run Locally (2 Minutes)
 
 If you want to run the backend engine or dashboard yourself:
