@@ -19,11 +19,16 @@
  **                     Context Hooks 
  *========================================================================**/
 import { useEffect, useRef } from 'react';
-import { useBackground } from './BackgroundContext';
+import { useBackground } from '../../Background/BackgroundContext';
 
 /**========================================================================
  **   Utility function to get device class from storage or detect it
  *========================================================================**/
+/**========================================================================
+ **   Detect wGPU availability for WASM background wallpaper
+ *========================================================================**/
+export const hasWebGPU = () => !!navigator.gpu;
+
 export const getDeviceClass = () => {
     //! Try to get from localStorage first
     try {

@@ -1,0 +1,39 @@
+{
+    "file_scan_exclusions": [
+        "**/.git",
+        "**/.svn",
+        "**/.hg",
+        "**/.jj",
+        "**/CVS",
+        "**/.DS_Store",
+        "**/Thumbs.db",
+        "**/.classpath",
+        "**/.settings",
+
+        "**/build",
+        "**/dist",
+        "**/node_modules",
+        "**/*-lock.json",
+        "**/.obsidian",
+        "**/.wrangler",
+        "**/target",
+        "**/Cargo.lock"
+    ],
+    "lsp": {
+        "rust-analyzer": {
+            "initialization_options": {
+                "cargo": {
+                    "target": "wasm32-unknown-unknown",
+                    "extraEnv": {
+                        "CARGO_TARGET_DIR": "/tmp/portfolio-bg-target"
+                    }
+                },
+                "check": {
+                    "command": "check",
+                    "extraArgs": ["--target", "wasm32-unknown-unknown"]
+                }
+            }
+        }
+    }
+    //exclude files from file watcher
+}

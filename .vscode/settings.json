@@ -16,6 +16,7 @@
         "**/*-lock.json": true,
         "**/.obsidian": true,
         "**/.wrangler": true,
+        "**/target": true,
     },
     "files.watcherExclude": {
         "**/node_modules/**": true,

@@ -20,7 +20,7 @@
  *========================================================================**/
 import { createContext, useState, useContext, useMemo, useEffect, useCallback } from 'react';
 import { usePrefersReducedMotion } from '../Modules/A11y/UsePrefersReducedMotion';
-import { useCapabilityProbe, getDeviceClass } from './useCapabilityProbe';
+import { useCapabilityProbe, getDeviceClass } from '../Utils/CapabilityProbe/useCapabilityProbe';
 import {
     getWallpaperConfig,
     getWallpaperMeta,

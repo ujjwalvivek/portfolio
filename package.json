@@ -45,9 +45,10 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "prebuild": "node src/components/Utils/GenerateMeta/generateMeta.js",
+    "prebuild": "npm run build:wasm && node src/components/Utils/GenerateMeta/generateMeta.js",
     "start": "cross-env BROWSER=none WDS_SOCKET_PORT=0 react-app-rewired start",
     "build": "react-app-rewired build",
+    "build:wasm": "rimraf public/games/journey && wasm-pack build portfolio-bg --target web --out-dir ../public/games/journey --release",
     "clean:maps": "rimraf \"build/**/*.map\"",
     "test": "react-app-rewired test",
     "eject": "react-scripts eject"

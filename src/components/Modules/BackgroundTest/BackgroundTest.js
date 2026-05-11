@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useMemo, useContext, useRef } from 'react';
 import { useBackground } from '../../Background/BackgroundContext';
-import { getDeviceClass } from '../../Background/useCapabilityProbe';
+import { getDeviceClass, hasWebGPU } from '../../Utils/CapabilityProbe/useCapabilityProbe';
 import { getSmartDefaults } from '../../Background/BackgroundConfig';
 import styles from './BackgroundTest.module.css';
 import { getAllThemeColors, getAverageHex } from '../../Background/ColorUtils';
@@ -47,38 +47,44 @@ const BackgroundTest = ({ onClose }) => {
 
     //? Generate wallpaper list from centralized configuration
     const backgrounds = useMemo(() => {
-        return getAllWallpaperTypes().map(wallpaperType => {
-            const meta = getWallpaperMeta(wallpaperType);
-            const controls = getControlRanges(wallpaperType);
+        return getAllWallpaperTypes()
+            .filter(type => !type.startsWith('journey') || hasWebGPU())
+            .map(wallpaperType => {
+                const meta = getWallpaperMeta(wallpaperType);
+                const controls = getControlRanges(wallpaperType);
 
-            if (!meta || !controls) return null;
+                if (!meta || !controls) return null;
 
-            //? Transform controls to match expected format and add labels
-            const transformedControls = {
-                opacity: {
-                    ...controls.opacity,
-                    label: 'Opacity'
-                },
-                animationSpeed: {
-                    ...controls.animationSpeed,
-                    label: 'Flow Speed'
-                },
-                density: {
-                    ...controls.density,
-                    label: 'Pattern Density'
-                }
-            };
+                //? Transform controls to match expected format and add labels
+                const transformedControls = {
+                    opacity: {
+                        ...controls.opacity,
+                        label: 'Opacity'
+                    },
+                    ...(controls.animationSpeed && {
+                        animationSpeed: {
+                            ...controls.animationSpeed,
+                            label: 'Flow Speed'
+                        }
+                    }),
+                    ...(controls.density && {
+                        density: {
+                            ...controls.density,
+                            label: 'Pattern Density'
+                        }
+                    })
+                };
 
-            return {
-                id: wallpaperType,
-                name: meta.name,
-                description: meta.description,
-                techStack: meta.techStack,
-                icon: React.createElement(meta.icon),
-                controls: transformedControls,
-                colorModes: meta.colorModes
-            };
-        }).filter(Boolean); //* Remove any null entries
+                return {
+                    id: wallpaperType,
+                    name: meta.name,
+                    description: meta.description,
+                    techStack: meta.techStack,
+                    icon: React.createElement(meta.icon),
+                    controls: transformedControls,
+                    colorModes: meta.colorModes
+                };
+            }).filter(Boolean); //* Remove any null entries
     }, [getAllWallpaperTypes, getWallpaperMeta, getControlRanges]);
 
     React.useEffect(() => {

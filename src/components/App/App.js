@@ -42,6 +42,7 @@ import CommandPalette from '../Modules/Command Palette/CommandPalette';
 import LandingPage from '../Pages/Landing/LandingPage';
 import GithubNavigator from '../Modules/Github Navigator/GithubNavigator';
 import CommandHint from '../Modules/Tip/CommandHint';
+import JourneyBackground from '../Background/JourneyBackground';
 
 /**========================================================================
  *                           App Wrapper
@@ -62,6 +63,7 @@ function AppContent() {
       className={styles.App}
       style={{ backgroundColor: backgroundConfig.type === 'none' ? 'var(--background-color)' : 'transparent' }}
     >
+      {backgroundConfig.type?.startsWith('journey') && <JourneyBackground />}
       <GlobalBackground />
       <TopBar />
       <main id="main-content" className={styles.mainContent}>

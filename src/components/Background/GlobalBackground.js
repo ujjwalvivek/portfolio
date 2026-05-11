@@ -1690,7 +1690,7 @@ const GlobalBackground = ({ previewConfig }) => {
     /**========================================================================
     **   For preview, show a blank area; for fullscreen, render nothing
     *========================================================================**/
-    if (backgroundConfig.type === 'none') {
+    if (backgroundConfig.type === 'none' || backgroundConfig.type?.startsWith('journey')) {
         return isPreview ? <div style={{ width: '100%', height: '100%', background: darkMode ? '#18181c' : '#fff' }} /> : null;
     }
 
