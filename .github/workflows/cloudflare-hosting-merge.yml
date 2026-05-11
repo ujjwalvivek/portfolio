@@ -1,64 +1,72 @@
 name: Deploy to Cloudflare Pages
 on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
+    push:
+        branches: [main]
+    pull_request:
+        branches: [main]
 
 permissions:
-  contents: read
-  deployments: write
+    contents: read
+    deployments: write
 
 jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    name: Deploy to Cloudflare Pages
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+    deploy:
+        runs-on: ubuntu-latest
+        name: Deploy to Cloudflare Pages
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '18'
-          cache: 'npm'
-          cache-dependency-path: package-lock.json
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: "18"
+                  cache: "npm"
+                  cache-dependency-path: package-lock.json
 
-      - name: Installing dependencies
-        run: npm ci
+            - name: Installing dependencies
+              run: npm ci
 
-      - name: No source maps, please (try 1)
-        run: echo "GENERATE_SOURCEMAP=false" > .env
+            - name: Setup Rust
+              uses: dtolnay/rust-toolchain@stable
+              with:
+                  targets: wasm32-unknown-unknown
 
-      - name: Wiping away past sins
-        run: rm -rf build
+            - name: Install wasm-pack
+              run: cargo install wasm-pack --version 0.14.0 --locked
 
-      - name: Generate meta.json for posts
-        run: node src/components/Utils/GenerateMeta/generateMeta.js
+            - name: No source maps, please (try 1)
+              run: echo "GENERATE_SOURCEMAP=false" > .env
 
-      - name: Build project NOW
-        run: npm run build
-        env:
-          GENERATE_SOURCEMAP: "false"
+            - name: Wiping away past sins
+              run: rm -rf build
 
-      - name: Remove source maps (try 2)
-        run: npm run clean:maps
+            - name: Generate meta.json for posts
+              run: node src/components/Utils/GenerateMeta/generateMeta.js
 
-      - name: Verify no oversized files (25 MiB limit)
-        run: |
-          oversized=$(find build -type f -size +25M)
-          if [ -n "$oversized" ]; then
-            echo "ERROR: Files exceed Cloudflare Pages 25 MiB limit:"
-            echo "$oversized" | while read f; do du -h "$f"; done
-            exit 1
-          fi
-          echo "All files under 25 MiB ✓"
+            - name: Build project NOW
+              run: npm run build
+              env:
+                  GENERATE_SOURCEMAP: "false"
 
-      - name: Deploy main site to Cloudflare Pages
-        uses: cloudflare/pages-action@v1
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          projectName: portfolio
-          directory: build
-          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+            - name: Remove source maps (try 2)
+              run: npm run clean:maps
+
+            - name: Verify no oversized files (25 MiB limit)
+              run: |
+                  oversized=$(find build -type f -size +25M)
+                  if [ -n "$oversized" ]; then
+                    echo "ERROR: Files exceed Cloudflare Pages 25 MiB limit:"
+                    echo "$oversized" | while read f; do du -h "$f"; done
+                    exit 1
+                  fi
+                  echo "All files under 25 MiB ✓"
+
+            - name: Deploy main site to Cloudflare Pages
+              uses: cloudflare/pages-action@v1
+              with:
+                  apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+                  accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+                  projectName: portfolio
+                  directory: build
+                  gitHubToken: ${{ secrets.GITHUB_TOKEN }}
