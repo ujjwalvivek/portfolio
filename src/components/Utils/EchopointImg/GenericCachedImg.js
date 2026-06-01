@@ -15,7 +15,7 @@ function imageToDataUri(img) {
 export default function GenericCachedImg({
   src,
   alt,
-  fallbackHeight = 96,
+  fallbackHeight = '100%',
   className,
   width,
   style,

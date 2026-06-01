@@ -138,7 +138,20 @@ const Projects = () => {
             </div>
           </div>
           {showDelay ? (
-            null
+            <div className={styles.systemStats}>
+              <span className={styles.stat}>
+                TOTAL_PROJECTS<span className={styles.value}>...</span>
+              </span>
+              <span className={styles.stat}>
+                PM_PROJECTS<span className={styles.value}>...</span>
+              </span>
+              <span className={styles.stat}>
+                DEV_PROJECTS<span className={styles.value}>...</span>
+              </span>
+              <span className={styles.stat}>
+                STATUS<span className={styles.value}>FETCHING</span>
+              </span>
+            </div>
           ) : (
             <div className={styles.systemStats}>
               <span className={styles.stat}>
@@ -163,7 +176,7 @@ const Projects = () => {
               {filteredSections.map(section => (
                 <React.Fragment key={section.section}>
                   {section.projects.map((project, idx) => (
-                    <tr key={project.id} className={styles.glassRow} id={`project-card-${section.section}-${idx}`}>
+                    <tr key={project.id} className={styles.glassRow} id={`project-card-${section.section}-${idx}`} style={{ animationDelay: `${(idx + 1) * 0.05}s` }}>
                       <td className={styles.cell}><RiArchiveFill /></td>
                       <td className={styles.cell + ' ' + glitchyClasses}>
                         <DescriptionCell description={project.content}>

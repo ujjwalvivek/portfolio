@@ -8,7 +8,6 @@ import { useBackground } from '../../Background/BackgroundContext';
 import JourneyBadge from '../../Modules/JourneyBadge/JourneyBadge';
 import SynclippyBadge from '../../Modules/JourneyBadge/SynclippyBadge';
 import LangsBar from '../../Modules/LangsBar/LangsBar';
-import GenericCachedImg from '../../Utils/EchopointImg/GenericCachedImg';
 
 const ECHOPOINT = 'https://echopoint.ujjwalvivek.com';
 
@@ -21,7 +20,7 @@ const About = () => {
     <div className={styles.pageContainer}>
       <section className={styles.heroSection}>
         <div className={`${styles.heroArt} ${noAnim}`}>
-          <GenericCachedImg src="https://cdn.ujjwalvivek.com/images/profile.webp" alt="it's a me, vivek!" className={styles.avatarImg} width="100%" />
+          <img src="https://cdn.ujjwalvivek.com/images/profile.webp" alt="it's a me, vivek!" className={styles.avatarImg} width="100%" />
           <div className={styles.heroCaption} aria-hidden="false">hi there! i'm Vivek. i think in systems & experiment relentlessly.</div>
         </div>
       </section>

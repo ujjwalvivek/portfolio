@@ -97,7 +97,7 @@ const JourneyBadge = () => {
               <a href="https://journey.ujjwalvivek.com/" target="_blank" rel="noreferrer">
                 <EchopointImg src={`${ECHOPOINT}/svg/badges/custom?leftText=Tech+Demo&logo=npm&bg=ffffff00`} alt="Tech Demo" className={styles.badgeImg} fallbackHeight={20} />
               </a>
-              <a href="https://journey.ujjwalvivek.com/blog/proj_0004_rust_game_engine.md" target="_blank" rel="noreferrer">
+              <a href="https://ujjwalvivek.com/blog/proj_0004_rust_game_engine.md" target="_blank" rel="noreferrer">
                 <EchopointImg src={`${ECHOPOINT}/svg/badges/custom?leftText=Devlog&logo=book&bg=ffffff00`} alt="Devlog" className={styles.badgeImg} fallbackHeight={20} />
               </a>
               <a href="https://www.github.com/ujjwalvivek/journey" target="_blank" rel="noreferrer">
