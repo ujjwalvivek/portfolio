@@ -75,7 +75,7 @@ const Footer = ({ showOverlay, setShowOverlay }) => {
                         <div className={styles.statusBarIcon}><TiFlowSwitch /></div>
                         <div className={styles.statusBarText}>vibeSwitch</div>
                     </div>
-                    <div className={`${styles.statusBarItem} ${styles.vibeIndicatorVariant}`} title={darkMode ? "Switch to light mode" : "Switch to dark mode"} onClick={toggleDarkMode}>
+                    <div className={`${styles.statusBarItem} ${styles.vibeIndicatorVariant} theme-switch-ui`} title={darkMode ? "Switch to light mode" : "Switch to dark mode"} onClick={toggleDarkMode}>
                         <div className={styles.statusBarIcon}><CgDarkMode /></div>
                         <div className={styles.statusBarText}>
                             {!darkMode ? "darkMode⁺" : "lightMode⁺"}

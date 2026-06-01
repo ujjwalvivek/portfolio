@@ -217,6 +217,7 @@ const CommandPalette = ({ isOpen, onClose, onOpenGithub, onOpenBackgroundTest })
         },
         {
             id: 'theme-switch',
+            className: 'theme-switch-ui',
             title: 'Switch Theme',
             description: '',
             icon: darkMode ? <MdLightMode /> : <MdDarkMode />,
@@ -411,7 +412,7 @@ const CommandPalette = ({ isOpen, onClose, onOpenGithub, onOpenBackgroundTest })
                         filteredCommands.map((command, index) => (
                             <div
                                 key={command.id}
-                                className={`${styles.command} ${index === selectedIndex ? styles.selected : ''}`}
+                                className={`${styles.command} ${command.className || ''} ${index === selectedIndex ? styles.selected : ''}`}
                                 onClick={() => {
                                     command.action();
                                     onClose();

@@ -186,8 +186,8 @@ export const WALLPAPER_CONFIGS = {
         metadata: {
             name: "Topographic [EXPERIMENTAL]",
             description:
-                "Perlin noise data grid rendered by journey-engine via WASM",
-            techStack: ["Rust", "wGPU", "WASM", "Perlin Noise"],
+                "Dense Perlin data grid rendered by journey-engine via WASM",
+            techStack: ["Rust", "wGPU", "WASM", "Instanced Grid"],
             icon: PiGridFourFill,
             colorModes: [
                 "cyber",
@@ -204,13 +204,15 @@ export const WALLPAPER_CONFIGS = {
             ],
         },
         performance: {
-            highEnd: { opacity: 0.85 },
-            midRange: { opacity: 0.85 },
-            lowEnd: { opacity: 0.85 },
-            preview: { opacity: 0.85 },
+            highEnd: { opacity: 0.9, animationSpeed: 0.8, density: 1.2 },
+            midRange: { opacity: 0.8, animationSpeed: 0.8, density: 1.0 },
+            lowEnd: { opacity: 0.7, animationSpeed: 0.8, density: 0.8 },
+            preview: { opacity: 0.6, animationSpeed: 0.8, density: 0.6 },
         },
         controls: {
             opacity: { min: 0.1, max: 1.0, step: 0.1, default: null },
+            animationSpeed: { min: 0.0, max: 3.0, step: 0.1, default: null },
+            density: { min: 0.2, max: 3.0, step: 0.1, default: null },
         },
     },
 };

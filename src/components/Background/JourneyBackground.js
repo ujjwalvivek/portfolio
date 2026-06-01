@@ -137,6 +137,28 @@ const JourneyBackground = () => {
     }, [backgroundConfig.type, wasmReady]);
 
     useEffect(() => {
+        if (!wasmReady || !wasmModule) return;
+        if (wasmModule.set_density) {
+            wasmModule.set_density(backgroundConfig.density ?? 1);
+        }
+        if (wasmModule.set_speed) {
+            wasmModule.set_speed(backgroundConfig.animationSpeed ?? 1);
+        }
+        if (wasmModule.set_intensity) {
+            wasmModule.set_intensity(backgroundConfig.opacity ?? 0.85);
+        }
+        if (wasmModule.set_animation_enabled) {
+            wasmModule.set_animation_enabled(backgroundConfig.isAnimated !== false);
+        }
+    }, [
+        backgroundConfig.animationSpeed,
+        backgroundConfig.density,
+        backgroundConfig.isAnimated,
+        backgroundConfig.opacity,
+        wasmReady,
+    ]);
+
+    useEffect(() => {
         const handler = (e) => {
             window.dispatchEvent(
                 new CustomEvent("fpsUpdate", {

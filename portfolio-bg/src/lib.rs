@@ -1,20 +1,24 @@
-use engine::{Context, GameAction, GameApp, Vec2};
+// Engine API docs at https://docs.journey.ujjwalvivek.com
 
-use core::sync::atomic::{AtomicU8, Ordering};
+use engine::{BloomSettings, Context, GameAction, GameApp, Vec2};
+use core::sync::atomic::{AtomicU32, AtomicU8, Ordering};
 static RENDER_MODE: AtomicU8 = AtomicU8::new(0);
+static DENSITY_BITS: AtomicU32 = AtomicU32::new(1.0f32.to_bits());
+static SPEED_BITS: AtomicU32 = AtomicU32::new(1.0f32.to_bits());
+static INTENSITY_BITS: AtomicU32 = AtomicU32::new(1.0f32.to_bits());
+static ANIMATION_ENABLED: AtomicU8 = AtomicU8::new(1);
 
 const MODE_TOPOGRAPHIC: u8 = 0;
-
-const TOPO_COLS: usize = 40;
-const TOPO_ROWS: usize = 22;
-const TOPO_SPACING: f32 = 16.0;
-const TOPO_NOISE_SCALE: f32 = 0.08;
+const WIDTH: f32 = 640.0;
+const HEIGHT: f32 = 360.0;
+const TOPO_BASE_SPACING: f32 = 12.0;
+const TOPO_NOISE_SCALE: f32 = 0.055;
 const TOPO_SPEED_X: f32 = 0.3;
 const TOPO_SPEED_Y: f32 = 0.2;
-const TOPO_SIZE_MIN: f32 = 5.0;
-const TOPO_SIZE_MAX: f32 = 10.0;
-const TOPO_ALPHA_MIN: f32 = 0.1;
-const TOPO_ALPHA_MAX: f32 = 0.9;
+const TOPO_SIZE_MIN: f32 = 1.5;
+const TOPO_ALPHA_MIN: f32 = 0.05;
+const TOPO_ALPHA_MAX: f32 = 0.85;
+const MAX_TOPO_CELLS: usize = 18_000;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 enum BgAction {
@@ -100,6 +104,21 @@ fn noise2d(x: f32, y: f32) -> f32 {
     (perlin2d(x, y) + 1.0) * 0.5
 }
 
+#[inline]
+fn read_atomic_f32(value: &AtomicU32, fallback: f32) -> f32 {
+    let f = f32::from_bits(value.load(Ordering::Relaxed));
+    if f.is_finite() {
+        f
+    } else {
+        fallback
+    }
+}
+
+#[inline]
+fn write_atomic_f32(value: &AtomicU32, f: f32, min: f32, max: f32) {
+    value.store(f.clamp(min, max).to_bits(), Ordering::Relaxed);
+}
+
 #[cfg(target_arch = "wasm32")]
 fn dispatch_fps(fps: f32) {
     use wasm_bindgen::JsValue;
@@ -143,7 +162,10 @@ impl GameApp for PortfolioBg {
     }
 
     fn update(&mut self, ctx: &mut Context<BgAction>) {
-        self.time += ctx.delta_time;
+        if ANIMATION_ENABLED.load(Ordering::Relaxed) != 0 {
+            let speed = read_atomic_f32(&SPEED_BITS, 1.0);
+            self.time += ctx.delta_time * speed;
+        }
         self.frame_count += 1;
 
         // FPS dispatch every 30 frames
@@ -162,34 +184,65 @@ impl GameApp for PortfolioBg {
     fn ui(
         &mut self,
         _egui_ctx: &engine::egui::Context,
-        _ctx: &mut Context<BgAction>,
+        ctx: &mut Context<BgAction>,
         scene_params: &mut engine::SceneParams,
     ) {
+        ctx.show_perf_hud = false;
         scene_params.background_color = [0.0, 0.0, 0.0];
         scene_params.fog_enabled = false;
+
+        ctx.override_bloom(match RENDER_MODE.load(Ordering::Relaxed) {
+            MODE_TOPOGRAPHIC => BloomSettings {
+                enabled: true,
+                threshold: 0.05,
+                intensity: 0.25,
+                radius: 0.3,
+            },
+            
+            _ => BloomSettings {
+                enabled: true,
+                threshold: 0.50,
+                intensity: 0.25,
+                radius: 1.0,
+            },
+        });
     }
 }
 
 impl PortfolioBg {
     fn render_topographic(&self, ctx: &mut Context<BgAction>) {
         let t = self.time;
-        for row in 0..TOPO_ROWS {
-            for col in 0..TOPO_COLS {
+        let density = read_atomic_f32(&DENSITY_BITS, 1.0);
+        let intensity = read_atomic_f32(&INTENSITY_BITS, 1.0);
+        let spacing = (TOPO_BASE_SPACING / density.sqrt()).clamp(4.0, 18.0);
+        let cols = (WIDTH / spacing).ceil() as usize + 1;
+        let rows = (HEIGHT / spacing).ceil() as usize + 1;
+        let mut drawn = 0;
+
+        for row in 0..rows {
+            for col in 0..cols {
+                if drawn >= MAX_TOPO_CELLS {
+                    return;
+                }
+
                 let nx = col as f32 * TOPO_NOISE_SCALE + t * TOPO_SPEED_X;
                 let ny = row as f32 * TOPO_NOISE_SCALE + t * TOPO_SPEED_Y;
                 let val = noise2d(nx, ny);
+                let pulse = noise2d(nx * 2.2 - t * 0.15, ny * 2.2 + t * 0.12);
 
-                let size = TOPO_SIZE_MIN + val * (TOPO_SIZE_MAX - TOPO_SIZE_MIN);
-                let alpha = TOPO_ALPHA_MIN + val * (TOPO_ALPHA_MAX - TOPO_ALPHA_MIN);
+                let size_max = spacing * 0.9;
+                let size = TOPO_SIZE_MIN + val * pulse * (size_max - TOPO_SIZE_MIN);
+                let alpha = (TOPO_ALPHA_MIN + val * (TOPO_ALPHA_MAX - TOPO_ALPHA_MIN)) * intensity;
 
-                let x = col as f32 * TOPO_SPACING + (TOPO_SPACING - size) * 0.5;
-                let y = row as f32 * TOPO_SPACING + (TOPO_SPACING - size) * 0.5;
+                let x = col as f32 * spacing + (spacing - size) * 0.5;
+                let y = row as f32 * spacing + (spacing - size) * 0.5;
 
                 ctx.draw_rect(
                     Vec2::new(x, y),
                     Vec2::new(size, size),
-                    [1.0, 1.0, 1.0, alpha],
+                    [1.0, 1.0, 1.0, alpha.clamp(0.0, 1.0)],
                 );
+                drawn += 1;
             }
         }
     }
@@ -219,6 +272,25 @@ mod wasm_entry {
     }
 
     #[wasm_bindgen]
-    pub fn set_music(_enabled: bool) {
+    pub fn set_density(value: f32) {
+        write_atomic_f32(&DENSITY_BITS, value, 0.2, 3.0);
     }
+
+    #[wasm_bindgen]
+    pub fn set_speed(value: f32) {
+        write_atomic_f32(&SPEED_BITS, value, 0.0, 4.0);
+    }
+
+    #[wasm_bindgen]
+    pub fn set_intensity(value: f32) {
+        write_atomic_f32(&INTENSITY_BITS, value, 0.1, 1.5);
+    }
+
+    #[wasm_bindgen]
+    pub fn set_animation_enabled(enabled: bool) {
+        ANIMATION_ENABLED.store(if enabled { 1 } else { 0 }, Ordering::Relaxed);
+    }
+
+    #[wasm_bindgen]
+    pub fn set_music(_enabled: bool) {}
 }

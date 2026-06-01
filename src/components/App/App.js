@@ -115,8 +115,8 @@ function App() {
   };
 
   return (
-    <ThemeProvider>
-      <BackgroundProvider>
+    <BackgroundProvider>
+      <ThemeProvider>
         <Router
           future={{
             v7_startTransition: true,
@@ -125,8 +125,8 @@ function App() {
           <AppContent />
           {showLanding && <LandingPage onEnter={handleEnter} />}
         </Router>
-      </BackgroundProvider>
-    </ThemeProvider>
+      </ThemeProvider>
+    </BackgroundProvider>
   );
 }
 

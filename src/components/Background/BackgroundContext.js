@@ -212,6 +212,18 @@ export const BackgroundProvider = ({ children }) => {
         }
     };
 
+    useEffect(() => {
+      document.body.classList.toggle(
+        'journey-wallpaper-active',
+        backgroundConfig.type?.startsWith('journey')
+      );
+    
+      return () => {
+        document.body.classList.remove('journey-wallpaper-active');
+      };
+    }, [backgroundConfig.type]);
+
+
     /**========================================================================
      **      Enhanced wallpaper switching with settings preservation
      *========================================================================**/

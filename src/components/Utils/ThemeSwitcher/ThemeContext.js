@@ -1,8 +1,12 @@
 import { createContext, useState, useEffect } from 'react';
+import { useBackground } from '../../Background/BackgroundContext';
 
 export const ThemeContext = createContext();
 
 export const ThemeProvider = ({ children }) => {
+  const { backgroundConfig } = useBackground();
+  const themeLocked = backgroundConfig.type?.startsWith('journey');
+
   const [darkMode, setDarkMode] = useState(() => {
     try {
       const savedMode = localStorage.getItem("darkMode");
@@ -32,6 +36,7 @@ export const ThemeProvider = ({ children }) => {
   }, [darkMode]);
 
   const toggleDarkMode = () => {
+    if (themeLocked) return;
     setDarkMode(prevmode => !prevmode);
   };
 

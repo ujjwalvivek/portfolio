@@ -361,6 +361,10 @@ code {
   font-family: var(--font-mono);
 }
 
+body.journey-wallpaper-active .theme-switch-ui {
+  display: none !important;
+}
+
 /**
  *     █████╗  ██╗ ██╗██╗   ██╗
  *    ██╔══██╗███║███║╚██╗ ██╔╝
