@@ -1398,9 +1398,9 @@ dependencies = [
 
 [[package]]
 name = "journey-engine"
-version = "1.1.2"
+version = "1.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8a483332eecc5603a0f044ea2de62207ca92466b113f8effa677884b204c26dc"
+checksum = "36ccc97272686b11e3e21be8ff664db66740c3a1df4ed7ee8641d06a7b97db16"
 dependencies = [
  "bytemuck",
  "console_error_panic_hook",
