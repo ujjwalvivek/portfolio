@@ -17,7 +17,7 @@ import { visit } from 'unist-util-visit';
 import { ThemeContext } from '../../Utils/ThemeSwitcher/ThemeContext';
 import { MdTipsAndUpdates } from "react-icons/md";
 import { IoIosWarning } from "react-icons/io";
-import { BsFillInfoSquareFill } from "react-icons/bs";
+import { FaInfo  } from "react-icons/fa";
 import { GrTooltip } from "react-icons/gr";
 import { MdDangerous } from "react-icons/md";
 import { AiTwotoneStar } from "react-icons/ai";
@@ -27,7 +27,15 @@ import { FaSquareCaretRight } from "react-icons/fa6";
 import { GiHollowCat } from "react-icons/gi";
 import RecentLogs from '../../Modules/RecentLogs/RecentLogs';
 
-const IframeEmbed = ({ src, title, width, height, style, caption, ...rest }) => {
+const IFRAME_COVERS = {
+  journey: 'https://cdn.ujjwalvivek.com/posts/media/engine_load.webp',
+  baremetal: 'https://cdn.ujjwalvivek.com/posts/media/baremetal_load.webp',
+  youtube: 'https://cdn.ujjwalvivek.com/posts/media/youtube_load.webp',
+};
+
+const DEFAULT_IFRAME_COVER = IFRAME_COVERS.journey;
+
+const IframeEmbed = ({ src, title, width, height, style, caption, cover = DEFAULT_IFRAME_COVER, ...rest }) => {
   const isExternal = src && (src.startsWith('http://') || src.startsWith('https://'));
   const [active, setActive] = React.useState(!isExternal);
 
@@ -36,8 +44,10 @@ const IframeEmbed = ({ src, title, width, height, style, caption, ...rest }) => 
       const [k, ...v] = s.split(':');
       return [k.trim().replace(/-([a-z])/g, (_, c) => c.toUpperCase()), v.join(':').trim()];
     }))
-    : (style || {});
+    : (style || {});        
 
+  const aspectRatio = parsedStyle.aspectRatio || '16/9';
+  
   if (!isExternal) {
     return (
       <figure className={styles.iframeEmbedFigure}>
@@ -49,7 +59,7 @@ const IframeEmbed = ({ src, title, width, height, style, caption, ...rest }) => 
 
   return (
     <figure className={styles.iframeEmbedFigure}>
-      <div className={styles.iframeEmbedWrapper} style={{ aspectRatio: parsedStyle.aspectRatio }}>
+      <div className={styles.iframeEmbedWrapper} style={{ aspectRatio }}>
         <iframe
           src={active ? src : undefined}
           title={title}
@@ -65,10 +75,10 @@ const IframeEmbed = ({ src, title, width, height, style, caption, ...rest }) => 
               position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column',
               alignItems: 'center', justifyContent: 'center', gap: '0.75rem',
               color: '#fff', fontFamily: 'var(--font-neon)',
-              cursor: 'pointer', aspectRatio: parsedStyle.aspectRatio,
+              cursor: 'pointer', aspectRatio,
             }}
           >
-            <img src="https://cdn.ujjwalvivek.com/posts/media/engine_load.webp" alt="Click to load" />
+            <img src={IFRAME_COVERS[cover] || DEFAULT_IFRAME_COVER} alt="Click to load" />
           </div>
         )}
       </div>
@@ -179,7 +189,7 @@ const getAdmonitionIcon = (type) => {
     warning: <IoIosWarning />,
     tip: <GrTooltip />,
     danger: <MdDangerous />,
-    info: <BsFillInfoSquareFill />
+    info: <FaInfo />
   };
   return icons[type] || <AiTwotoneStar />;
 };

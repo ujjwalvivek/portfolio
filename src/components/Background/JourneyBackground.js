@@ -78,6 +78,9 @@ const JourneyBackground = () => {
 
         let cancelled = false;
 
+        const focusPatched = HTMLCanvasElement.prototype.focus;
+        HTMLCanvasElement.prototype.focus = function () {};
+
         const boot = async () => {
             try {
                 const mod = await import(
@@ -91,6 +94,8 @@ const JourneyBackground = () => {
             } catch (err) {
                 console.error("[JourneyBackground] WASM init failed:", err);
                 wasmInitPromise = null;
+            } finally {
+                HTMLCanvasElement.prototype.focus = focusPatched;
             }
         };
 
@@ -102,6 +107,7 @@ const JourneyBackground = () => {
 
             applyCanvasStyles(candidate);
             applyCover(candidate);
+            window.scrollTo(0, 0);
 
             const onResize = () => applyCover(candidate);
             window.addEventListener("resize", onResize);
@@ -117,6 +123,7 @@ const JourneyBackground = () => {
 
         return () => {
             cancelled = true;
+            HTMLCanvasElement.prototype.focus = focusPatched;
             window.removeEventListener(WASM_READY_EVENT, handleReady);
             //? Hide — don't remove. Removing kills the wGPU surface permanently.
             if (persistentCanvas) persistentCanvas.style.display = "none";

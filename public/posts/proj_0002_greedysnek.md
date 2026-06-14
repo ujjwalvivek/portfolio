@@ -5,7 +5,7 @@ summary: Analyzing the architectural challenges of real-time state synchronizati
 slug: proj_0002_greedysnek
 ---
 
-<iframe width="100%" height="500" src="https://www.youtube.com/embed/0Uv2LXfLRIM" frameborder="0" allowfullscreen></iframe>
+<iframe width="100%" height="500" src="https://www.youtube.com/embed/0Uv2LXfLRIM" frameborder="0" allowfullscreen cover="youtube"></iframe>
 
 #### A Game That Taught Me About Overengineering [ARCHIVED]
 
