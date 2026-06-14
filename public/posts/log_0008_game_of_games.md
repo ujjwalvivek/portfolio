@@ -90,6 +90,8 @@ Try GOGS here
 [https://gogs.ujjwalvivek.com](https://gogs.ujjwalvivek.com)
 
 [https://github.com/ujjwalvivek/gogs](https://github.com/ujjwalvivek/gogs)
+
+[https://gogs.ujjwalvivek.com/?id=share-mqdmzuxt-6066](https://gogs.ujjwalvivek.com/?id=share-mqdmzuxt-6066) - **Benchmark Results**
 :::
 
 <iframe src="https://gogs.ujjwalvivek.com/?id=share-mqdmzuxt-6066" caption="The Benchmarking Tool - Full Run Results" cover="gogs"></iframe>
