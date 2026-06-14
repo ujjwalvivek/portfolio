@@ -31,6 +31,7 @@ const IFRAME_COVERS = {
   journey: 'https://cdn.ujjwalvivek.com/posts/media/engine_load.webp',
   baremetal: 'https://cdn.ujjwalvivek.com/posts/media/baremetal_load.webp',
   youtube: 'https://cdn.ujjwalvivek.com/posts/media/youtube_load.webp',
+  gogs: 'https://cdn.ujjwalvivek.com/posts/media/gogs_load.webp',
 };
 
 const DEFAULT_IFRAME_COVER = IFRAME_COVERS.journey;
@@ -59,7 +60,7 @@ const IframeEmbed = ({ src, title, width, height, style, caption, cover = DEFAUL
 
   return (
     <figure className={styles.iframeEmbedFigure}>
-      <div className={styles.iframeEmbedWrapper} style={{ aspectRatio }}>
+      <div className={styles.iframeEmbedWrapper} style={{ aspectRatio, ...parsedStyle }}>
         <iframe
           src={active ? src : undefined}
           title={title}
@@ -307,7 +308,7 @@ const BlogPost = () => {
       };
 
       setItems(buildTree(heads));
-    }, [containerRef]);
+    }, [containerRef]);            
 
     const renderItems = (nodes) => {
       return (
@@ -315,7 +316,16 @@ const BlogPost = () => {
           {nodes.map(it => (
             <li key={it.id} className={styles.tocItemNested}>
               <div className={styles.tocLinkWrapper}>
-                <a href={`#${it.id}`} className={styles[`tocLinkLevel${it.level}`]} data-label={`h${it.level - 1}`}>
+                <a
+                  href={`#${it.id}`}
+                  className={styles[`tocLinkLevel${it.level}`]}
+                  data-label={`h${it.level - 1}`}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    const el = document.getElementById(it.id);
+                    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                  }}
+                >
                   {it.text}
                 </a>
               </div>
@@ -384,13 +394,13 @@ const BlogPost = () => {
       return <div {...props} />;
     },
     h2: ({ node, children, ...props }) => (
-      <h2 className={styles.headingWithIcon} {...props}>
+      <h2 className={styles.headingWithIcon} {...props} style={{ scrollMarginTop: '4rem' }}>
         <PiHashStraightFill className={styles.headingIcon} aria-hidden="true" focusable="false" />
         <span className={styles.headingText}>{children}</span>
       </h2>
     ),
     h3: ({ node, children, ...props }) => (
-      <h3 className={styles.headingWithIcon} {...props}>
+      <h3 className={styles.headingWithIcon} {...props} style={{ scrollMarginTop: '4rem' }}>
         <span className={styles.headingIcons}>
           <PiHashStraightFill className={styles.headingIcon} aria-hidden="true" />
           <PiHashStraightFill className={styles.headingIcon} aria-hidden="true" />
@@ -399,7 +409,7 @@ const BlogPost = () => {
       </h3>
     ),
     h4: ({ node, children, ...props }) => (
-      <h4 className={styles.headingWithIcon} {...props}>
+      <h4 className={styles.headingWithIcon} {...props} style={{ scrollMarginTop: '4rem' }}>
         <span className={styles.headingIcons}>
           <PiHashStraightFill className={styles.headingIcon} aria-hidden="true" />
           <PiHashStraightFill className={styles.headingIcon} aria-hidden="true" />
@@ -409,7 +419,7 @@ const BlogPost = () => {
       </h4>
     ),
     h5: ({ node, children, ...props }) => (
-      <h5 className={styles.headingWithIcon} {...props}>
+      <h5 className={styles.headingWithIcon} {...props} style={{ scrollMarginTop: '4rem' }}>
         <span className={styles.headingIcons}>
           <FaSquareCaretRight className={styles.headingIcon} aria-hidden="true" />
         </span>

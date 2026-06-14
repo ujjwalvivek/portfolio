@@ -44,6 +44,8 @@
   justify-content: flex-start;
   border-radius: 2px;
   background: rgba(var(--bit-dark-color-rgb), 0.8);
+  backdrop-filter: blur(32px) saturate(150%);
+  -webkit-backdrop-filter: blur(32px) saturate(150%);
   margin-left: 0;
   position: relative;
 }

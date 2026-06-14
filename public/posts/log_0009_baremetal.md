@@ -2,10 +2,11 @@
 title: "I Wrote 5,000 Lines of Assembly Because I Was Angry"
 date: 2026-06-14
 summary: "A Wolfenstein-style DDA raycaster written in pure x86-64 assembly. No libc, FPU, or assets. Just syscalls, and a 69KB binary that runs at 60fps in a terminal."
-slug: log_0008_baremetal
+slug: log_0009_baremetal
 ---
 
 :::toc
+:::
 
 :::tip
 It's been a while.

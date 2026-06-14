@@ -192,7 +192,23 @@
   },
   {
     "id": 13,
-    "filename": "log_0008_baremetal.md",
+    "filename": "log_0008_game_of_games.md",
+    "title": "A Game of Game Engines: Benchmarking Two Technologies",
+    "date": "2026-06-11",
+    "description": "I built two game engines with opposite philosophies, then benchmarked them. Here's what I actually realized.",
+    "tags": [
+      "Rust",
+      "Typescript",
+      "Benchmark",
+      "Game Engines",
+      "Learnings"
+    ],
+    "readingTime": "16 min read",
+    "thumbnail": "https://cdn.ujjwalvivek.com/posts/media/gogs.webp"
+  },
+  {
+    "id": 14,
+    "filename": "log_0009_baremetal.md",
     "title": "I Wrote 5,000 Lines of Assembly Because I Was Angry",
     "date": "2026-06-14",
     "description": "A Wolfenstein-style DDA raycaster written in pure x86-64 assembly. No libc, FPU, or assets. Just syscalls, and a 69KB binary that runs at 60fps in a terminal.",
