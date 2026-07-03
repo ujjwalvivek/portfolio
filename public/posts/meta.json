@@ -48,7 +48,7 @@
       "Architecture Pivot",
       "Local-First"
     ],
-    "readingTime": "11 min read",
+    "readingTime": "12 min read",
     "thumbnail": "https://cdn.ujjwalvivek.com/posts/media/tech_stack_1-1.webp"
   },
   {
@@ -221,5 +221,21 @@
     ],
     "readingTime": "15 min read",
     "thumbnail": "https://cdn.ujjwalvivek.com/posts/media/baremetal.webp"
+  },
+  {
+    "id": 15,
+    "filename": "log_0010_gpui_experiment.md",
+    "title": "ADR: What Made an LLM-Assisted Rust Migration Possible",
+    "date": "2026-07-03",
+    "description": "A Rust/egui to GPUI port postmortem on how a living ADR, a persistent memory bank, kept an LLM-assisted migration coherent across tools, tests, failed approaches, and human review while the product moved from experiment to released successor.",
+    "tags": [
+      "Rust",
+      "GPUI",
+      "LLM",
+      "Porting",
+      "Postmortem"
+    ],
+    "readingTime": "17 min read",
+    "thumbnail": "https://github.com/ujjwalvivek/devhub/blob/main/web/public/images/gpui/shot-5.webp?raw=true"
   }
 ]

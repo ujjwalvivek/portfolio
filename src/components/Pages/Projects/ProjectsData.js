@@ -154,6 +154,19 @@ export const ProjectsData = [
     },
     {
         id: "dev-11",
+        title: "Devhub GPUI: Porting from egui to GPUI with LLMs",
+        content: [
+            "A Rust/egui to GPUI port postmortem on how a living ADR, a persistent memory bank, kept an LLM-assisted migration coherent across tools, tests, failed approaches, and human review while the product moved from experiment to released successor.",
+        ],
+        tags: ["Rust", "Migration", "GPUI", "LLM"],
+        visibleTags: 3,
+        contentLinks: {
+            websiteLink: "https://devhub.ujjwalvivek.com",
+            blogPost: "/blog/log_0010_gpui_experiment.md",
+        },
+    },
+    {
+        id: "dev-12",
         title: "Procedural Graphics Engine & React Architecture",
         content: [
             "Engineered a custom procedural rendering engine using HTML5 Canvas to visualize mathematical concepts without heavy 3D libraries. Architected a React-based performance-first portfolio site around this engine that prioritizes performant canvas rendering over standard DOM manipulation. The result is a unique blend of terminal aesthetics and interactive visuals, all while maintaining accessibility and cross-device performance.",
@@ -172,7 +185,7 @@ export const ProjectsData = [
         },
     },
     {
-        id: "dev-12",
+        id: "dev-13",
         title: "EasyApply: A Job Application Companion",
         content: [
             "Zero-friction job application companion with a browser extension + Cloudflare Workers AI ",
@@ -184,7 +197,7 @@ export const ProjectsData = [
         },
     },
     {
-        id: "dev-13",
+        id: "dev-14",
         title: "Root: All My Links",
         content: [
             "A root hub for ujjwalvivek.com, driven by a custom rust canvas, js bg generation, and sounds using a procedural audio engine.",
@@ -198,7 +211,7 @@ export const ProjectsData = [
     },
 
     {
-        id: "dev-14",
+        id: "dev-15",
         title: "Requiem: A Journey Engine Game",
         content: [
             "A stark, minimalist bullet heaven built on the Journey Engine. Fewer, faster, deadlier enemies. Monochrome geometry. Heavy impact. Zero assets.",
@@ -211,7 +224,7 @@ export const ProjectsData = [
         },
     },
     {
-        id: "dev-15",
+        id: "dev-16",
         title: "A 2D Game in Journey Engine: Engine Capabilities",
         content: [
             "A WASM Artifact. Port of the Dino Blink game (Easter Egg) to the Journey Engine, showcasing the engine’s capabilities in a real-world project. This project involved implementing core gameplay mechanics, optimizing performance for web deployment, and iterating on design.",
@@ -224,7 +237,7 @@ export const ProjectsData = [
         },
     },
     {
-        id: "dev-16",
+        id: "dev-17",
         title: "Multiplayer FPS Architecture: A Development Resource",
         content: [
             "Engineered the core networking and gameplay stack for a squad-based FPS. Architected a scalable RoomManager and Lobby system for seamless matchmaking, and implemented a custom Raycast Combat model with client-side prediction. developed a 3D spatial audio framework to drive immersive horror mechanics.",
@@ -241,7 +254,7 @@ export const ProjectsData = [
         },
     },
     {
-        id: "dev-17",
+        id: "dev-18",
         title: "Real-Time Multiplayer Architecture: Mirror & Optimizations",
         content: [
             "Developed a server-authoritative multiplayer game using Unity & Mirror. Implemented client-side prediction for latency masking and architected a modular codebase to separate core logic from networking, learning critical lessons in bandwidth management and O(n) performance scaling.",
@@ -262,7 +275,7 @@ export const ProjectsData = [
         },
     },
     {
-        id: "dev-18",
+        id: "dev-19",
         title: "Deterministic Architecture & Weapon Tooling",
         content: [
             "Engineered a deterministic input-lockstep simulation framework to achieve minimal-bandwidth state synchronization (2 floats/frame). Integrated a ScriptableObject-driven weapon pipeline, decoupling game design data from engineering logic to accelerate content iteration.",
@@ -282,7 +295,7 @@ export const ProjectsData = [
         },
     },
     {
-        id: "dev-19",
+        id: "dev-20",
         title: "Nine Years… and Still Kicking: An IEEE website",
         content: [
             "Architected the IEEE Manipal digital platform with a focus on zero-maintenance durability. The static site architecture has served 10,000+ students with 99.9% uptime for 9 years, validating the 'Simple by Design' engineering philosophy over complex frameworks.",
