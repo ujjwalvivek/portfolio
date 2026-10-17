@@ -15,8 +15,8 @@ import EchopointImg from '../../Utils/EchopointImg/EchopointImg';
 import GenericCachedImg from '../../Utils/EchopointImg/GenericCachedImg';
 
 const ECHOPOINT = 'https://echopoint.ujjwalvivek.com';
-const CARTO_TILE_DARK = 'https://basemaps.cartocdn.com/dark_all/12/2931/1900@2x.png';
-const CARTO_TILE_LIGHT = 'https://basemaps.cartocdn.com/light_all/12/2931/1900@2x.png';
+const MAP_TILE_DARK = '/map-blr-dark.png';
+const MAP_TILE_LIGHT = '/map-blr-light.png';
 let globalClickCache = 0;
 
 async function fetchTotal() {
@@ -204,7 +204,7 @@ const Widgets = () => {
                 <span className={styles.widgetTitle}>{<MdLocationPin />} Where am i</span>
                 <div className={styles.mapContainer}>
                     <GenericCachedImg
-                        src={darkMode ? CARTO_TILE_DARK : CARTO_TILE_LIGHT}
+                        src={darkMode ? MAP_TILE_DARK : MAP_TILE_LIGHT}
                         alt="Bengaluru map"
                         className={styles.mapImg}
                         width="100%"
