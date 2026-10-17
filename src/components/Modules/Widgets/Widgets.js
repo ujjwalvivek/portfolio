@@ -15,8 +15,8 @@ import EchopointImg from '../../Utils/EchopointImg/EchopointImg';
 import GenericCachedImg from '../../Utils/EchopointImg/GenericCachedImg';
 
 const ECHOPOINT = 'https://echopoint.ujjwalvivek.com';
-const MAP_TILE_DARK = '/map-blr-dark.png';
-const MAP_TILE_LIGHT = '/map-blr-light.png';
+const MAP_TILE_DARK = '/media/map-blr-dark.png';
+const MAP_TILE_LIGHT = '/media/map-blr-light.png';
 let globalClickCache = 0;
 
 async function fetchTotal() {
