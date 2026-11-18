@@ -64,6 +64,8 @@ export function loadGame(): Promise<GameModule> {
         const found = [...document.querySelectorAll<HTMLCanvasElement>("body > canvas")].find((c) => c.id !== "bg-canvas");
         if (!found) return;
         canvas = found;
+        holding.disconnect();
+        for (const prop of ["position", "left", "top", "width", "height", "visibility"]) canvas.style.removeProperty(prop);
         canvas.id = "header-canvas";
         canvas.removeAttribute("tabindex");
         canvas.setAttribute("aria-hidden", "true");
@@ -73,6 +75,24 @@ export function loadGame(): Promise<GameModule> {
       },
       { once: true },
     );
+  });
+  // The engine appends its canvas to the end of <body> and focuses it, which scrolls the page to the bottom. Canvas
+  // focus is silenced until the canvas has been parked (v3 did the same for its Journey wallpaper).
+  const focus = HTMLCanvasElement.prototype.focus;
+  HTMLCanvasElement.prototype.focus = function () {};
+  // The engine also sizes its fresh canvas to the whole viewport inside <body>'s layout. Until it is moved into the
+  // header, hold it fixed and off-screen at the scene's own size, so it never shifts the page.
+  const holding = new MutationObserver((records) => {
+    for (const r of records)
+      for (const n of r.addedNodes)
+        if (n instanceof HTMLCanvasElement && n.id !== "bg-canvas" && n.parentElement === document.body) {
+          n.style.cssText += ";position:fixed;left:-10000px;top:0;width:640px;height:360px;visibility:hidden;";
+          holding.disconnect();
+        }
+  });
+  holding.observe(document.body, { childList: true });
+  void ready.finally(() => {
+    HTMLCanvasElement.prototype.focus = focus;
   });
   loading = preferWorkingBackend()
     .then(() => import(GAME_URL))
@@ -91,6 +111,7 @@ export function loadGame(): Promise<GameModule> {
       return m;
     })
     .catch((err) => {
+      HTMLCanvasElement.prototype.focus = focus;
       loading = null;
       throw err;
     });

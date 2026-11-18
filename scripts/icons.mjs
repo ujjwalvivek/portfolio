@@ -27,6 +27,6 @@ writeFileSync("static/icons.svg", `<svg xmlns="http://www.w3.org/2000/svg">${all
 
 mkdirSync("templates/partials", { recursive: true });
 const shell = SHELL.map(symbol).join("");
-writeFileSync("templates/partials/shell-icons.html", `<svg xmlns="http://www.w3.org/2000/svg" hidden aria-hidden="true">${shell}</svg>\n`);
+writeFileSync("templates/partials/shell-icons.html", `<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" style="position:absolute;width:0;height:0;overflow:hidden">${shell}</svg>\n`);
 
 console.log(`icons: ${Object.keys(icons).length} in the sprite, ${SHELL.length} inlined in the shell`);
