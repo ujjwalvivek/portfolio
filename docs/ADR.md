@@ -43,8 +43,8 @@
 
 | Item                     | Current state                                                        |
 | ------------------------ | -------------------------------------------------------------------- |
-| Current milestone        | M2: rest of home (M0 and M1 accepted by Vivek 2026-11-18)            |
-| Next milestone           | M2: rest of home, after M1 review                                    |
+| Current milestone        | M3: blog (M0 to M2 accepted by Vivek; M2 on 2026-11-19)              |
+| Next milestone           | M4: projects, after M3 review                                        |
 | Accepted foundation      | Zola pages, TypeScript modules, substrate consumer, header game      |
 | Immediate decision gate  | None for M0; Q-02 and Q-08 are needed later                          |
 | Production               | v3 stays live from main until M8 cutover                             |
@@ -846,3 +846,4 @@ Merge v4 into main, deploy, verify live, tag v4.0.0, update the root list and Pr
 - 2026-11-18: Vivek: no rounded corners anywhere (principle 9). Vibe switch now uses v3's palette swatches and its ON/OFF lettered switch.
 - 2026-11-18: Vivek: adhere to the design systems (principle 10). Shell brought in line: 2px solid dominant focus, keycap style, no depth shadows, active and inert borders, meta-label case. Header frame's bottom brackets now sit on the dashed border like the top pair (they were clipped inside it).
 - 2026-11-19: M2 built: nav, intro (starship shades via CSS relative colours, word glow, age version), recent logs rendered by Zola, widgets (stream, 8132f1a) and terminal mail (stream, 8c2f74d) as lazy features with held heights (widgets square cards: (W-3rem)/4, W, 4W+3rem by breakpoint; mail 420px at every width). Fixes from Vivek's review: autoscroll to the bottom (engine focused its canvas), a 150px gap at the top (the inline icon SVG laid out), heatmap month labels clipped (echopoint tight mode), widget footer icons off-centre. Awaiting Vivek's review of M2.
+- 2026-11-19: M2 accepted by Vivek after fixes: the heatmap is drawn from echopoint's summary data as cells, root's way, so it follows the palette and drift with no image refetch; terminal mail has a full solid frame; intro highlights take the dominant colour. M3 started as two streams: blog list (wt-bloglist, branch v4-bloglist) and post page (wt-post, branch v4-post).
