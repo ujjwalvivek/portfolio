@@ -25,7 +25,7 @@ export function mount(root: HTMLElement): () => void {
       .catch((err) => console.warn("Header scene unavailable, keeping the HTML header:", err));
   };
   // After first paint and once the browser is idle, so the scene never delays the page itself.
-  const idle = (fn: () => void) => ("requestIdleCallback" in window ? requestIdleCallback(fn, { timeout: 1500 }) : setTimeout(fn, 300));
+  const idle = (fn: () => void) => (typeof requestIdleCallback === "function" ? requestIdleCallback(fn, { timeout: 1500 }) : setTimeout(fn, 300));
   requestAnimationFrame(() => idle(start));
 
   const button = box.querySelector<HTMLButtonElement>("[data-music]");

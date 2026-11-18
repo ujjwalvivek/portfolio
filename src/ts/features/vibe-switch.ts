@@ -71,7 +71,10 @@ export function openVibeSwitch(): void {
             paint(sw, customPalette(pick.value));
             mark();
           });
-          sw.append(pick);
+          const plus = document.createElement("span");
+          plus.className = "vibe-plus";
+          plus.textContent = "+";
+          sw.append(plus, pick);
         }
         swatches.push(sw);
         grid.append(sw);
