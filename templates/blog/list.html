@@ -31,7 +31,7 @@
     <li class="bl-post" data-bl-post>
       <div class="bl-head">
         <span class="bl-index" aria-hidden="true"><span data-bl-rank>{% if loop.index < 10 %}0{% endif %}{{ loop.index }}</span>.{% if post.extra.id < 10 %}0{% endif %}{{ post.extra.id }}</span>
-        <h2 class="bl-title"><a class="bl-link" href="{{ post.permalink | safe }}" data-bl-title>{{ post.title }}</a></h2>
+        <h2 class="bl-title"><a class="bl-link" href="{{ post.path | safe }}" data-bl-title>{{ post.title }}</a></h2>
         <span class="bl-view" aria-hidden="true">view <svg class="icon"><use href="/icons.svg#fa-expand"/></svg></span>
       </div>
       <div class="bl-body">

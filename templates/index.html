@@ -31,7 +31,7 @@
     {%- for post in blog.pages %}{% if loop.index <= 2 %}
       <li>
         <span class="rl-corners" aria-hidden="true"></span>
-        <a href="{{ post.permalink | safe }}">
+        <a href="{{ post.path | safe }}">
           <span class="rl-head"><span class="rl-date">{{ post.date | date(format="%d/%m/%y") }}</span><span class="rl-title">{{ post.title | truncate(length=50) }}</span></span>
           {%- if post.taxonomies.tags %}<span class="rl-tags">{% for tag in post.taxonomies.tags %}<span class="rl-tag">{{ tag }}</span>{% endfor %}</span>{% endif %}
           {%- if post.description %}<span class="rl-desc">{{ post.description }}</span>{% endif %}

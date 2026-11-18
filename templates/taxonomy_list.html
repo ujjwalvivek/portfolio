@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
 <section class="placeholder"><h1>Tags</h1>
-<ul class="placeholder-links">{% for term in terms %}<li><a href="{{ term.permalink | safe }}">{{ term.name }}</a></li>{% endfor %}</ul>
+<ul class="placeholder-links">{% for term in terms %}<li><a href="{{ term.path | safe }}">{{ term.name }}</a></li>{% endfor %}</ul>
 </section>
 {% endblock content %}
