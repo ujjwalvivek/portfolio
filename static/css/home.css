@@ -166,13 +166,13 @@
 .cmd-param { color: rgba(var(--text-color-rgb), 0.5); vertical-align: middle; }
 .intro-out { margin-top: 0.5rem; }
 .intro-out p { margin: 0 0 0 0.5rem; font-family: var(--font-neon); font-weight: 200; letter-spacing: 0.05rem; white-space: normal; }
-.hl { font-weight: 700; color: var(--status-warn-color); margin: 0 0.15rem; }
+.hl { font-weight: 700; color: var(--dynamic-dominant-color); margin: 0 0.15rem; }
 .word { display: inline-block; animation: letter-glow 0.3s both; text-shadow: 0 0 1px rgba(var(--dynamic-hsl-average-rgb), 1); }
 @keyframes letter-glow {
   0% { opacity: 0.4; text-shadow: 0 0 1px rgba(var(--text-color-rgb), 0.1); }
-  66% { opacity: 0.6; text-shadow: 0 0 20px rgba(var(--primary-color-rgb), 0.9); }
+  66% { opacity: 0.6; text-shadow: 0 0 20px rgba(var(--dynamic-dominant-color-rgb), 0.9); }
   77% { opacity: 0.8; }
-  100% { opacity: 0.9; text-shadow: 0 0 20px rgba(var(--primary-color-rgb), 0); }
+  100% { opacity: 0.9; text-shadow: 0 0 20px rgba(var(--dynamic-dominant-color-rgb), 0); }
 }
 
 /* Starship prompt: segments in shades of the accent (v3 generated them in JS; CSS relative colours do it now). */
