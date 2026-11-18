@@ -22,6 +22,16 @@
   text-align: left;
 }
 
+/* the full frame, drawn over the title and status bars so it runs unbroken round the whole window */
+.tm::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  border: 2px solid var(--dynamic-dominant-color);
+  pointer-events: none;
+}
+
 /* ---- title bar ---- */
 .tm-header {
   position: relative;
@@ -91,11 +101,10 @@
   min-height: 0;
   box-sizing: border-box;
   overflow: hidden;
-  border: 2px dashed rgba(var(--dynamic-dominant-color-rgb), 0.35);
+  border: 2px solid rgba(var(--dynamic-dominant-color-rgb), 0.5);
   transition: border-color 0.25s ease;
 }
 /* the compose pane is the active one; it goes fully dominant while the terminal has focus */
-.tm-panel.is-focus { border-style: solid; border-color: rgba(var(--dynamic-dominant-color-rgb), 0.5); }
 .tm:focus-within .tm-panel.is-focus { border-color: var(--dynamic-dominant-color); }
 
 .tm-panel-head {

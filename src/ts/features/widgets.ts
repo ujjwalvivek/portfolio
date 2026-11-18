@@ -1,11 +1,8 @@
 // Home widgets, v3's four cards: the GitHub heatmap, where I am, a booking calendar and the echopoint clicker.
 // Mounted lazily into its host (lib/lazy.ts). The cards are square, so the grid's height follows its width alone.
-// The heatmap's colours come from the chosen palette, not from the drift: the image URL changes only on mount and when
-// the palette does, so the drift never refetches it.
+// The heatmap is drawn from echopoint's contribution data as plain cells, root's way, so its colours are CSS and follow the
+// palette and the drift at once, with no image to refetch.
 
-import { hexToRgb, hslToRgb, rgbToHex, rgbToHsl } from "../lib/colour.js";
-import { on } from "../lib/store.js";
-import { currentColours, currentPalette } from "../shell/drift.js";
 
 const ECHOPOINT = "https://echopoint.ujjwalvivek.com";
 const CLICK_WS = "wss://echopoint.ujjwalvivek.com/v1/click";
@@ -13,6 +10,7 @@ const CAL_LINK = "https://cal.com/ujjwalvivek/sayhi";
 const MAP_TILE = "/media/map-blr-dark.png";
 const CLICKS_KEY = "echopoint_clicks"; // v3's key, unprefixed, so returning visitors keep their count
 const RECONNECT_MS = 3000;
+const WEEKS = 53;
 
 // Survives remounts within one visit, as v3's module cache did.
 let globalClicks: number | null = null;
@@ -36,7 +34,7 @@ const TEMPLATE = `<div class="widgets">
   ${card(
     "Heatmap",
     "fa-github-square",
-    `<div class="w-frame w-heatmap"><img class="w-calendar" alt="GitHub contributions calendar" decoding="async"></div>`,
+    `<div class="w-frame w-heatmap"><div class="hm" data-heatmap></div></div>`,
     `<span class="w-foot-label">Commits</span><span class="w-foot-icon">${icon("io-git-commit-sharp")}</span><span data-total>-</span>`,
   )}
   ${card(
@@ -65,38 +63,80 @@ const TEMPLATE = `<div class="widgets">
 
 // ---- heatmap ----
 
-// v3's generateShades(dominant, 6): the dominant's hue and saturation at lightness 20 to 80; levels 0 to 4 take the first five.
-function heatmapUrl(dominant: string): string {
-  const { h, s } = rgbToHsl(hexToRgb(dominant));
-  const levels = [0, 1, 2, 3, 4].map((i) =>
-    rgbToHex(hslToRgb({ h: Math.round(h), s: Math.round(s), l: Math.round(20 + (i / 5) * 60) })).slice(1),
-  );
-  const q = new URLSearchParams({
-    user: "ujjwalvivek",
-    bg: "none",
-    borderWidth: "0",
-    responsive: "1",
-    cellRx: "0",
-    zeroColor: "131313",
-  });
-  levels.forEach((c, i) => q.set(`level${i}`, c));
-  q.set("textColor", dominant.replace(/^#/, ""));
-  return `${ECHOPOINT}/svg/calendar?${q}`;
-}
+type Day = { date: string; contributionCount: number };
+type Year = { contributionCalendar?: { totalContributions?: number }; restrictedContributionsCount?: number };
+type Summary = {
+  data?: { user?: Record<string, Year | undefined> & { allTime?: { weeks?: { contributionDays: Day[] }[] } } };
+};
 
-type Summary = { data?: { user?: Record<string, { contributionCalendar?: { totalContributions?: number }; restrictedContributionsCount?: number } | undefined> } };
-
-// All years since 2016, private contributions included, as v3 counted them.
-async function fetchTotal(signal: AbortSignal): Promise<number> {
+// One request: the all-time total (every year since 2016, private contributions included, as v3 counted them) and the weeks.
+async function fetchSummary(signal: AbortSignal): Promise<{ total: number; weeks: Day[][] }> {
   const res = await fetch(`${ECHOPOINT}/v1/store/github:ujjwalvivek:summary`, { signal });
   if (!res.ok) throw new Error(`summary ${res.status}`);
-  const { data } = (await res.json()) as Summary;
+  const user = ((await res.json()) as Summary).data?.user;
   let total = 0;
   for (let y = 2016; y <= new Date().getFullYear(); y++) {
-    const yr = data?.user?.[`y${y}`];
+    const yr = user?.[`y${y}`] as Year | undefined;
     if (yr) total += (yr.contributionCalendar?.totalContributions ?? 0) + (yr.restrictedContributionsCount ?? 0);
   }
-  return total;
+  const weeks = (user?.allTime?.weeks ?? []).slice(-WEEKS).map((w) => w.contributionDays);
+  return { total, weeks };
+}
+
+// Root's levels: 1 to 4 are the quartiles of the busy days, so the grid reads the same however active the year was.
+function levelOf(counts: number[]): (n: number) => number {
+  const busy = counts.filter((n) => n > 0).sort((a, b) => a - b);
+  const at = (q: number) => busy[Math.min(busy.length - 1, Math.floor(busy.length * q))] ?? 0;
+  const [q1, q2, q3] = [at(0.25), at(0.5), at(0.75)];
+  return (n) => (n <= 0 ? 0 : n <= q1 ? 1 : n <= q2 ? 2 : n <= q3 ? 3 : 4);
+}
+
+// Root's grid: a month row over seven rows of cells, newest week on the right. The card shows as many weeks as fit
+// (the CSS sizes the cells from the frame's height); older ones are cut off on the left, as v3's crop did.
+function drawHeatmap(host: HTMLElement, weeks: Day[][]): void {
+  const level = levelOf(weeks.flat().map((d) => d.contributionCount));
+  const months = document.createElement("div");
+  months.className = "hm-months";
+  months.setAttribute("aria-hidden", "true");
+  const grid = document.createElement("div");
+  grid.className = "hm-grid";
+  let lastMonth = -1;
+  let lastLabel = -9;
+  weeks.forEach((days, col) => {
+    const first = days[0]?.date;
+    if (first) {
+      const date = new Date(`${first}T00:00:00Z`);
+      if (date.getUTCMonth() !== lastMonth) {
+        lastMonth = date.getUTCMonth();
+        if (col - lastLabel >= 3 && col < weeks.length - 2) {
+          const tag = document.createElement("span");
+          tag.textContent = date.toLocaleString("en-US", { month: "short", timeZone: "UTC" });
+          tag.style.gridColumn = String(col + 1);
+          months.append(tag);
+          lastLabel = col;
+        }
+      }
+    }
+    for (let row = 0; row < 7; row++) {
+      const day = days[row];
+      const cell = document.createElement("i");
+      cell.className = day ? `l${level(day.contributionCount)}` : "l-";
+      if (day) cell.title = `${day.date}: ${day.contributionCount} contributions`;
+      cell.style.gridArea = `${row + 1} / ${col + 1}`;
+      // the cells come online right to left, a little out of step, and some of the lit ones flash now and then
+      cell.style.setProperty("--d", `${(weeks.length - col) * 18 + Math.floor(Math.random() * 160)}ms`);
+      if (day && day.contributionCount > 0 && Math.random() < 0.3) {
+        cell.classList.add("tw");
+        cell.style.setProperty("--tw", `${(3.5 + Math.random() * 6).toFixed(1)}s`);
+        cell.style.setProperty("--tw-delay", `${(1.4 + Math.random() * 8).toFixed(1)}s`);
+      }
+      grid.append(cell);
+    }
+  });
+  host.style.setProperty("--weeks", String(weeks.length));
+  host.setAttribute("role", "img");
+  host.setAttribute("aria-label", "GitHub contributions over the last year");
+  host.replaceChildren(months, grid);
 }
 
 // ---- where am i ----
@@ -316,26 +356,14 @@ export function mount(host: HTMLElement): () => void {
   host.innerHTML = TEMPLATE;
   const undo: (() => void)[] = [];
 
-  // Heatmap: built now and again only when the palette changes, never on drift. It takes the accent of whichever end
-  // the drift is nearer to (root runs amber to violet), so each palette has two stable URLs the browser can cache.
-  const calendar = host.querySelector<HTMLImageElement>(".w-calendar")!;
-  const paint = () => {
-    const { a, b } = currentPalette();
-    const now = hexToRgb(currentColours().accent);
-    const dist = (hex: string) => {
-      const c = hexToRgb(hex);
-      return (c.r - now.r) ** 2 + (c.g - now.g) ** 2 + (c.b - now.b) ** 2;
-    };
-    const url = heatmapUrl(dist(a.accent) <= dist(b.accent) ? a.accent : b.accent);
-    if (calendar.src !== url) calendar.src = url;
-  };
-  paint();
-  undo.push(on("palette", paint));
 
   const total = host.querySelector<HTMLElement>("[data-total]")!.firstChild as Text;
   const summary = new AbortController();
-  fetchTotal(summary.signal)
-    .then((n) => (total.data = String(n)))
+  fetchSummary(summary.signal)
+    .then(({ total: n, weeks }) => {
+      total.data = String(n);
+      if (weeks.length) drawHeatmap(host.querySelector<HTMLElement>("[data-heatmap]")!, weeks);
+    })
     .catch(() => {});
   undo.push(() => summary.abort());
 
