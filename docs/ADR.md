@@ -598,7 +598,7 @@ The 34 CSS modules become plain CSS files, one per page or feature, each scoped 
 | Recent logs                          | Ported, rendered by Zola                                       | M2        |
 | Widgets: heatmap, map, cal, clicker  | Ported; clicker keeps the echopoint WebSocket                  | M2        |
 | Terminal mail and terminal cat       | Ported, D-019                                                  | M2        |
-| Blog list, search, lazy list         | Ported; search runs over a Zola-built index                    | M3        |
+| Blog list, search, lazy list         | Ported; search filters the Zola-rendered cards, no index file  | M3        |
 | Blog post window chrome, TOC, code copy, lightbox, iframe covers, admonitions, related posts | Ported | M3 |
 | Dino game embed in posts             | Ported as a shortcode and module                               | M3        |
 | KaTeX                                | Removed; one equation as static markup                         | M3        |
