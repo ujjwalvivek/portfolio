@@ -67,11 +67,14 @@ export function derive(colours: string[]): { rgbAverage: Rgb; hslAverage: Rgb; d
     s: hsls.reduce((s, c) => s + c.s, 0) / n,
     l: hsls.reduce((s, c) => s + c.l, 0) / n,
   });
+  // The most saturated colour, with earlier slots winning near-ties: palettes like neon have three colours at full
+  // saturation, and without the margin the pick flips between them as the drift mixes the two ends.
+  const MARGIN = 6;
   let dominant = rgbs[0] ?? { r: 136, g: 136, b: 136 };
-  let best = -1;
+  let best = hsls[0]?.s ?? -1;
   rgbs.forEach((c, i) => {
     const s = hsls[i]!.s;
-    if (s > best) { best = s; dominant = c; }
+    if (s > best + MARGIN) { best = s; dominant = c; }
   });
   return { rgbAverage, hslAverage, dominant };
 }
