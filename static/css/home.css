@@ -1,0 +1,93 @@
+/* Home. The header box is root's cornered 16:9 frame; the HTML header inside it carries v3's glitch and glow, and
+   stays readable (and in the accessibility tree) after the scene takes over the box. */
+
+.home-header { width: min(var(--main-content-width), calc(100% - 2rem)); margin: 0 auto; }
+
+.header-frame { position: relative; width: 100%; animation: header-fade 0.5s ease-out 0.1s both; }
+.header-inner {
+  position: relative;
+  aspect-ratio: 640 / 360;
+  background: rgba(var(--background-color-rgb), 0.3);
+  backdrop-filter: blur(32px) saturate(180%);
+  -webkit-backdrop-filter: blur(32px) saturate(180%);
+  border: 2px dashed rgba(var(--dynamic-dominant-color-rgb), 0.35);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+
+/* Four corner brackets, root's. */
+.header-frame::before, .header-frame::after, .header-inner::before, .header-inner::after {
+  content: "";
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border: solid rgba(var(--dynamic-dominant-color-rgb), 1);
+  pointer-events: none;
+  z-index: 20;
+}
+.header-frame::before { top: 0; left: 0; border-width: 2px 0 0 2px; }
+.header-frame::after { top: 0; right: 0; border-width: 2px 2px 0 0; }
+.header-inner::before { bottom: -1px; left: -1px; border-width: 0 0 2px 2px; }
+.header-inner::after { bottom: -1px; right: -1px; border-width: 0 2px 2px 0; }
+
+.header-text { display: flex; flex-direction: column; align-items: center; gap: 0.6rem; padding: 0 1.5rem; text-align: center; transition: opacity 0.6s ease-out; }
+.header-text h1, .header-sub {
+  margin: 0;
+  font-family: var(--font-krypton);
+  font-weight: 800;
+  color: var(--text-color);
+}
+.header-text h1 { font-size: clamp(1.6rem, 6vw, 4.2rem); letter-spacing: -0.15rem; line-height: 0.95; }
+.header-sub { font-size: clamp(0.75rem, 2.2vw, 1.4rem); font-weight: 700; color: rgba(var(--dynamic-dominant-color-rgb), 1); }
+
+/* Once the scene is drawing, the canvas fills the box and the HTML text steps back (visually only). */
+#header-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+  outline: none;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  -webkit-tap-highlight-color: transparent;
+  opacity: 0;
+  transition: opacity 0.8s ease-out;
+}
+.home-header.is-live #header-canvas { opacity: 1; }
+.home-header.is-live .header-text { opacity: 0; }
+
+.header-controls { display: flex; justify-content: flex-start; padding-top: 0.25rem; }
+.audio-toggle {
+  background: none;
+  border: none;
+  color: rgba(var(--text-color-rgb), 0.66);
+  padding: 8px 0;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.audio-toggle:hover, .audio-toggle[aria-pressed="true"] { color: var(--dynamic-dominant-color); }
+
+/* v3 header effects, for the HTML header (no-wasm browsers, and the moment before the scene arrives). */
+.glitch { position: relative; }
+.glitch::before, .glitch::after { content: attr(data-text); position: absolute; left: 0; width: 100%; overflow: hidden; }
+.glitch::before { animation: glitch-top 2s infinite linear alternate-reverse; color: var(--primary-color); top: -0.1rem; }
+.glitch::after { animation: glitch-bot 2s infinite linear alternate-reverse; color: var(--text-color); top: 0.1rem; }
+.home-header.is-live .glitch::before, .home-header.is-live .glitch::after { animation: none; }
+.shadow-pulse { animation: pulse-shadow 4s infinite alternate; }
+
+@keyframes glitch-top { 0% { left: 0; } 20% { left: 0.5px; } 40% { left: -0.5px; } 60% { left: 0.5px; } 80% { left: -0.25px; } 100% { left: 0; } }
+@keyframes glitch-bot { 0% { left: 0; } 20% { left: -0.5px; } 40% { left: 0.5px; } 60% { left: -0.25px; } 80% { left: 0.5px; } 100% { left: 0; } }
+@keyframes pulse-shadow {
+  0% { text-shadow: 0 0 2px var(--dynamic-dominant-color), 0 0 8px var(--dynamic-hsl-average); }
+  100% { text-shadow: 0 0 8px var(--dynamic-dominant-color), 0 0 16px var(--dynamic-hsl-average); }
+}
+@keyframes header-fade { from { opacity: 0; } to { opacity: 1; } }
+
+.home-rest { margin-top: 2rem; }
+
+@media (max-width: 600px) {
+  #main:has(.home-header) { padding-top: 5rem; }
+}

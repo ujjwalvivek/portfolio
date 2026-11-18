@@ -1,9 +1,23 @@
 {% extends "base.html" %}
+{% block styles %}<link rel="stylesheet" href="/css/home.css">{% endblock styles %}
+{% block page_styles %}/css/home.css{% endblock page_styles %}
+{% block modules %}/js/features/header-game.js{% endblock modules %}
 {% block content %}
-<section class="placeholder">
-  <h1>TECH ISN'T THE HARD PART</h1>
-  <p>SYSTEMS, BEHAVIOUR, &amp; QUESTIONS ARE</p>
-  <p class="placeholder-note">v4 shell (M0). The header game lands in M1, the rest of home in M2.</p>
+<section class="home-header" data-header-game aria-labelledby="home-title">
+  <div class="header-frame">
+    <div class="header-inner">
+      <div class="header-text">
+        <h1 id="home-title" class="glitch shadow-pulse" data-text="TECH ISN'T THE HARD PART">TECH ISN'T THE HARD PART</h1>
+        <p class="header-sub glitch shadow-pulse" data-text="SYSTEMS, BEHAVIOUR, &amp; QUESTIONS ARE">SYSTEMS, BEHAVIOUR, &amp; QUESTIONS ARE</p>
+      </div>
+    </div>
+  </div>
+  <div class="header-controls">
+    <button class="audio-toggle" type="button" data-music aria-pressed="false" aria-label="Music" title="Music (m)"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path fill="currentColor" d="M12 7h2v1h1v1h2V8h1V7h2v2h-1v1h-1v2h1v1h1v2h-2v-1h-1v-1h-2v1h-1v1h-2v-2h1v-1h1v-2h-1V9h-1zM6 8V7h1V6h1V5h1V4h1V3h1v16h-1v-1H9v-1H8v-1H7v-1H6v-1H2V8zm1 2H4v2h3v1h1v1h1V8H8v1H7z"/></svg></button>
+  </div>
+</section>
+<section class="placeholder home-rest">
+  <p class="placeholder-note">The rest of home (nav, intro, logs, widgets, terminal mail) lands in M2.</p>
   <ul class="placeholder-links"><li><a href="/blog/">ReadLogs</a></li><li><a href="/about/">About</a></li><li><a href="/projects/">Projects</a></li></ul>
 </section>
 {% endblock content %}

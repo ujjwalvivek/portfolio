@@ -36,6 +36,7 @@ startRouter();
 wireBars();
 handle("vibe", openVibe);
 handle("help", openKeys);
+handle("music", () => void import("./audio.js").then((m) => m.toggleMusic()));
 
 // After the first frame is on screen, so the wallpaper never competes with the page's own content.
 requestAnimationFrame(() => setTimeout(() => void startWallpaper(), 0));
