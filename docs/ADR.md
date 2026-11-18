@@ -43,12 +43,13 @@
 
 | Item                     | Current state                                                        |
 | ------------------------ | -------------------------------------------------------------------- |
-| Current milestone        | M0: Foundation, not started                                          |
-| Next milestone           | M1: Home header game (first visible result)                          |
+| Current milestone        | M0 built, awaiting on-screen review; M1 in progress (scene on preview) |
+| Next milestone           | M2: rest of home, after M1 review                                    |
 | Accepted foundation      | Zola pages, TypeScript modules, substrate consumer, header game      |
 | Immediate decision gate  | None for M0; Q-02 and Q-08 are needed later                          |
 | Production               | v3 stays live from main until M8 cutover                             |
-| Known blockers           | None                                                                 |
+| Known blockers           | J1 (engine features and pause) needs Vivek's go to release journey-engine |
+| Preview                  | https://v4.portfolio-1ar.pages.dev (branch v4)                       |
 
 ## 0. Summary
 
@@ -199,7 +200,7 @@ Lessons: a single bundle made every feature everyone's cost; three separate copi
 | D-012 | Home header becomes a Journey game                              | Accepted | 2026-11-18 |
 | D-013 | Game code: copy now, shared crate later in journey              | Accepted | 2026-11-18 |
 | D-014 | Feature-gate journey-engine to shrink web builds                | Proposed | 2026-11-18 |
-| D-015 | Vendor substrate at build time                                  | Proposed | 2026-11-18 |
+| D-015 | Vendor substrate at build time                                  | Accepted | 2026-11-18 |
 | D-016 | Keep every v3 URL working                                       | Accepted | 2026-11-18 |
 | D-017 | Port page by page, header first                                 | Accepted | 2026-11-18 |
 | D-018 | Carry-over rule for v3 features                                 | Accepted | 2026-11-18 |
@@ -231,6 +232,8 @@ Lessons: a single bundle made every feature everyone's cost; three separate copi
 **Decision.** Zola builds every page and post to static HTML: markdown, front matter, syntax highlighting as CSS classes, tables of contents, shortcodes for admonitions and embeds, and data files for projects. Pin Zola 0.23.6, the version on marchy and datacenter.
 
 **Rationale.** Root already uses it; it is one binary; it removes the whole client markdown stack and its polyfills. Markdown is the one place a real dependency is wanted, and Zola is that dependency.
+
+**Amendment 2026-11-18.** Zola 0.23 removed shortcodes in favour of Tera 2 components, and moved highlighting to [markdown.highlighting] (giallo, style class, theme one-dark-pro). Posts use components defined in templates/components/post.html: note, tip, warning, danger, info, toc, dino, embed. nasm falls back to plain text. Bare URLs do not autolink, so the eight in the posts are wrapped in angle brackets to keep v3's links. The three files not in v3's meta.json (log_0001, proj_0000, proj_0001) were never reachable in v3 and are left out. The one display equation turned out to be three inline expressions in log_0003, now inline MathML.
 
 **Consequences.** The 14 posts are converted once: :::tip and the other directives become shortcodes, :::toc becomes a template feature, :::dino becomes a shortcode that mounts the dino module, the one display equation becomes static markup (MathML or an image), raw img and iframe stay as HTML. Grammars for nasm, C# and the custom terminalblock fence must be verified (R-05). Root's CI pins Zola 0.19.0; v4's CI pins 0.23.6.
 
@@ -361,7 +364,9 @@ Removed: react, react-dom, react-router-dom, react-scripts, react-app-rewired, c
 
 **Status:** Proposed
 
-**Decision.** Put egui and egui-wgpu, and the kira audio path, behind cargo features in journey-engine, default on, so a web scene can opt out.
+**Decision.** Put egui and egui-wgpu, and the kira audio path, behind cargo features in journey-engine, default on, so a web scene can opt out. Add the image path too, and a scene() hook for scene params that does not need egui, and a web pause that stops requesting frames.
+
+**Evidence 2026-11-18 (stream C, measured).** Root's game is 4,211,975 bytes, 1,929,082 gzip. egui's four bundled fonts are 1,407,752 bytes of it, egui code another ~355 KB; root uses egui for nothing. Gated builds: egui off 915,599 gzip; egui, kira and image off 814,913 gzip; the same without wgpu's WebGL path 162,918 gzip (drops WebGL2-only browsers). About 40 lines plus an audio stub. Builds were measured, not run in a browser.
 
 **Rationale.** journey-engine has no features today; egui, egui-wgpu, kira, image and noise always compile in. Root's game is 4.2 MB of wasm and uses egui only to set scene parameters.
 
@@ -369,7 +374,7 @@ Removed: react, react-dom, react-router-dom, react-scripts, react-app-rewired, c
 
 ### D-015: Vendor substrate at build time
 
-**Status:** Proposed
+**Status:** Accepted (scripts/vendor.mjs, sha512-checked)
 
 **Decision.** The build copies the pinned substrate dist into static/vendor and the site serves it from its own origin with long cache headers.
 
@@ -816,3 +821,7 @@ Merge v4 into main, deploy, verify live, tag v4.0.0, update the root list and Pr
 - 2026-11-18: Vivek: header box becomes a game like root's, text as glowing pixels, lemmings as characters; recipes live in substrate; palettes stay with drift between their two ends, not the game's sky; root and portfolio stay separate repos; port page by page with the header first. D-009, D-012, D-013, D-017.
 - 2026-11-18: Found that substrate's playground has no recipe export; the format is defined in S1.
 - 2026-11-18: Vivek: conserve every v3 palette, palettes stay local (D-020); preview deploys yes (D-025); all fake loading goes (D-024); one sane keyboard layout (D-023); docs move into the repo now; parallel streams as subagents (D-026). ADR moved to docs/ADR.md on branch v4.
+- 2026-11-18: M0 built and deployed to the v4 preview: Zola 0.23.6 shell, TypeScript 7.0.2 (tsc, only devDependency), 12 palettes with drift, soft navigation with view transitions, substrate 2.0.2 vendored with root's stack, CSS backdrop fallback, keymap, vibe switch (M0 cut), tech stack overlay, CI with preview deploys. Shell per page: 11 KB JS, 4.5 KB CSS gzip.
+- 2026-11-18: Stream B done: substrate recipe format v1, validator, recipeToScene, recipes export (root plus candidates nebula and signal, not yet seen on screen), playground copy recipe, version 2.1.0 on branch recipes; not tagged or published. The playground still pins substrate 2.0.1, so the candidates need that pin raised before review there.
+- 2026-11-18: Stream D done and merged (see D-002 amendment). Stream C done (see D-014 evidence).
+- 2026-11-18: M1 first cut on preview: header scene copied from root, full uppercase font, palette fed from the page, lemmings as actors. Vivek's first review: lemmings must drop through gaps between words and keep the middle occupied; fixed with one ledge per word, edge turns on the ground, timed re-drops onto words weighted by width, six lemmings. wgpu panics when navigator.gpu exists without an adapter; the page now hides WebGPU from the engine in that case so it uses WebGL2.
