@@ -192,7 +192,6 @@ body.bg-off #bg-canvas { opacity: 0; }
 .status-item .icon { font-size: 0.75rem; }
 .status-text { font-size: 0.7rem; line-height: 1; }
 .status-lang { font-weight: 600; color: rgba(238, 231, 215, 0.75); }
-.status-sep { width: 1px; height: 60%; background: rgba(var(--text-color-rgb), 0.15); }
 
 /* Overlays: tech stack, vibe switch, shortcut sheet. Same frame as v3's footer overlays and palette. */
 .overlay {
