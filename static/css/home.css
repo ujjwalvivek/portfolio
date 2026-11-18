@@ -85,8 +85,173 @@
 }
 @keyframes header-fade { from { opacity: 0; } to { opacity: 1; } }
 
-.home-rest { margin-top: 2rem; }
 
 @media (max-width: 600px) {
   #main:has(.home-header) { padding-top: 5rem; }
+}
+
+/* Below the header: v3's home column. */
+.home-body { width: min(var(--main-content-width), calc(100% - 2rem)); margin: 2.5rem auto 0; display: flex; flex-direction: column; gap: 2rem; font-family: var(--font-neon); }
+
+/* Nav (v3 HomeNav): three glass keys with a light sweep on hover. */
+.home-nav { display: flex; flex-wrap: wrap; gap: 1.5rem; width: 100%; }
+.home-cta {
+  flex: 1 1 0;
+  min-width: 120px;
+  padding: 0.6rem 1.2rem;
+  position: relative;
+  overflow: hidden;
+  border: 2px solid var(--dynamic-dominant-color);
+  background: rgba(var(--background-color-rgb), 0.3);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  color: var(--text-color);
+  font-family: var(--font-krypton);
+  font-weight: 700;
+  font-size: 1.05rem;
+  text-align: center;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: all 0.3s ease;
+}
+.home-cta:hover { color: var(--dynamic-dominant-color); backdrop-filter: blur(32px) saturate(180%); -webkit-backdrop-filter: blur(32px) saturate(180%); }
+.home-cta::after {
+  content: "";
+  position: absolute;
+  top: -50px;
+  left: -75px;
+  width: 50px;
+  height: 155px;
+  z-index: -1;
+  background: var(--dynamic-hsl-average);
+  opacity: 0.1;
+  filter: blur(20px);
+  transform: rotate(45deg);
+  transition: all 500ms cubic-bezier(0.19, 1, 0.22, 1);
+}
+.home-cta:hover::after { left: 120%; opacity: 0.2; }
+.home-cta-tag { color: var(--primary-color); opacity: 0.7; transition: opacity 0.3s ease, color 0.3s ease; }
+.home-cta:hover .home-cta-tag { opacity: 1; color: rgba(var(--text-color-rgb), 0.8); }
+
+/* Corner brackets for the intro and the log cards: top-left and bottom-right on the box, the other two on a span. */
+.intro, .recent-logs li { position: relative; }
+.intro::before, .intro::after, .intro-corners::before, .intro-corners::after,
+.recent-logs li::before, .recent-logs li::after, .rl-corners::before, .rl-corners::after {
+  content: "";
+  position: absolute;
+  width: 1.2rem;
+  height: 1.2rem;
+  border: 0 solid var(--dynamic-dominant-color);
+  pointer-events: none;
+  z-index: 3;
+}
+.intro::before, .recent-logs li::before { top: 0; left: 0; border-width: 2px 0 0 2px; }
+.intro::after, .recent-logs li::after { right: 0; bottom: 0; border-width: 0 2px 2px 0; }
+.intro-corners::before, .rl-corners::before { top: 0; right: 0; border-width: 2px 2px 0 0; }
+.intro-corners::after, .rl-corners::after { left: 0; bottom: 0; border-width: 0 0 2px 2px; }
+.intro-corners, .rl-corners { position: absolute; inset: 0; pointer-events: none; }
+
+/* Intro (v3 IntroText): a glass terminal block. */
+.intro {
+  font-family: var(--font-krypton);
+  font-size: 0.85rem;
+  line-height: 1.5;
+  padding: 1rem 1.5rem;
+  background: rgba(var(--background-color-rgb), 0.4);
+  backdrop-filter: blur(32px) saturate(180%);
+  -webkit-backdrop-filter: blur(32px) saturate(180%);
+  text-shadow: 0 0 1.5px rgba(var(--dynamic-dominant-color-rgb), 1);
+}
+.cmd { margin-left: 0.5rem; font-weight: 800; color: var(--text-color); text-decoration: underline rgba(var(--dynamic-dominant-color-rgb), 0.4) 2.5px; vertical-align: middle; }
+.cmd-param { color: rgba(var(--text-color-rgb), 0.5); vertical-align: middle; }
+.intro-out { margin-top: 0.5rem; }
+.intro-out p { margin: 0 0 0 0.5rem; font-family: var(--font-neon); font-weight: 200; letter-spacing: 0.05rem; white-space: normal; }
+.hl { font-weight: 700; color: var(--status-warn-color); margin: 0 0.15rem; }
+.word { display: inline-block; animation: letter-glow 0.3s both; text-shadow: 0 0 1px rgba(var(--dynamic-hsl-average-rgb), 1); }
+@keyframes letter-glow {
+  0% { opacity: 0.4; text-shadow: 0 0 1px rgba(var(--text-color-rgb), 0.1); }
+  66% { opacity: 0.6; text-shadow: 0 0 20px rgba(var(--primary-color-rgb), 0.9); }
+  77% { opacity: 0.8; }
+  100% { opacity: 0.9; text-shadow: 0 0 20px rgba(var(--primary-color-rgb), 0); }
+}
+
+/* Starship prompt: segments in shades of the accent (v3 generated them in JS; CSS relative colours do it now). */
+.starship { display: inline-flex; align-items: center; height: 2rem; vertical-align: middle; color: var(--starship-grey-color); font-family: var(--font-krypton); flex-wrap: nowrap; }
+.seg { display: inline-flex; align-items: center; height: 1.2rem; padding: 0 0.4rem 0 0.9rem; margin-right: 0.3rem; font-size: 0.7rem; line-height: 1; position: relative; }
+.seg + .seg { margin-left: -0.75rem; }
+.seg-logo { padding: 0; z-index: 4; background: hsl(from var(--dynamic-dominant-color) h s 44%); }
+.seg-path { z-index: 3; background: hsl(from var(--dynamic-dominant-color) h s 56%); }
+.seg-git { z-index: 2; background: hsl(from var(--dynamic-dominant-color) h s 68%); gap: 0.25rem; }
+.seg-ver { z-index: 1; background: hsl(from var(--dynamic-dominant-color) h s 80%); }
+.seg-dots { display: inline-flex; }
+.seg-dots i { display: inline-block; width: 0.8rem; height: 1.2rem; }
+.seg-dots i:nth-child(1) { background: hsl(from var(--dynamic-dominant-color) h s 26%); }
+.seg-dots i:nth-child(2) { background: hsl(from var(--dynamic-dominant-color) h s 32%); }
+.seg-dots i:nth-child(3) { background: hsl(from var(--dynamic-dominant-color) h s 38%); }
+.seg-uv { padding: 0 0.5rem; font-weight: 800; }
+
+/* Recent logs (v3 RecentLogs): two glass cards with an accent bar that slides away on hover. */
+.recent-logs ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 1rem; }
+.recent-logs li {
+  overflow: hidden;
+  background: rgba(var(--background-color-rgb), 0.3);
+  backdrop-filter: blur(32px) saturate(180%);
+  -webkit-backdrop-filter: blur(32px) saturate(180%);
+  border: 2px solid transparent;
+  transition: border-color 0.3s ease, background 0.3s ease;
+  text-shadow: 0 0 1px rgba(var(--dynamic-hsl-average-rgb), 1);
+}
+.recent-logs li:hover { border-color: var(--dynamic-dominant-color); background: rgba(var(--background-color-rgb), 0.5); }
+.recent-logs li:hover::before, .recent-logs li:hover::after, .recent-logs li:hover .rl-corners { opacity: 0; transition: opacity 0.3s ease; }
+.recent-logs a {
+  display: block;
+  position: relative;
+  padding: 1rem 1.5rem;
+  color: var(--text-color);
+  text-decoration: none;
+  line-height: 1.6;
+}
+.recent-logs a::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 0.3rem;
+  background: var(--dynamic-dominant-color);
+  transform-origin: left;
+  transition: transform 220ms cubic-bezier(0.2, 0.9, 0.2, 1), opacity 180ms linear;
+}
+.recent-logs li:hover a::before { transform: scaleX(0); opacity: 0; }
+.rl-head { display: flex; align-items: center; gap: 0.5rem; }
+.rl-date {
+  min-width: 70px;
+  padding: 0.1rem 0.2rem;
+  font-size: 0.8rem;
+  font-weight: 800;
+  text-align: center;
+  color: var(--dynamic-dominant-color);
+  background: rgba(var(--dynamic-dominant-color-rgb), 0.2);
+  border: 2px solid rgba(var(--dynamic-dominant-color-rgb), 0.4);
+}
+.rl-title { flex: 1; font-size: 0.95rem; font-weight: 600; letter-spacing: -0.5px; text-transform: uppercase; text-decoration: underline var(--text-color) 3px; text-underline-offset: 3px; }
+.rl-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.75rem; }
+.rl-tag { font-size: 0.69rem; font-weight: 200; padding: 0.1rem 0.2rem; text-transform: lowercase; color: rgba(var(--text-color-rgb), 0.8); background: rgba(var(--dynamic-dominant-color-rgb), 0.25); border: 1px dashed var(--dynamic-dominant-color); }
+.rl-desc { display: block; margin-top: 0.75rem; font-size: 0.85rem; font-weight: 200; letter-spacing: -0.3px; color: rgba(var(--text-color-rgb), 0.9); }
+
+/* Lazy hosts hold their final height until mounted (values come from the features' measured heights). */
+.home-widgets { --hold: 300px; --hold-phone: 1160px; }
+.home-mail { --hold: 440px; --hold-phone: 402px; }
+
+@media (max-width: 900px) {
+  .home-nav { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; }
+  .home-cta { min-width: 0; font-size: 0.98rem; padding: 0.9rem 0.5rem; }
+}
+@media (max-width: 580px) {
+  .home-nav { grid-template-columns: 1fr; }
+  .seg-path, .seg-ver { display: none; }
+}
+@media (max-width: 500px) {
+  .rl-title { font-size: 1rem; }
+  .rl-date { font-size: 0.7rem; min-width: 54px; }
+  .rl-desc { font-size: 0.8rem; }
+  .recent-logs a { padding: 1rem; }
 }

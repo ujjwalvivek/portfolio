@@ -16,8 +16,33 @@
     <button class="audio-toggle" type="button" data-music aria-pressed="false" aria-label="Music" title="Music (m)"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path fill="currentColor" d="M12 7h2v1h1v1h2V8h1V7h2v2h-1v1h-1v2h1v1h1v2h-2v-1h-1v-1h-2v1h-1v1h-2v-2h1v-1h1v-2h-1V9h-1zM6 8V7h1V6h1V5h1V4h1V3h1v16h-1v-1H9v-1H8v-1H7v-1H6v-1H2V8zm1 2H4v2h3v1h1v1h1V8H8v1H7z"/></svg></button>
   </div>
 </section>
-<section class="placeholder home-rest">
-  <p class="placeholder-note">The rest of home (nav, intro, logs, widgets, terminal mail) lands in M2.</p>
-  <ul class="placeholder-links"><li><a href="/blog/">ReadLogs</a></li><li><a href="/about/">About</a></li><li><a href="/projects/">Projects</a></li></ul>
-</section>
+<div class="home-body">
+  <nav class="home-nav" aria-label="Sections">
+    <a class="home-cta" href="/blog/"><span class="home-cta-tag">&lt;</span>ReadLogs<span class="home-cta-tag">/&gt;</span></a>
+    <a class="home-cta" href="/about/"><span class="home-cta-tag">&lt;</span>About<span class="home-cta-tag">/&gt;</span></a>
+    <a class="home-cta" href="/projects/"><span class="home-cta-tag">&lt;</span>Projects<span class="home-cta-tag">/&gt;</span></a>
+  </nav>
+
+  {% include "partials/intro-home.html" %}
+
+  <section class="recent-logs" aria-label="Recent logs">
+    {%- set blog = get_section(path="blog/_index.md") -%}
+    <ul>
+    {%- for post in blog.pages %}{% if loop.index <= 2 %}
+      <li>
+        <span class="rl-corners" aria-hidden="true"></span>
+        <a href="{{ post.permalink | safe }}">
+          <span class="rl-head"><span class="rl-date">{{ post.date | date(format="%d/%m/%y") }}</span><span class="rl-title">{{ post.title | truncate(length=50) }}</span></span>
+          {%- if post.taxonomies.tags %}<span class="rl-tags">{% for tag in post.taxonomies.tags %}<span class="rl-tag">{{ tag }}</span>{% endfor %}</span>{% endif %}
+          {%- if post.description %}<span class="rl-desc">{{ post.description }}</span>{% endif %}
+        </a>
+      </li>
+    {%- endif %}{% endfor %}
+    </ul>
+  </section>
+
+  <section class="lazy-host home-widgets" aria-label="Widgets" data-lazy="/js/features/widgets.js" data-lazy-styles="/css/features/widgets.css"></section>
+
+  <section class="lazy-host home-mail" aria-label="Terminal mail" data-lazy="/js/features/terminal-mail.js" data-lazy-styles="/css/features/terminal-mail.css"></section>
+</div>
 {% endblock content %}
