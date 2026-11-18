@@ -20,7 +20,7 @@ Could I learn GPUI, or at least get an idea of it, by building a tiny native pla
 
 I already had a working project hub called [DevHub](https://github.com/ujjwalvivek/devhub), built with egui. Asking an LLM to rewrite the port completely, and replacing it immediately would have turned an experiment into a migration before I even understood the new framework, and honestly, a hot pile of mess. The safer approach was to leave the existing application intact, create a separate workspace, and use `DevHub` only as a read-only behavioral reference.
 
-<img src="https://github.com/ujjwalvivek/devhub/blob/main/web/public/images/legacy/shot-2.webp?raw=true" alt="Devhub">
+<img src="https://raw.githubusercontent.com/ujjwalvivek/devhub/b381cbbff767acd4067d23680aec5c44b5d58eab/web/public/images/legacy/shot-2.webp" alt="Devhub">
 
 A good four days later, the playground had become a complete GPUI successor with local and SSH project discovery, file browsing, content search, Markdown and code views, versioned persistence, themes, cancellation, native Windows integration, and cross-platform release automation. This sounds like a story about code-generation speed.
 
