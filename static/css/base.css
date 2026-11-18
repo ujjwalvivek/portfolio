@@ -420,3 +420,11 @@ html::-webkit-scrollbar-thumb:hover, body::-webkit-scrollbar-thumb:hover { backg
 .switch__input:checked ~ .switch__letters .switch__letter-stroke:last-child { stroke-dashoffset: 4; }
 .switch__input:checked ~ .switch__letters .switch__letter:first-child .switch__letter-stroke:nth-child(2) { stroke-dashoffset: 0; transform: rotate(56.5deg); }
 .switch__input:checked ~ .switch__letters .switch__letter:last-child { stroke-dashoffset: 0; transform: translateX(8px); }
+
+/* Lazy sections hold their final height until their feature mounts (root's skeleton): a dashed, inert frame. */
+.lazy-host:not(.is-mounted) {
+  min-height: var(--hold, 200px);
+  border: 1px dashed rgba(var(--dynamic-dominant-color-rgb), 0.25);
+  box-sizing: border-box;
+}
+@media (max-width: 600px) { .lazy-host:not(.is-mounted) { min-height: var(--hold-phone, var(--hold, 200px)); } }
