@@ -46,7 +46,8 @@ function phase(): number {
 }
 
 function writeCss(c: Colours): void {
-  const { rgbAverage, hslAverage, dominant } = derive([c.primary, c.secondary, c.accent]);
+  const { rgbAverage, hslAverage } = derive([c.primary, c.secondary, c.accent]);
+  const dominant = hexToRgb(c.accent);
   const s = document.documentElement.style;
   const hex = (x: { r: number; g: number; b: number }) =>
     "#" + [x.r, x.g, x.b].map((n) => Math.round(n).toString(16).padStart(2, "0")).join("");

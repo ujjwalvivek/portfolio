@@ -82,7 +82,8 @@ export function loadGame(): Promise<GameModule> {
       m.set_reduced_motion(reducedMotion());
       const buf = new Float32Array(18);
       onColours((c) => {
-        const { dominant, hslAverage } = derive([c.primary, c.secondary, c.accent]);
+        const { hslAverage } = derive([c.primary, c.secondary, c.accent]);
+        const dominant = hexToRgb(c.accent);
         const rgb = [hexToRgb(c.primary), hexToRgb(c.secondary), hexToRgb(c.accent), hexToRgb(c.background), dominant, hslAverage];
         rgb.forEach((x, i) => buf.set([x.r / 255, x.g / 255, x.b / 255], i * 3));
         m.set_palette(buf);

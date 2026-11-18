@@ -212,6 +212,7 @@ Lessons: a single bundle made every feature everyone's cost; three separate copi
 | D-024 | No fake loading anywhere                                        | Accepted | 2026-11-18 |
 | D-025 | Cloudflare preview deploys for branch v4                        | Accepted | 2026-11-18 |
 | D-026 | Parallel work streams run as subagents                          | Accepted | 2026-11-18 |
+| D-027 | Palettes rebuilt as single hue families; the accent leads       | Proposed | 2026-11-18 |
 
 ## 7. Decision records
 
@@ -414,7 +415,7 @@ Removed: react, react-dom, react-router-dom, react-scripts, react-app-rewired, c
 
 ### D-020: Palettes are local to the portfolio; all v3 palettes conserved
 
-**Status:** Accepted
+**Status:** Accepted; the literal v3 colour values are superseded by D-027 (names and character kept)
 
 **Decision.** Palettes are defined in the portfolio, not in substrate. Every v3 colour mode survives: cyber, ocean, fire, spark, forest, synthwave, sunset, midnight, aurora, neon and custom. Root's warm and dusk pair is added as a twelfth palette named root. Recipes stay central in substrate (D-007); palettes are a consumer concern.
 
@@ -494,6 +495,16 @@ Real loading keeps honest indicators: the GitHub navigator while it fetches, mai
 **Rationale.** Several pieces of work do not touch each other's files: the substrate recipe format, the engine size measurement, the post conversion and the v3 reference captures. Running them side by side shortens the plan without risking conflicts.
 
 **Consequences.** A stream never edits files another stream owns. Results come back as commits on a stream branch and are merged into v4 by the main session after review. Subagents do not push to main and do not merge their own work.
+
+### D-027: Palettes rebuilt as single hue families; the accent leads
+
+**Status:** Proposed (built and on the local server for Vivek's review)
+
+**Decision.** Every palette keeps its v3 name and character but is rebuilt on root's rule: each end is one hue family, with a vivid accent, primary and secondary as dim tints of that hue, and a near-black background with a trace of it. The two ends are neighbouring hues taken from the palette's own v3 colours (fire: orange-red to amber; neon: acid green to chartreuse; cyber: pink to violet). The page's leading colour (--dynamic-dominant-color) is the accent itself, no longer the most saturated of three; the header's haze, second line and lemmings use it too. Root's pair stays exactly as root has it.
+
+**Rationale.** v3 palettes mixed unrelated hues (neon: green, red, orange). Picking one colour from them gave different answers on different surfaces, the wallpaper drawing with the primary, the page and scene with the pick, and the pick flipped as the drift mixed ends whose saturation order differed. With one hue family per end there is nothing to pick, and the drift is a smooth mix of the same slot.
+
+**Consequences.** palettes.ts generates each end from the accent's hue, saturation and lightness. colour.ts no longer derives a dominant colour. Section 11.3's table of literal v3 values is historical.
 
 ## 8. Repositories and locations
 
@@ -829,3 +840,4 @@ Merge v4 into main, deploy, verify live, tag v4.0.0, update the root list and Pr
 - 2026-11-18: J1 done. Vivek approved 0.81 MB and a release. journey-engine 1.4.0 published: optional egui, audio and image features, GameApp::scene hook, engine::set_paused for the web, WebGL2 fallback when WebGPU has no adapter, lints and formatting for Rust 1.100 (the first tag failed CI on rustfmt 1.100 and was moved; nothing had published). Header game on 1.4.0 with default-features off: 2,115,662 bytes, 823,561 gzip (was 4.2 MB, 1.93 MB). Lemmings now crumble into pixel dust when they vanish and drop back in once it settles. Footer separators removed (Vivek). Drift sync checked: wallpaper and scene get the same colours from one clock each frame; the game leans on the accent, the root stack on primary and secondary, so the game's change reads stronger. Vivek: keep as is.
 - 2026-11-18: Vivek accepted M1 (and the shell). Follow-ups shipped: a poof now knocks nearby lemmings up and away and jolts nearby letters, which spring back; lemmings fall at their own random heights, drift and weight, with a new random seed per visit; the scene's haze and fog follow the palette's dominant colour (they used the accent at low strength, so palette changes barely showed and fire read olive); reduced motion gets the full haze.
 - 2026-11-18: Haze mismatch on neon (Vivek): the dominant pick flipped on near-ties (three fully saturated colours) and the haze used it while the wallpaper draws mostly with the primary. Dominant now needs a 6-point saturation margin to switch; the haze follows the primary when it has colour and the accent when it is grey, blended continuously. Checked on neon, fire and root.
+- 2026-11-18: Vivek: picking one colour still looks wrong on neon; better palettes are fine. D-027 proposed and built: one hue family per end, accent leads everywhere. Checked headless on neon and cyber and in the vibe switch.

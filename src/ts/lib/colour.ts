@@ -44,8 +44,9 @@ export function hslToRgb({ h, s, l }: Hsl): Rgb {
   return { r: f(0), g: f(8), b: f(4) };
 }
 
-// The three derived colours v3 published for the whole design: plain average, hue-aware average, most saturated.
-export function derive(colours: string[]): { rgbAverage: Rgb; hslAverage: Rgb; dominant: Rgb } {
+// The two averaged colours v3 published for the design. The leading colour is no longer derived: it is the palette's
+// accent (ADR D-027), so the drift can never flip it.
+export function derive(colours: string[]): { rgbAverage: Rgb; hslAverage: Rgb } {
   const rgbs = colours.map(hexToRgb);
   const n = rgbs.length || 1;
   const rgbAverage = {
@@ -67,16 +68,7 @@ export function derive(colours: string[]): { rgbAverage: Rgb; hslAverage: Rgb; d
     s: hsls.reduce((s, c) => s + c.s, 0) / n,
     l: hsls.reduce((s, c) => s + c.l, 0) / n,
   });
-  // The most saturated colour, with earlier slots winning near-ties: palettes like neon have three colours at full
-  // saturation, and without the margin the pick flips between them as the drift mixes the two ends.
-  const MARGIN = 6;
-  let dominant = rgbs[0] ?? { r: 136, g: 136, b: 136 };
-  let best = hsls[0]?.s ?? -1;
-  rgbs.forEach((c, i) => {
-    const s = hsls[i]!.s;
-    if (s > best + MARGIN) { best = s; dominant = c; }
-  });
-  return { rgbAverage, hslAverage, dominant };
+  return { rgbAverage, hslAverage };
 }
 
 export const rgbTriple = ({ r, g, b }: Rgb) => `${Math.round(r)}, ${Math.round(g)}, ${Math.round(b)}`;

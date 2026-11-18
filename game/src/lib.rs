@@ -43,7 +43,6 @@ pub fn set_reduced_motion(reduced: bool) {
 
 #[derive(Clone, Copy)]
 struct Pal {
-    primary: [f32; 3],
     accent: [f32; 3],
     background: [f32; 3],
     dominant: [f32; 3],
@@ -54,7 +53,6 @@ fn palette() -> Pal {
     if !PALETTE_SET.load(Ordering::Relaxed) {
         // root's warm end, until the page sends colours
         return Pal {
-            primary: [0.25, 0.25, 0.25],
             accent: [1.0, 0.67, 0.0],
             background: [0.012, 0.012, 0.012],
             dominant: [1.0, 0.67, 0.0],
@@ -68,7 +66,7 @@ fn palette() -> Pal {
             f32::from_bits(PALETTE[i * 3 + 2].load(Ordering::Relaxed)),
         ]
     };
-    Pal { primary: c(0), accent: c(2), background: c(3), dominant: c(4), average: c(5) }
+    Pal { accent: c(2), background: c(3), dominant: c(4), average: c(5) }
 }
 
 fn mix(a: [f32; 3], b: [f32; 3], t: f32) -> [f32; 3] {
@@ -79,22 +77,10 @@ fn scale(a: [f32; 3], s: f32) -> [f32; 3] {
     [a[0] * s, a[1] * s, a[2] * s]
 }
 
-fn saturation(c: [f32; 3]) -> f32 {
-    let max = c[0].max(c[1]).max(c[2]);
-    let min = c[0].min(c[1]).min(c[2]);
-    let l = (max + min) / 2.0;
-    if max - min < 1e-4 { 0.0 } else { (max - min) / (1.0 - (2.0 * l - 1.0).abs()).max(1e-4) }
-}
-
-// The colour the wallpaper shows most: substrate stacks draw mostly with the primary, so the haze follows it when it
-// has colour, and leans on the accent when it is grey (root's palette: grey primary, amber accent). Continuous, so it
-// moves with the drift instead of jumping.
+// The haze is the palette's accent, the colour the whole page is drawn in (ADR D-027), lifted to a visible glow for
+// dark accents without changing its hue.
 fn haze(p: &Pal) -> [f32; 3] {
-    let s = saturation(p.primary);
-    let w = ((s - 0.15) / 0.2).clamp(0.0, 1.0);
-    let w = w * w * (3.0 - 2.0 * w);
-    let c = mix(p.accent, p.primary, w);
-    // bring dark primaries (midnight) up to a visible glow without changing their hue
+    let c = p.accent;
     let peak = c[0].max(c[1]).max(c[2]).max(1e-4);
     scale(c, (0.85 / peak).min(2.5))
 }
