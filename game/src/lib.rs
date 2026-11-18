@@ -29,9 +29,11 @@ pub fn set_palette(colours: &[f32]) {
     PALETTE_SET.store(true, Ordering::Relaxed);
 }
 
+// Pausing also stops the engine requesting frames, so a parked scene costs nothing.
 #[wasm_bindgen]
 pub fn set_paused(paused: bool) {
     PAUSED.store(paused, Ordering::Relaxed);
+    engine::set_paused(paused);
 }
 
 #[wasm_bindgen]
@@ -276,7 +278,22 @@ struct Walker {
     pose: Pose,
     ground: f32, // seconds spent on the ground
     stay: f32,   // how long this one stays down before dropping onto the letters again
+    gone: Option<f32>, // set while it has crumbled to dust: seconds since it vanished
 }
+
+// One grain of a vanishing lemming: a sprite pixel that lifts, scatters and fades.
+#[derive(Clone, Copy)]
+struct Dust {
+    x: f32,
+    y: f32,
+    vx: f32,
+    vy: f32,
+    life: f32,
+    max: f32,
+    colour: u8, // the sprite's palette index: 1 white, 2 dominant, 3 average
+}
+
+const DUST_TIME: f32 = 1.4; // how long the dust takes to settle before the lemming drops in again
 
 struct Blocker {
     x: f32,
@@ -414,6 +431,7 @@ pub struct HeaderGame {
     walkers: Vec<Walker>,
     blockers: Vec<Blocker>,
     walker_rows: [[[u8; 10]; 10]; 8],
+    dust: Vec<Dust>,
     step_clock: f32,
     rng: u32,
     time: f32,
@@ -443,6 +461,65 @@ impl HeaderGame {
         w.pose = Pose::Fall { vy: 0.0 };
         w.ground = 0.0;
         w.stay = rand_range(rng, 6.0, 14.0);
+        w.gone = None;
+    }
+
+    // Crumble walker i into dust: every lit pixel of its current frame becomes a grain.
+    fn disintegrate(&mut self, i: usize) {
+        let (x, y, frame, flip) = {
+            let w = &self.walkers[i];
+            (w.x, w.y - SPRITE, w.frame, w.dir < 0.0)
+        };
+        let rows = self.walker_rows[frame];
+        for (r, row) in rows.iter().enumerate() {
+            for (c, &v) in row.iter().enumerate() {
+                if v == 0 {
+                    continue;
+                }
+                let cx = if flip { 9 - c } else { c };
+                let rng = &mut self.rng;
+                // the top of the sprite goes first, so it reads as crumbling from the head down
+                let lag = r as f32 * 0.035 + rand_range(rng, 0.0, 0.08);
+                self.dust.push(Dust {
+                    x: x + cx as f32 * PX,
+                    y: y + r as f32 * PX,
+                    vx: rand_range(rng, -14.0, 14.0),
+                    vy: rand_range(rng, -26.0, -8.0),
+                    life: -lag,
+                    max: rand_range(rng, 0.7, DUST_TIME - 0.2),
+                    colour: v,
+                });
+            }
+        }
+        self.walkers[i].gone = Some(0.0);
+    }
+
+    fn update_dust(&mut self, dt: f32) {
+        for d in self.dust.iter_mut() {
+            d.life += dt;
+            if d.life <= 0.0 {
+                continue;
+            }
+            // drift up and out, with a little turbulence, slowing as it thins
+            let drag = (-dt * 1.6).exp();
+            d.vx = d.vx * drag + rand_range(&mut self.rng, -18.0, 18.0) * dt;
+            d.vy = d.vy * drag - 10.0 * dt;
+            d.x += d.vx * dt;
+            d.y += d.vy * dt;
+        }
+        self.dust.retain(|d| d.life < d.max);
+        let mut back = Vec::new();
+        for (i, w) in self.walkers.iter_mut().enumerate() {
+            if let Some(t) = w.gone.as_mut() {
+                *t += dt;
+                if *t >= DUST_TIME {
+                    back.push(i);
+                }
+            }
+        }
+        for i in back {
+            self.drop_in(i);
+        }
     }
 
     fn step_walkers(&mut self) {
@@ -450,6 +527,9 @@ impl HeaderGame {
         let blockers: Vec<f32> = self.blockers.iter().map(|b| b.x).collect();
         let mut respawn = Vec::new();
         for (i, w) in self.walkers.iter_mut().enumerate() {
+            if w.gone.is_some() {
+                continue;
+            }
             if let Pose::Walk { ledge } = w.pose {
                 w.frame = (w.frame + 1) % 8;
                 w.x += w.dir * PX;
@@ -482,13 +562,16 @@ impl HeaderGame {
             }
         }
         for i in respawn {
-            self.drop_in(i);
+            self.disintegrate(i);
         }
     }
 
     fn update_falls(&mut self, dt: f32) {
         let ledges = self.ledges.clone();
         for w in self.walkers.iter_mut() {
+            if w.gone.is_some() {
+                continue;
+            }
             if let Pose::Fall { vy } = w.pose {
                 let nvy = vy + GRAVITY * dt;
                 let ny = w.y + nvy * dt;
@@ -519,7 +602,7 @@ impl HeaderGame {
         let feet: Vec<(f32, f32)> = self
             .walkers
             .iter()
-            .filter(|w| matches!(w.pose, Pose::Walk { ledge } if ledge != usize::MAX))
+            .filter(|w| w.gone.is_none() && matches!(w.pose, Pose::Walk { ledge } if ledge != usize::MAX))
             .map(|w| (w.x + SPRITE / 2.0, w.y))
             .collect();
         let decay = (-dt * 6.0).exp();
@@ -606,12 +689,13 @@ impl GameApp for HeaderGame {
             walkers: Vec::new(),
             blockers,
             walker_rows,
+            dust: Vec::new(),
             step_clock: 0.0,
             rng,
             time: 0.0,
         };
         for i in 0..6 {
-            game.walkers.push(Walker { x: 0.0, y: 0.0, dir: 1.0, frame: 0, pose: Pose::Fall { vy: 0.0 }, ground: 0.0, stay: 8.0 });
+            game.walkers.push(Walker { x: 0.0, y: 0.0, dir: 1.0, frame: 0, pose: Pose::Fall { vy: 0.0 }, ground: 0.0, stay: 8.0, gone: None });
             game.drop_in(i);
             // stagger the first arrivals so they land after the letters have assembled
             game.walkers[i].y -= 120.0 + i as f32 * 90.0;
@@ -662,6 +746,7 @@ impl GameApp for HeaderGame {
             self.update_falls(dt);
         }
         self.press_dots(dt);
+        self.update_dust(dt);
 
         for e in self.embers.iter_mut() {
             e.life += dt / e.lifetime;
@@ -728,8 +813,27 @@ impl GameApp for HeaderGame {
         for b in &self.blockers {
             Self::draw_sprite(ctx, &b.rows, b.x, GROUND - SPRITE, false, &pal);
         }
+        let white = [0.93, 0.9, 0.84];
+        for d in &self.dust {
+            if d.life <= 0.0 {
+                continue;
+            }
+            let k = (d.life / d.max).clamp(0.0, 1.0);
+            let base = match d.colour {
+                1 => white,
+                2 => pal.dominant,
+                _ => pal.average,
+            };
+            // grains brighten as they lift, then thin out and shrink
+            let c = mix(base, pal.dominant, k * 0.5);
+            let a = (1.0 - k).powf(1.4);
+            let s = PX * (1.0 - 0.55 * k);
+            ctx.draw_rect_layer(RenderLayer::World, Vec2::new(d.x, d.y), Vec2::new(s, s), [c[0], c[1], c[2], a]);
+            let g = s * 2.6;
+            ctx.draw_rect_additive(Vec2::new(d.x - (g - s) / 2.0, d.y - (g - s) / 2.0), Vec2::new(g, g), [c[0], c[1], c[2], a * 0.18]);
+        }
         for w in &self.walkers {
-            if w.y < -SPRITE {
+            if w.y < -SPRITE || w.gone.is_some() {
                 continue;
             }
             let rows = match w.pose {
@@ -740,7 +844,7 @@ impl GameApp for HeaderGame {
         }
     }
 
-    fn ui(&mut self, _egui_ctx: &engine::egui::Context, _ctx: &mut Context<Self::Action>, scene_params: &mut engine::SceneParams) {
+    fn scene(&mut self, _ctx: &mut Context<Self::Action>, scene_params: &mut engine::SceneParams) {
         let pal = palette();
         // The haze fades up from the site's near-black over the first seconds, then follows the page palette.
         let f = (self.time / 7.0).clamp(0.0, 1.0);

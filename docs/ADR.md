@@ -48,7 +48,7 @@
 | Accepted foundation      | Zola pages, TypeScript modules, substrate consumer, header game      |
 | Immediate decision gate  | None for M0; Q-02 and Q-08 are needed later                          |
 | Production               | v3 stays live from main until M8 cutover                             |
-| Known blockers           | J1 (engine features and pause) needs Vivek's go to release journey-engine |
+| Known blockers           | None                                                                 |
 | Preview                  | https://v4.portfolio-1ar.pages.dev (branch v4)                       |
 
 ## 0. Summary
@@ -199,7 +199,7 @@ Lessons: a single bundle made every feature everyone's cost; three separate copi
 | D-011 | Wallpaper picker: recipes, palettes, sliders, pasted recipes    | Accepted | 2026-11-18 |
 | D-012 | Home header becomes a Journey game                              | Accepted | 2026-11-18 |
 | D-013 | Game code: copy now, shared crate later in journey              | Accepted | 2026-11-18 |
-| D-014 | Feature-gate journey-engine to shrink web builds                | Proposed | 2026-11-18 |
+| D-014 | Feature-gate journey-engine to shrink web builds                | Accepted | 2026-11-18 |
 | D-015 | Vendor substrate at build time                                  | Accepted | 2026-11-18 |
 | D-016 | Keep every v3 URL working                                       | Accepted | 2026-11-18 |
 | D-017 | Port page by page, header first                                 | Accepted | 2026-11-18 |
@@ -362,7 +362,7 @@ Removed: react, react-dom, react-router-dom, react-scripts, react-app-rewired, c
 
 ### D-014: Feature-gate journey-engine to shrink web builds
 
-**Status:** Proposed
+**Status:** Accepted, released as journey-engine 1.4.0
 
 **Decision.** Put egui and egui-wgpu, and the kira audio path, behind cargo features in journey-engine, default on, so a web scene can opt out. Add the image path too, and a scene() hook for scene params that does not need egui, and a web pause that stops requesting frames.
 
@@ -826,3 +826,4 @@ Merge v4 into main, deploy, verify live, tag v4.0.0, update the root list and Pr
 - 2026-11-18: Stream D done and merged (see D-002 amendment). Stream C done (see D-014 evidence).
 - 2026-11-18: M1 first cut on preview: header scene copied from root, full uppercase font, palette fed from the page, lemmings as actors. Vivek's first review: lemmings must drop through gaps between words and keep the middle occupied; fixed with one ledge per word, edge turns on the ground, timed re-drops onto words weighted by width, six lemmings. wgpu panics when navigator.gpu exists without an adapter; the page now hides WebGPU from the engine in that case so it uses WebGL2.
 - 2026-11-18: Stream E done: 18 routes captured (desktop, phone, DOM) plus the landing sequence, 57 files, 199 MB, kept outside git. Found on the live v3 site: log_0010 links a devhub screenshot (github blob URL, shot-2.webp) that does not load; fix in M3.
+- 2026-11-18: J1 done. Vivek approved 0.81 MB and a release. journey-engine 1.4.0 published: optional egui, audio and image features, GameApp::scene hook, engine::set_paused for the web, WebGL2 fallback when WebGPU has no adapter, lints and formatting for Rust 1.100 (the first tag failed CI on rustfmt 1.100 and was moved; nothing had published). Header game on 1.4.0 with default-features off: 2,115,662 bytes, 823,561 gzip (was 4.2 MB, 1.93 MB). Lemmings now crumble into pixel dust when they vanish and drop back in once it settles. Footer separators removed (Vivek). Drift sync checked: wallpaper and scene get the same colours from one clock each frame; the game leans on the accent, the root stack on primary and secondary, so the game's change reads stronger. Vivek: keep as is.
