@@ -1,8 +1,74 @@
 {% extends "base.html" %}
+{#- A blog post (v3 BlogPost): a window with a title bar, the post, and a footer with the signature and related logs.
+    The TOC is built here from page.toc (h2 to h4, as v3) and put where the post placed {{ <toc /> }}. -#}
+{% block styles %}<link rel="stylesheet" href="/css/post.css">{% endblock styles %}
+{% block page_styles %}/css/post.css{% endblock page_styles %}
+{% block modules %}/js/pages/post.js{% endblock modules %}
 {% block content %}
-<article class="placeholder">
-  <h1>{{ page.title }}</h1>
-  <p class="placeholder-note">{{ page.date }} · {{ page.reading_time }} min read. Post layout lands in M3.</p>
-  {{ page.content | safe }}
+{%- set tags = page.taxonomies.tags | default(value=[]) -%}
+<article class="post" data-post>
+  <header class="post-bar">
+    <span class="post-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+    <h1 class="post-title">{{ page.title }}</h1>
+    <p class="post-status"><time datetime="{{ page.date }}">{{ page.date | date(format="%d/%m/%Y") }}</time><span>{{ page.extra.reading_time | default(value=page.reading_time) }} min read</span></p>
+  </header>
+
+  <div class="post-body">
+    {%- if tags %}
+    <ul class="post-tags" aria-label="Tags">{% for tag in tags %}<li>{{ tag }}</li>{% endfor %}</ul>
+    {%- endif %}
+    <div class="markdown" data-markdown>
+    {%- set marker = '<nav data-toc-marker></nav>' -%}
+    {%- if marker in page.content and page.toc %}
+    {%- set parts = page.content | split(pat=marker) -%}
+    {{ parts[0] | safe }}
+    <details class="toc" data-toc>
+      <summary class="toc-toggle"><svg class="icon" aria-hidden="true"><use href="/icons.svg#gi-hollow-cat"/></svg><span>Table of Contents</span></summary>
+      <div class="toc-list">
+        <ul>
+        {%- for h in page.toc %}{% if h.level >= 2 and h.level <= 4 %}
+          <li><a href="#{{ h.id }}" data-label="h{{ h.level - 1 }}">{{ h.title }}</a>
+          {%- if h.children %}<ul>
+          {%- for c in h.children %}{% if c.level <= 4 %}
+            <li><a href="#{{ c.id }}" data-label="h{{ c.level - 1 }}">{{ c.title }}</a>
+            {%- if c.children %}<ul>
+            {%- for g in c.children %}{% if g.level <= 4 %}
+              <li><a href="#{{ g.id }}" data-label="h{{ g.level - 1 }}">{{ g.title }}</a></li>
+            {%- endif %}{% endfor -%}
+            </ul>{% endif %}</li>
+          {%- endif %}{% endfor -%}
+          </ul>{% endif %}</li>
+        {%- endif %}{% endfor %}
+        </ul>
+      </div>
+    </details>
+    {%- for part in parts %}{% if loop.index > 1 %}{{ part | safe }}{% endif %}{% endfor %}
+    {%- else %}
+    {{ page.content | replace(from=marker, to="") | safe }}
+    {%- endif %}
+    </div>
+  </div>
+
+  <footer class="post-footer">
+    <div class="post-sign">
+      <img src="{{ config.extra.cdn }}/images/profile.webp" alt="" width="42" height="42" loading="lazy">
+      <p><strong>By Vivek</strong><br>crafting systems, one line at a time.</p>
+    </div>
+    {#- Related logs: the two posts sharing the most tags (newest first on a tie), else the two newest. v3 showed two. -#}
+    {%- set blog = get_section(path="blog/_index.md") -%}
+    {%- set_global shown = 0 -%}
+    <section class="recent-logs post-related" aria-label="Related logs">
+      <ul>
+      {%- for want in [12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1] %}
+      {%- for p in blog.pages %}{% if p.path != page.path and shown < 2 %}
+        {%- set_global n = 0 -%}
+        {%- for t in p.taxonomies.tags | default(value=[]) %}{% if t in tags %}{% set_global n = n + 1 %}{% endif %}{% endfor -%}
+        {%- if n == want %}{% set_global shown = shown + 1 %}<li><span class="rl-corners" aria-hidden="true"></span><a href="{{ p.path | safe }}"><span class="rl-head"><span class="rl-date">{{ p.date | date(format="%d/%m/%y") }}</span><span class="rl-title">{{ p.title | truncate(length=50) }}</span></span>{% if p.taxonomies.tags %}<span class="rl-tags">{% for tag in p.taxonomies.tags %}<span class="rl-tag">{{ tag }}</span>{% endfor %}</span>{% endif %}{% if p.description %}<span class="rl-desc">{{ p.description }}</span>{% endif %}</a></li>{% endif -%}
+      {%- endif %}{% endfor %}
+      {%- endfor %}
+      {%- if shown == 0 %}{% for p in blog.pages %}{% if p.path != page.path and shown < 2 %}{% set_global shown = shown + 1 %}<li><span class="rl-corners" aria-hidden="true"></span><a href="{{ p.path | safe }}"><span class="rl-head"><span class="rl-date">{{ p.date | date(format="%d/%m/%y") }}</span><span class="rl-title">{{ p.title | truncate(length=50) }}</span></span>{% if p.taxonomies.tags %}<span class="rl-tags">{% for tag in p.taxonomies.tags %}<span class="rl-tag">{{ tag }}</span>{% endfor %}</span>{% endif %}{% if p.description %}<span class="rl-desc">{{ p.description }}</span>{% endif %}</a></li>{% endif %}{% endfor %}{% endif %}
+      </ul>
+    </section>
+  </footer>
 </article>
 {% endblock content %}

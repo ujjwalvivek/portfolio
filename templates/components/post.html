@@ -1,15 +1,18 @@
-{% component note(title="Note") %}<aside class="admonition note"><p class="admonition-title">{{ title }}</p><div class="admonition-body">{{ body | markdown | safe }}</div></aside>{% endcomponent note %}
-{% component tip(title="Tip") %}<aside class="admonition tip"><p class="admonition-title">{{ title }}</p><div class="admonition-body">{{ body | markdown | safe }}</div></aside>{% endcomponent tip %}
-{% component warning(title="Warning") %}<aside class="admonition warning"><p class="admonition-title">{{ title }}</p><div class="admonition-body">{{ body | markdown | safe }}</div></aside>{% endcomponent warning %}
-{% component danger(title="Danger") %}<aside class="admonition danger"><p class="admonition-title">{{ title }}</p><div class="admonition-body">{{ body | markdown | safe }}</div></aside>{% endcomponent danger %}
-{% component info(title="Info") %}<aside class="admonition info"><p class="admonition-title">{{ title }}</p><div class="admonition-body">{{ body | markdown | safe }}</div></aside>{% endcomponent info %}
-{% component toc() %}<nav class="toc" data-toc aria-label="Table of contents"></nav>{% endcomponent toc %}
-{% component dino() %}<figure class="dino-embed" data-dino><figcaption>The OG, ~800 lines of code, no frameworks, just good old HTML5 Canvas and JavaScript.</figcaption></figure>{% endcomponent dino %}
+{#- Components used inside posts (ADR D-002). Styles in static/css/post.css, behaviour in src/ts/pages/post.ts.
+    Admonitions carry v3's icons from the sprite; the TOC marker is replaced by the template with a TOC built from
+    page.toc; dino and embed are figures that the page module brings to life. -#}
+{% component note(title="Note") %}<aside class="admonition note"><p class="admonition-title"><svg class="icon" aria-hidden="true"><use href="/icons.svg#md-tips-and-updates"/></svg><span>{{ title }}</span></p><div class="admonition-body">{{ body | markdown | safe }}</div></aside>{% endcomponent note %}
+{% component tip(title="Tip") %}<aside class="admonition tip"><p class="admonition-title"><svg class="icon" aria-hidden="true"><use href="/icons.svg#gr-tooltip"/></svg><span>{{ title }}</span></p><div class="admonition-body">{{ body | markdown | safe }}</div></aside>{% endcomponent tip %}
+{% component warning(title="Warning") %}<aside class="admonition warning"><p class="admonition-title"><svg class="icon" aria-hidden="true"><use href="/icons.svg#io-ios-warning"/></svg><span>{{ title }}</span></p><div class="admonition-body">{{ body | markdown | safe }}</div></aside>{% endcomponent warning %}
+{% component danger(title="Danger") %}<aside class="admonition danger"><p class="admonition-title"><svg class="icon" aria-hidden="true"><use href="/icons.svg#md-dangerous"/></svg><span>{{ title }}</span></p><div class="admonition-body">{{ body | markdown | safe }}</div></aside>{% endcomponent danger %}
+{% component info(title="Info") %}<aside class="admonition info"><p class="admonition-title"><svg class="icon" aria-hidden="true"><use href="/icons.svg#fa-info"/></svg><span>{{ title }}</span></p><div class="admonition-body">{{ body | markdown | safe }}</div></aside>{% endcomponent info %}
+{% component toc() %}<nav data-toc-marker></nav>{% endcomponent toc %}
+{% component dino() %}<figure class="dino-embed" data-dino><div class="dino-host" aria-label="Dino Blink, a tiny game"></div><figcaption>The OG, ~800 lines of code, no frameworks, just good old HTML5 Canvas and JavaScript.</figcaption></figure>{% endcomponent dino %}
 {% component embed(src, title="", cover="journey", caption="", ratio="16/9") %}
 {%- if cover == "baremetal" -%}{%- set cover_src = "https://cdn.ujjwalvivek.com/posts/media/baremetal_load.webp" -%}
 {%- elif cover == "youtube" -%}{%- set cover_src = "https://cdn.ujjwalvivek.com/posts/media/youtube_load.webp" -%}
 {%- elif cover == "gogs" -%}{%- set cover_src = "https://cdn.ujjwalvivek.com/posts/media/gogs_load.webp" -%}
 {%- else -%}{%- set cover_src = "https://cdn.ujjwalvivek.com/posts/media/engine_load.webp" -%}
 {%- endif -%}
-<figure class="embed" data-src="{{ src }}" data-ratio="{{ ratio }}"{% if title %} data-title="{{ title }}"{% endif %}><img src="{{ cover_src }}" alt="Click to load{% if title %}: {{ title }}{% endif %}" loading="lazy">{% if caption %}<figcaption>{{ caption }}</figcaption>{% endif %}</figure>
+<figure class="embed" data-embed data-src="{{ src }}"{% if title %} data-title="{{ title }}"{% endif %}><div class="embed-frame" style="aspect-ratio: {{ ratio }}"><a class="embed-cover" href="{{ src }}" target="_blank" rel="noopener" data-embed-cover><img src="{{ cover_src }}" alt="Click to load{% if title %}: {{ title }}{% endif %}" loading="lazy"></a></div>{% if caption %}<figcaption>{{ caption }}</figcaption>{% endif %}</figure>
 {%- endcomponent embed %}
