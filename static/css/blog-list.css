@@ -1,0 +1,298 @@
+/* Blog list (v3 BlogList and SearchBar). Same parts as v3: cornered hero, search box, cards with a header bar, thumbnail,
+   meta chips, description and a tag bar, then the entries line. Borders follow the house rule: dashed while inert,
+   solid 2px in the accent when hovered or focused. No shadows; the v3 card shadows and glows are gone. */
+
+.blog-list { width: min(var(--main-content-width), calc(100% - 2rem)); font-family: var(--font-neon); }
+
+/* Hero: the v3 "Logs Directory" bar with its four corner brackets. */
+.bl-hero {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-bottom: 4rem;
+  background: rgba(var(--bit-dark-color-rgb), 0.8);
+  backdrop-filter: blur(32px) saturate(150%);
+  -webkit-backdrop-filter: blur(32px) saturate(150%);
+  border: 2px dashed rgba(var(--dynamic-dominant-color-rgb), 0.2);
+}
+.bl-hero::before, .bl-hero::after, .bl-corners::before, .bl-corners::after {
+  content: "";
+  position: absolute;
+  width: 1.2rem;
+  height: 1.2rem;
+  border: 0 solid var(--dynamic-dominant-color);
+  pointer-events: none;
+}
+.bl-hero::before { top: -2px; left: -2px; border-width: 2px 0 0 2px; }
+.bl-hero::after { right: -2px; bottom: -2px; border-width: 0 2px 2px 0; }
+.bl-corners { position: absolute; inset: -2px; pointer-events: none; }
+.bl-corners::before { top: 0; right: 0; border-width: 2px 2px 0 0; }
+.bl-corners::after { left: 0; bottom: 0; border-width: 0 0 2px 2px; }
+.bl-hero-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.2rem;
+  font-size: 2.5rem;
+  color: var(--dynamic-dominant-color);
+  border-right: 2px dashed rgba(var(--dynamic-dominant-color-rgb), 0.2);
+}
+.bl-hero-text { flex: 1; min-width: 0; padding: 0 1.5rem; }
+.bl-hero h1 {
+  margin: 0;
+  font-family: var(--font-krypton);
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+  color: var(--text-color);
+}
+.bl-hero p {
+  margin: 0;
+  font-family: var(--font-krypton);
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: rgba(var(--dynamic-dominant-color-rgb), 0.8);
+}
+
+/* Search box. */
+.bl-search {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: rgba(var(--background-color-rgb), 0.3);
+  backdrop-filter: blur(32px) saturate(180%);
+  -webkit-backdrop-filter: blur(32px) saturate(180%);
+}
+.bl-search input {
+  width: 100%;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0.7rem 3rem 0.8rem 3rem;
+  border: 2px dashed rgba(var(--dynamic-dominant-color-rgb), 0.5);
+  background: transparent;
+  color: var(--text-color);
+  font-family: var(--font-neon);
+  font-size: 0.85rem;
+  transition: border-color 0.2s ease;
+  -webkit-appearance: none;
+  appearance: none;
+}
+.bl-search input::-webkit-search-cancel-button, .bl-search input::-webkit-search-decoration { -webkit-appearance: none; appearance: none; }
+.bl-search input::placeholder { color: var(--text-color); opacity: 0.3; font-weight: 200; }
+.bl-search input:hover { border-color: rgba(var(--dynamic-dominant-color-rgb), 0.8); }
+.bl-search input:focus { outline: none; border-style: solid; border-color: var(--dynamic-dominant-color); }
+.bl-search-icon, .bl-search-clear {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.2rem;
+  font-size: 1.2rem;
+  line-height: 1;
+  color: var(--dynamic-dominant-color);
+  background: rgba(var(--dynamic-dominant-color-rgb), 0.2);
+  border: 1px dashed rgba(var(--dynamic-dominant-color-rgb), 0.4);
+}
+.bl-search-icon { left: 0.75rem; opacity: 0.75; pointer-events: none; }
+.bl-search-clear { right: 0.6rem; cursor: pointer; opacity: 0.75; transition: opacity 0.2s ease, background 0.2s ease; }
+.bl-search-clear:hover, .bl-search-clear:focus-visible { opacity: 1; border-style: solid; background: rgba(var(--dynamic-dominant-color-rgb), 0.35); }
+.bl-search-clear[hidden] { display: none; }
+.bl-search-key { position: absolute; right: 0.75rem; top: 50%; transform: translateY(-50%); pointer-events: none; opacity: 0.75; }
+.bl-search.has-query .bl-search-key, .bl-search:focus-within .bl-search-key { display: none; }
+
+/* Nothing found. */
+.bl-empty {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 1.25rem 0 0;
+  padding: 2rem 1.25rem;
+  font-size: 0.9rem;
+  color: rgba(var(--text-color-rgb), 0.88);
+  background: rgba(var(--background-color-rgb), 0.3);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border: 1px dashed var(--dynamic-dominant-color);
+}
+.bl-empty[hidden] { display: none; }
+.bl-empty .icon { font-size: 1.5rem; color: rgba(var(--dynamic-dominant-color-rgb), 0.8); animation: bl-float 2.2s ease-in-out infinite; }
+.bl-empty-q {
+  padding: 0.1rem 0.4rem 0;
+  margin-left: 0.25rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  background: rgba(var(--dynamic-dominant-color-rgb), 0.12);
+  border: 1px dashed var(--dynamic-dominant-color);
+  overflow-wrap: anywhere;
+}
+@keyframes bl-float { 0%, 100% { transform: translateY(-1px) rotate(-2deg); } 50% { transform: translateY(-1px) rotate(2deg); } }
+
+/* The cards. The title link is stretched over the whole card, as v3's card was one link; tags sit above it. */
+.bl-posts { list-style: none; margin: 1rem 0 0; padding: 0; display: flex; flex-direction: column; gap: 1.75rem; }
+.bl-post {
+  position: relative;
+  overflow: hidden;
+  background: rgba(var(--background-color-rgb), 0.4);
+  backdrop-filter: blur(32px) saturate(180%);
+  -webkit-backdrop-filter: blur(32px) saturate(180%);
+  border: 2px dashed rgba(var(--dynamic-dominant-color-rgb), 0.2);
+  transition: border-color 0.3s ease, background 0.3s ease;
+  /* Cards far below the fold skip layout and paint until scrolled near; the size keeps the scrollbar honest. */
+  content-visibility: auto;
+  contain-intrinsic-size: auto 14rem;
+}
+.bl-post[hidden] { display: none; }
+.bl-post:hover, .bl-post:has(.bl-link:focus-visible) { border-style: solid; border-color: var(--dynamic-dominant-color); background: rgba(var(--background-color-rgb), 0.5); }
+
+.bl-head, .bl-tags {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: rgba(var(--background-color-rgb), 1);
+  background-image: linear-gradient(90deg, rgba(var(--dynamic-dominant-color-rgb), 0.1), rgba(var(--dynamic-hsl-average-rgb), 0.1));
+}
+.bl-head { padding: 0.3rem 1rem 0.4rem; border-bottom: 1px dashed rgba(var(--dynamic-dominant-color-rgb), 0.5); }
+.bl-index {
+  flex-shrink: 0;
+  padding: 0.2rem 0.4rem 0.1rem;
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: var(--dynamic-dominant-color);
+  background: rgba(var(--dynamic-dominant-color-rgb), 0.2);
+  border: 1px dashed rgba(var(--dynamic-dominant-color-rgb), 0.4);
+  opacity: 0.85;
+}
+.bl-title { flex: 1; min-width: 0; margin: 0; font-size: 0.94rem; font-weight: 600; letter-spacing: 0.3px; text-transform: uppercase; line-height: 1.35; }
+.bl-link { color: rgba(var(--text-color-rgb), 0.9); text-decoration: none; }
+.bl-link::after { content: ""; position: absolute; inset: 0; z-index: 1; }
+.bl-link:focus-visible { outline: none; }
+.bl-view {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.2rem 0.4rem 0.1rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  color: var(--text-color);
+  background: rgba(var(--background-color-rgb), 0.5);
+  border: 2px dashed rgba(var(--dynamic-dominant-color-rgb), 0.6);
+  transition: color 0.3s ease, border-color 0.3s ease;
+}
+.bl-view .icon { font-size: 0.75rem; transition: transform 0.3s ease; }
+.bl-post:hover .bl-view, .bl-post:has(.bl-link:focus-visible) .bl-view { color: var(--dynamic-dominant-color); border-style: solid; border-color: var(--dynamic-dominant-color); }
+.bl-post:hover .bl-view .icon { transform: rotate(180deg); }
+
+.bl-body { display: flex; align-items: flex-start; gap: 1.5rem; height: 10rem; padding: 1rem; box-sizing: border-box; }
+
+/* Thumbnail with v3's turning border; it stops when the wallpaper is off, as it did in v3, and for reduced motion. */
+@property --bl-angle { syntax: "<angle>"; initial-value: 90deg; inherits: false; }
+.bl-thumb {
+  flex-shrink: 0;
+  display: block;
+  width: 164px;
+  height: 128px;
+  box-sizing: border-box;
+  padding: 0.3rem;
+  background: rgba(var(--primary-color-rgb), 0.07);
+  border: 3px solid;
+  border-image: conic-gradient(from var(--bl-angle),
+      rgba(var(--dynamic-dominant-color-rgb), 0.2),
+      rgba(var(--dynamic-dominant-color-rgb), 0.8) 0.1turn,
+      rgba(var(--dynamic-dominant-color-rgb), 0.8) 0.15turn,
+      rgba(var(--dynamic-dominant-color-rgb), 0.2) 0.25turn) 30;
+  animation: bl-turn 5s linear infinite;
+}
+.bl-thumb img { display: block; width: 100%; height: 100%; object-fit: cover; filter: contrast(1.1) brightness(0.95); }
+body.bg-off .bl-thumb { animation: none; }
+@keyframes bl-turn { to { --bl-angle: 450deg; } }
+
+.bl-text { flex: 1; min-width: 0; height: 100%; display: flex; flex-direction: column; gap: 0.5rem; overflow: hidden; }
+.bl-meta { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0; }
+.bl-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.2rem 0.4rem 0.1rem;
+  font-size: 0.7rem;
+  letter-spacing: 1px;
+  text-transform: lowercase;
+  white-space: nowrap;
+  color: rgba(var(--text-color-rgb), 0.95);
+  background: rgba(var(--dynamic-dominant-color-rgb), 0.12);
+  border: 1px dashed rgba(var(--dynamic-dominant-color-rgb), 0.32);
+}
+.bl-chip .icon { font-size: 0.85rem; color: rgba(var(--dynamic-dominant-color-rgb), 0.95); }
+.bl-desc {
+  margin: 0;
+  font-size: 0.85rem;
+  font-weight: 200;
+  line-height: 1.5;
+  letter-spacing: -0.3px;
+  color: rgba(var(--text-color-rgb), 0.9);
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  line-clamp: 4;
+  overflow: hidden;
+}
+
+.bl-tags { list-style: none; margin: 0; flex-wrap: wrap; gap: 0.5rem; padding: 0.4rem 1rem 0.3rem; border-top: 1px dashed rgba(var(--dynamic-dominant-color-rgb), 0.5); }
+.bl-tags li { position: relative; z-index: 2; display: flex; }
+.bl-tag {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.2rem 0.4rem;
+  font-size: 0.69rem;
+  font-weight: 200;
+  line-height: 1;
+  letter-spacing: 0.3px;
+  text-decoration: none;
+  color: rgba(var(--text-color-rgb), 0.8);
+  background: linear-gradient(135deg, rgba(var(--dynamic-dominant-color-rgb), 0.15), rgba(var(--dynamic-hsl-average-rgb), 0.08));
+  border: 1px dashed rgba(var(--dynamic-dominant-color-rgb), 0.25);
+  transition: border-color 0.3s ease, color 0.3s ease;
+}
+.bl-tag .icon { font-size: 0.7rem; opacity: 0.8; transform: rotate(-45deg); transition: transform 0.3s ease, opacity 0.3s ease; }
+.bl-tag:hover, .bl-tag:focus-visible { color: var(--text-color); border-style: solid; border-color: var(--dynamic-dominant-color); }
+.bl-tag:focus-visible { outline: none; }
+.bl-tag:hover .icon, .bl-tag:focus-visible .icon { transform: rotate(45deg); opacity: 1; }
+
+/* End of the list. */
+.bl-end {
+  margin: 1.75rem 0 3rem;
+  padding: 0.5rem;
+  font-size: 0.8rem;
+  text-align: center;
+  border: 1px dashed rgba(var(--dynamic-dominant-color-rgb), 0.5);
+}
+
+@media (max-width: 600px) {
+  .bl-head { gap: 0.6rem; }
+  .bl-title { font-size: 0.93rem; }
+}
+@media (max-width: 500px) {
+  .bl-thumb, .bl-index, .bl-view .icon { display: none; }
+  .bl-hero h1 { font-size: 1.8rem; }
+  .bl-hero p { font-size: 0.8rem; }
+  .bl-hero-icon { padding: 1rem; }
+  .bl-hero-text { padding: 0 1rem; }
+}
+@media (max-width: 768px), (pointer: coarse) {
+  .bl-search-key { display: none; }
+}
+@media (max-width: 410px) {
+  .bl-desc { font-size: 0.8rem; }
+  .bl-hero h1 { font-size: 1.7rem; }
+  .bl-hero p { font-size: 0.75rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .bl-thumb, .bl-empty .icon { animation: none; }
+}
