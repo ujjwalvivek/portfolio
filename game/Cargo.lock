@@ -782,6 +782,7 @@ dependencies = [
  "journey-engine",
  "journey-sequencer",
  "journey-sound",
+ "js-sys",
  "wasm-bindgen",
  "wgpu",
 ]

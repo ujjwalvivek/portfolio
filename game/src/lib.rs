@@ -43,7 +43,6 @@ pub fn set_reduced_motion(reduced: bool) {
 
 #[derive(Clone, Copy)]
 struct Pal {
-    primary: [f32; 3],
     accent: [f32; 3],
     background: [f32; 3],
     dominant: [f32; 3],
@@ -54,7 +53,6 @@ fn palette() -> Pal {
     if !PALETTE_SET.load(Ordering::Relaxed) {
         // root's warm end, until the page sends colours
         return Pal {
-            primary: [0.25, 0.25, 0.25],
             accent: [1.0, 0.67, 0.0],
             background: [0.012, 0.012, 0.012],
             dominant: [1.0, 0.67, 0.0],
@@ -68,7 +66,7 @@ fn palette() -> Pal {
             f32::from_bits(PALETTE[i * 3 + 2].load(Ordering::Relaxed)),
         ]
     };
-    Pal { primary: c(0), accent: c(2), background: c(3), dominant: c(4), average: c(5) }
+    Pal { accent: c(2), background: c(3), dominant: c(4), average: c(5) }
 }
 
 fn mix(a: [f32; 3], b: [f32; 3], t: f32) -> [f32; 3] {
@@ -279,6 +277,8 @@ struct Walker {
     ground: f32, // seconds spent on the ground
     stay: f32,   // how long this one stays down before dropping onto the letters again
     gone: Option<f32>, // set while it has crumbled to dust: seconds since it vanished
+    vx: f32,           // sideways speed while airborne (drift, or a shove from a nearby poof)
+    weight: f32,       // per-lemming gravity scale, so no two fall alike
 }
 
 // One grain of a vanishing lemming: a sprite pixel that lifts, scatters and fades.
@@ -323,6 +323,8 @@ struct Dot {
     phase: f32,
     accent: bool,
     press: f32,
+    kx: f32, // knocked offset from a nearby poof, springs back
+    ky: f32,
 }
 
 #[derive(Clone, Copy)]
@@ -397,6 +399,8 @@ fn push_text(dots: &mut Vec<Dot>, rng: &mut u32, text: &str, y: f32, block: f32,
                             phase: rand_range(rng, 0.0, 1.0),
                             accent,
                             press: 0.0,
+                            kx: 0.0,
+                            ky: 0.0,
                         });
                     }
                 }
@@ -455,7 +459,10 @@ impl HeaderGame {
         let x = rand_range(rng, ledge.x0, ledge.x1) - SPRITE / 2.0;
         let w = &mut self.walkers[i];
         w.x = x;
-        w.y = -rand_range(rng, 10.0, 80.0);
+        // a random height is also a random delay before it lands
+        w.y = -rand_range(rng, 10.0, 160.0);
+        w.vx = rand_range(rng, -14.0, 14.0);
+        w.weight = rand_range(rng, 0.8, 1.2);
         w.dir = if rand_range(rng, 0.0, 1.0) < 0.5 { -1.0 } else { 1.0 };
         w.frame = 0;
         w.pose = Pose::Fall { vy: 0.0 };
@@ -492,6 +499,40 @@ impl HeaderGame {
             }
         }
         self.walkers[i].gone = Some(0.0);
+        self.shockwave(x + SPRITE / 2.0, y + SPRITE / 2.0, i);
+    }
+
+    // A poof shoves what is near it: other lemmings are knocked up and away, letters nearby jolt and settle back.
+    fn shockwave(&mut self, cx: f32, cy: f32, source: usize) {
+        const REACH: f32 = 60.0;
+        for (j, w) in self.walkers.iter_mut().enumerate() {
+            if j == source || w.gone.is_some() {
+                continue;
+            }
+            let dx = w.x + SPRITE / 2.0 - cx;
+            let dy = w.y - SPRITE / 2.0 - cy;
+            let dist = (dx * dx + dy * dy).sqrt();
+            if dist >= REACH {
+                continue;
+            }
+            let s = 1.0 - dist / REACH;
+            let side = if dx.abs() < 0.5 { if rand_range(&mut self.rng, 0.0, 1.0) < 0.5 { -1.0 } else { 1.0 } } else { dx.signum() };
+            w.dir = side;
+            w.vx = side * (35.0 + 85.0 * s);
+            w.pose = Pose::Fall { vy: -(45.0 + 95.0 * s) };
+        }
+        const JOLT: f32 = 40.0;
+        for d in self.dots.iter_mut() {
+            let dx = d.x - cx;
+            let dy = d.y - cy;
+            let dist = (dx * dx + dy * dy).sqrt();
+            if dist >= JOLT || dist < 0.01 {
+                continue;
+            }
+            let s = (1.0 - dist / JOLT) * 5.0;
+            d.kx += dx / dist * s;
+            d.ky += dy / dist * s;
+        }
     }
 
     fn update_dust(&mut self, dt: f32) {
@@ -573,8 +614,17 @@ impl HeaderGame {
                 continue;
             }
             if let Pose::Fall { vy } = w.pose {
-                let nvy = vy + GRAVITY * dt;
+                let nvy = vy + GRAVITY * w.weight * dt;
                 let ny = w.y + nvy * dt;
+                w.x += w.vx * dt;
+                w.vx *= (-dt * 1.2).exp();
+                if w.x < 0.0 {
+                    w.x = 0.0;
+                    w.vx = w.vx.abs() * 0.5;
+                } else if w.x > W - SPRITE {
+                    w.x = W - SPRITE;
+                    w.vx = -w.vx.abs() * 0.5;
+                }
                 let centre = w.x + SPRITE / 2.0;
                 let mut landed = None;
                 for (li, l) in ledges.iter().enumerate() {
@@ -585,9 +635,11 @@ impl HeaderGame {
                 }
                 if let Some((li, y)) = landed {
                     w.y = y;
+                    w.vx = 0.0;
                     w.pose = Pose::Walk { ledge: li };
                 } else if ny >= GROUND {
                     w.y = GROUND;
+                    w.vx = 0.0;
                     w.pose = Pose::Walk { ledge: usize::MAX };
                 } else {
                     w.y = ny;
@@ -606,8 +658,11 @@ impl HeaderGame {
             .map(|w| (w.x + SPRITE / 2.0, w.y))
             .collect();
         let decay = (-dt * 6.0).exp();
+        let settle = (-dt * 4.0).exp();
         for d in self.dots.iter_mut() {
             d.press *= decay;
+            d.kx *= settle;
+            d.ky *= settle;
             for &(fx, fy) in &feet {
                 if (d.x - fx).abs() < 5.0 && d.y >= fy - 1.0 && d.y < fy + 7.0 {
                     d.press = d.press.max(1.8);
@@ -654,7 +709,8 @@ impl GameApp for HeaderGame {
     fn init(ctx: &mut Context<HeaderAction>) -> Self {
         ctx.show_perf_hud = false;
         ctx.bloom = BloomSettings { enabled: true, threshold: 0.62, intensity: 0.5, radius: 2.0 };
-        let mut rng = 20260918u32;
+        // a new seed per visit, so the letters fly in and the lemmings arrive differently every time
+        let mut rng = ((js_sys::Math::random() * u32::MAX as f64) as u32) | 1;
 
         let mut dots = Vec::new();
         let mut ledges = push_text(&mut dots, &mut rng, LINE1, LINE1_Y, LINE1_BLOCK, 3, 1.3, false);
@@ -695,10 +751,11 @@ impl GameApp for HeaderGame {
             time: 0.0,
         };
         for i in 0..6 {
-            game.walkers.push(Walker { x: 0.0, y: 0.0, dir: 1.0, frame: 0, pose: Pose::Fall { vy: 0.0 }, ground: 0.0, stay: 8.0, gone: None });
+            game.walkers.push(Walker { x: 0.0, y: 0.0, dir: 1.0, frame: 0, pose: Pose::Fall { vy: 0.0 }, ground: 0.0, stay: 8.0, gone: None, vx: 0.0, weight: 1.0 });
             game.drop_in(i);
-            // stagger the first arrivals so they land after the letters have assembled
-            game.walkers[i].y -= 120.0 + i as f32 * 90.0;
+            // the first arrivals land after the letters have assembled, each at its own moment
+            let extra = rand_range(&mut game.rng, 100.0, 520.0);
+            game.walkers[i].y -= extra;
         }
         game
     }
@@ -773,14 +830,14 @@ impl GameApp for HeaderGame {
         let text = [1.0, 0.96, 0.88];
         let sweep_x = if reduced || self.time < ASSEMBLE + 1.2 { -1000.0 } else { -60.0 + ((self.time - ASSEMBLE - 1.2) * 110.0) % 900.0 };
         for d in &self.dots {
-            let base = if d.accent { mix(pal.dominant, text, 0.25) } else { text };
+            let base = if d.accent { mix(pal.dominant, text, 0.12) } else { text };
             let t = ((self.time - d.delay) / ASSEMBLE).clamp(0.0, 1.0);
             if t <= 0.0 {
                 continue;
             }
             let e = 1.0 - (1.0 - t).powi(3);
-            let x = d.from_x + (d.x - d.from_x) * e;
-            let y = d.from_y + (d.y - d.from_y) * e + d.press;
+            let x = d.from_x + (d.x - d.from_x) * e + d.kx;
+            let y = d.from_y + (d.y - d.from_y) * e + d.press + d.ky;
             let twinkle = if reduced { 1.0 } else { 0.84 + 0.16 * (self.time * 2.3 + d.phase * TAU).sin() };
             let dx = (d.x - sweep_x) / 24.0;
             let sweep = (-dx * dx).exp();
@@ -847,20 +904,20 @@ impl GameApp for HeaderGame {
     fn scene(&mut self, _ctx: &mut Context<Self::Action>, scene_params: &mut engine::SceneParams) {
         let pal = palette();
         // The haze fades up from the site's near-black over the first seconds, then follows the page palette.
-        let f = (self.time / 7.0).clamp(0.0, 1.0);
+        let f = if REDUCED.load(Ordering::Relaxed) { 1.0 } else { (self.time / 7.0).clamp(0.0, 1.0) };
         let theme = [0.010, 0.010, 0.010];
         let bg = mix(pal.background, theme, 0.5);
         scene_params.background_color = scale(mix(pal.background, [0.04, 0.04, 0.04], 0.5), 1.0);
         scene_params.sky = SkyParams {
             enabled: true,
             horizon_glow: 0.3 + 0.6 * f,
-            top_color: mix(theme, mix(bg, pal.primary, 0.03), f),
-            horizon_color: mix(theme, scale(pal.accent, 0.14), f),
-            bottom_color: mix(theme, mix(bg, pal.accent, 0.012), f),
+            top_color: mix(theme, mix(bg, pal.average, 0.05), f),
+            horizon_color: mix(theme, scale(pal.dominant, 0.16), f),
+            bottom_color: mix(theme, mix(bg, pal.dominant, 0.02), f),
             horizon_y: 0.52,
             horizon_width: 0.42,
         };
-        scene_params.fog_color = scale(pal.accent, 0.1);
+        scene_params.fog_color = scale(pal.dominant, 0.08);
         scene_params.fog_density = 8.0;
         scene_params.fog_opacity = 0.45;
     }
