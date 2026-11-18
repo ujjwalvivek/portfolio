@@ -62,9 +62,9 @@ That’s it.
 
 Anyway, if you want to try it, below are the links.
 
-##### **Demo (Limited):** https://synclippy.ujjwalvivek.com
+##### **Demo (Limited):** <https://synclippy.ujjwalvivek.com>
 
-##### **Repo (Source):** https://github.com/ujjwalvivek/synclippy
+##### **Repo (Source):** <https://github.com/ujjwalvivek/synclippy>
 
 If it ends up being useful to someone else, sweet. If not, at least I can stop emailing myself things.
 
@@ -510,8 +510,8 @@ Tech isn't hard. Systems, Behaviours, and Questions are.
 
 In case you read this far and dont wanna scroll up, here are the links again.
 
-##### **Demo (Limited):** https://synclippy.ujjwalvivek.com
+##### **Demo (Limited):** <https://synclippy.ujjwalvivek.com>
 
-##### **Repo (Source):** https://github.com/ujjwalvivek/synclippy
+##### **Repo (Source):** <https://github.com/ujjwalvivek/synclippy>
 
 See you in the next one!

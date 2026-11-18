@@ -471,4 +471,4 @@ While the project is archived, `the techniques and patterns it demonstrates are 
 Here's a thought I'll leave you with. 
 >Sometimes the best way to finish a project is to accept what it taught you and apply those lessons to the next one.
 
-[^1]: https://github.com/ujjwalvivek/GreedySnek
+[^1]: <https://github.com/ujjwalvivek/GreedySnek>

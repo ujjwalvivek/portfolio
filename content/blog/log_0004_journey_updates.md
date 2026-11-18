@@ -13,7 +13,7 @@ legacy = "log_0004_journey_updates.md"
 +++
 
 {% <warning title="v0.3.2 Live Demo"> %}
-https://journey.ujjwalvivek.com/?v=0.3.2 - OR - SCROLL DOWN
+<https://journey.ujjwalvivek.com/?v=0.3.2> - OR - SCROLL DOWN
 {% </warning> %}
 
 {{ <embed src="https://journey.ujjwalvivek.com/?v=0.3.2" title="Journey Engine v0.3.2 Demo" cover="journey" ratio="16/9" /> }}

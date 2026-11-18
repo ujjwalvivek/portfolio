@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="placeholder"><h1>{{ term.name }}</h1>
+<ul class="placeholder-links">{% for p in term.pages %}<li><a href="{{ p.permalink | safe }}">{{ p.title }}</a></li>{% endfor %}</ul>
+</section>
+{% endblock content %}

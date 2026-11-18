@@ -127,7 +127,7 @@ Most of the architecture is now organized the way I wanted it to be:
 * TerminalMail, GitHubNavigator refactored
 * various internal utilities cleaned up
 
-And, here's the Dashboard: https://echopoint.ujjwalvivek.com
+And, here's the Dashboard: <https://echopoint.ujjwalvivek.com>
 
 ![SVG Generator](https://cdn.ujjwalvivek.com/posts/media/echopoint_gen.webp)
 

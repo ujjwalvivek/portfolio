@@ -14,7 +14,7 @@ legacy = "proj_0004_rust_game_engine.md"
 
 {% <warning title="v0.3.2 Live Demo"> %}
 Check the new version here:
-https://journey.ujjwalvivek.com
+<https://journey.ujjwalvivek.com>
 {% </warning> %}
 ## Introduction
 
