@@ -11,10 +11,8 @@
   backdrop-filter: blur(32px) saturate(180%);
   -webkit-backdrop-filter: blur(32px) saturate(180%);
   border: 2px dashed rgba(var(--dynamic-dominant-color-rgb), 0.35);
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
   display: grid;
   place-items: center;
-  overflow: hidden;
 }
 
 /* Four corner brackets, root's. */
@@ -29,8 +27,9 @@
 }
 .header-frame::before { top: 0; left: 0; border-width: 2px 0 0 2px; }
 .header-frame::after { top: 0; right: 0; border-width: 2px 2px 0 0; }
-.header-inner::before { bottom: -1px; left: -1px; border-width: 0 0 2px 2px; }
-.header-inner::after { bottom: -1px; right: -1px; border-width: 0 2px 2px 0; }
+/* the inner box has a 2px border; its brackets sit on it, matching the top pair on the frame's edge */
+.header-inner::before { bottom: -2px; left: -2px; border-width: 0 0 2px 2px; }
+.header-inner::after { bottom: -2px; right: -2px; border-width: 0 2px 2px 0; }
 
 .header-text { display: flex; flex-direction: column; align-items: center; gap: 0.6rem; padding: 0 1.5rem; text-align: center; transition: opacity 0.6s ease-out; }
 .header-text h1, .header-sub {
