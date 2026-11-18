@@ -76,7 +76,6 @@ function heatmapUrl(dominant: string): string {
     bg: "none",
     borderWidth: "0",
     responsive: "1",
-    tight: "1",
     cellRx: "0",
     zeroColor: "131313",
   });

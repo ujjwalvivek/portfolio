@@ -238,8 +238,10 @@
 .rl-desc { display: block; margin-top: 0.75rem; font-size: 0.85rem; font-weight: 200; letter-spacing: -0.3px; color: rgba(var(--text-color-rgb), 0.9); }
 
 /* Lazy hosts hold their final height until mounted (values come from the features' measured heights). */
-.home-widgets { --hold: 300px; --hold-phone: 1160px; }
-.home-mail { --hold: 440px; --hold-phone: 402px; }
+.home-widgets { --hold: calc((min(var(--main-content-width), 100vw - 2rem) - 3rem) / 4); }
+@media (max-width: 1099px) { .home-widgets { --hold: min(var(--main-content-width), 100vw - 2rem); } }
+@media (max-width: 499px) { .home-widgets { --hold: calc(4 * (100vw - 2rem) + 3rem); --hold-phone: calc(4 * (100vw - 2rem) + 3rem); } }
+.home-mail { --hold: 420px; --hold-phone: 420px; }
 
 @media (max-width: 900px) {
   .home-nav { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; }
