@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="placeholder">
+  <h1>{{ section.title }}</h1>
+  <p class="placeholder-note">Blog list lands in M3.</p>
+  <ul class="placeholder-links">{% for p in section.pages %}<li><a href="{{ p.permalink | safe }}">{{ p.title }}</a></li>{% endfor %}</ul>
+</section>
+{% endblock content %}

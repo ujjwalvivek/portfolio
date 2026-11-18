@@ -1,0 +1,8 @@
+/vendor/*
+  Cache-Control: public, max-age=31536000, immutable
+/icons.svg
+  Cache-Control: public, max-age=604800
+/js/*
+  Cache-Control: public, max-age=0, must-revalidate
+/css/*
+  Cache-Control: public, max-age=0, must-revalidate

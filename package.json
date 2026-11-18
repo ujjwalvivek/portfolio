@@ -1,0 +1,17 @@
+{
+  "name": "portfolio",
+  "version": "4.0.0-dev",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "icons": "node scripts/icons.mjs",
+    "vendor": "node scripts/vendor.mjs",
+    "ts": "tsc -p .",
+    "ts:watch": "tsc -p . --watch",
+    "build": "npm run icons && npm run vendor && npm run ts && zola build",
+    "sizes": "node scripts/sizes.mjs"
+  },
+  "devDependencies": {
+    "typescript": "7.0.2"
+  }
+}

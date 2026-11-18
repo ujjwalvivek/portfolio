@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  {%- set page_title = config.title -%}
+  {%- set page_desc = config.description -%}
+  {%- if page and page.title %}{% set page_title = page.title ~ " | " ~ config.title %}{% if page.description %}{% set page_desc = page.description %}{% endif %}
+  {%- elif section and section.title and not section.path == "/" %}{% set page_title = section.title ~ " | " ~ config.title %}{% if section.description %}{% set page_desc = section.description %}{% endif %}
+  {%- else %}{% set page_title = "Welcome | " ~ config.title %}{% endif %}
+  <title>{{ page_title }}</title>
+  <meta name="description" content="{{ page_desc }}">
+  <meta name="theme-color" content="#000000">
+  <meta property="og:title" content="{{ page_title }}">
+  <meta property="og:description" content="{{ page_desc }}">
+  <meta property="og:image" content="{{ config.extra.cdn }}/icons/logo512.png">
+  <meta property="og:url" content="{{ current_url | default(value=config.base_url) }}">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="{{ config.extra.cdn }}/icons/favicon.ico">
+  <link rel="apple-touch-icon" href="{{ config.extra.cdn }}/icons/logo192.png">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="preconnect" href="{{ config.extra.cdn }}" crossorigin>
+  <link rel="preload" href="{{ config.extra.cdn }}/fonts/JetBrainsMono/Regular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="{{ config.extra.cdn }}/fonts/Monaspace/Neon/ExtraBold.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/css/tokens.css">
+  <link rel="stylesheet" href="/css/base.css">
+  {%- block styles %}{% endblock styles %}
+  <link rel="modulepreload" href="/js/shell/main.js">
+  <script type="module" src="/js/shell/main.js"></script>
+</head>
+<body>
+  {% include "partials/shell-icons.html" %}
+  <header class="topbar">
+    <div class="topbar-controls">
+      <span class="bg-toggle-frame"><button class="bg-toggle" type="button" data-bg-toggle aria-pressed="true" aria-label="Wallpaper" title="Wallpaper"></button></span>
+      <nav class="crumbs" aria-label="Breadcrumb" data-swap="crumbs">{% block crumbs %}{% include "partials/crumbs.html" %}{% endblock crumbs %}</nav>
+    </div>
+    <a class="logo" href="/" title="Ujjwal Vivek"><span class="logo-full" aria-hidden="true">U J J W A L V I V E K</span><span class="logo-short" aria-hidden="true">U V</span><span class="sr-only">Ujjwal Vivek, home</span></a>
+  </header>
+
+  <main id="main" tabindex="-1" data-modules="{% block modules %}{% endblock modules %}" data-styles="{% block page_styles %}{% endblock page_styles %}">
+    {% block content %}{% endblock content %}
+  </main>
+
+  <footer class="statusbar">
+    <div class="statusbar-left">
+      <button class="status-item is-vibe" type="button" data-open="vibe" title="Switch wallpaper and palette"><svg class="icon" aria-hidden="true"><use href="#ti-flow-switch"/></svg><span class="status-text">vibeSwitch</span></button>
+    </div>
+    <div class="statusbar-right">
+      <span class="status-sep" aria-hidden="true"></span>
+      <button class="status-item is-vibe" type="button" data-open="stack" title="Tech stack"><span class="status-text status-lang"><svg class="icon" aria-hidden="true"><use href="#ri-stack-fill"/></svg> Rust</span></button>
+      <span class="status-sep" aria-hidden="true"></span>
+      <a class="status-item is-variant" href="https://linkedin.com/in/ujjwalvivek" target="_blank" rel="noopener noreferrer" title="LinkedIn"><svg class="icon" aria-hidden="true"><use href="#tfi-linkedin"/></svg><span class="sr-only">LinkedIn</span></a>
+      <a class="status-item is-variant" href="{{ config.extra.github }}" target="_blank" rel="noopener noreferrer" title="GitHub"><svg class="icon" aria-hidden="true"><use href="#tb-brand-github-filled"/></svg><span class="sr-only">GitHub</span></a>
+      <a class="status-item is-variant" href="https://root.ujjwalvivek.com" target="_blank" rel="noopener" title="root.ujjwalvivek.com"><svg class="icon" aria-hidden="true"><use href="#fa-folder-tree"/></svg><span class="sr-only">All links</span></a>
+    </div>
+  </footer>
+</body>
+</html>

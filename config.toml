@@ -1,0 +1,19 @@
+base_url = "https://ujjwalvivek.com"
+title = "Vivek's Journey"
+description = "A creative, interactive portfolio documenting Vivek's journey in code, design, and ideas."
+default_language = "en"
+compile_sass = false
+build_search_index = false
+taxonomies = [{ name = "tags" }]
+
+[markdown.highlighting]
+style = "class"
+theme = "one-dark-pro"
+
+[slugify]
+paths = "safe"
+
+[extra]
+cdn = "https://cdn.ujjwalvivek.com"
+echopoint = "https://echopoint.ujjwalvivek.com"
+github = "https://github.com/ujjwalvivek"

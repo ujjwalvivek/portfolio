@@ -1,0 +1,14 @@
+{%- if current_path and current_path != "/" -%}
+{%- set parts = current_path | split(pat="/") -%}
+<ol>
+  <li><a href="/">Home</a></li>
+  {%- set_global acc = "" -%}
+  {%- for part in parts -%}{%- if part -%}
+  {%- set_global acc = acc ~ "/" ~ part -%}
+  {%- set label = part | replace(from="-", to=" ") | title -%}
+  <li><span class="crumb-sep" aria-hidden="true"><svg class="icon"><use href="#rx-triangle-right"/></svg></span>
+    {%- if acc ~ "/" == current_path %}<span aria-current="page" title="{{ label }}">{{ label }}</span>{% else %}<a href="{{ acc }}/" title="{{ label }}">{{ label }}</a>{% endif -%}
+  </li>
+  {%- endif -%}{%- endfor -%}
+</ol>
+{%- endif -%}
