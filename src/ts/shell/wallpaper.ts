@@ -3,9 +3,9 @@
 // canvas is dropped and root's CSS backdrop (glow and dot grid) stays as the wallpaper. Switching the wallpaper off
 // stops rendering and hides both.
 //
-// The vibe switch drives everything here: which recipe, the global speed, density and opacity (substrate applies them
-// on top of every layer through effectiveLayerOptions), and whether it animates or holds one static frame. Changing
-// options never rebuilds the scene; only choosing another recipe does.
+// The vibe switch drives everything here: which recipe, and whether it animates or holds one static frame. Tuning
+// happens in substrate's playground; the site only takes a finished recipe. Changing motion never rebuilds the scene;
+// only choosing another recipe does.
 
 import { load, on as onShell, reducedMotion, save, emit } from "../lib/store.js";
 import { currentColours, onColours } from "./drift.js";
@@ -15,7 +15,6 @@ import { recipeBook, recipeTools } from "./recipes-local.js";
 
 const SUBSTRATE = "/vendor/substrate/index.js";
 const FPS = 30;
-const SAVE_MS = 400;
 
 type Renderer = {
   frame: number;
@@ -29,10 +28,11 @@ type Substrate = {
   loop(canvas: HTMLCanvasElement, scene: unknown, palette: Colours, options: Record<string, number>): Promise<Renderer>;
 };
 
-export type GlobalOptions = { speed: number; density: number; opacity: number };
 // Substrate's own defaults: at these values every layer draws exactly as its recipe says (opacity 0.8 is neutral).
-export const DEFAULT_OPTIONS: GlobalOptions = { speed: 1, density: 1, opacity: 0.8 };
+const NEUTRAL = { speed: 1, density: 1, opacity: 0.8 };
 export const PASTED = "pasted";
+// The named recipes the site offers, in order. Substrate ships more (signal); only these are shown or loaded.
+export const RECIPES: readonly string[] = ["root", "nebula"];
 
 // waiting: not started or still loading; running: frames are painting; unavailable: the CSS backdrop is the wallpaper.
 export type WallpaperStatus = { state: "waiting" | "running" | "unavailable"; reason: string };
@@ -44,8 +44,14 @@ let canvas: HTMLCanvasElement | null = null;
 let looping = false; // the renderer's frame loop is going (animated and on)
 let on = load("wallpaper", true);
 let animate = load("animate", true);
-let global: GlobalOptions = { ...DEFAULT_OPTIONS, ...load<Partial<GlobalOptions>>("wallpaper-options", {}) };
 let choice = load("recipe", "root");
+if (choice !== PASTED && !RECIPES.includes(choice)) choice = "root";
+// The old sliders' values (v4:wallpaper-options) are no longer read; drop them so they don't linger.
+try {
+  localStorage.removeItem("v4:wallpaper-options");
+} catch {
+  // storage unavailable: nothing to clear
+}
 let pasted = load<Recipe | null>("pasted", null);
 let status: WallpaperStatus = { state: "waiting", reason: "" };
 
@@ -69,7 +75,6 @@ export function onWallpaperChange(fn: () => void): () => void {
 export const wallpaperOn = () => on;
 export const wallpaperAvailable = () => renderer !== null;
 export const wallpaperStatus = () => status;
-export const globalOptions = () => global;
 export const animated = () => animate;
 export const recipeChoice = () => choice;
 export const pastedRecipe = () => pasted;
@@ -77,7 +82,7 @@ export const pastedRecipe = () => pasted;
 export const framesDrawn = () => (renderer && looping ? renderer.frame : null);
 
 const animating = () => animate && !reducedMotion();
-const options = (): Record<string, number> => ({ ...global, fps: animating() ? FPS : 0 });
+const options = (): Record<string, number> => ({ ...NEUTRAL, fps: animating() ? FPS : 0 });
 
 // Brings the renderer in line with on/off and animated/static. A static frame is drawn by setOptions with fps 0.
 function sync(): void {
@@ -113,25 +118,10 @@ export function setAnimated(next: boolean): void {
   changed();
 }
 
-// Sliders call this on every input. The renderer takes the values at most once a frame (setOptions only stores them,
-// or redraws the one static frame); storage is written once the slider rests.
-let applyFrame = 0;
-let saveTimer = 0;
-export function setGlobalOptions(next: Partial<GlobalOptions>): void {
-  global = { ...global, ...next };
-  if (!applyFrame)
-    applyFrame = requestAnimationFrame(() => {
-      applyFrame = 0;
-      if (renderer && on) renderer.setOptions(options());
-    });
-  clearTimeout(saveTimer);
-  saveTimer = window.setTimeout(() => save("wallpaper-options", global), SAVE_MS);
-}
-
 async function resolve(name: string): Promise<Recipe> {
   const book = await recipeBook();
   if (name === PASTED && pasted) return pasted;
-  return book.getRecipe(name) ?? book.getRecipe("root")!;
+  return (RECIPES.includes(name) && book.getRecipe(name)) || book.getRecipe("root")!;
 }
 
 // Chooses a named recipe or "pasted". Resolves with an error message if substrate refused it; the previous recipe then
@@ -140,7 +130,7 @@ let pick = 0;
 export async function chooseRecipe(name: string): Promise<string | null> {
   const before = choice;
   const mine = ++pick;
-  choice = name === PASTED && !pasted ? "root" : name;
+  choice = (name === PASTED && pasted) || RECIPES.includes(name) ? name : "root";
   save("recipe", choice);
   changed();
   if (!renderer || !tools || !engine || !canvas) return null;
@@ -175,7 +165,7 @@ export async function chooseRecipe(name: string): Promise<string | null> {
       canvas?.remove();
       canvas = null;
       renderer = null;
-      unavailable("WebGPU stopped while changing the recipe.");
+      unavailable("WebGPU stopped");
     }
     return (err as Error).message;
   }
@@ -200,7 +190,7 @@ export async function clearPastedRecipe(): Promise<void> {
 }
 
 function unavailable(reason: string): void {
-  status = { state: "unavailable", reason: /[.!?]$/.test(reason) ? reason : reason + "." };
+  status = { state: "unavailable", reason: reason.replace(/[.!?\s]+$/, "") };
   document.body.classList.add("bg-fallback");
   changed();
 }
@@ -208,7 +198,10 @@ function unavailable(reason: string): void {
 // Starts after first paint. The canvas starts transparent and blurred and eases in once frames are painting.
 export async function startWallpaper(): Promise<void> {
   document.body.classList.toggle("bg-off", !on);
-  if (!("gpu" in navigator)) return unavailable("This browser has no WebGPU.");
+  if (!("gpu" in navigator)) return unavailable("WebGPU unavailable");
+  // navigator.gpu can exist with no adapter behind it (blocklisted GPU, headless): that is "unavailable" too, not a failure.
+  const gpu = (navigator as Navigator & { gpu: { requestAdapter(): Promise<unknown> } }).gpu;
+  if (!(await gpu.requestAdapter().catch(() => null))) return unavailable("WebGPU unavailable");
   canvas = document.createElement("canvas");
   canvas.id = "bg-canvas";
   canvas.setAttribute("aria-hidden", "true");
@@ -249,6 +242,7 @@ export async function startWallpaper(): Promise<void> {
     canvas.remove();
     canvas = null;
     renderer = null;
-    unavailable((err as Error)?.message || "WebGPU did not start here.");
+    const msg = (err as Error)?.message?.replace(/[.!?\s]+$/, "");
+    unavailable(msg ? `WebGPU failed (${msg.slice(0, 120)})` : "WebGPU failed");
   }
 }
