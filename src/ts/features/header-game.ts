@@ -31,6 +31,13 @@ export function mount(root: HTMLElement): () => void {
   const idle = (fn: () => void) => (typeof requestIdleCallback === "function" ? requestIdleCallback(fn, { timeout: 1500 }) : setTimeout(fn, 300));
   requestAnimationFrame(() => idle(start));
 
+  // the GPU was lost more times than the scene restarts for: the box says so, as when it cannot start
+  const lost = () => {
+    box.classList.remove("is-live");
+    box.classList.add("is-off");
+  };
+  addEventListener("header:lost", lost);
+
   const button = box.querySelector<HTMLButtonElement>("[data-music]");
   const path = button?.querySelector("path");
   const stop = onMusic((on) => {
@@ -42,6 +49,7 @@ export function mount(root: HTMLElement): () => void {
 
   return () => {
     left = true;
+    removeEventListener("header:lost", lost);
     stop();
     button?.removeEventListener("click", click);
     box.classList.remove("is-live", "is-off");

@@ -82,8 +82,9 @@
   background: rgba(var(--bit-dark-color-rgb), 0.55);
   backdrop-filter: blur(16px) saturate(160%);
   -webkit-backdrop-filter: blur(16px) saturate(160%);
-  border-top: 1px solid rgba(var(--dynamic-dominant-color-rgb), 0.6);
 }
+/* its top rule runs the full width of the frame, through the 4px mat on both sides */
+.ab-hero-cap::before { content: ""; position: absolute; top: 0; left: -4px; right: -4px; border-top: 1px dashed rgba(var(--dynamic-dominant-color-rgb), 0.8); }
 .ab-cap-key {
   flex: 0 0 auto;
   padding: 0.15rem 0.5rem 0.1rem;

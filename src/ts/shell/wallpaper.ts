@@ -18,6 +18,7 @@ const FPS = 30;
 
 type Renderer = {
   frame: number;
+  device?: { lost: Promise<{ reason?: string; message?: string }> };
   setPalette(p: Colours): void;
   setOptions(o: Record<string, number>): void;
   setScene(scene: unknown): Promise<void>;
@@ -127,6 +128,36 @@ async function resolve(name: string): Promise<Recipe> {
 // Chooses a named recipe or "pasted". Resolves with an error message if substrate refused it; the previous recipe then
 // comes back. Quick changes (arrow keys) overlap: only the latest one is applied.
 let pick = 0;
+// A WebGPU device can be lost at any time (a driver or Dawn error, a GPU reset), and the canvas then stays black. The
+// renderer is rebuilt on the same canvas with a fresh device, at most twice in a page's life.
+let rebuilds = 0;
+function watchDevice(r: Renderer): void {
+  void r.device?.lost.then(async (info) => {
+    if (info?.reason === "destroyed" || renderer !== r || !engine || !tools || !canvas) return;
+    console.warn("Wallpaper: GPU device lost, rebuilding:", info?.message ?? "");
+    r.stop();
+    renderer = null;
+    looping = false;
+    if (++rebuilds > 2) {
+      canvas.remove();
+      canvas = null;
+      return unavailable("WebGPU stopped");
+    }
+    try {
+      const next = await engine.loop(canvas, tools.recipeToScene(await resolve(choice)), currentColours(), options());
+      renderer = next;
+      looping = true;
+      watchDevice(next);
+      sync();
+    } catch (err) {
+      console.warn("Wallpaper could not rebuild:", err);
+      canvas?.remove();
+      canvas = null;
+      unavailable("WebGPU stopped");
+    }
+  });
+}
+
 export async function chooseRecipe(name: string): Promise<string | null> {
   const before = choice;
   const mine = ++pick;
@@ -148,6 +179,7 @@ export async function chooseRecipe(name: string): Promise<string | null> {
   }
   const fresh = async (r: Recipe) => {
     renderer = await engine!.loop(canvas!, tools!.recipeToScene(r), currentColours(), options());
+    watchDevice(renderer);
     looping = true;
     sync();
   };
@@ -227,6 +259,7 @@ export async function startWallpaper(): Promise<void> {
     renderer = await engine
       .loop(canvas, scene, currentColours(), options())
       .catch(() => engine!.loop(canvas!, scene, currentColours(), options()));
+    watchDevice(renderer);
     looping = true;
     sync();
     status = { state: "running", reason: "" };

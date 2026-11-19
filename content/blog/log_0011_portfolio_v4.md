@@ -8,7 +8,7 @@ tags = ["Zola", "TypeScript", "Performance", "Rust", "WebGPU", "Postmortem"]
 
 [extra]
 id = 16
-thumbnail = "/media/posts/log_0011_header.webp"
+thumbnail = "/media/posts/log_0011_thumb.webp"
 +++
 
 <!-- markdownlint-disable MD013 MD033-->
