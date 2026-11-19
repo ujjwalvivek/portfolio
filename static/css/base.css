@@ -397,12 +397,15 @@ kbd {
 @keyframes page-out { to { opacity: 0; } }
 @keyframes page-in { from { opacity: 0; transform: translateY(6px); } }
 
-/* Scrollbars, as v3. */
-html::-webkit-scrollbar, body::-webkit-scrollbar { width: 0.4rem; background: transparent; }
-html::-webkit-scrollbar-track, body::-webkit-scrollbar-track { background: rgba(var(--text-color-rgb), 1); }
-html::-webkit-scrollbar-thumb, body::-webkit-scrollbar-thumb { background: var(--background-color); min-height: 40px; border: 2px solid rgba(var(--text-color-rgb), 0.9); }
-html::-webkit-scrollbar-thumb:hover, body::-webkit-scrollbar-thumb:hover { background: rgba(var(--dynamic-dominant-color-rgb), 1); }
-* { scrollbar-width: thin; scrollbar-color: var(--background-color) rgba(var(--text-color-rgb), 1); }
+/* Scrollbars, themed to the palette. Firefox and Chromium read the standard properties (Chromium then ignores the
+   ::-webkit ones); Safari only reads the ::-webkit ones. Panels override the colour where they sit on their own glass. */
+* { scrollbar-width: thin; scrollbar-color: rgba(var(--dynamic-dominant-color-rgb), 0.6) transparent; }
+html { scrollbar-color: rgba(var(--dynamic-dominant-color-rgb), 0.7) rgba(var(--bit-dark-color-rgb), 0.6); }
+::-webkit-scrollbar { width: 6px; height: 6px; background: transparent; }
+::-webkit-scrollbar-track, ::-webkit-scrollbar-corner { background: transparent; }
+html::-webkit-scrollbar-track { background: rgba(var(--bit-dark-color-rgb), 0.6); }
+::-webkit-scrollbar-thumb { background: rgba(var(--dynamic-dominant-color-rgb), 0.6); min-height: 40px; }
+::-webkit-scrollbar-thumb:hover { background: var(--dynamic-dominant-color); }
 
 @media (max-width: 992px) { .statusbar { font-size: 0.6em; } }
 @media (max-width: 600px) { .statusbar { font-size: 0.6em; } }

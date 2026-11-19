@@ -99,9 +99,6 @@
   touch-action: pan-x pan-y; /* pinch is ours; panning stays native */
   outline: none;
 }
-.pdfv-scroll::-webkit-scrollbar { width: 0.4rem; height: 0.4rem; background: transparent; }
-.pdfv-scroll::-webkit-scrollbar-thumb { background: rgba(var(--dynamic-dominant-color-rgb), 0.5); }
-.pdfv-scroll::-webkit-scrollbar-thumb:hover { background: var(--dynamic-dominant-color); }
 .pdfv-scroll { scrollbar-width: thin; scrollbar-color: rgba(var(--dynamic-dominant-color-rgb), 0.5) transparent; }
 
 .pdfv-pages {
