@@ -58,7 +58,7 @@
   transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
 }
 .pdfv-key:hover { background: rgba(var(--dynamic-dominant-color-rgb), 0.3); border-color: var(--dynamic-dominant-color); }
-.pdfv-key:active, .pdfv-key[aria-pressed="true"] { transform: translateY(1px); border-bottom-width: 1px; background: rgba(var(--dynamic-dominant-color-rgb), 0.35); border-color: var(--dynamic-dominant-color); }
+.pdfv-key:active, .pdfv-key[aria-pressed="true"] { color: var(--background-color); background: var(--dynamic-dominant-color); border-color: var(--dynamic-dominant-color); border-bottom-width: 1px; transform: translateY(1px); }
 .pdfv-key:disabled { opacity: 0.35; cursor: default; transform: none; border-style: dashed; }
 .pdfv-key svg { width: 0.95rem; height: 0.95rem; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: square; }
 .pdfv-icon { padding: 0; }
