@@ -1,0 +1,60 @@
+/* The easter egg terminal (v3 TerminalFooter) on the web design system: a 2px dominant frame, an UPPERCASE title bar
+   with lowercase meta, no window dots and no shadows. One fixed height, so the page does not grow as lines arrive.
+   Loaded with the terminal, on the first click of the egg. */
+
+.ab-egg.is-open { border: 0; }
+.ab-term {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 360px;
+  box-sizing: border-box;
+  font-family: var(--font-neon);
+  font-size: 0.9rem;
+  color: var(--text-color);
+  background: rgba(var(--background-color-rgb), 0.5);
+  backdrop-filter: blur(32px) saturate(180%);
+  -webkit-backdrop-filter: blur(32px) saturate(180%);
+  border: 2px solid var(--dynamic-dominant-color);
+  cursor: text;
+}
+.ab-term-bar {
+  flex-shrink: 0;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.4rem 1rem;
+  background: rgba(var(--bit-dark-color-rgb), 1);
+  border-bottom: 1px solid rgba(var(--dynamic-dominant-color-rgb), 0.4);
+}
+.ab-term-title { font-family: var(--font-krypton); font-size: 0.75rem; letter-spacing: 2px; text-transform: uppercase; }
+.ab-term-meta { font-size: 0.7rem; letter-spacing: 1px; color: rgba(var(--text-color-rgb), 0.55); }
+.ab-term-scroll { flex: 1; min-height: 0; overflow-y: auto; padding: 1rem 1.5rem; scrollbar-width: thin; scrollbar-color: rgba(var(--dynamic-dominant-color-rgb), 0.5) transparent; }
+.ab-term-line { white-space: pre-wrap; overflow-wrap: anywhere; line-height: 1.5; }
+.ab-term-line.is-in { color: var(--dynamic-dominant-color); }
+.ab-term-line.is-out { color: rgba(var(--text-color-rgb), 0.9); font-weight: 300; margin-bottom: 0.4rem; }
+.ab-term-line.is-dim { opacity: 0.5; }
+.ab-term-line.is-alert { color: var(--dynamic-dominant-color); font-weight: 600; }
+.ab-term-line.is-glitch { animation: ab-term-flicker 0.9s steps(2) 3; }
+@keyframes ab-term-flicker { 50% { opacity: 0.4; } }
+.ab-term-row { display: flex; align-items: center; gap: 0.5rem; color: var(--dynamic-dominant-color); }
+.ab-term-prompt { color: var(--dynamic-dominant-color); white-space: pre; }
+.ab-term-input {
+  flex: 1;
+  min-width: 0;
+  padding: 0.2rem 0;
+  font: inherit;
+  color: var(--text-color);
+  caret-color: var(--dynamic-dominant-color);
+  background: none;
+  border: 0;
+  outline: none;
+}
+.ab-term-input::placeholder { color: rgba(var(--text-color-rgb), 0.35); }
+.ab-term:focus-within { outline: 1px solid var(--dynamic-dominant-color); outline-offset: 2px; }
+@media (max-width: 600px) {
+  .ab-term { height: 300px; font-size: 0.85rem; }
+  .ab-term-scroll { padding: 0.6rem 0.8rem; }
+}
+@media (prefers-reduced-motion: reduce) { .ab-term-line.is-glitch { animation: none; } }

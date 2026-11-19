@@ -1,0 +1,53 @@
+{#- v3 About intro (IntroText): four commands at a starship prompt, the version segment is Vivek's age and the uptime
+    counts from 2023-02-04, both filled in by about-intro.js. The troopers walk down the right edge (wide screens). -#}
+{%- set prompt -%}
+<span class="ab-ship" aria-hidden="true">
+  <span class="ab-seg ab-seg-logo"><span class="ab-seg-dots"><i></i><i></i><i></i></span><span class="ab-seg-uv">UV</span></span>
+  <span class="ab-seg ab-seg-path">../dreams</span>
+  <span class="ab-seg ab-seg-git"><svg class="icon"><use href="/icons.svg#io-ios-git-branch"/></svg> giting(gud)</span>
+  <span class="ab-seg ab-seg-ver" data-ab-age>v--.--.--</span>
+</span>
+{%- endset -%}
+<section class="ab-intro" aria-label="Introduction" data-ab-intro>
+  <span class="ab-corners" aria-hidden="true"></span>
+  <div class="ab-trooper" aria-hidden="true" data-ab-trooper title="Codepen by Yusuf Bakir"></div>
+
+  <div class="ab-block">
+    {{ prompt | safe }}<span class="ab-cmd">boot</span><span class="ab-param"> --system</span>
+    <div class="ab-out">
+      <p>core.modules <span class="ab-val">active</span></p>
+      <p>logs.pipeline <span class="ab-val">operational</span></p>
+      <p>memory.usage <span class="ab-val">high</span></p>
+      <p><span class="ab-val">2%_reserved_for_physics_simulations</span></p>
+      <p>uptime <span class="ab-val" data-ab-uptime>-</span></p>
+    </div>
+  </div>
+
+  <div class="ab-block">
+    {{ prompt | safe }}<span class="ab-cmd">summarize</span><span class="ab-param"> --experience</span>
+    <div class="ab-out">
+      <p><b class="ab-ref">TPM</b> speaks fluent Engineer <b class="ab-ref">(and Translate-to-Executive)</b></p>
+      <p>built <b class="ab-ref">VR training sims</b> for like a lot of people! <a class="ab-ref ab-link" href="https://www.autovrse.com/case-study-ultratech" target="_blank" rel="noopener noreferrer">(65k+ users)</a></p>
+      <p>can understand <b class="ab-ref">chromium source</b> without crying</p>
+      <p>currently writing a <b class="ab-ref">cross-platform game-engine</b> in <b class="ab-ref">Rust and WASM</b></p>
+    </div>
+  </div>
+
+  <div class="ab-block">
+    {{ prompt | safe }}<span class="ab-cmd">lsd</span><span class="ab-param"> --skills /var/random</span>
+    <div class="ab-out">
+      <p>i've <b class="ab-ref">segfaulted</b> a browser tab before (for science).</p>
+      <p>avid enjoyer of <b class="ab-ref">Infra as Code</b> (Docker/Tailscale).</p>
+      <p>allocates <b class="ab-ref">0% CPU</b> to office politics.</p>
+      <p>still believe if the <b class="ab-ref">meeting=state_machine,</b> let it.</p>
+    </div>
+  </div>
+
+  <div class="ab-block">
+    {{ prompt | safe }}<span class="ab-cmd">cat</span><span class="ab-param"> --whats-next --exit</span>
+    <div class="ab-out">
+      <p>feel free to check out some of my projects below</p>
+      <p>could also navigate back to check out my blogs</p>
+    </div>
+  </div>
+</section>
