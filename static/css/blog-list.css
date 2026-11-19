@@ -234,7 +234,6 @@ body.bg-off .bl-ring::before { animation: none; }
 @keyframes bl-turn { to { transform: rotate(360deg); } }
 
 .bl-thumb img { display: block; width: 100%; height: 100%; object-fit: cover; filter: contrast(1.1) brightness(0.95); }
-@keyframes bl-turn { to { --bl-angle: 450deg; } }
 
 .bl-text { flex: 1; min-width: 0; height: 100%; display: flex; flex-direction: column; gap: 0.5rem; overflow: hidden; }
 .bl-meta { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0; }
