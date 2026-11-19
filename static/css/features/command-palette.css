@@ -93,8 +93,21 @@
 .pal-none { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; padding: 2rem 1.5rem; font-family: var(--font-neon); font-size: 0.9rem; color: rgba(var(--primary-color-rgb), 0.8); }
 .pal-none .icon { font-size: 2rem; opacity: 0.5; }
 
-.pal-card .pal-foot { justify-content: flex-start; flex-wrap: wrap; gap: 0.55rem 1.3rem; padding: 0.65rem 1.4rem; line-height: 1.4; font-family: var(--font-neon); font-size: 0.75rem; color: rgba(var(--text-color-rgb), 0.7); }
-.pal-foot-item { white-space: nowrap; }
+/* Footer: one line, never wrapped. Items that don't fit are dropped (navigate first, then execute) rather than wrapped;
+   the way to the full sheet stays, on the right. */
+.pal-card .pal-foot { justify-content: flex-start; flex-wrap: nowrap; gap: 1.3rem; padding: 0.55rem 1.4rem; overflow: hidden; white-space: nowrap; line-height: 1.4; font-family: var(--font-neon); font-size: 0.75rem; color: rgba(var(--text-color-rgb), 0.7); }
+.pal-foot-item { flex: 0 0 auto; display: inline-flex; align-items: center; white-space: nowrap; }
+.pal-foot-all {
+  margin: 0 0 0 auto;
+  padding: 0.1rem 0.35rem;
+  font: inherit;
+  color: inherit;
+  background: transparent;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+.pal-foot-all:hover { background: rgba(var(--dynamic-dominant-color-rgb), 0.15); border-color: var(--dynamic-dominant-color); color: var(--text-color); }
 .pal-foot-keys { display: inline-flex; gap: 0.2rem; margin-right: 0.4rem; }
 .pal-foot-keys kbd {
   background: rgba(var(--dynamic-dominant-color-rgb), 0.05);
@@ -105,14 +118,18 @@
   color: rgba(var(--text-color-rgb), 0.9);
 }
 
-/* Phones and narrow windows: the shortcut list and the row keycaps give way to the results. */
+/* Phones and narrow windows: the row keycaps give way to the results, and the footer drops navigate. */
 @media (max-width: 600px) {
   .pal-card .overlay-head { padding: 0.6rem 0.9rem; }
   .pal-results { padding: 0.2rem 0.4rem 0.5rem; max-height: 55vh; }
   .pal-row { gap: 0.7rem; padding: 0.4rem 0.5rem; }
   .pal-keys { display: none; }
   .pal-desc { -webkit-line-clamp: 1; line-clamp: 1; }
-  .pal-foot-item:nth-child(n + 3) { display: none; }
+  .pal-card .pal-foot { gap: 0.9rem; padding: 0.55rem 0.9rem; }
+  .pal-foot .is-nav { display: none; }
   .pal-input { font-size: 0.9rem; }
 }
-@media (prefers-reduced-motion: reduce) { .pal-row { transition: none; } }
+@media (max-width: 380px) { .pal-foot .is-run { display: none; } }
+/* Touch without a keyboard: arrow, Enter and Esc hints mean nothing; the sheet link stays. */
+@media (hover: none) and (pointer: coarse) { .pal-foot .is-nav, .pal-foot .is-run, .pal-foot .is-close { display: none; } }
+@media (prefers-reduced-motion: reduce) { .pal-row, .pal-foot-all { transition: none; } }

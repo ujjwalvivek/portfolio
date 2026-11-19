@@ -1,13 +1,14 @@
-// The command palette (v3's CommandPalette, keys per D-023). Ctrl/Cmd+K toggles it. One box searches pages, commands,
-// posts and projects; arrows move, Enter runs, Esc closes, the mouse works too. Command rows show their own shortcut
-// and the footer lists the layout, both read from the keymap. Posts and projects come from /palette-index.json, built
-// by Zola (templates/palette-index.json) and fetched the first time the palette opens or the page goes idle; pages
-// and commands are here, so they show at once while it loads.
+// The command palette (v3's CommandPalette, keys per D-023). Ctrl/Cmd+K toggles it, and the status bar's cmd button
+// opens it (the only way in on touch). One box searches pages, commands, posts and projects; arrows move, Enter runs,
+// Esc closes, the mouse works too. Command rows show their own shortcut; the one-line footer shows the palette's own
+// keys and a way to the full sheet. Both read the keymap. Posts and projects come from /palette-index.json, built by
+// Zola (templates/palette-index.json) and fetched the first time the palette opens or the page goes idle; pages and
+// commands are here, so they show at once while it loads.
 //
 // v3 differences: project results link to their row (/projects/#dev-3); v3 scrolled to a data-project-id that wasn't
 // on its page. "Switch Theme" is gone with light mode (D-010).
 
-import { KEYS, keycaps, trigger, type Action } from "../shell/keymap.js";
+import { keycaps, trigger, type Action } from "../shell/keymap.js";
 import { closeOverlay, openOverlay } from "../shell/overlay.js";
 import { navigate } from "../shell/router.js";
 import { setWallpaper, wallpaperOn } from "../shell/wallpaper.js";
@@ -286,7 +287,7 @@ export function openPalette(): void {
         if (!rows.length && !waiting) {
           const none = document.createElement("div");
           none.className = "pal-none";
-          none.innerHTML = `<svg class="icon" aria-hidden="true"><use href="/icons.svg#tb-face-id-error"/></svg><span>No commands found</span>`;
+          none.innerHTML = `<svg class="icon" aria-hidden="true"><use href="/icons.svg#tb-face-id-error"/></svg><span>No results</span>`;
           list.append(none);
           box.removeAttribute("aria-activedescendant");
         }
@@ -320,20 +321,27 @@ export function openPalette(): void {
         alive = false;
       };
     },
-    foot(foot) {
+    foot(foot, close) {
+      // One line: what works inside the palette, and a way to the full sheet. Narrow widths drop items, never wrap.
       foot.classList.add("pal-foot");
-      const item = (keys: string[], label: string) => {
+      const item = (keys: string[], label: string, cls: string) => {
         const span = document.createElement("span");
-        span.className = "pal-foot-item";
+        span.className = `pal-foot-item ${cls}`;
         span.append(caps(keys, "pal-foot-keys"), label);
         foot.append(span);
       };
-      item(["↑", "↓"], "navigate");
-      item(["⏎"], "execute");
-      for (const k of KEYS) {
-        if (k.action === "palette") continue;
-        item(k.action ? keycaps(k.action) : k.keys.split(" "), k.short);
-      }
+      item(["↑", "↓"], "navigate", "is-nav");
+      item(["⏎"], "execute", "is-run");
+      item(keycaps("Esc"), "close", "is-close");
+      const all = document.createElement("button");
+      all.type = "button";
+      all.className = "pal-foot-item pal-foot-all";
+      all.append(caps(keycaps("help"), "pal-foot-keys"), "all keys");
+      all.addEventListener("click", () => {
+        close();
+        trigger("help");
+      });
+      foot.append(all);
     },
   });
   ref.input?.focus({ preventScroll: true });
