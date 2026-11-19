@@ -22,7 +22,26 @@ body {
 
 code { font-family: var(--font-mono); }
 a { color: inherit; }
-:focus-visible { outline: 2px solid var(--dynamic-dominant-color); outline-offset: 2px; }
+:root {
+  /* the site's corner brackets, as background layers: keyboard focus and selected keys wear them on their own border */
+  --brackets:
+    linear-gradient(var(--dynamic-dominant-color), var(--dynamic-dominant-color)) top left / 8px 2px no-repeat,
+    linear-gradient(var(--dynamic-dominant-color), var(--dynamic-dominant-color)) top left / 2px 8px no-repeat,
+    linear-gradient(var(--dynamic-dominant-color), var(--dynamic-dominant-color)) top right / 8px 2px no-repeat,
+    linear-gradient(var(--dynamic-dominant-color), var(--dynamic-dominant-color)) top right / 2px 8px no-repeat,
+    linear-gradient(var(--dynamic-dominant-color), var(--dynamic-dominant-color)) bottom left / 8px 2px no-repeat,
+    linear-gradient(var(--dynamic-dominant-color), var(--dynamic-dominant-color)) bottom left / 2px 8px no-repeat,
+    linear-gradient(var(--dynamic-dominant-color), var(--dynamic-dominant-color)) bottom right / 8px 2px no-repeat,
+    linear-gradient(var(--dynamic-dominant-color), var(--dynamic-dominant-color)) bottom right / 2px 8px no-repeat;
+}
+/* Keyboard focus: the brackets sit on the element's border, never a second ring around it. */
+:focus { outline: none; }
+/* Text fields are left out: their caret shows focus, and they sit inside framed rows that already read as the field. */
+:focus-visible:not(input, textarea, select, [contenteditable], canvas) {
+  outline: none;
+  background: var(--brackets), var(--focus-fill, rgba(var(--dynamic-dominant-color-rgb), 0.15));
+  background-origin: border-box;
+}
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
 
 .icon { width: 1em; height: 1em; display: inline-block; vertical-align: -0.125em; flex-shrink: 0; }
@@ -441,7 +460,7 @@ html::-webkit-scrollbar-thumb:hover, body::-webkit-scrollbar-thumb:hover { backg
   appearance: none;
   cursor: pointer;
 }
-.switch__input:focus-visible { outline: 2px solid var(--dynamic-dominant-color); outline-offset: 2px; }
+.switch__input:focus-visible { background: var(--brackets); background-origin: border-box; }
 .switch__input::before {
   content: "";
   display: block;

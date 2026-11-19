@@ -104,8 +104,8 @@
   border: 2px solid rgba(var(--dynamic-dominant-color-rgb), 0.5);
   transition: border-color 0.25s ease;
 }
-/* the compose pane is the active one; it goes fully dominant while the terminal has focus */
-.tm:focus-within .tm-panel.is-focus { border-color: var(--dynamic-dominant-color); }
+/* focus changes no borders (no doubled frames); only the compose head warms while the terminal has focus */
+.tm:focus-within .tm-panel.is-focus .tm-panel-head { background: rgba(var(--dynamic-dominant-color-rgb), 0.45); }
 
 .tm-panel-head {
   flex-shrink: 0;
@@ -146,7 +146,6 @@
 .tm-step:disabled { opacity: 1; cursor: default; }
 .tm-step:not(:disabled) { cursor: pointer; }
 .tm-step:not(:disabled):hover { background: rgba(var(--dynamic-dominant-color-rgb), 0.08); }
-.tm-step:focus-visible { outline: 2px solid var(--dynamic-dominant-color); outline-offset: -2px; }
 .tm-step.is-active { color: var(--dynamic-dominant-color); background: rgba(var(--dynamic-dominant-color-rgb), 0.1); }
 .tm-step.is-done { color: var(--status-ok-color); }
 .tm-step.is-done:not(:disabled):hover { background: rgba(var(--status-ok-color-rgb), 0.3); }
@@ -207,7 +206,6 @@
   font-family: var(--font-neon);
   transition: border-color 0.2s ease;
 }
-.tm-input-row:focus-within { border-style: solid; border-color: var(--dynamic-dominant-color); }
 
 .tm-prompt { flex-shrink: 0; display: flex; align-items: center; color: var(--dynamic-dominant-color); font-size: 0.8rem; }
 .tm-tilde { color: var(--dynamic-hsl-average); }

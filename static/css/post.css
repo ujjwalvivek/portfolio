@@ -439,11 +439,12 @@
   border: 1px dashed rgba(var(--dynamic-dominant-color-rgb), 0.3);
 }
 .post .markdown .toc a:hover { opacity: 1; border-color: rgba(var(--dynamic-dominant-color-rgb), 0.8); background: rgba(var(--dynamic-dominant-color-rgb), 0.05); }
-/* scroll spy: the section being read is the active item, solid 2px accent */
+/* scroll spy: the section being read is lit like a pressed key, filled in the accent, no extra border */
 .post .markdown .toc a[aria-current] {
-  border: 2px solid var(--dynamic-dominant-color);
-  background: rgba(var(--dynamic-dominant-color-rgb), 0.12);
-  font-weight: 500;
+  border-color: var(--dynamic-dominant-color);
+  background: var(--dynamic-dominant-color);
+  color: var(--background-color);
+  font-weight: 600;
 }
 .post .markdown .toc a[aria-current]::before { color: var(--dynamic-dominant-color); border-style: solid; }
 
@@ -550,7 +551,6 @@
   transition: opacity 0.2s ease;
 }
 .post .embed-cover:hover img { opacity: 0.85; }
-.post .embed-cover:focus-visible { outline-offset: -4px; }
 .post .embed-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; display: block; }
 
 /* ---------- dino ---------- */
@@ -610,7 +610,6 @@
   touch-action: manipulation;
   cursor: pointer;
 }
-.post .dino-stage:focus-visible { outline: 2px solid var(--dynamic-dominant-color); outline-offset: -2px; }
 .post .dino-player { position: absolute; left: 30px; bottom: 10px; width: 32px; height: 32px; }
 .post .markdown .dino-player img { width: 32px; height: 32px; max-height: none; margin: 0; padding: 0; border: 0; background: none; object-fit: contain; }
 .post .dino-obstacle { position: absolute; left: 0; bottom: 10px; width: 16px; background: var(--dynamic-dominant-color); }

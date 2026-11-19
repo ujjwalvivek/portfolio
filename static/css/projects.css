@@ -98,12 +98,14 @@
   transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
 }
 .pj-filter:hover { border-color: var(--dynamic-dominant-color); }
-.pj-filter:focus-visible { outline: 2px solid var(--dynamic-dominant-color); outline-offset: 2px; }
+/* the chosen filter is a pressed key: filled, text in the background colour, its base flattened */
 .pj-filter[aria-pressed="true"] {
-  color: var(--dynamic-dominant-color);
-  background: rgba(var(--dynamic-dominant-color-rgb), 0.25);
-  border: 2px solid var(--dynamic-dominant-color);
-  padding: 0.3rem 0.55rem;
+  color: var(--background-color);
+  background: var(--dynamic-dominant-color);
+  border-color: var(--dynamic-dominant-color);
+  border-bottom-width: 1px;
+  transform: translateY(1px);
+  font-weight: 700;
 }
 .pj-status { margin: 0; font-size: 0.7rem; letter-spacing: 1px; color: rgba(var(--text-color-rgb), 0.75); }
 .pj-status-filter { color: var(--dynamic-dominant-color); text-transform: uppercase; font-weight: 600; }
@@ -147,7 +149,7 @@
   transition: border-color 0.2s ease, background 0.2s ease;
 }
 .pj-row[hidden] { display: none; }
-.pj-row:hover, .pj-row:focus-within, .pj-row.is-target {
+.pj-row:hover, .pj-row:has(:focus-visible), .pj-row.is-target {
   border-style: solid;
   border-color: var(--dynamic-dominant-color);
   background: rgba(var(--background-color-rgb), 0.55);
@@ -178,7 +180,6 @@
   border: 0;
   cursor: help;
 }
-.pj-title-text:focus-visible { outline: 2px solid var(--dynamic-dominant-color); outline-offset: 3px; }
 .pj-desc, .pj-more-list { display: none; }
 
 .pj-tags { grid-area: tags; padding: 1.15rem 0 0.9rem; min-width: 0; }
@@ -209,7 +210,6 @@
 }
 .pj-more { cursor: help; color: rgba(var(--text-color-rgb), 0.7); transition: border-color 0.2s ease, color 0.2s ease; }
 .pj-more:hover, .pj-tags:hover .pj-more { border-style: solid; border-color: var(--dynamic-dominant-color); color: var(--text-color); }
-.pj-more:focus-visible { outline: 2px solid var(--dynamic-dominant-color); outline-offset: 2px; }
 
 /* Buttons (v3 ButtonGroup): at most two, or one full width. */
 .pj-actions { grid-area: actions; display: flex; gap: 0.6rem; }

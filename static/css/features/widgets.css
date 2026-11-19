@@ -84,7 +84,6 @@
 .w-link { display: flex; align-items: center; color: var(--text-color); text-decoration: none; transition: color 0.2s ease; }
 .w-link:hover { color: var(--dynamic-dominant-color); }
 
-.widgets :focus-visible { outline: 2px solid var(--dynamic-dominant-color); outline-offset: 1px; }
 
 /* ---- heatmap: the echopoint calendar, cropped to its latest weeks ---- */
 .w-heatmap::after {

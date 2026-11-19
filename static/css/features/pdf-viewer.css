@@ -59,7 +59,6 @@
 }
 .pdfv-key:hover { background: rgba(var(--dynamic-dominant-color-rgb), 0.3); border-color: var(--dynamic-dominant-color); }
 .pdfv-key:active, .pdfv-key[aria-pressed="true"] { transform: translateY(1px); border-bottom-width: 1px; background: rgba(var(--dynamic-dominant-color-rgb), 0.35); border-color: var(--dynamic-dominant-color); }
-.pdfv-key:focus-visible, .pdfv-pagein:focus-visible { outline: 2px solid var(--dynamic-dominant-color); outline-offset: 1px; }
 .pdfv-key:disabled { opacity: 0.35; cursor: default; transform: none; border-style: dashed; }
 .pdfv-key svg { width: 0.95rem; height: 0.95rem; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: square; }
 .pdfv-icon { padding: 0; }
@@ -100,7 +99,6 @@
   touch-action: pan-x pan-y; /* pinch is ours; panning stays native */
   outline: none;
 }
-.pdfv-scroll:focus-visible { outline: 2px solid var(--dynamic-dominant-color); outline-offset: -2px; }
 .pdfv-scroll::-webkit-scrollbar { width: 0.4rem; height: 0.4rem; background: transparent; }
 .pdfv-scroll::-webkit-scrollbar-thumb { background: rgba(var(--dynamic-dominant-color-rgb), 0.5); }
 .pdfv-scroll::-webkit-scrollbar-thumb:hover { background: var(--dynamic-dominant-color); }
@@ -134,7 +132,6 @@
 .pdfv-links { position: absolute; inset: 0; pointer-events: none; z-index: 2; }
 .pdfv-hit { position: absolute; pointer-events: auto; }
 .pdfv-hit:hover { background: rgba(var(--dynamic-dominant-color-rgb), 0.18); }
-.pdfv-hit:focus-visible { outline: 2px solid var(--dynamic-dominant-color); }
 
 .pdfv-side {
   flex: 0 0 auto;
@@ -162,7 +159,6 @@
 .pdfv-thumb .pdfv-meta { position: absolute; right: 0; bottom: 0; z-index: 1; padding: 0.15rem 0.35rem; font-size: 0.7rem; background: rgba(var(--bit-dark-color-rgb), 0.9); }
 .pdfv-thumb:hover { outline: 1px solid var(--dynamic-dominant-color); }
 .pdfv-thumb.is-current { outline: 2px solid var(--dynamic-dominant-color); }
-.pdfv-thumb:focus-visible { outline: 2px solid var(--dynamic-dominant-color); outline-offset: 2px; }
 
 /* ---- loading and error ---- */
 .pdfv-state {
