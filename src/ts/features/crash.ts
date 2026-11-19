@@ -4,8 +4,9 @@
 // here Esc gets the same refusal as the close key. The right-click menu is off and the console gets v3's note.
 //
 // Drawn as a tab that crashed: an opaque flat page, no glass and no wallpaper. v3's traffic lights stay red, amber and
-// green (status colours), as small squares for the site's square corners, with v3's tooltips. The headline is solid
-// in the error colour. The page underneath is made inert and the site's shortcuts are held, so nothing reacts behind it.
+// green (status colours), as small squares for the site's square corners, with v3's tooltips. The text sits in one
+// centred block framed by a dashed hairline and the site's corner brackets in the error colour; the headline is solid
+// in that colour. The page underneath is made inert and the site's shortcuts are held, so nothing reacts behind it.
 
 import { loadFeature } from "../lib/lazy.js";
 
@@ -62,19 +63,24 @@ function show(reason?: string): void {
   bug.innerHTML = '<svg class="icon" aria-hidden="true"><use href="/icons.svg#md-outline-bug-report"/></svg>';
   bar.append(keys, title, bug);
 
+  // one centred block in a frame: dashed hairline edge with the site's corner brackets in the error colour
   const content = el("div", "crash-content");
+  const frame = el("div", "crash-frame");
+  const corners = el("span", "crash-corners");
+  corners.setAttribute("aria-hidden", "true");
   const nope = el("div", "crash-nope", "Nice try! Try Harder.");
   nope.setAttribute("role", "status");
   nope.hidden = true;
   const main = el("div", "crash-main");
   main.id = "crash-main";
-  main.append(el("span", "crash-blink", "> session.crashed"), el("span", "crash-caret", " _"));
+  main.append(el("span", "crash-text", "> session.crashed"), el("span", "crash-caret", "_"));
   const sub = el("div", "crash-sub", "logs flushed. session configurations saved. play the game.");
   sub.id = "crash-sub";
   const dino = el("div", "crash-dino crash-flicker", "If you have arrived here in search of the Dino, he has moved on to greener pastures. He's one with the logs now.");
-  content.append(nope, main, sub);
-  if (reason) content.append(el("div", "crash-reason", `exit reason: ${reason}`));
-  content.append(dino);
+  frame.append(corners, main, sub);
+  if (reason) frame.append(el("div", "crash-reason", `exit reason: ${reason}`));
+  frame.append(dino);
+  content.append(nope, frame);
 
   const foot = el("div", "crash-foot");
   foot.append(el("div", "crash-foot-text crash-flicker", "ujjwalvivek.com ⊗ no trackers ⊗ no cookies ⊗ no analytics"));
