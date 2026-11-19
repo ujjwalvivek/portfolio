@@ -8,7 +8,7 @@ tags = ["Rust", "GPUI", "LLM", "Porting", "Postmortem"]
 
 [extra]
 id = 15
-thumbnail = "https://github.com/ujjwalvivek/devhub/blob/main/web/public/images/gpui/shot-5.webp?raw=true"
+thumbnail = "https://raw.githubusercontent.com/ujjwalvivek/devhub/a19035008ac5ed1aedd42cea370fed73b65d257b/web/public/images/gpui/shot-5.webp"
 legacy = "log_0010_gpui_experiment.md"
 +++
 
@@ -26,7 +26,7 @@ A good four days later, the playground had become a complete GPUI successor with
 
 It is not.
 
-<img src="https://github.com/ujjwalvivek/devhub/blob/main/web/public/images/gpui/shot-5.webp?raw=true" alt="Devhub-GPUI">
+<img src="https://raw.githubusercontent.com/ujjwalvivek/devhub/a19035008ac5ed1aedd42cea370fed73b65d257b/web/public/images/gpui/shot-5.webp" alt="Devhub-GPUI">
 
 The code was the comparatively easy part. The difficult part was keeping a long-running LLM collaboration coherent while requirements changed rapidly, visual experiments failed, platform behavior contradicted assumptions, and the definition of parity kept becoming more precise. The project succeeded because its state lived in a continuously maintained architecture decision record, a.k.a. the **ADR**, referenced throughout the blog.
 

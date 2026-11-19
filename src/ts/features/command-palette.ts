@@ -175,7 +175,7 @@ export function openPalette(): void {
       ref.input = box;
       box.className = "pal-input";
       box.type = "text";
-      box.placeholder = "Search commands, blogs, and projects";
+      box.placeholder = matchMedia("(max-width: 600px)").matches ? "Search" : "Search commands, blogs, and projects";
       box.autocomplete = "off";
       box.spellcheck = false;
       box.setAttribute("role", "combobox");
