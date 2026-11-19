@@ -1,7 +1,7 @@
 // The stormtroopers on the intro (v3, after Yusuf Bakir's CodePen "Stormtrooper"). v3 drew each pixel as a box-shadow
 // in fixed colours, about 83 KB of CSS; here the same three walk frames are 15 x 30 grids, one letter per pixel, drawn
 // as an SVG whose fills are theme variables (about.css, .ab-px-*), so the troopers follow the palette.
-// The sprite is turned on its side with its feet on the strip's dashed edge, and faces the way it walks (down).
+// The sprite is turned on its side with its feet on the strip's dashed edge. It faces up while it walks down: v3's moonwalk.
 // Wide screens only, and not with reduced motion, as about.css decides; the DOM is built either way, it is tiny.
 
 const W = 15;
@@ -28,10 +28,10 @@ function frame(rows: string): string {
   return [...paths].map(([c, d]) => `<path class="ab-px-${c}" d="${d}"/>`).join("");
 }
 
-// matrix(0 1 1 0 0 0) swaps x and y: head to the left, feet to the right, facing down.
+// matrix(0 -1 1 0 0 15): head to the left, feet to the right, facing up (against the walk).
 function sprite(): string {
   const frames = FRAMES.map((f) => `<g class="ab-frame">${frame(f)}</g>`).join("");
-  return `<svg viewBox="0 0 ${H} ${W}" aria-hidden="true" focusable="false"><g transform="matrix(0 1 1 0 0 0)">${frames}</g></svg>`;
+  return `<svg viewBox="0 0 ${H} ${W}" aria-hidden="true" focusable="false"><g transform="matrix(0 -1 1 0 0 ${W})">${frames}</g></svg>`;
 }
 
 export function mount(root: HTMLElement): () => void {
