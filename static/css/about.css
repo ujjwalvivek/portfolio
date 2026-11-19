@@ -166,7 +166,13 @@ body.bg-off .ab-soldier { animation-play-state: paused; }
   min-width: 0;
   padding: 1rem 1.5rem 1.5rem;
   /* v3's top glow: a 4px line from the accent through the average and back, under the top corner brackets */
+  /* top-right (4px, over the glow line) and bottom-left brackets are drawn here as layers; the other two are ::before/::after */
+  --c: var(--dynamic-dominant-color);
   background:
+    linear-gradient(var(--c), var(--c)) top right / 1.2rem 4px no-repeat,
+    linear-gradient(var(--c), var(--c)) top right / 2px 1.2rem no-repeat,
+    linear-gradient(var(--c), var(--c)) bottom left / 1.2rem 2px no-repeat,
+    linear-gradient(var(--c), var(--c)) bottom left / 2px 1.2rem no-repeat,
     linear-gradient(to right, rgba(var(--dynamic-dominant-color-rgb), 0.7), rgba(var(--dynamic-hsl-average-rgb), 0.7), rgba(var(--dynamic-dominant-color-rgb), 0.7)) top / 100% 4px no-repeat,
     rgba(var(--background-color-rgb), 0.5);
   backdrop-filter: blur(32px) saturate(180%);
@@ -175,8 +181,9 @@ body.bg-off .ab-soldier { animation-play-state: paused; }
 .ab-engine > * { align-self: start; }
 .ab-engine > .ab-gap { margin-top: 0.7rem; }
 .ab-engine > .ab-gap-s { margin-top: 0.5rem; }
-/* the glow line is the card's top edge on its own; only the bottom brackets remain */
-.ab-engine::before, .ab-engine > .ab-corners::before { display: none; }
+/* the top brackets are 4px tall, as v3's, so they cover the glow line exactly; the bottom ones are 2px */
+.ab-engine::before { border-width: 4px 0 0 2px; }
+.ab-engine > .ab-corners { display: none; }
 
 .ab-engine-head { display: flex; align-items: center; gap: 0.3rem; min-height: 31px; }
 .ab-engine-title {
