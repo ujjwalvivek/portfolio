@@ -44,7 +44,6 @@
 .ab-hero {
   position: relative;
   margin: 0;
-  height: 500px;
   padding: 4px;
   box-sizing: border-box;
   border: 2px solid var(--dynamic-dominant-color);
@@ -52,9 +51,10 @@
   backdrop-filter: blur(32px) saturate(180%);
   -webkit-backdrop-filter: blur(32px) saturate(180%);
 }
-.ab-hero-img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 100% 60%; }
-/* a flat tint of the accent over the photo, as v3 had (its inset vignette and pulsing glow are gone) */
-.ab-hero::after { content: ""; position: absolute; inset: 4px; background: rgba(var(--dynamic-dominant-color-rgb), 0.1); pointer-events: none; }
+/* the portrait is already a wide crop (2560x1190): the frame takes its shape at every width, so it is never cut and his face
+   stays whole on a phone; the width and height attributes hold the space before it loads */
+.ab-hero-img { display: block; width: 100%; height: auto; aspect-ratio: 2560 / 1190; object-fit: cover; object-position: center top; }
+/* no tint over the photo: it is warm and dark, and an accent wash only lifted its blacks to grey */
 .ab-hero-cap {
   position: absolute;
   left: 4px;
@@ -91,15 +91,10 @@
 .ab-out { margin-top: 0.5rem; }
 .ab-out p { margin: 0 0 0 0.5rem; font-family: var(--font-neon); font-weight: 200; line-height: 1.65; letter-spacing: 0.05rem; }
 .ab-val { color: var(--dynamic-dominant-color); font-weight: 400; }
-.ab-ref {
-  font-weight: 700;
-  margin: 0 0.15rem;
-  color: var(--text-color);
-  text-decoration: underline rgba(var(--dynamic-dominant-color-rgb), 0.6) 2px;
-  text-underline-offset: 4px;
-}
-.ab-link { color: var(--dynamic-dominant-color); }
-.ab-link:hover { text-decoration-color: var(--dynamic-dominant-color); }
+/* highlights in the output are weight or colour only, as v3; the underline belongs to the command words alone */
+.ab-ref { font-weight: 700; margin: 0 0.15rem; color: var(--text-color); }
+.ab-link { font-size: 0.8rem; color: var(--dynamic-dominant-color); text-decoration: none; transition: background-color 0.2s ease; }
+.ab-link:hover { background: rgba(var(--dynamic-dominant-color-rgb), 0.18); }
 /* about-intro.js wraps each word so it can fade in, once, in reading order */
 .ab-w { animation: ab-word 0.35s ease-out both; animation-delay: calc(var(--i) * 18ms); }
 @keyframes ab-word { from { opacity: 0.3; } to { opacity: 1; } }
@@ -149,22 +144,35 @@ body.bg-off .ab-soldier { animation-play-state: paused; }
 @media (max-width: 800px) { .ab-trooper { display: none; } }
 
 /* ---- engine cards (v3 JourneyBadge, SynclippyBadge) --------------------------------------------------------- */
-.ab-engines { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+/* Both cards hold the same twelve rows (title, description, stack, badges, releases, three commands with their
+   badges, activity) and share the grid's row tracks through subgrid, so each box sits level with its twin. Rows are
+   0.5rem apart (a command and its badges); .ab-gap opens a new section at v3's 1.2rem, .ab-gap-s a new command. */
+.ab-engines { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 1rem; row-gap: 0; }
 .ab-engine {
-  display: flex;
-  flex-direction: column;
-  gap: 1.2rem;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: subgrid;
+  grid-row: span 12;
+  row-gap: 0.5rem;
   min-width: 0;
   padding: 1rem 1.5rem 1.5rem;
-  background: rgba(var(--background-color-rgb), 0.5);
+  /* v3's top glow: a 4px line from the accent through the average and back, under the top corner brackets */
+  background:
+    linear-gradient(to right, rgba(var(--dynamic-dominant-color-rgb), 0.7), rgba(var(--dynamic-hsl-average-rgb), 0.7), rgba(var(--dynamic-dominant-color-rgb), 0.7)) top / 100% 4px no-repeat,
+    rgba(var(--background-color-rgb), 0.5);
   backdrop-filter: blur(32px) saturate(180%);
   -webkit-backdrop-filter: blur(32px) saturate(180%);
-  border-top: 2px solid rgba(var(--dynamic-dominant-color-rgb), 0.5);
 }
-.ab-engine-head { display: flex; align-items: center; gap: 0.5rem; }
+.ab-engine > * { align-self: start; }
+.ab-engine > .ab-gap { margin-top: 0.7rem; }
+.ab-engine > .ab-gap-s { margin-top: 0.5rem; }
+/* the top brackets are 4px tall, as v3's, so they cover the glow line exactly; the bottom ones are 2px */
+.ab-engine::before { border-width: 4px 0 0 2px; }
+.ab-engine > .ab-corners::before { border-width: 4px 2px 0 0; }
+
+.ab-engine-head { display: flex; align-items: center; gap: 0.3rem; min-height: 31px; }
 .ab-engine-title {
   margin: 0;
-  flex: 1;
   font-size: 1.125rem;
   font-weight: 800;
   letter-spacing: 2px;
@@ -173,17 +181,46 @@ body.bg-off .ab-soldier { animation-play-state: paused; }
   text-decoration: underline rgba(var(--dynamic-dominant-color-rgb), 0.5) 0.25rem;
   text-underline-offset: 4px;
 }
-.ab-phase {
-  font-size: 0.75rem;
+/* v3's version badge: a dashed square turning a quarter at a time over a row of dashes running left. */
+.ab-phase { position: relative; flex: none; width: 31px; height: 31px; margin-left: auto; }
+.ab-phase-spin {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to right, var(--dynamic-hsl-average) 20%, transparent 21%) repeat-x;
+  background-size: 18px 4px;
+  background-position: 4.5px bottom;
+  animation: ab-phase-dash 0.5s linear infinite;
+}
+.ab-phase-spin::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 20px;
+  height: 20px;
+  background: var(--dynamic-dominant-color);
+  border: 1px dashed var(--dynamic-hsl-average);
+  transform: translate(-50%, -50%);
+  animation: ab-phase-turn 0.5s linear infinite;
+}
+.ab-phase-label {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 0.8rem;
   font-weight: 800;
   line-height: 1;
-  padding: 0.25rem 0.4rem;
+  white-space: nowrap;
   color: var(--text-color);
-  background: rgba(var(--dynamic-dominant-color-rgb), 0.3);
-  border: 1px solid rgba(var(--dynamic-dominant-color-rgb), 0.6);
-  border-bottom-width: 2px;
 }
-/* the repo description: always three lines tall, so it can arrive late without moving anything */
+@keyframes ab-phase-dash { 0%, 25% { background-position: 5px bottom; } 75%, 100% { background-position: -15px bottom; } }
+@keyframes ab-phase-turn { 0%, 25% { transform: translate(-50%, -50%) rotate(0deg); } 75%, 100% { transform: translate(-55%, -55%) rotate(90deg); } }
+body.bg-off .ab-phase-spin, body.bg-off .ab-phase-spin::before { animation: none; }
+@media (prefers-reduced-motion: reduce) { .ab-phase-spin, .ab-phase-spin::before { animation: none; } }
+
+/* the repo description: three lines, as v3 clamped it, and always that tall so it can arrive late without moving
+   anything; the fourth line never shows */
 .ab-desc {
   margin: 0;
   height: 4.8em;
@@ -196,113 +233,130 @@ body.bg-off .ab-soldier { animation-play-state: paused; }
   -webkit-line-clamp: 3;
   line-clamp: 3;
 }
-/* Substrate's card: one fixed line that it renders this site's wallpaper, with the key that opens the picker. */
-.ab-note { margin: -0.6rem 0 0; font-size: 0.75rem; letter-spacing: 1px; color: rgba(var(--text-color-rgb), 0.7); }
-.ab-note-key {
-  margin-left: 0.3rem;
-  padding: 0.05rem 0.4rem;
-  font: inherit;
-  letter-spacing: 0;
-  color: var(--text-color);
-  background: rgba(var(--dynamic-dominant-color-rgb), 0.2);
-  border: 1px solid rgba(var(--dynamic-dominant-color-rgb), 0.5);
-  border-bottom-width: 2px;
-  cursor: pointer;
-}
-.ab-note-key:hover { border-color: var(--dynamic-dominant-color); color: var(--dynamic-dominant-color); }
-.ab-stack { list-style: none; margin: 0; padding: 0; display: flex; align-items: center; gap: 0.3rem; }
+
+/* Tech stack: small keys standing on one 2px accent line, like tabs (v3 techStack). */
+.ab-stack { position: relative; list-style: none; margin: 0; padding: 0; display: flex; align-items: center; gap: 0.3rem; width: fit-content; }
+.ab-stack::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: var(--dynamic-dominant-color); }
 .ab-stack li {
-  display: grid;
-  place-items: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 1.5rem;
   height: 1.5rem;
   box-sizing: border-box;
-  font-size: 1rem;
+  padding: 0.25rem;
   color: var(--text-color);
+  opacity: 0.85;
   background: rgba(var(--dynamic-dominant-color-rgb), 0.15);
   border: 1px solid rgba(var(--dynamic-dominant-color-rgb), 0.5);
-  border-bottom-width: 2px;
 }
-.ab-stack .ab-stack-k { width: auto; padding: 0 0.4rem; font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; background: rgba(var(--dynamic-dominant-color-rgb), 0.45); }
-.ab-stack .ab-wide { width: 1.4em; }
+.ab-stack li .icon { width: 0.8rem; height: 0.8rem; }
+.ab-stack li .icon.ab-wide { width: 1.25rem; height: 1.25rem; }
+.ab-stack .ab-stack-k { width: 3rem; padding: 0 0.2rem; font-size: 0.7rem; line-height: 1.69; text-transform: uppercase; background: rgba(var(--dynamic-dominant-color-rgb), 0.5); }
 
-/* Badges: keycap links, a label and, when live, a value slot sized for its value so nothing reflows when it fills. */
-.ab-badges { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+/* Badges: v3's echopoint badges drawn in place. A dark label with its icon, then the live value on an accent field;
+   a badge with no value is one accent field. 20px tall, 11px JetBrains Mono, a dashed accent frame. Value slots are
+   sized for their value so nothing reflows when it fills. */
+.ab-badges { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; }
 .ab-badge {
+  position: relative;
   display: inline-flex;
   align-items: stretch;
-  font-size: 0.72rem;
-  line-height: 1.5;
+  height: 22px;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font: 500 11px/1 var(--font-mono);
   white-space: nowrap;
   color: var(--text-color);
   text-decoration: none;
-  border: 1px solid rgba(var(--dynamic-dominant-color-rgb), 0.5);
-  border-bottom-width: 2px;
-  transition: border-color 0.2s ease, color 0.2s ease;
+  background: none;
+  border: 1px dashed var(--dynamic-dominant-color);
+  cursor: pointer;
+  transition: border-color 0.2s ease;
 }
-.ab-badge:hover { border-color: var(--dynamic-dominant-color); color: var(--dynamic-dominant-color); }
-.ab-badge-k { padding: 0.1rem 0.45rem; background: rgba(var(--bit-dark-color-rgb), 0.8); }
-.ab-badge-v {
-  min-width: 6ch;
-  padding: 0.1rem 0.45rem;
-  text-align: center;
-  font-variant-numeric: tabular-nums;
-  background: rgba(var(--dynamic-dominant-color-rgb), 0.28);
-  border-left: 1px solid rgba(var(--dynamic-dominant-color-rgb), 0.5);
-}
+.ab-badge-k, .ab-badge-v { display: inline-flex; align-items: center; padding: 0 8px; transition: background-color 0.2s ease; }
+.ab-badge-k { gap: 5px; background: rgba(var(--bit-dark-color-rgb), 0.9); }
+.ab-badge-k .icon { width: 13px; height: 13px; }
+.ab-badge.is-solo .ab-badge-k { background: rgba(var(--dynamic-dominant-color-rgb), 0.3); }
+.ab-badge-v { justify-content: center; min-width: 6ch; font-variant-numeric: tabular-nums; background: rgba(var(--dynamic-dominant-color-rgb), 0.55); }
 .ab-badge-v[data-ab-live^="updated"] { min-width: 8ch; }
 .ab-badge-v[data-ab-live^="stars"] { min-width: 3ch; }
+.ab-badge-v[data-ab-live^="license"] { min-width: 4ch; }
+/* hover, the site's rule: the frame turns solid accent at the same width and an accent tint lies over the whole badge */
+.ab-badge:hover { border-style: solid; }
+.ab-badge:hover > span { background-image: linear-gradient(rgba(var(--dynamic-dominant-color-rgb), 0.25), rgba(var(--dynamic-dominant-color-rgb), 0.25)); }
+/* keyboard focus: the brackets over the badge's own frame (its two fields would hide them as a background) */
+.ab-badge:focus-visible { background: none; }
+.ab-badge:focus-visible::after { content: ""; position: absolute; inset: -1px; background: var(--brackets); pointer-events: none; }
 
-/* Command boxes: click to copy. The copy glyph turns into a check while the text is on the clipboard. */
-.ab-commands { display: flex; flex-direction: column; gap: 0.6rem; }
+/* Command boxes (v3 commandBox): click to copy. The copy glyph turns into a check while the text is on the clipboard. */
 .ab-command {
   display: flex;
   align-items: center;
   gap: 0.5rem;
   width: 100%;
   min-width: 0;
-  padding: 0.45rem 0.75rem;
-  margin-top: 0.4rem;
+  padding: 0.4rem 0.6rem;
   font: inherit;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   text-align: left;
-  color: var(--text-color);
-  background: rgba(var(--bit-dark-color-rgb), 0.6);
-  border: 1px solid rgba(var(--dynamic-dominant-color-rgb), 0.5);
+  color: var(--dynamic-dominant-color);
+  background: rgba(var(--background-color-rgb), 0.3);
+  border: 2px solid rgba(var(--dynamic-dominant-color-rgb), 0.5);
   cursor: copy;
-  transition: border-color 0.2s ease;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
 }
-.ab-command:hover, .ab-command.is-copied { border-color: var(--dynamic-dominant-color); outline: 1px solid var(--dynamic-dominant-color); outline-offset: -2px; }
-.ab-command-p { color: var(--dynamic-dominant-color); font-weight: 700; }
+.ab-command:hover, .ab-command.is-copied { border-color: var(--dynamic-dominant-color); background-color: rgba(var(--dynamic-dominant-color-rgb), 0.1); }
+.ab-command-p { color: var(--dynamic-hsl-average); font-weight: 700; user-select: none; }
 .ab-command-t { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-family: var(--font-mono); font-size: 0.78rem; }
-.ab-command-ic { display: inline-grid; color: rgba(var(--text-color-rgb), 0.6); }
+.ab-command-ic { display: inline-grid; opacity: 0.5; transition: opacity 0.2s ease; }
+.ab-command:hover .ab-command-ic, .ab-command:focus-visible .ab-command-ic { opacity: 1; }
 .ab-command-ic .icon { grid-area: 1 / 1; }
 .ab-ic-done, .ab-command.is-copied .ab-ic-copy { visibility: hidden; }
 .ab-command.is-copied .ab-ic-done { visibility: visible; color: var(--dynamic-dominant-color); }
 
-/* Timelines (releases, commits): fixed rows of two single lines each, a square marker on a vertical rule. */
-.ab-tl-wrap { display: flex; flex-direction: column; gap: 0.4rem; }
-.ab-tl-title { margin: 0; font-size: 0.75rem; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: rgba(var(--text-color-rgb), 0.75); }
+/* Timelines (releases, commits): v3's underlined section title resting on the top of its dashed box, which wears a
+   left bracket at the top and a full one at the bottom right. Fixed rows of two single lines each, square markers. */
+.ab-tl-wrap { position: relative; display: flex; flex-direction: column; align-self: stretch; }
+.ab-tl-title {
+  position: relative;
+  z-index: 1;
+  width: fit-content;
+  margin: 0 0 -0.1rem;
+  padding-left: 0.05rem;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 0.7;
+  color: var(--dynamic-dominant-color);
+  border-bottom: 3px solid var(--dynamic-dominant-color);
+}
 .ab-tl {
   position: relative;
+  flex: 1;
   list-style: none;
   margin: 0;
-  padding: 0.7rem 0.9rem;
+  padding: 0.8rem 0.9rem 0.7rem;
   display: flex;
   flex-direction: column;
   gap: 0.6rem;
-  border: 1px dashed rgba(var(--dynamic-dominant-color-rgb), 0.5);
-  background: rgba(var(--bit-dark-color-rgb), 0.4);
+  border: 1px dashed var(--dynamic-dominant-color);
+  /* the timeline's rule, from the first marker to the last */
+  background:
+    linear-gradient(rgba(var(--dynamic-hsl-average-rgb), 0.9), rgba(var(--dynamic-hsl-average-rgb), 0.9)) calc(0.9rem + 3px) calc(0.8rem + 0.45rem + 4px) / 2px calc(100% - 3.8rem) no-repeat,
+    rgba(var(--background-color-rgb), 0.5);
 }
-.ab-tl::before { content: ""; position: absolute; left: calc(0.9rem + 3px); top: 1.2rem; bottom: 1.6rem; width: 2px; background: rgba(var(--dynamic-dominant-color-rgb), 0.4); }
+.ab-tl::before, .ab-tl::after { content: ""; position: absolute; width: 1rem; height: 1rem; border: 0 solid var(--dynamic-dominant-color); pointer-events: none; }
+.ab-tl::before { top: -1px; left: -1px; border-left-width: 2px; }
+.ab-tl::after { right: -1px; bottom: -1px; border-width: 0 2px 2px 0; }
 .ab-tl-row { display: grid; grid-template-columns: 1.1rem minmax(0, 1fr); column-gap: 0.4rem; }
-.ab-tl-mark { grid-row: 1; width: 8px; height: 8px; margin-top: 0.45rem; background: var(--dynamic-dominant-color); position: relative; z-index: 1; }
+.ab-tl-mark { grid-row: 1; width: 8px; height: 8px; margin-top: 0.45rem; background: var(--dynamic-hsl-average); position: relative; z-index: 1; }
 .ab-tl-main, .ab-tl-meta { grid-column: 2; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.ab-tl-main { font-size: 0.8rem; line-height: 1.6; color: var(--text-color); }
-.ab-tl-main a { color: inherit; text-decoration: none; }
-.ab-tl-main a:hover { color: var(--dynamic-dominant-color); text-decoration: underline; }
-.ab-tl-tag { margin-left: 0.5rem; color: var(--dynamic-dominant-color); font-size: 0.72rem; }
-.ab-tl-meta { font-size: 0.7rem; line-height: 1.5; letter-spacing: 1px; color: rgba(var(--text-color-rgb), 0.55); font-variant-numeric: tabular-nums; }
+.ab-tl-main { font-family: var(--font-mono); font-size: 0.8rem; line-height: 1.6; color: var(--dynamic-dominant-color); }
+.ab-tl-main a { color: inherit; text-decoration: none; transition: background-color 0.2s ease; }
+.ab-tl-main a:hover { background: rgba(var(--dynamic-dominant-color-rgb), 0.18); }
+.ab-tl-tag { margin-left: 0.5rem; color: var(--dynamic-hsl-average); font-size: 0.72rem; }
+.ab-tl-meta { font-family: var(--font-mono); font-size: 0.68rem; line-height: 1.5; color: rgba(var(--text-color-rgb), 0.55); font-variant-numeric: tabular-nums; }
 .ab-tl-meta .ab-add { color: var(--dynamic-dominant-color); }
 
 /* ---- languages bar (v3 LangsBar) ------------------------------------------------------------------------------ */
@@ -362,7 +416,7 @@ body.bg-off .ab-soldier { animation-play-state: paused; }
 }
 /* the accent bar on the left edge; it steps aside when the whole card takes the border on hover */
 .ab-rp::after { content: ""; position: absolute; top: -2px; bottom: -2px; left: -2px; width: 0.3rem; background: var(--dynamic-dominant-color); transform-origin: left; transition: transform 220ms cubic-bezier(0.2, 0.9, 0.2, 1), opacity 180ms linear; pointer-events: none; }
-.ab-rp:hover { border-color: var(--dynamic-dominant-color); }
+.ab-rp:hover { border-color: var(--dynamic-dominant-color); background-image: linear-gradient(rgba(var(--dynamic-dominant-color-rgb), 0.1), rgba(var(--dynamic-dominant-color-rgb), 0.1)); }
 .ab-rp:hover::after { transform: scaleX(0); opacity: 0; }
 .ab-rp-type {
   width: fit-content;
@@ -374,27 +428,29 @@ body.bg-off .ab-soldier { animation-play-state: paused; }
   background: rgba(var(--dynamic-dominant-color-rgb), 0.25);
   border: 1px dashed var(--dynamic-dominant-color);
 }
-.ab-rp-title { min-height: 2.6em; font-size: 0.85rem; line-height: 1.3; color: var(--dynamic-dominant-color); text-decoration: none; }
-.ab-rp-title:hover { text-decoration: underline; }
-.ab-rp-actions { margin-top: auto; display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.ab-rp-title { min-height: 3.9em; font-size: 0.85rem; line-height: 1.3; color: var(--dynamic-dominant-color); text-decoration: none; }
+.ab-rp-title:hover { background: rgba(var(--dynamic-dominant-color-rgb), 0.15); }
+.ab-rp-actions { margin-top: auto; padding-top: 0.6rem; display: flex; flex-wrap: wrap; gap: 0.5rem; }
+/* v3 openAppBtn: a 2px accent frame, the icon small in a dashed box (22px with its padding, as react-icons drew it) */
 .ab-rp-btn {
   flex: 1 1 0;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  padding: 0.35rem 0.5rem;
+  padding: 0.4rem 0.5rem 0.3rem;
   white-space: nowrap;
   font-size: 0.85rem;
   font-weight: 500;
   letter-spacing: -0.3px;
   color: var(--text-color);
   text-decoration: none;
+  opacity: 0.9;
   border: 2px solid var(--dynamic-dominant-color);
-  transition: color 0.2s ease, background 0.2s ease;
+  transition: color 0.2s ease, background-color 0.2s ease;
 }
-.ab-rp-btn .icon { font-size: 1.3rem; padding: 0.15rem; border: 1px dashed rgba(var(--dynamic-dominant-color-rgb), 0.5); }
-.ab-rp-btn:hover { color: var(--dynamic-dominant-color); background: rgba(var(--dynamic-dominant-color-rgb), 0.12); }
+.ab-rp-btn .icon { width: 1.4rem; height: 1.4rem; box-sizing: border-box; padding: 0.2rem; transform: translateY(-1px); border: 1px dashed rgba(var(--dynamic-dominant-color-rgb), 0.5); }
+.ab-rp-btn:hover { opacity: 1; color: var(--dynamic-dominant-color); background: rgba(var(--dynamic-dominant-color-rgb), 0.12); }
 .ab-rp-btn.is-wip { border-style: dashed; color: rgba(var(--text-color-rgb), 0.6); }
 
 /* The Notion and PDF overlay frame, as on /projects (projects-embed.js; its rules live in projects.css). */
@@ -420,7 +476,6 @@ body.bg-off .ab-soldier { animation-play-state: paused; }
   border: 1px dashed var(--dynamic-dominant-color);
 }
 .ab-resume-view { flex: 0 1 auto; display: flex; align-items: center; gap: 1rem; color: var(--text-color); text-decoration: none; }
-.ab-resume-view:focus-visible { outline-offset: 4px; }
 .ab-resume-thumb {
   position: relative;
   flex-shrink: 0;
@@ -428,10 +483,7 @@ body.bg-off .ab-soldier { animation-play-state: paused; }
   padding: 4px;
   box-sizing: border-box;
   border: 1px solid var(--dynamic-dominant-color);
-  outline: 1px solid transparent;
-  outline-offset: -3px;
   overflow: hidden;
-  transition: outline-color 0.2s ease;
 }
 .ab-resume-thumb img { display: block; width: 100%; height: auto; aspect-ratio: 282 / 400; transition: filter 0.24s ease; }
 .ab-resume-expand { position: absolute; inset: 0; margin: auto; width: 24px; height: 24px; color: var(--dynamic-hsl-average); opacity: 0; transition: opacity 0.16s ease; }
@@ -468,32 +520,63 @@ body.bg-off .ab-soldier { animation-play-state: paused; }
 /* The arrow pointer's canvas (about-resume.js): above the page, under overlays, never in the way of a click. */
 .ab-arrow { position: fixed; inset: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 50; }
 
-/* The resume overlay: nearly the full viewport, a title bar with the dark and light documents and ESC. */
+/* The resume overlay (v3 ResumeOverlay): glass over the blurred page, nearly the full viewport, and one title bar that
+   holds the title, the viewer's controls (lifted out of its own toolbar by about-resume.js), the document switch and ESC. */
 .overlay:has(.ab-resume-card) { align-items: center; padding: 2vh 1rem; }
 .overlay-card.ab-resume-card { max-width: 1100px; height: 96vh; height: 96svh; max-height: none; }
-.ab-resume-body { display: flex; flex-direction: column; overflow: hidden; background: rgba(var(--background-color-rgb), 0.9); }
-.ab-resume-card .overlay-title { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.ab-doc { display: inline-flex; flex-shrink: 0; }
+.ab-resume-body { display: flex; flex-direction: column; overflow: hidden; background: rgba(255, 255, 255, 0.04); }
+.ab-resume-card .pdfv { background: transparent; }
+/* the page area is a container: focus leaves it as it is (no brackets, no fill) */
+.ab-resume-card .pdfv-scroll:focus-visible { background: none; }
+.ab-resume-card .overlay-head { flex-wrap: wrap; row-gap: 0.4rem; padding: 0.45rem 1rem; }
+.ab-resume-card .overlay-title { flex: 1 1 8rem; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ab-pdf-tools { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem 0.9rem; font-size: 0.8rem; white-space: nowrap; }
+.ab-pdf-tools .pdfv-group { display: flex; align-items: center; gap: 0.4rem; }
+.ab-pdf-tools .pdfv-icon { padding: 0; }
+/* the viewer's keys and the document switch, in the site's states: hover tints and lights the frame, the chosen one is a
+   pressed key, filled in the accent with its base flattened */
+.ab-resume-card .pdfv-key, .ab-doc button {
+  height: 1.75rem;
+  box-sizing: border-box;
+  border: 1px solid rgba(var(--dynamic-dominant-color-rgb), 0.5);
+  border-bottom: 2px solid rgba(var(--dynamic-dominant-color-rgb), 0.85);
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+.ab-resume-card .pdfv-key:hover:not(:disabled), .ab-doc button:hover { background-color: rgba(var(--dynamic-dominant-color-rgb), 0.3); border-color: var(--dynamic-dominant-color); }
+.ab-resume-card .pdfv-key:active:not(:disabled), .ab-resume-card .pdfv-key[aria-pressed="true"], .ab-doc button[aria-pressed="true"] {
+  color: var(--background-color);
+  background: var(--dynamic-dominant-color);
+  border-color: var(--dynamic-dominant-color);
+  border-bottom-width: 1px;
+  transform: translateY(1px);
+  font-weight: 700;
+}
+.ab-doc { display: inline-flex; gap: 0.25rem; flex-shrink: 0; }
 .ab-doc button {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 0.6rem;
   font: inherit;
   font-family: var(--font-neon);
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   letter-spacing: 1px;
   text-transform: lowercase;
-  padding: 0.2rem 0.6rem;
-  color: rgba(var(--text-color-rgb), 0.7);
-  background: rgba(var(--bit-dark-color-rgb), 1);
-  border: 1px solid rgba(var(--dynamic-dominant-color-rgb), 0.5);
-  border-bottom-width: 2px;
+  color: var(--text-color);
+  background: rgba(var(--dynamic-dominant-color-rgb), 0.18);
   cursor: pointer;
 }
-.ab-doc button + button { border-left: 0; }
-.ab-doc button:hover { color: var(--text-color); }
-.ab-doc button[aria-pressed="true"] { color: var(--text-color); background: rgba(var(--dynamic-dominant-color-rgb), 0.3); border-color: var(--dynamic-dominant-color); border-left-width: 1px; border-left-style: solid; }
 .ab-pdf-host { flex: 1; min-height: 0; display: flex; flex-direction: column; }
 .ab-pdf-host > * { flex: 1; min-height: 0; }
 .ab-pdf-note { margin: 0; padding: 1rem 1.4rem; font-size: 0.8rem; letter-spacing: 1px; color: rgba(var(--text-color-rgb), 0.75); }
 .ab-pdf-note .chip { margin-left: 0.3rem; }
+@media (max-width: 900px) { .ab-pdf-tools .pdfv-label { display: none; } }
+@media (max-width: 600px) {
+  .ab-pdf-tools { order: 3; flex-basis: 100%; gap: 0.35rem 0.6rem; }
+  .ab-pdf-tools .pdfv-group { gap: 0.25rem; }
+  .ab-pdf-tools .pdfv-scale { min-width: 2.4rem; }
+  .ab-resume-card .pdfv-key { min-width: 1.75rem; padding: 0 0.35rem; }
+  .ab-doc button { padding: 0 0.4rem; letter-spacing: 0; }
+}
 
 /* ---- easter egg ----------------------------------------------------------------------------------------------- */
 .ab-egg { display: flex; justify-content: center; margin-bottom: 3rem; border: 1px dashed rgba(var(--dynamic-dominant-color-rgb), 0.1); }
@@ -530,16 +613,14 @@ body.bg-off .ab-egg-key { animation: none; }
 /* ---- widths --------------------------------------------------------------------------------------------------- */
 @media (prefers-reduced-motion: reduce) { .ab-w { animation: none; } }
 @media (max-width: 1100px) { .ab-rp-list { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (max-width: 800px) { .ab-hero { height: 400px; } }
 @media (max-width: 760px) { .ab-engines { grid-template-columns: minmax(0, 1fr); } }
 @media (max-width: 700px) {
   .ab-rp-list { grid-template-columns: minmax(0, 1fr); }
   .ab-rp { padding: 0.9rem 0.9rem 0.8rem 1.1rem; }
-  .ab-rp-title { font-size: 0.9rem; }
+  .ab-rp-title { min-height: 0; font-size: 0.9rem; }
 }
 @media (max-width: 600px) {
   .ab { gap: 1.25rem; }
-  .ab-hero { height: 300px; }
   .ab-seg-path, .ab-seg-ver { display: none; }
   .ab-intro, .ab-engine, .ab-langs { padding-left: 1rem; padding-right: 1rem; }
   .overlay:has(.ab-resume-card) { padding: 0; }
@@ -547,7 +628,6 @@ body.bg-off .ab-egg-key { animation: none; }
   .ab-resume-card .overlay-head { padding: 0.5rem 0.75rem; gap: 0.5rem; }
 }
 @media (max-width: 400px) {
-  .ab-hero { height: 200px; }
   .ab-resume { flex-direction: column; gap: 0.8rem; }
   .ab-resume-view { flex-direction: column; text-align: center; }
   .ab-resume-title { align-items: center; }

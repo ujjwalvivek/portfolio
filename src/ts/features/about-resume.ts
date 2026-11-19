@@ -1,7 +1,7 @@
 // Resume bar (v3 ResumeBar, ResumeOverlay, ArrowPointer).
 //
-// View opens the resume in a near full-height overlay (shell overlay: Esc, the ESC chip and a click outside close it)
-// with the pdf.js viewer, and a dark / light switch in the title bar. That switch picks the document, not the site
+// View opens the resume in a near full-height glass overlay (shell overlay: Esc, the ESC chip and a click outside close
+// it) with the pdf.js viewer, whose controls share the one title bar with a dark / light switch. That switch picks the document, not the site
 // theme (D-010); the choice is remembered. Download fetches the dark PDF and saves it under a proper name; the button
 // says "fetching" only while the bytes are actually coming (D-024). Both are real links, so without JS they open the PDF.
 //
@@ -11,6 +11,7 @@
 
 import { closeOverlay, openOverlay } from "../shell/overlay.js";
 import { load, save } from "../lib/store.js";
+import { loadFeature } from "../lib/lazy.js";
 
 type Doc = "dark" | "light";
 type PdfViewer = { mountPdf(host: HTMLElement, url: string, opts?: { title?: string }): () => void };
@@ -23,6 +24,7 @@ const TITLE = "Vivek's Resume";
 const DOC_KEY = "resume-doc";
 // Not a literal, so tsc leaves the specifier alone.
 const PDF_VIEWER: string = "/js/features/pdf-viewer.js";
+const PDF_CSS = "/css/features/pdf-viewer.css";
 
 const modified = (e: MouseEvent) => e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey;
 
@@ -35,6 +37,11 @@ function el<K extends keyof HTMLElementTagNameMap>(tag: K, cls?: string, text?: 
 
 // ---- overlay ---------------------------------------------------------------------------------------------------------
 
+// One title bar (v3 had one): the viewer's own toolbar is lifted out of the viewer into the overlay's head, in this
+// order: title, page n/N, zoom, fit, thumbnails, dark / light, download, open, ESC. The controls keep their listeners
+// when they move; keys typed on them (+ - 0, page keys) are passed to the viewer, which listens on its own root.
+const VIEWER_KEYS = new Set(["+", "=", "-", "_", "0", "PageUp", "PageDown", "Home", "End"]);
+
 function build(body: HTMLElement): () => void {
   const card = body.parentElement;
   card?.classList.add("ab-resume-card");
@@ -42,7 +49,12 @@ function build(body: HTMLElement): () => void {
 
   let doc: Doc = load<Doc>(DOC_KEY, "dark") === "light" ? "light" : "dark";
 
-  // the document switch sits in the title bar, just before ESC
+  const head = card?.querySelector<HTMLElement>(".overlay-head");
+  const esc = head?.querySelector(".chip") ?? null;
+  // the viewer's controls land here once it mounts; the document switch sits among them
+  const tools = el("div", "ab-pdf-tools");
+  tools.setAttribute("role", "toolbar");
+  tools.setAttribute("aria-label", "Resume controls");
   const group = el("div", "ab-doc");
   group.setAttribute("role", "group");
   group.setAttribute("aria-label", "Document");
@@ -54,8 +66,8 @@ function build(body: HTMLElement): () => void {
     group.append(b);
     return [d, b] as const;
   });
-  const head = card?.querySelector(".overlay-head");
-  head?.insertBefore(group, head.querySelector(".chip"));
+  tools.append(group);
+  head?.insertBefore(tools, esc);
 
   const note = el("p", "ab-pdf-note", "loading pdf viewer");
   note.setAttribute("role", "status");
@@ -66,22 +78,55 @@ function build(body: HTMLElement): () => void {
   let unmount: (() => void) | null = null;
   let closed = false;
 
+  // Moves the freshly mounted viewer's controls into the head, around the document switch.
+  function lift(): void {
+    const bar = host.querySelector<HTMLElement>(".pdfv-bar");
+    if (!bar) return;
+    const [nav, zoom, file] = [...bar.querySelectorAll<HTMLElement>(":scope > .pdfv-group")];
+    const side = nav?.querySelector<HTMLElement>(".pdfv-icon");
+    const parts: HTMLElement[] = [];
+    if (nav) parts.push(nav);
+    if (zoom) parts.push(zoom);
+    if (side) {
+      const g = el("div", "pdfv-group");
+      g.append(side);
+      parts.push(g);
+    }
+    parts.push(group);
+    if (file) parts.push(file);
+    tools.replaceChildren(...parts);
+    bar.remove();
+  }
+  const forward = (e: KeyboardEvent) => {
+    const t = e.target as HTMLElement | null;
+    if (!VIEWER_KEYS.has(e.key) || e.ctrlKey || e.metaKey || e.altKey || t?.matches("input, textarea")) return;
+    const scroller = host.querySelector<HTMLElement>(".pdfv-scroll");
+    if (!scroller) return;
+    e.preventDefault();
+    e.stopPropagation();
+    scroller.dispatchEvent(new KeyboardEvent("keydown", { key: e.key, shiftKey: e.shiftKey, bubbles: true, cancelable: true }));
+  };
+  tools.addEventListener("keydown", forward);
+
   function show(next: Doc): void {
     doc = next;
     save(DOC_KEY, doc);
     for (const [d, b] of buttons) b.setAttribute("aria-pressed", String(d === doc));
     if (!viewer) return;
     unmount?.();
+    tools.replaceChildren(group);
     host.replaceChildren();
     unmount = viewer.mountPdf(host, URLS[doc], { title: `${TITLE} (${doc})` });
+    lift();
   }
 
   show(doc);
-  // Honest wait: the note shows only while the viewer module is loading and goes the moment it mounts (D-024).
-  (import(PDF_VIEWER) as Promise<PdfViewer>)
+  // Honest wait: the note shows only while the viewer module is loading and goes the moment it mounts (D-024). Its
+  // stylesheet comes in with it, so the lifted controls are never seen unstyled.
+  loadFeature(PDF_VIEWER, [PDF_CSS])
     .then((m) => {
       if (closed) return;
-      viewer = m;
+      viewer = m as unknown as PdfViewer;
       note.remove();
       show(doc);
     })
@@ -98,7 +143,9 @@ function build(body: HTMLElement): () => void {
 
   return () => {
     closed = true;
+    tools.removeEventListener("keydown", forward);
     unmount?.();
+    tools.remove();
   };
 }
 

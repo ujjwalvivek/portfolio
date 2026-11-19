@@ -7,7 +7,7 @@
 const EP = "https://echopoint.ujjwalvivek.com/v1/store/";
 const NPM = "https://registry.npmjs.org/";
 
-type Repo = { description?: string | null; pushed_at?: string; stargazers_count?: number };
+type Repo = { description?: string | null; pushed_at?: string; stargazers_count?: number; license?: { spdx_id?: string | null } | null };
 type Release = { name?: string | null; tag_name: string; published_at?: string | null; html_url?: string; draft?: boolean; author?: { login?: string } };
 type Commit = { sha: string; message: string; url?: string; date: string; additions?: number; deletions?: number };
 type Tag = { name: string };
@@ -122,6 +122,11 @@ function live(kind: string, arg: string): Promise<string | null> {
       return store<Repo>(`github:${arg}:repo`).then((r) => (r.pushed_at ? ago(r.pushed_at) : null));
     case "stars":
       return store<Repo>(`github:${arg}:repo`).then((r) => (typeof r.stargazers_count === "number" ? fmt(r.stargazers_count) : null));
+    case "license":
+      return store<Repo>(`github:${arg}:repo`).then((r) => {
+        const id = r.license?.spdx_id;
+        return id && id !== "NOASSERTION" ? id : null;
+      });
     case "npm":
       return store<{ version?: string }>(`npm:${arg}`).then((p) => (p.version ? `v${p.version}` : null));
     case "crates":
