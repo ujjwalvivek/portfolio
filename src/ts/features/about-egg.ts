@@ -234,13 +234,14 @@ export function mount(host: HTMLElement): () => void {
   const root = el("div", "ab-term");
   root.dataset.keys = "off";
   root.setAttribute("role", "region");
-  root.setAttribute("aria-label", "Terminal");
+  root.setAttribute("aria-label", "Legacy terminal");
 
   const bar = el("div", "ab-term-bar");
-  const dots = el("span", "ab-term-dots");
-  dots.setAttribute("aria-hidden", "true");
-  dots.append(el("span", "ab-term-dot is-close"), el("span", "ab-term-dot is-min"), el("span", "ab-term-dot is-max"));
-  bar.append(dots, el("span", "ab-term-title", "terminal"), el("span", "ab-term-meta", "ctrl+l clears"));
+  // the same title bar as the site's other windows: icon, name, and the hint as a chip on the right
+  const icon = el("span", "ab-term-icon");
+  icon.setAttribute("aria-hidden", "true");
+  icon.innerHTML = '<svg class="icon"><use href="/icons.svg#io-terminal-sharp"/></svg>';
+  bar.append(icon, el("span", "ab-term-title", "legacy"), el("span", "chip ab-term-meta", "ctrl+l clears"));
   const scroll = el("div", "ab-term-scroll");
   const log = el("div", "ab-term-log");
   log.setAttribute("role", "log");

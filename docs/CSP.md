@@ -12,7 +12,7 @@ Every origin below was seen in a headless run of every page and feature, or is a
 | script-src  | 'self' 'wasm-unsafe-eval' challenges.cloudflare.com                    | The header game, the engine audio and substrate are wasm; Turnstile's api.js for terminal mail |
 | style-src   | 'self'                                                                  | No 'unsafe-inline': the templates carry no style attributes and no style elements. Styles set from TS through el.style or setProperty are CSSOM writes and are allowed |
 | img-src     | 'self' data: cdn.ujjwalvivek.com raw.githubusercontent.com              | Post images and covers, the dino sprite, navigator images and post screenshots from GitHub; data: for small CSS icons |
-| font-src    | 'self'                                                                  | Fonts are served from /fonts/*@rev |
+| font-src    | 'self' https://cdn.ujjwalvivek.com                                       | Subset fonts live on the CDN under fonts/<family>/s1/ |
 | connect-src | 'self' echopoint (https and wss) cdn.ujjwalvivek.com api.github.com raw.githubusercontent.com registry.npmjs.org api.emailjs.com | Widgets, langs, store and the click socket; resume PDF fetch; navigator fallbacks; Substrate releases on about; terminal mail send |
 | frame-src   | 'self' challenges.cloudflare.com ujjwalvivek.notion.site www.youtube.com journey, baremetal and gogs on ujjwalvivek.com | Turnstile; Notion case studies; post embeds; 'self' for /games/dino-blink.html |
 | worker-src  | 'self'                                                                  | pdf.js runs its worker as a same-origin module worker (no blob:) |

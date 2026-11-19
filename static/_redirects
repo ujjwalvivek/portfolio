@@ -27,4 +27,5 @@
 /posts/proj_0003_kill_bad_guys.md   /blog/proj_0003_kill_bad_guys/   301
 /posts/proj_0004_rust_game_engine.md   /blog/proj_0004_rust_game_engine/   301
 /posts/proj_0005_the_synclippy.md   /blog/proj_0005_the_synclippy/   301
-/media/map-blr-light.png   /media/map-blr-dark.png   301
+/media/map-blr-light.png https://cdn.ujjwalvivek.com/images/map-blr-dark.png 301
+/media/map-blr-dark.png https://cdn.ujjwalvivek.com/images/map-blr-dark.png 301

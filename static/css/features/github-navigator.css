@@ -12,16 +12,21 @@
 .overlay-card.ghn-card { max-width: 1320px; max-height: none; height: auto; }
 .ghn-card .overlay-head { gap: 0.9rem; transition: background-color 0.3s; }
 .ghn-card:focus-within .overlay-head { background: color-mix(in srgb, rgb(var(--bit-dark-color-rgb)) 88%, var(--dynamic-dominant-color)); }
-.ghn-card .overlay-title { flex: 0 0 auto; }
+/* compact title: small spaced caps over the remote, both with room for their ascenders and descenders */
+.ghn-titles { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 0.1rem; }
+.ghn-card .overlay-title { flex: 0 0 auto; font-family: var(--font-krypton); font-size: 0.75rem; font-weight: 800; letter-spacing: 3px; text-transform: uppercase; line-height: 1.4; color: var(--text-color); }
 .ghn-body.overlay-body { overflow: hidden; display: flex; flex-direction: column; }
 
 .ghn-remote {
-  flex: 1 1 auto;
+  align-self: flex-start;
+  max-width: 100%;
   min-width: 0;
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.25rem 0.5rem;
+  margin-left: -0.3rem;
+  padding: 0 0.3rem;
+  line-height: 1.5;
   font: inherit;
   font-family: var(--font-krypton);
   font-size: 0.7rem;
@@ -449,7 +454,19 @@
 
 /* ---- foot: quick commands ---- */
 .overlay-foot.ghn-foot { justify-content: space-between; flex-wrap: wrap; gap: 0.5rem 1rem; padding: 0.45rem 1rem; }
-.ghn-quick { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.ghn-quick { flex: 0 0 auto; display: flex; flex-wrap: wrap; gap: 0.15rem; }
+.ghn-qcmd {
+  padding: 0.05rem 0.4rem;
+  font: inherit;
+  font-size: 0.75rem;
+  color: rgba(var(--dynamic-dominant-color-rgb), 0.85);
+  background: none;
+  border: 1px dashed transparent;
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+}
+.ghn-qcmd::before { content: "$ "; color: rgba(var(--text-color-rgb), 0.35); }
+.ghn-qcmd:hover, .ghn-qcmd:focus-visible { color: var(--text-color); border-color: var(--dynamic-dominant-color); background: rgba(var(--dynamic-dominant-color-rgb), 0.15); }
 .ghn-foot-keys { display: flex; flex-wrap: wrap; gap: 0.75rem; }
 
 /* ---- syntax colours: the roles post.css gives Zola's highlighter, pulled toward the palette's accent ---- */

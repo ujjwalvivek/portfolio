@@ -77,7 +77,11 @@ function show(reason?: string): void {
   const sub = el("div", "crash-sub", "logs flushed. session configurations saved. play the game.");
   sub.id = "crash-sub";
   const dino = el("div", "crash-dino crash-flicker", "If you have arrived here in search of the Dino, he has moved on to greener pastures. He's one with the logs now.");
-  frame.append(corners, main, sub);
+  // the top line: a crash glyph in the error colour
+  const glyph = el("div", "crash-glyph");
+  glyph.setAttribute("aria-hidden", "true");
+  glyph.innerHTML = '<svg class="icon"><use href="/icons.svg#gi-thunder-skull"/></svg>';
+  frame.append(corners, glyph, main, sub);
   if (reason) frame.append(el("div", "crash-reason", `exit reason: ${reason}`));
   frame.append(dino);
   content.append(nope, frame);

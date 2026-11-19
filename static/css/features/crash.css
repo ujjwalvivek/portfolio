@@ -210,3 +210,7 @@ html.is-crashed, html.is-crashed body { overflow: hidden; }
 @media (prefers-reduced-motion: reduce) {
   .crash-nope.is-shaking, .crash-caret, .crash-flicker { animation: none; }
 }
+
+/* the crash glyph above the headline */
+.crash-glyph { display: flex; justify-content: center; margin-bottom: 0.8rem; color: rgb(var(--crash-err)); }
+.crash-glyph .icon { width: 3.2rem; height: 3.2rem; filter: drop-shadow(0 0 10px rgba(var(--crash-err), 0.45)); }

@@ -238,7 +238,7 @@ body.bg-off #bg-canvas { opacity: 0; }
 .status-item.is-cmd { background: rgba(var(--dynamic-dominant-color-rgb), 0.25); } /* the right side's second shade, so the two keys read as two */
 .status-item.is-variant { background: rgba(var(--dynamic-dominant-color-rgb), 0.25); }
 .status-item .icon { font-size: 0.75rem; }
-.status-text { font-size: 0.7rem; line-height: 1; }
+.status-text { font-size: 0.7rem; line-height: 1; padding-block: 0.15em; margin-block: -0.15em; } /* room for ascenders inside its own clip, same height */
 .status-lang { font-weight: 600; color: rgba(238, 231, 215, 0.75); }
 
 /* Overlays: tech stack, vibe switch, shortcut sheet. Same frame as v3's footer overlays and palette. */
@@ -281,7 +281,7 @@ body.bg-off #bg-canvas { opacity: 0; }
   gap: 0.75rem;
   padding: 0.6rem 1.4rem;
   background: rgba(var(--background-color-rgb), 0.25); /* glass, a shade darker than the card */
-  line-height: 1;
+  line-height: 1.3; /* the fonts draw about 1.25em tall; 1 clipped every truncated label in these bars */
 }
 .overlay-head { border-bottom: 1px solid rgba(var(--primary-color-rgb), 0.2); }
 .overlay-foot { border-top: 1px solid rgba(var(--primary-color-rgb), 0.2); justify-content: flex-end; padding: 0.5rem 1.4rem; }
@@ -342,7 +342,7 @@ kbd {
   transition: transform 0.2s ease, border-color 0.2s ease, color 0.2s ease, background-color 0.2s ease;
   --focus-fill: rgba(var(--dynamic-dominant-color-rgb), 0.2);
 }
-.stack-item .icon { font-size: 26px; }
+.stack-item .icon { font-size: 24px; overflow: visible; }
 .stack-item:nth-child(odd):hover { transform: translateY(-3px) rotate(-2deg); }
 .stack-item:nth-child(even):hover { transform: translateY(-3px) rotate(1.5deg); }
 .stack-item:hover, .stack-item:focus-visible {
@@ -431,3 +431,4 @@ html::-webkit-scrollbar-track { background: rgba(var(--bit-dark-color-rgb), 0.6)
   box-sizing: border-box;
 }
 @media (max-width: 600px) { .lazy-host:not(.is-mounted) { min-height: var(--hold-phone, var(--hold, 200px)); } }
+.stack-probe { position: fixed; left: -9999px; top: 0; width: 100px; height: 100px; visibility: hidden; }

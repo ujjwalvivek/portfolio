@@ -7,7 +7,7 @@
 const ECHOPOINT = "https://echopoint.ujjwalvivek.com";
 const CLICK_WS = "wss://echopoint.ujjwalvivek.com/v1/click";
 const CAL_LINK = "https://cal.com/ujjwalvivek/sayhi";
-const MAP_TILE = "/media/map-blr-dark.png";
+const MAP_TILE = "https://cdn.ujjwalvivek.com/images/map-blr-dark.png";
 const CLICKS_KEY = "echopoint_clicks"; // v3's key, unprefixed, so returning visitors keep their count
 const RECONNECT_MS = 3000;
 const WEEKS = 53;

@@ -44,6 +44,35 @@ export function openTechStack(): void {
         grid.append(item);
       }
       body.append(grid);
+      // The icons come from different sets, each padding its drawing differently inside its box. The sprite (already
+      // cached) is read once, each icon's artwork is measured, and its svg's viewBox is cropped to a square around it,
+      // so every glyph fills its tile the same way.
+      void fetch("/icons.svg")
+        .then((r) => r.text())
+        .then((text) => {
+          const sprite = new DOMParser().parseFromString(text, "image/svg+xml");
+          const NS = "http://www.w3.org/2000/svg";
+          const probe = document.createElementNS(NS, "svg");
+          probe.setAttribute("aria-hidden", "true");
+          probe.classList.add("stack-probe");
+          document.body.append(probe);
+          for (const svg of grid.querySelectorAll<SVGSVGElement>("svg")) {
+            const id = svg.querySelector("use")?.getAttribute("href")?.split("#")[1];
+            const symbol = id ? sprite.getElementById(id) : null;
+            if (!symbol) continue;
+            const g = document.importNode(symbol.firstElementChild!, true) as SVGGraphicsElement;
+            probe.replaceChildren(g);
+            const b = g.getBBox();
+            if (!(b.width > 0 && b.height > 0)) continue;
+            // sized by area, so a wide wordmark and a square logo weigh the same; a wide one may run past the
+            // square (the svg shows overflow), up to 1.6 times its width
+            const side = Math.max(Math.sqrt(b.width * b.height) * 1.08, Math.max(b.width, b.height) / 1.6);
+            svg.setAttribute("viewBox", `${b.x + b.width / 2 - side / 2} ${b.y + b.height / 2 - side / 2} ${side} ${side}`);
+            svg.replaceChildren(g);
+          }
+          probe.remove();
+        })
+        .catch(() => {});
 
       const fit = () => {
         const cs = getComputedStyle(grid);

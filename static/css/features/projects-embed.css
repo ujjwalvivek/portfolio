@@ -8,3 +8,8 @@
 .pj-pdf-host > * { flex: 1; min-height: 0; }
 .pj-embed-note { margin: 0; padding: 1rem 1.4rem; font-size: 0.8rem; letter-spacing: 1px; color: rgba(var(--text-color-rgb), 0.75); }
 .pj-embed-note .chip { margin-left: 0.3rem; }
+
+/* Notion's own top bar (share, menu, "Get Notion free") is pulled up under our title bar, which hides it */
+.pj-embed-body:has(.is-notion) { position: relative; }
+.pj-embed-frame.is-notion { position: absolute; left: 0; right: 0; top: -46px; bottom: 0; width: 100%; height: calc(100% + 46px); }
+.overlay-head .pj-embed-out { margin-left: auto; }

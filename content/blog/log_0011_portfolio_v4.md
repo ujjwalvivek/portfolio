@@ -8,7 +8,7 @@ tags = ["Zola", "TypeScript", "Performance", "Rust", "WebGPU", "Postmortem"]
 
 [extra]
 id = 16
-thumbnail = "/media/posts/log_0011_thumb.webp"
+thumbnail = "https://cdn.ujjwalvivek.com/posts/media/log_0011_thumb.webp"
 +++
 
 <!-- markdownlint-disable MD013 MD033-->
@@ -17,7 +17,7 @@ thumbnail = "/media/posts/log_0011_thumb.webp"
 A fresh visit to the home page used to download 17.4 MB. It now downloads 1.6 MB. The largest paint went from 2.9 s to 0.26 s. Nothing fun was removed on the way.
 {% </note> %}
 
-<img src="/media/posts/log_0011_header.webp" alt="The header game on the home page in the root palette: the line Tech isn't the hard part, systems, behaviour and questions are, drawn in pixel letters over a starfield in amber, with small pixel figures standing on the ground below.">
+<img src="https://cdn.ujjwalvivek.com/posts/media/log_0011_header.webp" alt="The header game on the home page in the root palette: the line Tech isn't the hard part, systems, behaviour and questions are, drawn in pixel letters over a starfield in amber, with small pixel figures standing on the ground below.">
 
 v3 of this site was a React app. It worked, and it had everything I wanted on it: a terminal intro, a procedural wallpaper, a dino game in a post, a GitHub explorer, a crash screen, stormtroopers moonwalking across the about page. It also shipped 819 KB of JavaScript to every page, rendered nothing until React had booted, and had 1,995 packages in its lockfile.
 

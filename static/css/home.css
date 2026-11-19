@@ -281,7 +281,7 @@
 .rl-title { flex: 1; font-size: 0.95rem; font-weight: 600; letter-spacing: -0.5px; text-transform: uppercase; text-decoration: underline var(--text-color) 3px; text-underline-offset: 3px; }
 .rl-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.75rem; }
 .rl-tag { font-size: 0.69rem; font-weight: 200; padding: 0.1rem 0.2rem; text-transform: lowercase; color: rgba(var(--text-color-rgb), 0.8); background: rgba(var(--dynamic-dominant-color-rgb), 0.25); border: 1px dashed var(--dynamic-dominant-color); }
-.rl-desc { display: block; margin-top: 0.75rem; font-size: 0.85rem; font-weight: 200; letter-spacing: -0.3px; color: rgba(var(--text-color-rgb), 0.9); }
+.rl-desc { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; overflow: hidden; line-height: 1.6; margin-top: 0.75rem; font-size: 0.85rem; font-weight: 200; letter-spacing: -0.3px; color: rgba(var(--text-color-rgb), 0.9); }
 
 /* Lazy hosts hold their final height until mounted (values come from the features' measured heights). */
 .home-widgets { --hold: calc((min(var(--main-content-width), 100vw - 2rem) - 3rem) / 4); }

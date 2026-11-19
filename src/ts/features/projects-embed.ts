@@ -32,7 +32,7 @@ function frame(body: HTMLElement): void {
 function notion(body: HTMLElement, url: string, title: string): void {
   frame(body);
   const iframe = document.createElement("iframe");
-  iframe.className = "pj-embed-frame";
+  iframe.className = "pj-embed-frame is-notion";
   iframe.src = url;
   iframe.title = title;
   iframe.allowFullscreen = true;
@@ -83,8 +83,11 @@ function show(kind: EmbedKind, url: string, title: string): void {
     id: ID,
     title,
     icon: ICONS[kind],
-    build: (body) => (kind === "pdf" ? pdf(body, url, title) : notion(body, url, title)),
-    foot: (foot) => foot.append(newTabLink(url, "open in new tab")),
+    build: (body) => {
+      // "open in new tab" sits in the title bar, next to ESC
+      body.parentElement?.querySelector(".overlay-head button.chip")?.before(newTabLink(url, "open in new tab"));
+      return kind === "pdf" ? pdf(body, url, title) : notion(body, url, title);
+    },
   });
 }
 

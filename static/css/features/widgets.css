@@ -108,6 +108,9 @@
   gap: 4px;
   overflow: hidden;
   --cell: calc((100cqh - 16px) / 7);
+  /* the left padding stays clear, and the oldest weeks fade into it, so the grid reads as running on further back */
+  -webkit-mask-image: linear-gradient(90deg, transparent 0.8rem, rgba(0, 0, 0, 0.2) 0.8rem, #000 5rem);
+  mask-image: linear-gradient(90deg, transparent 0.8rem, rgba(0, 0, 0, 0.2) 0.8rem, #000 5rem);
 }
 .hm-months,
 .hm-grid {

@@ -75,7 +75,7 @@
   font-family: var(--font-krypton);
   font-size: 0.75rem;
   font-weight: 300;
-  letter-spacing: 2px;
+  letter-spacing: 0.5px;
   text-transform: uppercase;
 }
 .tm-title-icon { flex-shrink: 0; width: 1rem; height: 1rem; color: var(--dynamic-dominant-color); fill: currentColor; transform: translateY(-1px); }
@@ -258,7 +258,7 @@
 }
 
 .tm-preview { flex: 1; min-width: 0; display: flex; gap: 1rem; overflow: hidden; }
-.tm-field { display: flex; align-items: center; gap: 0.4rem; min-width: 0; font-size: 0.7rem; }
+.tm-field { display: flex; align-items: baseline; gap: 0.4rem; min-width: 0; font-size: 0.7rem; }
 .tm-label {
   flex-shrink: 0;
   color: var(--dynamic-dominant-color);

@@ -28,7 +28,6 @@ const MAX_EDITOR_BYTES = 1024 * 1024;
 const MAX_HIGHLIGHT_BYTES = 256 * 1024; // above this the buffer shows as plain text, so a big file never stalls the page
 const MAX_FIND = 40;
 const MAX_TREE_NODES = 600;
-const QUICK = ["help", "ls src", "tree 2", "find .js", "code README.md"];
 const SPINNER = ["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"];
 const IMAGE = new Set(["png", "jpg", "jpeg", "gif", "webp", "avif", "bmp", "ico"]);
 const BINARY = new Set([
@@ -153,7 +152,7 @@ export function open(): void {
     .catch(() => {})
     .finally(() => {
       opening = false;
-      if (!isOpen(ID)) openOverlay({ id: ID, title: `${OWNER}/${REPO}`, icon: "/icons.svg#fa-github", build, foot });
+      if (!isOpen(ID)) openOverlay({ id: ID, title: "Repository Navigator", icon: "/icons.svg#fa-github", build, foot });
     });
 }
 
@@ -197,7 +196,12 @@ function build(body: HTMLElement, close: () => void): () => void {
   remote.title = "Copy GitHub URL";
   const remoteValue = el("span", "ghn-remote-value");
   remote.append(remoteValue, el("span", "ghn-remote-label", "[remote]"));
-  head.querySelector(".overlay-title")?.after(remote);
+  // compact two-line title: the window's name, and the remote under it
+  const titles = el("div", "ghn-titles");
+  const title = head.querySelector(".overlay-title");
+  title?.replaceWith(titles);
+  if (title) titles.append(title);
+  titles.append(remote);
 
   const root = el("div", "ghn");
   root.dataset.keys = "off";
@@ -268,7 +272,7 @@ function build(body: HTMLElement, close: () => void): () => void {
   input.spellcheck = false;
   input.setAttribute("autocapitalize", "off");
   input.setAttribute("aria-label", "Command");
-  input.placeholder = `cd $path | ${QUICK.join(" | ")} | cat $filename | clear`;
+  input.placeholder = "type a command, or pick one";
   live.append(prompt, spin, input);
   out.append(log, live);
 
@@ -1133,19 +1137,21 @@ function build(body: HTMLElement, close: () => void): () => void {
   // ---- foot: quick commands --------------------------------------------------------------------------------------
   footHook = (f) => {
     f.classList.add("ghn-foot");
-    const q = el("div", "ghn-quick");
+    // the quick commands sit in the prompt line itself, after the input, as clickable commands
+    const q = el("span", "ghn-quick");
     for (const c of ["help", "ls", "tree 2", "cd ..", "clear"]) {
-      const b = runner("ghn-key", c);
+      const b = runner("ghn-qcmd", c);
       b.textContent = c;
       q.append(b);
     }
+    live.append(q);
     const keys = el("div", "ghn-foot-keys");
     for (const [k, d] of KEYS_SHELL) {
       const chip = el("span", "ghn-chip");
       chip.append(el("kbd", "", k), document.createTextNode(` ${d}`));
       keys.append(chip);
     }
-    f.append(q, keys);
+    f.append(keys);
   };
 
   // ---- boot ------------------------------------------------------------------------------------------------------
