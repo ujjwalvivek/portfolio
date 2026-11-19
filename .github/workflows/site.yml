@@ -48,6 +48,10 @@ jobs:
       - name: Budgets
         run: npm run sizes
 
+      # Known URL gaps are allowed on v4 previews and fail on main, so cutover cannot ship them.
+      - name: v3 URLs
+        run: npm run check:urls -- ${{ github.ref_name == 'main' && '--strict' || '' }}
+
       - name: Deploy to Cloudflare Pages
         uses: cloudflare/wrangler-action@v3
         with:
