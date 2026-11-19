@@ -2,8 +2,9 @@
 // hint / clear, the text adventure that starts at "start", a few toys, and maximumfun / minimumfun, which switch the
 // wallpaper on and off. Ctrl+L clears and the arrows walk the history (D-023); the root carries data-keys="off" so the
 // site's single-key shortcuts stay quiet while typing. The terminal is one fixed height, so the page does not grow
-// line by line. v3's glitch line effect (fixed-colour RGB splits) is not carried over; story lines that dimmed or
-// alarmed in v3 are set dim or in the accent instead.
+// line by line. As in v3, story lines are marked by what they say: the terminal dimming goes dark, the intruder alarm
+// and failed overrides flash red, and the system glitching shakes; about-egg.css holds the motion and stops it with
+// the wallpaper off or under reduced motion.
 // "run exit" opens the crash screen (crash.ts, loaded only then), as in v3.
 
 import { setWallpaper, wallpaperOn } from "../shell/wallpaper.js";
@@ -236,7 +237,10 @@ export function mount(host: HTMLElement): () => void {
   root.setAttribute("aria-label", "Terminal");
 
   const bar = el("div", "ab-term-bar");
-  bar.append(el("span", "ab-term-title", "terminal"), el("span", "ab-term-meta", "ctrl+l clears"));
+  const dots = el("span", "ab-term-dots");
+  dots.setAttribute("aria-hidden", "true");
+  dots.append(el("span", "ab-term-dot is-close"), el("span", "ab-term-dot is-min"), el("span", "ab-term-dot is-max"));
+  bar.append(dots, el("span", "ab-term-title", "terminal"), el("span", "ab-term-meta", "ctrl+l clears"));
   const scroll = el("div", "ab-term-scroll");
   const log = el("div", "ab-term-log");
   log.setAttribute("role", "log");

@@ -1,7 +1,24 @@
-/* The easter egg terminal (v3 TerminalFooter) on the web design system: a 2px dominant frame, an UPPERCASE title bar
-   with lowercase meta, no window dots and no shadows. One fixed height, so the page does not grow as lines arrive.
-   Loaded with the terminal, on the first click of the egg. */
+/* The easter egg terminal (v3 TerminalFooter and EasterEgg) on the web design system: a 2px dominant frame, a title
+   bar with red, amber and green squares for window lights, and no box shadows. One fixed height, so the page does not
+   grow as lines arrive. v3's motion is kept with its timing: the whole terminal and the prompt flicker (2.5s), the
+   story's alarm lines flash (0.5s), lines that mention a glitch shake and split (0.3s), and lines where the terminal
+   dims go dark and blurred. The door line glows (2s) and blinks (0.7s). All of it stops with the wallpaper off
+   (body.bg-off, v3's background type 'none') and under reduced motion, leaving only the static styling.
+   The door loads this sheet once the page is idle; the terminal module loads on the first click. */
 
+/* ---- the door ------------------------------------------------------------------------------------------------- */
+.ab-egg-glyphs {
+  display: inline-block;
+  filter: drop-shadow(0 0 8px rgba(var(--dynamic-dominant-color-rgb), 0.8));
+  animation: ab-egg-glow 2s infinite alternate, ab-egg-blink 0.7s steps(1) infinite;
+}
+@keyframes ab-egg-glow {
+  0% { filter: drop-shadow(0 0 8px rgba(var(--dynamic-dominant-color-rgb), 0.8)); }
+  100% { filter: drop-shadow(0 0 16px rgba(var(--dynamic-hsl-average-rgb), 0.8)); }
+}
+@keyframes ab-egg-blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
+
+/* ---- the terminal --------------------------------------------------------------------------------------------- */
 .ab-egg.is-open { border: 0; }
 .ab-term {
   display: flex;
@@ -21,42 +38,102 @@
 .ab-term-bar {
   flex-shrink: 0;
   display: flex;
-  align-items: baseline;
-  justify-content: space-between;
+  align-items: center;
   gap: 1rem;
   padding: 0.4rem 1rem;
   background: rgba(var(--bit-dark-color-rgb), 1);
   border-bottom: 1px solid rgba(var(--dynamic-dominant-color-rgb), 0.4);
+  transition: background-color 0.2s ease;
 }
-.ab-term-title { font-family: var(--font-krypton); font-size: 0.75rem; letter-spacing: 2px; text-transform: uppercase; }
+.ab-term-dots { display: flex; gap: 0.5rem; }
+.ab-term-dot { display: block; width: 10px; height: 10px; transition: transform 0.2s ease; }
+.ab-term-dot:hover { transform: scale(1.15); }
+.ab-term-dot.is-close { background: var(--status-ram-color); }
+.ab-term-dot.is-min { background: var(--status-warn-color); }
+.ab-term-dot.is-max { background: var(--status-ok-color); }
+.ab-term-title { flex: 1; font-family: var(--font-krypton); font-size: 0.75rem; letter-spacing: 2px; text-transform: uppercase; }
 .ab-term-meta { font-size: 0.7rem; letter-spacing: 1px; color: rgba(var(--text-color-rgb), 0.55); }
+/* focus changes no border and draws no ring; only the title bar warms while you type */
+.ab-term:focus-within .ab-term-bar { background-color: color-mix(in srgb, rgba(var(--bit-dark-color-rgb), 1) 78%, var(--dynamic-dominant-color)); }
+
 .ab-term-scroll { flex: 1; min-height: 0; overflow-y: auto; padding: 1rem 1.5rem; scrollbar-width: thin; scrollbar-color: rgba(var(--dynamic-dominant-color-rgb), 0.5) transparent; }
 .ab-term-line { white-space: pre-wrap; overflow-wrap: anywhere; line-height: 1.5; }
 .ab-term-line.is-in { color: var(--dynamic-dominant-color); }
 .ab-term-line.is-out { color: rgba(var(--text-color-rgb), 0.9); font-weight: 300; margin-bottom: 0.4rem; }
-.ab-term-line.is-dim { opacity: 0.5; }
-.ab-term-line.is-alert { color: var(--dynamic-dominant-color); font-weight: 600; }
-.ab-term-line.is-glitch { animation: ab-term-flicker 0.9s steps(2) 3; }
-@keyframes ab-term-flicker { 50% { opacity: 0.4; } }
 .ab-term-row { display: flex; align-items: center; gap: 0.5rem; color: var(--dynamic-dominant-color); }
-.ab-term-prompt { color: var(--dynamic-dominant-color); white-space: pre; }
+.ab-term-prompt { color: var(--dynamic-hsl-average); font-weight: 700; font-size: 1.08em; white-space: pre; }
 .ab-term-input {
   flex: 1;
   min-width: 0;
   padding: 0.2rem 0;
   font: inherit;
-  color: var(--text-color);
+  color: var(--dynamic-dominant-color);
   caret-color: var(--dynamic-dominant-color);
   background: none;
   border: 0;
   outline: none;
 }
-.ab-term-input::placeholder { color: rgba(var(--text-color-rgb), 0.35); }
-/* focus changes no border and draws no ring (that made a doubled frame); only the title bar warms while you type */
-.ab-term-bar { transition: background-color 0.2s ease; }
-.ab-term:focus-within .ab-term-bar { background-color: color-mix(in srgb, rgba(var(--bit-dark-color-rgb), 1) 78%, var(--dynamic-dominant-color)); }
+.ab-term-input:focus { font-weight: 700; }
+.ab-term-input::placeholder { color: rgba(var(--text-color-rgb), 0.35); font-weight: 300; }
+
+/* the terminal dims: dark, faded and out of focus (v3 .dimmed) */
+.ab-term-line.is-dim {
+  background: rgba(var(--bit-dark-color-rgb), 0.85);
+  color: rgba(var(--text-color-rgb), 0.3);
+  filter: blur(1.5px) brightness(0.9);
+  transition: filter 0.5s, color 0.5s, background 0.5s;
+}
+/* INTRUDER DETECTED and the failed overrides: red on a dark red band, flashing (v3 .alert) */
+.ab-term-line.is-alert {
+  background: rgba(var(--status-ram-color-rgb), 0.16);
+  color: var(--status-ram-color);
+  font-weight: 600;
+  animation: ab-term-alert 0.5s steps(2) infinite;
+}
+/* the system glitches: the line shakes and its colours split (v3 .glitch) */
+.ab-term-line.is-glitch {
+  background: rgba(var(--dynamic-dominant-color-rgb), 0.35);
+  color: var(--text-color);
+  text-shadow:
+    2px 0 var(--dynamic-hsl-average),
+    -2px 0 var(--dynamic-rgb-average),
+    0 2px var(--primary-color),
+    0 -2px var(--dynamic-rgb-average);
+  animation: ab-term-glitch 0.3s infinite alternate;
+}
+/* the whole set breathes like an old tube (v3 flicker), and the prompt flickers again on top */
+.ab-term, .ab-term-row .ab-term-prompt, .ab-term-input { animation: ab-term-flicker 2.5s infinite alternate; }
+
+@keyframes ab-term-flicker {
+  0%, 19.9%, 22%, 62.9%, 64%, 64.9%, 70%, 100% { opacity: 0.99; }
+  20%, 21.9%, 63%, 63.9%, 65%, 69.9% { opacity: 0.7; }
+  0%, 90% { opacity: 0.8; }
+  80% { opacity: 0.85; }
+  85% { opacity: 0.6; }
+  95% { opacity: 0.5; }
+  100% { opacity: 1; }
+}
+@keyframes ab-term-alert { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
+@keyframes ab-term-glitch {
+  0% { transform: translate(0, 0); }
+  20% { transform: translate(-1px, 1px); }
+  40% { transform: translate(-2px, -1px); }
+  60% { transform: translate(2px, 2px); }
+  80% { transform: translate(1px, -2px); }
+  100% { transform: translate(0, 0); }
+}
+
 @media (max-width: 600px) {
   .ab-term { height: 300px; font-size: 0.85rem; }
   .ab-term-scroll { padding: 0.6rem 0.8rem; }
+  .ab-term-bar { padding: 0.3rem 0.6rem; }
+  .ab-term-dot { width: 0.7em; height: 0.7em; }
 }
-@media (prefers-reduced-motion: reduce) { .ab-term-line.is-glitch { animation: none; } }
+
+/* wallpaper off or reduced motion: everything holds still, the colours stay */
+body.bg-off .ab-egg-glyphs, body.bg-off .ab-term, body.bg-off .ab-term-prompt, body.bg-off .ab-term-input,
+body.bg-off .ab-term-line { animation: none; }
+@media (prefers-reduced-motion: reduce) {
+  .ab-egg-glyphs, .ab-term, .ab-term-row .ab-term-prompt, .ab-term-input, .ab-term-line.is-alert, .ab-term-line.is-glitch { animation: none; }
+  .ab-term-line.is-dim, .ab-term-dot { transition: none; }
+}
