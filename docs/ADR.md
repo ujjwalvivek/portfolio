@@ -612,7 +612,7 @@ The 34 CSS modules become plain CSS files, one per page or feature, each scoped 
 | Resume bar, arrow pointer, resume PDF viewer | Ported; viewer rebuilt on pdf.js with the same toolbar, page-width default, thumbnails and dark/light document switch | M5 |
 | Easter egg terminal and story        | Ported                                                         | M5        |
 | Command palette and chords           | Ported; shortcuts replaced by D-023                            | M6        |
-| Command hint toast                   | Kept (Q-07 answered); shown at once, more visible than v3's     | M6        |
+| Command hint toast                   | Kept (Q-07 answered); shown at once, quieter than v3's         | M6        |
 | GitHub navigator                     | Ported with a lazy highlighter (Q-02)                          | M6        |
 | Crash overlay ("run exit")           | Ported                                                         | M6        |
 | Wallpaper picker (vibe switch)       | Improved, D-011                                                | M6        |
@@ -814,7 +814,7 @@ Merge v4 into main, deploy, verify live, tag v4.0.0, update the root list and Pr
 | Q-04 | Answered 2026-11-18: ADR moved to docs/ADR.md now                         | closed    |
 | Q-05 | Answered 2026-11-18: all fake loading goes (D-024)                        | closed    |
 | Q-06 | Answered 2026-11-18: one sane layout (D-023)                              | closed    |
-| Q-07 | Answered 2026-11-19: keep it, shown at once on the first visit, and more visible than v3's | M6        |
+| Q-07 | Answered 2026-11-19: keep it, shown at once on the first visit, and quieter than v3's | M6        |
 | Q-08 | Exact header wording and line breaks on phones                           | M1 |
 
 ## 18. Rejected alternatives
@@ -849,4 +849,4 @@ Merge v4 into main, deploy, verify live, tag v4.0.0, update the root list and Pr
 - 2026-11-19: M2 accepted by Vivek after fixes: the heatmap is drawn from echopoint's summary data as cells, root's way, so it follows the palette and drift with no image refetch; terminal mail has a full solid frame; intro highlights take the dominant colour. M3 started as two streams: blog list (wt-bloglist, branch v4-bloglist) and post page (wt-post, branch v4-post).
 - 2026-11-19: M3 built by two streams and merged: blog list (84b2b46; search filters the rendered cards, query kept in ?q=, tag clicks filter) and post page (ce5ecf6; window chrome, build-time TOC with scroll spy, code copy, lightbox, click-to-load embeds, dino in TS, highlight classes tinted toward the accent, MathML, related posts by shared tags). log_0010's devhub screenshot now points at a pinned devhub commit. Site links use page paths, not permalinks, so previews and soft navigation stay on the same host. Open for Vivek: reading times (Zola counts lower than v3) and log_0007's date (file 2026-03-07, v3 list 2026-03-14). Awaiting Vivek's review of M3.
 - 2026-11-19: M3 accepted. Header: the v3 HTML title with glitch and glow is gone; the frame shows a pixel spinner (eight squares in a 3 x 3 ring, the dominant colour) until the scene's first frame, or one line if the scene can't start; the heading stays for screen readers. M4 built by two streams and merged: projects page (0af34fd; data/projects.toml with all 25 entries, one list styled as table or cards, filters in ?filter=, keyboard and touch tooltips, row ids for deep links, Notion overlay, no FETCHING bar) and the PDF viewer (02af1e1; pdfjs-dist 6.5.438 vendored, 136 KB + 378 KB gzip loaded only on open; mountPdf(host, url, {title}); lazy pages with canvas release, text layer, links, thumbnails, pinch and ctrl-wheel zoom, real progress, honest errors). The CDN answers OPTIONS with 403 and hides range headers, so PDFs download whole; fine for the resumes. Awaiting Vivek's review of M4.
-- 2026-11-19: Q-07 answered by Vivek: the first-visit command hint toast stays, shows at once (no delay), and is made more visible than v3's.
+- 2026-11-19: Q-07 answered by Vivek: the first-visit command hint toast stays, shows at once (no delay), and is quieter than v3's.
