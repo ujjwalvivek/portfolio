@@ -43,6 +43,8 @@ a { color: inherit; }
   background: var(--brackets), var(--focus-fill, rgba(var(--dynamic-dominant-color-rgb), 0.15));
   background-origin: border-box;
 }
+/* the inlined shell icon sprite: takes no space, kept out of display:none so its symbols still render */
+.icon-sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
 
 .icon { width: 1em; height: 1em; display: inline-block; vertical-align: -0.125em; flex-shrink: 0; }

@@ -22,11 +22,11 @@
     <span class="ab-corners" aria-hidden="true"></span>
     <h2 class="ab-langs-title" id="ab-langs-title">Love seeing Rust and Go climbing the charts!</h2>
     <div class="ab-langs-bar" data-ab-bar aria-hidden="true">
-      {%- for i in range(end=7) %}<i class="ab-bar-seg" style="--s:{{ i }}"></i>{% endfor -%}
+      {%- for i in range(end=7) %}<i class="ab-bar-seg"></i>{% endfor -%}
     </div>
     <ul class="ab-langs-legend" data-ab-legend aria-label="Languages by bytes of code">
       {%- for i in range(end=7) %}
-      <li class="ab-lang" style="--s:{{ i }}"><i class="ab-swatch" aria-hidden="true"></i><span class="ab-lang-name">-</span><span class="ab-lang-pct">-</span></li>
+      <li class="ab-lang"><i class="ab-swatch" aria-hidden="true"></i><span class="ab-lang-name">-</span><span class="ab-lang-pct">-</span></li>
       {%- endfor %}
     </ul>
   </section>

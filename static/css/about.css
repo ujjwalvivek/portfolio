@@ -387,6 +387,14 @@ body.bg-off .ab-phase-spin, body.bg-off .ab-phase-spin::before { animation: none
 .ab-langs-title { margin: 0; font-size: 0.75rem; font-weight: 400; letter-spacing: 2px; text-transform: uppercase; color: rgba(var(--text-color-rgb), 0.65); }
 .ab-langs-bar { position: relative; display: flex; gap: 2px; height: 6px; }
 /* seven shades of the accent, lightest for the biggest share (v3's generateShades, as relative colours) */
+/* shade index by position (no inline style attributes, for the CSP); the tooltip swatch gets --s from TS */
+.ab-bar-seg:nth-child(1), .ab-lang:nth-child(1) { --s: 0; }
+.ab-bar-seg:nth-child(2), .ab-lang:nth-child(2) { --s: 1; }
+.ab-bar-seg:nth-child(3), .ab-lang:nth-child(3) { --s: 2; }
+.ab-bar-seg:nth-child(4), .ab-lang:nth-child(4) { --s: 3; }
+.ab-bar-seg:nth-child(5), .ab-lang:nth-child(5) { --s: 4; }
+.ab-bar-seg:nth-child(6), .ab-lang:nth-child(6) { --s: 5; }
+.ab-bar-seg:nth-child(7), .ab-lang:nth-child(7) { --s: 6; }
 .ab-bar-seg, .ab-swatch { background: hsl(from var(--dynamic-dominant-color) h s calc(80% - var(--s) * 10%)); }
 .ab-bar-seg { flex: 1 1 0; min-width: 2px; opacity: 0.35; transition: opacity 0.15s ease, transform 0.15s ease; transform-origin: center bottom; }
 .ab-langs.is-live .ab-bar-seg { opacity: 1; cursor: crosshair; }
