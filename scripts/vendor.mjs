@@ -24,6 +24,35 @@ const PACKAGES = [
       "package/LICENSE": "pdfjs/LICENSE",
     },
   },
+  // Syntax highlighter for the GitHub navigator (D-004, Q-02): Prism's core and one file per grammar, so opening a
+  // file loads the core and only that language's grammar chain. Prism's files are classic scripts that share a global
+  // Prism; each is wrapped into an ES module here so nothing touches window: the core is run against a stand-in global
+  // with no document (manual mode, no DOMContentLoaded or worker hooks) and exports Prism, and each grammar exports a
+  // function that installs it into the Prism it is given.
+  {
+    name: "prismjs",
+    version: "1.30.0",
+    integrity: "sha512-DEvV2ZF2r2/63V+tK8hQvrR2ZGn10srHbXviTlcv7Kpzw8jWiNTqbVgjO3IY8RxrrOUF8VPMQQFysYYYv0YZxw==",
+    rev: "esm-1",
+    files: {
+      "package/components/prism-core.min.js": {
+        to: "prism/core.js",
+        wrap: (src) =>
+          `// prismjs 1.30.0 core, wrapped as an ES module by scripts/vendor.mjs. MIT, see LICENSE.\n` +
+          `const Prism = (function (window, self, WorkerGlobalScope, module, global) {\n${src}\nreturn Prism;\n})({ Prism: { manual: true, disableWorkerMessageHandler: true } });\n` +
+          `export default Prism;\n`,
+      },
+      ...Object.fromEntries(
+        "clike markup css javascript typescript jsx tsx rust go c cpp csharp python bash nasm toml json yaml markdown wgsl zig powershell glsl hlsl lua java kotlin swift sql docker makefile ini batch diff latex scss nix ruby"
+          .split(" ")
+          .map((lang) => [
+            `package/components/prism-${lang}.min.js`,
+            { to: `prism/${lang}.js`, wrap: (src) => `export default function (Prism) {\n${src}\n}\n` },
+          ]),
+      ),
+      "package/LICENSE": "prism/LICENSE",
+    },
+  },
 ];
 
 // A tar archive is a run of 512-byte headers, each followed by the file's bytes padded to 512.
@@ -44,7 +73,8 @@ function untar(buf) {
 
 for (const pkg of PACKAGES) {
   const stamp = join("static/vendor", `.${pkg.name.replace(/\W/g, "_")}@${pkg.version}`);
-  if (existsSync(stamp) && readFileSync(stamp, "utf8") === pkg.integrity) continue;
+  const mark = pkg.integrity + (pkg.rev ? ` ${pkg.rev}` : "");
+  if (existsSync(stamp) && readFileSync(stamp, "utf8") === mark) continue;
 
   const base = pkg.name.split("/").pop();
   const url = `https://registry.npmjs.org/${pkg.name}/-/${base}-${pkg.version}.tgz`;
@@ -58,10 +88,12 @@ for (const pkg of PACKAGES) {
   for (const [from, to] of Object.entries(pkg.files)) {
     const data = files.get(from);
     if (!data) throw new Error(`${pkg.name}@${pkg.version}: ${from} not in the tarball`);
-    const dest = join("static/vendor", to);
+    // a file is copied as it is, or, given { to, wrap }, rewritten by wrap(text) on the way
+    const spec = typeof to === "string" ? { to } : to;
+    const dest = join("static/vendor", spec.to);
     mkdirSync(dirname(dest), { recursive: true });
-    writeFileSync(dest, data);
+    writeFileSync(dest, spec.wrap ? spec.wrap(data.toString("utf8")) : data);
   }
-  writeFileSync(stamp, pkg.integrity);
+  writeFileSync(stamp, mark);
   console.log(`vendor: ${pkg.name}@${pkg.version}`);
 }
