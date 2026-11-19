@@ -208,7 +208,7 @@
 }
 
 .tm-prompt { flex-shrink: 0; display: flex; align-items: center; color: var(--dynamic-dominant-color); font-size: 0.8rem; }
-.tm-tilde { color: var(--dynamic-hsl-average); }
+.tm-tilde { color: var(--dynamic-hsl-average-ink); }
 .tm-slash { color: rgba(var(--primary-color-rgb), 0.5); }
 .tm-step-name { color: var(--dynamic-dominant-color); font-weight: 600; }
 .tm-caret { color: var(--status-ok-color); white-space: pre; }

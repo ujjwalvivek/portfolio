@@ -113,24 +113,6 @@
 .pj-status-count { color: var(--text-color); }
 .pj-ok { color: var(--status-ok-color); }
 
-.pj-stats {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 0.3rem 1rem;
-  margin: 1rem 0 0;
-  padding: 0.45rem 1.5rem;
-  font-size: 0.7rem;
-  letter-spacing: 1px;
-  border: 1px dashed rgba(var(--dynamic-dominant-color-rgb), 0.4);
-  background: rgba(var(--background-color-rgb), 0.6);
-}
-.pj-stats div { display: flex; gap: 0.4rem; }
-.pj-stats div::before { content: "["; color: var(--dynamic-dominant-color); }
-.pj-stats div::after { content: "]"; color: var(--dynamic-dominant-color); }
-.pj-stats dt { text-transform: uppercase; color: rgba(var(--text-color-rgb), 0.7); }
-.pj-stats dd { margin: 0; font-weight: 700; color: var(--text-color); text-transform: uppercase; }
-.pj-stats dd.pj-ok { color: var(--status-ok-color); }
 
 /* Rows. One grid per project: icon | title | tags | buttons. */
 .pj-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 1.2rem; }
@@ -291,10 +273,6 @@ a.pj-btn:hover, a.pj-btn:focus-visible {
   .pj-row:hover .pj-icon, .pj-row.is-target .pj-icon { background: none; }
   .pj-title { padding: 0.6rem 0; font-size: 0.95rem; }
   .pj-tags { padding: 0.2rem 0 1rem; }
-}
-/* v3 hid the stats on phones; the status line stays, since it is the only sign that a filter changed the list. */
-@media (max-width: 780px) {
-  .pj-stats { display: none; }
 }
 @media (max-width: 600px) {
   .pj-hero-text { padding: 0 1rem; }

@@ -3,9 +3,9 @@
 // --dynamic-* CSS variables at most every 100 ms and never while the page is scrolling.
 // The phase comes from the wall clock, so a reload or another tab shows the same moment of the drift.
 
-import { derive, hexToRgb, rgbTriple } from "../lib/colour.js";
+import { derive, hexToRgb, readable, rgbTriple } from "../lib/colour.js";
 import { load, reducedMotion, save, emit } from "../lib/store.js";
-import { DEFAULT_CUSTOM, DEFAULT_PALETTE, findPalette, mixColours, type Colours, type Palette } from "./palettes.js";
+import { DEFAULT_PALETTE, findPalette, mixColours, type Colours, type Palette } from "./palettes.js";
 
 const PERIOD_MS = 120_000; // one full A to B to A cycle
 const CSS_STEP_MS = 100;
@@ -14,7 +14,7 @@ const SCROLL_REST_MS = 160;
 type Listener = (c: Colours, t: number) => void;
 const listeners = new Set<Listener>();
 
-let palette: Palette = findPalette(load("palette", DEFAULT_PALETTE), load("custom", DEFAULT_CUSTOM));
+let palette: Palette = findPalette(load("palette", DEFAULT_PALETTE));
 let current: Colours = mixColours(palette, 0);
 let lastCss = -Infinity;
 let scrolling = false;
@@ -30,10 +30,9 @@ export function onColours(fn: Listener): () => void {
   return () => listeners.delete(fn);
 }
 
-export function setPalette(name: string, custom?: string): void {
-  if (custom) save("custom", custom);
+export function setPalette(name: string): void {
   save("palette", name);
-  palette = findPalette(name, custom ?? load("custom", DEFAULT_CUSTOM));
+  palette = findPalette(name);
   lastCss = -Infinity;
   tick(performance.now());
   emit("palette", { name });
@@ -55,6 +54,8 @@ function writeCss(c: Colours): void {
   s.setProperty("--dynamic-rgb-average-rgb", rgbTriple(rgbAverage));
   s.setProperty("--dynamic-hsl-average", hex(hslAverage));
   s.setProperty("--dynamic-hsl-average-rgb", rgbTriple(hslAverage));
+  // hsl-average is a dim fill; text in it uses this lightened copy so it stays AA on black
+  s.setProperty("--dynamic-hsl-average-ink", hex(readable(hslAverage)));
   s.setProperty("--dynamic-dominant-color", hex(dominant));
   s.setProperty("--dynamic-dominant-color-rgb", rgbTriple(dominant));
   for (const key of ["primary", "secondary", "accent", "background"] as const) {

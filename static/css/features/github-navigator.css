@@ -7,8 +7,9 @@
 
 /* ---- frame ---- */
 .overlay:has(> .ghn-card) { align-items: stretch; padding: calc(var(--top-h, 0px) + 0.6rem) 1rem calc(var(--bottom-h, 0px) + 0.6rem); }
-/* the card's own border is the window frame (base.css gives .overlay-card the same one); nothing inside draws another */
-.overlay-card.ghn-card { max-width: 1320px; max-height: none; height: auto; box-sizing: border-box; border: 2px solid var(--dynamic-dominant-color); }
+/* the card's own border is the window frame, the same as every overlay: 2px theme border with the corner brackets
+   drawn on it (a solid border would hide them); nothing inside draws another */
+.overlay-card.ghn-card { max-width: 1320px; max-height: none; height: auto; }
 .ghn-card .overlay-head { gap: 0.9rem; transition: background-color 0.3s; }
 .ghn-card:focus-within .overlay-head { background: color-mix(in srgb, rgb(var(--bit-dark-color-rgb)) 88%, var(--dynamic-dominant-color)); }
 .ghn-card .overlay-title { flex: 0 0 auto; }

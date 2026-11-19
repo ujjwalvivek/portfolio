@@ -36,7 +36,7 @@
       <span class="bg-toggle-frame"><button class="bg-toggle" type="button" data-bg-toggle aria-pressed="true" aria-label="Wallpaper" title="Wallpaper"></button></span>
       <nav class="crumbs" aria-label="Breadcrumb" data-swap="crumbs">{% block crumbs %}{% include "partials/crumbs.html" %}{% endblock crumbs %}</nav>
     </div>
-    <a class="logo" href="/" title="Ujjwal Vivek"><span class="logo-full" aria-hidden="true">U J J W A L V I V E K</span><span class="logo-short" aria-hidden="true">U V</span><span class="sr-only">Ujjwal Vivek, home</span></a>
+    <a class="logo" href="https://root.ujjwalvivek.com" target="_blank" rel="noopener" title="root.ujjwalvivek.com: all my links"><span class="logo-full" aria-hidden="true">U J J W A L V I V E K</span><span class="logo-short" aria-hidden="true">U V</span><span class="sr-only">Ujjwal Vivek, all links on root.ujjwalvivek.com</span></a>
   </header>
 
   <main id="main" tabindex="-1" data-modules="{% block modules %}{% endblock modules %}" data-styles="{% block page_styles %}{% endblock page_styles %}">
@@ -45,14 +45,14 @@
 
   <footer class="statusbar">
     <div class="statusbar-left">
-      <button class="status-item is-vibe" type="button" data-open="vibe" title="Switch wallpaper and palette"><svg class="icon" aria-hidden="true"><use href="#ti-flow-switch"/></svg><span class="status-text">vibeSwitch</span></button>
+      <button class="status-item is-vibe" type="button" data-mood title="Change mood: wallpaper and palette" aria-label="Change mood"><svg class="icon" aria-hidden="true"><use href="#tb-switch2"/></svg><span class="status-text">moods</span></button>
       <button class="status-item is-vibe is-cmd" type="button" data-open="palette" title="Command palette" aria-label="Command palette"><svg class="icon" aria-hidden="true"><use href="#fi-command"/></svg><span class="status-text" aria-hidden="true">cmd</span></button>
     </div>
     <div class="statusbar-right">
       <button class="status-item is-vibe" type="button" data-open="stack" title="Tech stack" aria-label="Tech stack: Rust"><span class="status-text status-lang"><svg class="icon" aria-hidden="true"><use href="#ri-stack-fill"/></svg> Rust</span></button>
       <a class="status-item is-variant" href="https://linkedin.com/in/ujjwalvivek" target="_blank" rel="noopener noreferrer" title="LinkedIn"><svg class="icon" aria-hidden="true"><use href="#tfi-linkedin"/></svg><span class="sr-only">LinkedIn</span></a>
       <a class="status-item is-variant" href="{{ config.extra.github }}" target="_blank" rel="noopener noreferrer" title="GitHub"><svg class="icon" aria-hidden="true"><use href="#tb-brand-github-filled"/></svg><span class="sr-only">GitHub</span></a>
-      <a class="status-item is-variant" href="https://root.ujjwalvivek.com" target="_blank" rel="noopener" title="root.ujjwalvivek.com"><svg class="icon" aria-hidden="true"><use href="#fa-folder-tree"/></svg><span class="sr-only">All links</span></a>
+      <a class="status-item is-variant" href="{{ config.extra.cdn }}/docs/resume-light.pdf" download="UjjwalVivek_Resume.pdf" data-resume title="Download my resume (PDF)"><svg class="icon" aria-hidden="true"><use href="#fa-file-download"/></svg><span class="sr-only">Download my resume (PDF)</span></a>
     </div>
   </footer>
 </body>

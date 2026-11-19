@@ -290,7 +290,7 @@
 .post .markdown tbody tr:nth-child(odd) { background: rgba(var(--primary-color-rgb), 0.03); }
 .post .markdown tbody tr:hover { background: rgba(var(--dynamic-dominant-color-rgb), 0.08); }
 .post .markdown tbody td:first-child { padding-left: 1.8rem; }
-.post .markdown tbody td:first-child::before { content: "↪"; position: absolute; left: 0.5rem; color: rgba(var(--dynamic-dominant-color-rgb), 0.7); font-size: 0.8rem; }
+.post .markdown tbody td:first-child::before { content: "↪"; position: absolute; left: 0.5rem; color: rgba(var(--dynamic-dominant-color-rgb), 0.8); font-size: 0.8rem; }
 
 /* images: framed in the accent, cropped to half the window like v3; click opens the lightbox */
 .post .markdown img {
@@ -437,7 +437,7 @@
   font-size: 0.65rem;
   font-weight: 200;
   letter-spacing: 1px;
-  color: rgba(var(--dynamic-dominant-color-rgb), 0.7);
+  color: rgba(var(--dynamic-dominant-color-rgb), 0.8);
   background: rgba(var(--background-color-rgb), 0.7);
   border: 1px dashed rgba(var(--dynamic-dominant-color-rgb), 0.3);
 }
@@ -653,7 +653,8 @@
   flex-direction: column;
   gap: 1rem;
   padding: 0.5rem 1rem 1rem;
-  background: rgba(var(--bit-dark-color-rgb), 0.8);
+  /* glass like the body above it: thin enough that the blurred wallpaper shows through */
+  background: rgba(var(--bit-dark-color-rgb), 0.45);
   border-top: 1px solid rgba(var(--dynamic-dominant-color-rgb), 0.5);
   backdrop-filter: blur(32px) saturate(180%);
   -webkit-backdrop-filter: blur(32px) saturate(180%);

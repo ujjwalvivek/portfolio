@@ -81,7 +81,8 @@ const BASE: Item[] = [
     words: "terminal github vscode editor filesystem navigator repos",
     run: external<{ open(): void }>("/js/features/github-navigator.js", (m) => m.open()),
   },
-  { group: "commands", title: "Switch Vibe", icon: "tb-switch2", action: "vibe", desc: "", words: "psychedelic colorful rainbow wallpaper palette colour", run: () => void trigger("vibe") },
+  { group: "commands", title: "Change Mood", icon: "tb-switch2", action: "mood", desc: "", words: "vibe mood shuffle random psychedelic colorful rainbow wallpaper palette colour", run: () => void trigger("mood") },
+  { group: "commands", title: "Mood Settings", icon: "ti-flow-switch", action: "vibe", desc: "", words: "vibe mood settings static animated motion wallpaper palette recipe paste", run: () => void trigger("vibe") },
   {
     group: "commands", title: "Maximum Fun ? Minimum Fun", icon: "gi-thunder-skull", desc: "",
     words: "background wallpaper toggle hide show on off",

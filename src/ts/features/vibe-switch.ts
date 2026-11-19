@@ -4,13 +4,14 @@
 // substrate's playground, not here. A pasted recipe is read with JSON.parse, checked by substrate's validator, and stored locally.
 // Without WebGPU the palettes still work and the picker says plainly that the wallpaper needs it (D-008).
 //
-// Entry points: open() opens it (?vibe, the command palette); openVibeSwitch() toggles it (the v key, the status bar).
+// Shown as "Moods". The status bar key no longer opens it (it changes the mood, moods.ts); Shift V, the palette entry
+// Mood Settings and ?vibe do. Entry points: open() opens it; openVibeSwitch() toggles it.
 
 import { loadFeature } from "../lib/lazy.js";
 import { load, reducedMotion } from "../lib/store.js";
 import { currentPalette, setPalette } from "../shell/drift.js";
 import { closeOverlay, isOpen, openOverlay } from "../shell/overlay.js";
-import { DEFAULT_CUSTOM, PALETTES, customPalette, type Palette } from "../shell/palettes.js";
+import { PALETTES, type Palette } from "../shell/palettes.js";
 import type { Recipe, RecipeBook } from "../shell/recipe.js";
 import { recipeBook, recipeTools } from "../shell/recipes.js";
 import {
@@ -104,36 +105,19 @@ function palettes(onMark: (label: string) => void): HTMLElement {
     sw.style.setProperty("--swatch", gradient(p));
     sw.style.setProperty("--swatch-edge", p.a.accent);
   };
-  const custom = load("custom", DEFAULT_CUSTOM);
-  for (const p of [...PALETTES, customPalette(custom)]) {
-    const sw = el("button", "vibe-swatch" + (p.name === "custom" ? " is-custom" : ""));
+  for (const p of PALETTES) {
+    const sw = el("button", "vibe-swatch");
     sw.type = "button";
     sw.dataset.name = p.name;
     sw.dataset.label = p.label;
     sw.setAttribute("role", "radio");
     sw.setAttribute("aria-label", p.label);
     paint(sw, p);
+    sw.append(el("span", "vibe-swatch-name", p.label));
     sw.addEventListener("click", () => {
       setPalette(p.name);
       mark();
     });
-    if (p.name === "custom") {
-      const pick = el("input", "vibe-pick");
-      pick.type = "color";
-      pick.value = custom;
-      pick.setAttribute("aria-label", "Pick a custom colour");
-      // the swatch is the key; Enter or Space on it opens the colour picker, so the input stays out of the tab order
-      pick.tabIndex = -1;
-      sw.addEventListener("keydown", (e) => {
-        if (e.key === "Enter" || e.key === " ") pick.showPicker?.();
-      });
-      pick.addEventListener("input", () => {
-        setPalette("custom", pick.value);
-        paint(sw, customPalette(pick.value));
-        mark();
-      });
-      sw.append(el("span", "vibe-plus", "+"), pick);
-    }
     swatches.push(sw);
     grid.append(sw);
   }
@@ -198,7 +182,7 @@ function build(): void {
 
   openOverlay({
     id: "vibe",
-    title: "Choose Your Vibe!",
+    title: "Moods",
     icon: "#ti-flow-switch",
     build(body) {
       const book: { value: RecipeBook | null } = { value: null };

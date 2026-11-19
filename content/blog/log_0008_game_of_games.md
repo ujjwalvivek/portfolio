@@ -134,7 +134,7 @@ Simple particle update with wall bounce and no spatial grid:
 | 32,768   | 143         | 7.5ms       | 21.1ms     | 21.1ms     |
 | 65,536   | 141         | 8.9ms       | 60         | 21.4ms     |
 
-<img src="https://cdn.ujjwalvivek.com/posts/media/gogs2.webp">
+<img src="https://cdn.ujjwalvivek.com/posts/media/gogs2.webp" alt="Benchmark dashboard, first run: frame latency percentiles and FPS against entity count, and a rolling 120-frame frame-time trace. Journey holds about 143 fps and TinyTS 60 fps from 1k to 65k entities; Journey's frame times stay low and flat while TinyTS's swing between about 15 and 25 ms.">
 
 Journey at **141 FPS**. TinyTS at **60 FPS**. Clean win for Rust.
 
@@ -158,7 +158,7 @@ Add a spatial grid for particle overlap detection:
 | 32,768   | **105**     | 10.9ms      | 60         | 21.1ms     |
 | 65,536   | **36**      | 40.1ms      | **33**     | 44.3ms     |
 
-<img src="https://cdn.ujjwalvivek.com/posts/media/gogs3.webp">
+<img src="https://cdn.ujjwalvivek.com/posts/media/gogs3.webp" alt="Benchmark dashboard, second run: Journey's FPS falls from about 143 at 16k entities to 36 at 65k, and TinyTS falls to 33. Latency percentiles for both climb steeply past 32k, and the rolling frame-time trace shows TinyTS spiking regularly above Journey.">
 
 Journey and TinyTS, both collapse at 65k, and land at almost exactly the same number.
 
@@ -212,7 +212,7 @@ Journey doesn't notice. WASM sidesteps almost all of it. The engine gets linear 
 | JS parse + execute      | N/A         | < 1ms       |
 | **Time to first frame** | **2,006ms** | **2,545ms** |
 
-<img src="https://cdn.ujjwalvivek.com/posts/media/gogs4.webp">
+<img src="https://cdn.ujjwalvivek.com/posts/media/gogs4.webp" alt="Load and memory dashboard: notes on each engine's design, a bar chart where Journey's transfer size (about 3 MB raw, 1.2 MB brotli) dwarfs TinyTS's (about 32 KB), a load timeline where Journey reaches its first frame in about 2,000 ms and TinyTS in about 2,500 ms, and Journey's heap at idle, peak and after stop.">
 
 TinyTS transfers **40x** less data. And it's slower to first frame. This took me a while to make sense of.
 
@@ -234,7 +234,7 @@ The small bundle won the download race and lost the start-up race.
 | 32     | 91          | 60         |
 | 64     | **48**      | 60         |
 
-<img src="https://cdn.ujjwalvivek.com/posts/media/gogs5.webp">
+<img src="https://cdn.ujjwalvivek.com/posts/media/gogs5.webp" alt="Audio charts: mean frame time against synth voices, where Journey rises from flat to above TinyTS at 64 voices while TinyTS stays level; and sequencer tick overhead at 120, 150 and 180 BPM, where Journey's bars are about half the height of TinyTS's.">
 
 Journey drops to **48fps** at **64** voices. TinyTS stays at **60fps**.
 
@@ -273,7 +273,7 @@ If you need DSP synthesis on the main thread for determinism or WASM portability
 | Heap at 65k entities | 67.1 MB     | 33.9 MB      |
 | **Heap after stop**  | **50.2 MB** | **115.1 MB** |
 
-<img src="https://cdn.ujjwalvivek.com/posts/media/gogs6.webp">
+<img src="https://cdn.ujjwalvivek.com/posts/media/gogs6.webp" alt="Rendering charts: mean frame time for rect floods, mixed shapes, textured sprites and bloom, with Journey's bars about half of TinyTS's; TinyTS's draw calls per frame staying flat at one batch; and bloom cost, where Journey's frame time barely changes with bloom on.">
 
 Journey uses more memory during a run. But after the engine stops, Journey settles at 50MB. TinyTS spikes to 115MB and waits.
 

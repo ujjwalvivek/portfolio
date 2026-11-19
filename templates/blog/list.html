@@ -27,7 +27,7 @@
 
   <ol class="bl-posts" data-bl-posts>
   {%- for post in section.pages %}
-    {%- set minutes = post.extra.reading_time | default(value=post.reading_time) %}
+    {%- set minutes = load_data(path="data/reading.json")[post.slug] | default(value=post.reading_time) %}
     <li class="bl-post" data-bl-post>
       <div class="bl-head">
         <span class="bl-index" aria-hidden="true"><span data-bl-rank>{% if loop.index < 10 %}0{% endif %}{{ loop.index }}</span>.{% if post.extra.id < 10 %}0{% endif %}{{ post.extra.id }}</span>

@@ -72,3 +72,15 @@ export function derive(colours: string[]): { rgbAverage: Rgb; hslAverage: Rgb } 
 }
 
 export const rgbTriple = ({ r, g, b }: Rgb) => `${Math.round(r)}, ${Math.round(g)}, ${Math.round(b)}`;
+
+// WCAG contrast of a colour against black.
+const channel = (c: number) => ((c /= 255) <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4);
+const onBlack = ({ r, g, b }: Rgb) => (0.2126 * channel(r) + 0.7152 * channel(g) + 0.0722 * channel(b) + 0.05) / 0.05;
+
+// The same hue, lightened until it reads as text on the black page (AA, 4.5:1, with a little room).
+export function readable(c: Rgb, min = 4.6): Rgb {
+  const hsl = rgbToHsl(c);
+  let out = c;
+  while (onBlack(out) < min && hsl.l < 100) out = hslToRgb({ ...hsl, l: (hsl.l += 2) });
+  return out;
+}

@@ -10,7 +10,7 @@
   <header class="post-bar">
     <span class="post-dots" aria-hidden="true"><i></i><i></i><i></i></span>
     <h1 class="post-title">{{ page.title }}</h1>
-    <p class="post-status"><time datetime="{{ page.date }}">{{ page.date | date(format="%d/%m/%Y") }}</time><span>{{ page.extra.reading_time | default(value=page.reading_time) }} min read</span></p>
+    <p class="post-status"><time datetime="{{ page.date }}">{{ page.date | date(format="%d/%m/%Y") }}</time><span>{{ load_data(path="data/reading.json")[page.slug] | default(value=page.reading_time) }} min read</span></p>
   </header>
 
   <div class="post-body">

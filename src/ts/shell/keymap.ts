@@ -6,7 +6,7 @@
 import { closeTop } from "./overlay.js";
 import { navigate } from "./router.js";
 
-export type Action = "palette" | "search" | "vibe" | "zen" | "music" | "help" | "home" | "about" | "blog" | "projects";
+export type Action = "palette" | "search" | "mood" | "vibe" | "zen" | "music" | "help" | "home" | "about" | "blog" | "projects";
 // label is the shortcut sheet's line.
 export const KEYS: { keys: string; label: string; action?: Action }[] = [
   { keys: "Ctrl K", label: "command palette", action: "palette" },
@@ -15,7 +15,8 @@ export const KEYS: { keys: string; label: string; action?: Action }[] = [
   { keys: "g b", label: "go to the blog", action: "blog" },
   { keys: "g p", label: "go to projects", action: "projects" },
   { keys: "/", label: "search the blog list, else open the palette", action: "search" },
-  { keys: "v", label: "vibe switch: wallpaper and palette", action: "vibe" },
+  { keys: "v", label: "change mood: the next wallpaper and palette", action: "mood" },
+  { keys: "Shift V", label: "mood settings: pick a wallpaper, palette, motion", action: "vibe" },
   { keys: "z", label: "zen mode: fullscreen", action: "zen" },
   { keys: "m", label: "music on or off", action: "music" },
   { keys: "?", label: "keyboard shortcuts", action: "help" },
@@ -94,7 +95,7 @@ export function startKeymap(): void {
       pendingG = Date.now();
       return;
     }
-    const single: Record<string, Action> = { "/": "search", v: "vibe", z: "zen", m: "music", "?": "help" };
+    const single: Record<string, Action> = { "/": "search", v: "mood", V: "vibe", z: "zen", m: "music", "?": "help" };
     const action = single[e.key];
     if (action && trigger(action)) e.preventDefault();
   });

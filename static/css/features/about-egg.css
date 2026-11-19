@@ -61,7 +61,7 @@
 .ab-term-line.is-in { color: var(--dynamic-dominant-color); }
 .ab-term-line.is-out { color: rgba(var(--text-color-rgb), 0.9); font-weight: 300; margin-bottom: 0.4rem; }
 .ab-term-row { display: flex; align-items: center; gap: 0.5rem; color: var(--dynamic-dominant-color); }
-.ab-term-prompt { color: var(--dynamic-hsl-average); font-weight: 700; font-size: 1.08em; white-space: pre; }
+.ab-term-prompt { color: var(--dynamic-hsl-average-ink); font-weight: 700; font-size: 1.08em; white-space: pre; }
 .ab-term-input {
   flex: 1;
   min-width: 0;

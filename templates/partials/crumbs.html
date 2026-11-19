@@ -5,7 +5,10 @@
   {%- set_global acc = "" -%}
   {%- for part in parts -%}{%- if part -%}
   {%- set_global acc = acc ~ "/" ~ part -%}
-  {%- set label = part | replace(from="-", to=" ") | title -%}
+  {%- set bits = part | split(pat="_") -%}
+  {#- a post reads as its log number only: log_0007, proj_0003 -#}
+  {%- if acc is starting_with(pat="/blog/") and bits | length > 2 -%}{%- set label = bits[0] ~ "_" ~ bits[1] -%}
+  {%- else -%}{%- set label = part | replace(from="-", to=" ") | title -%}{%- endif -%}
   <li><span class="crumb-sep" aria-hidden="true"><svg class="icon"><use href="#rx-triangle-right"/></svg></span>
     {%- if acc ~ "/" == current_path %}<span aria-current="page" title="{{ label }}">{{ label }}</span>{% else %}<a href="{{ acc }}/" title="{{ label }}">{{ label }}</a>{% endif -%}
   </li>

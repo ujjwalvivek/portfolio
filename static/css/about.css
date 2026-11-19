@@ -75,7 +75,7 @@
   font-weight: 500;
   font-size: clamp(0.7rem, 1.6vw, 0.9rem);
   letter-spacing: -0.2px;
-  color: var(--dynamic-hsl-average);
+  color: var(--dynamic-hsl-average-ink);
   background: rgba(var(--bit-dark-color-rgb), 0.9);
   border-top: 2px dashed var(--dynamic-dominant-color);
 }
@@ -323,7 +323,7 @@ body.bg-off .ab-phase-spin, body.bg-off .ab-phase-spin::before { animation: none
   transition: border-color 0.2s ease, background-color 0.2s ease;
 }
 .ab-command:hover, .ab-command.is-copied { border-color: var(--dynamic-dominant-color); background-color: rgba(var(--dynamic-dominant-color-rgb), 0.1); }
-.ab-command-p { color: var(--dynamic-hsl-average); font-weight: 700; user-select: none; }
+.ab-command-p { color: var(--dynamic-hsl-average-ink); font-weight: 700; user-select: none; }
 .ab-command-t { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-family: var(--font-mono); font-size: 0.78rem; }
 .ab-command-ic { display: inline-grid; opacity: 0.5; transition: opacity 0.2s ease; }
 .ab-command:hover .ab-command-ic, .ab-command:focus-visible .ab-command-ic { opacity: 1; }
@@ -373,7 +373,7 @@ body.bg-off .ab-phase-spin, body.bg-off .ab-phase-spin::before { animation: none
 .ab-tl-main a:focus-visible { --focus-bg: rgba(var(--dynamic-dominant-color-rgb), 0.15); }
 .ab-tl-main:has(a:focus-visible) { background: var(--brackets); background-origin: border-box; }
 .ab-tl-main a:hover { background: rgba(var(--dynamic-dominant-color-rgb), 0.18); }
-.ab-tl-tag { margin-left: 0.5rem; color: var(--dynamic-hsl-average); font-size: 0.72rem; }
+.ab-tl-tag { margin-left: 0.5rem; color: var(--dynamic-hsl-average-ink); font-size: 0.72rem; }
 .ab-tl-meta { font-family: var(--font-mono); font-size: 0.68rem; line-height: 1.5; color: rgba(var(--text-color-rgb), 0.55); font-variant-numeric: tabular-nums; }
 .ab-tl-meta .ab-add { color: var(--dynamic-dominant-color); }
 
@@ -505,7 +505,7 @@ body.bg-off .ab-phase-spin, body.bg-off .ab-phase-spin::before { animation: none
   overflow: hidden;
 }
 .ab-resume-thumb img { display: block; width: 100%; height: auto; aspect-ratio: 282 / 400; transition: filter 0.24s ease; }
-.ab-resume-expand { position: absolute; inset: 0; margin: auto; width: 24px; height: 24px; color: var(--dynamic-hsl-average); opacity: 0; transition: opacity 0.16s ease; }
+.ab-resume-expand { position: absolute; inset: 0; margin: auto; width: 24px; height: 24px; color: var(--dynamic-hsl-average-ink); opacity: 0; transition: opacity 0.16s ease; }
 .ab-resume-view:hover .ab-resume-thumb, .ab-resume-view:focus-visible .ab-resume-thumb { border-width: 2px; padding: 3px; }
 .ab-resume-view:hover .ab-resume-thumb img, .ab-resume-view:focus-visible .ab-resume-thumb img { filter: blur(4px); }
 .ab-resume-view:hover .ab-resume-expand, .ab-resume-view:focus-visible .ab-resume-expand { opacity: 1; }

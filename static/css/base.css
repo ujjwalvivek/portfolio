@@ -190,7 +190,7 @@ body.bg-off #bg-canvas { opacity: 0; }
   .logo-short { display: inline; }
 }
 @media (max-width: 300px) {
-  .crumbs [aria-current] { max-width: 4ch; }
+  .crumbs [aria-current] { max-width: 8ch; }
 }
 
 /* Footer status bar. */

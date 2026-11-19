@@ -22,6 +22,7 @@ export function save(key: string, value: unknown): void {
 export type ShellEvents = {
   palette: { name: string };
   wallpaper: { on: boolean };
+  mood: { label: string };
 };
 
 const bus = new EventTarget();

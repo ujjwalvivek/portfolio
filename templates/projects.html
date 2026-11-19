@@ -9,8 +9,6 @@
     No FETCHING bar and no placeholder stats (D-024). -#}
 {%- set data = load_data(path="data/projects.toml") -%}
 {%- set all = data.projects -%}
-{%- set_global n_dev = 0 -%}{%- set_global n_pm = 0 -%}
-{%- for p in all -%}{%- if p.id is starting_with(pat="dev-") -%}{%- set_global n_dev = n_dev + 1 -%}{%- else -%}{%- set_global n_pm = n_pm + 1 -%}{%- endif -%}{%- endfor -%}
 {%- set total = all | length -%}
 <section class="projects" aria-labelledby="pj-title" data-pj>
   <header class="pj-hero">
@@ -33,12 +31,6 @@
       </div>
       <p class="pj-status" role="status">active filter: <span class="pj-status-filter" data-pj-active>all</span> <span class="pj-status-count"><span data-pj-count>{{ total }}</span> entries found</span> <span class="pj-ok">[ok]</span></p>
     </div>
-    <dl class="pj-stats">
-      <div><dt>total_projects</dt><dd>{{ total }}</dd></div>
-      <div><dt>pm_projects</dt><dd>{{ n_pm }}</dd></div>
-      <div><dt>dev_projects</dt><dd>{{ n_dev }}</dd></div>
-      <div><dt>status</dt><dd class="pj-ok">online</dd></div>
-    </dl>
   </div>
 
   <ul class="pj-list" data-pj-list>

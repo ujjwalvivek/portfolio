@@ -15,3 +15,4 @@ target/
 *.log
 .DS_Store
 .idea/
+data/reading.json
