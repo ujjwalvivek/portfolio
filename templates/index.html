@@ -16,10 +16,22 @@
   </div>
 </section>
 <div class="home-body">
+  {%- set blog_sec = get_section(path="blog/_index.md") -%}
+  {%- set blog_n = blog_sec.pages | length -%}
+  {%- set proj_data = load_data(path="data/projects.toml") -%}
+  {%- set proj_n = proj_data.projects | length %}
   <nav class="home-nav" aria-label="Sections">
-    <a class="home-cta" href="/blog/"><span class="home-cta-tag">&lt;</span>ReadLogs<span class="home-cta-tag">/&gt;</span></a>
-    <a class="home-cta" href="/about/"><span class="home-cta-tag">&lt;</span>About<span class="home-cta-tag">/&gt;</span></a>
-    <a class="home-cta" href="/projects/"><span class="home-cta-tag">&lt;</span>Projects<span class="home-cta-tag">/&gt;</span></a>
+    {%- for c in [
+      ["01", "/blog/", "~/blog", "b", "Logs", blog_n ~ " logs: engines, tools, postmortems"],
+      ["02", "/about/", "~/about", "a", "About", "who i am, what i build, the resume"],
+      ["03", "/projects/", "~/projects", "p", "Projects", proj_n ~ " projects, product and code"]
+    ] %}
+    <a class="home-cta" href="{{ c[1] }}">
+      <span class="cta-top"><span class="cta-idx">{{ c[0] }}</span><span class="cta-path">{{ c[2] }}</span><span class="cta-keys" aria-hidden="true"><kbd>g</kbd><kbd>{{ c[3] }}</kbd></span></span>
+      <span class="cta-label"><span class="home-cta-tag" aria-hidden="true">&lt;</span>{{ c[4] }}<span class="home-cta-tag" aria-hidden="true">/&gt;</span><span class="cta-arrow" aria-hidden="true">&rarr;</span></span>
+      <span class="cta-sub">{{ c[5] }}</span>
+    </a>
+    {%- endfor %}
   </nav>
 
   {% include "partials/intro-home.html" %}
@@ -39,6 +51,10 @@
     {%- endif %}{% endfor %}
     </ul>
   </section>
+
+  {% include "partials/about-engines.html" %}
+
+  {% include "partials/langs.html" %}
 
   <section class="lazy-host home-widgets" aria-label="Widgets" data-lazy="/js/features/widgets.js" data-lazy-styles="/css/features/widgets.css"></section>
 

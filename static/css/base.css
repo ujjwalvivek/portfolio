@@ -234,6 +234,7 @@ body.bg-off #bg-canvas { opacity: 0; }
 .status-item:hover { background-color: rgba(var(--dynamic-dominant-color-rgb), 0.35); }
 .status-item { --focus-fill: rgba(var(--dynamic-dominant-color-rgb), 0.35); } /* focus as hover, a shade above the keys' rest */
 .status-item.is-vibe { background: rgba(var(--dynamic-hsl-average-rgb), 0.25); }
+[data-mood] .status-text, .status-item.is-cmd .status-text { font-weight: 700; letter-spacing: 0.5px; }
 .status-item.is-cmd { background: rgba(var(--dynamic-dominant-color-rgb), 0.25); } /* the right side's second shade, so the two keys read as two */
 .status-item.is-variant { background: rgba(var(--dynamic-dominant-color-rgb), 0.25); }
 .status-item .icon { font-size: 0.75rem; }

@@ -112,35 +112,37 @@
 /* Below the header: v3's home column. */
 .home-body { width: min(var(--main-content-width), calc(100% - 2rem)); margin: 2.5rem auto 0; display: flex; flex-direction: column; gap: 2rem; font-family: var(--font-neon); }
 
-/* Nav (v3 HomeNav): three glass keys with a light sweep on hover. */
-.home-nav { display: flex; flex-wrap: wrap; gap: 1.5rem; width: 100%; }
+/* Nav: three terminal cards. A glow line on top (as the engine cards), a strip with the index, the path and the
+   page's keyboard chord, then v3's <Label/> with an arrow, and one plain line on what is there. Hover tints the card,
+   turns its frame to the accent, slides the arrow and sweeps v3's light across it. */
+.home-nav { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; width: 100%; }
 .home-cta {
-  flex: 1 1 0;
-  min-width: 120px;
-  padding: 0.6rem 1.2rem;
   position: relative;
   overflow: hidden;
-  border: 2px solid var(--dynamic-dominant-color);
-  background: rgba(var(--background-color-rgb), 0.3);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  min-width: 0;
+  padding: 0.75rem 1rem 0.85rem;
+  border: 2px solid rgba(var(--dynamic-dominant-color-rgb), 0.45);
+  background:
+    linear-gradient(to right, rgba(var(--dynamic-dominant-color-rgb), 0.8), rgba(var(--dynamic-hsl-average-rgb), 0.8), rgba(var(--dynamic-dominant-color-rgb), 0.8)) top / 100% 3px no-repeat,
+    rgba(var(--background-color-rgb), 0.35);
+  backdrop-filter: blur(32px) saturate(180%);
+  -webkit-backdrop-filter: blur(32px) saturate(180%);
   color: var(--text-color);
-  font-family: var(--font-krypton);
-  font-weight: 700;
-  font-size: 1.05rem;
-  text-align: center;
   text-decoration: none;
-  white-space: nowrap;
-  transition: all 0.3s ease;
+  transition: border-color 0.25s ease, background-color 0.25s ease;
 }
-.home-cta:hover { color: var(--dynamic-dominant-color); backdrop-filter: blur(32px) saturate(180%); -webkit-backdrop-filter: blur(32px) saturate(180%); }
+.home-cta:hover { border-color: var(--dynamic-dominant-color); background-color: rgba(var(--dynamic-dominant-color-rgb), 0.12); }
 .home-cta::after {
   content: "";
   position: absolute;
   top: -50px;
   left: -75px;
   width: 50px;
-  height: 155px;
+  height: 200px;
   z-index: -1;
   background: var(--dynamic-hsl-average);
   opacity: 0.1;
@@ -148,9 +150,34 @@
   transform: rotate(45deg);
   transition: all 500ms cubic-bezier(0.19, 1, 0.22, 1);
 }
-.home-cta:hover::after { left: 120%; opacity: 0.2; }
-.home-cta-tag { color: var(--primary-color); opacity: 0.7; transition: opacity 0.3s ease, color 0.3s ease; }
-.home-cta:hover .home-cta-tag { opacity: 1; color: rgba(var(--text-color-rgb), 0.8); }
+.home-cta:hover::after { left: 120%; opacity: 0.25; }
+.cta-top { display: flex; align-items: center; gap: 0.6rem; font-size: 0.68rem; letter-spacing: 1px; color: rgba(var(--text-color-rgb), 0.6); }
+.cta-idx { font-weight: 700; color: var(--dynamic-dominant-color); }
+.cta-path { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cta-keys { display: flex; gap: 0.2rem; margin-left: auto; }
+.cta-keys kbd {
+  display: inline-grid;
+  place-items: center;
+  min-width: 1.15rem;
+  height: 1.15rem;
+  box-sizing: border-box;
+  font-family: var(--font-neon);
+  font-size: 0.62rem;
+  font-weight: 700;
+  color: var(--text-color);
+  border: 1px solid rgba(var(--dynamic-dominant-color-rgb), 0.5);
+  border-bottom-width: 2px;
+  background: rgba(var(--dynamic-dominant-color-rgb), 0.08);
+}
+.cta-label { display: flex; align-items: baseline; font-family: var(--font-krypton); font-size: 1.15rem; font-weight: 700; white-space: nowrap; transition: color 0.25s ease; }
+.home-cta:hover .cta-label { color: var(--dynamic-dominant-color); }
+.home-cta-tag { color: var(--primary-color); opacity: 0.8; transition: color 0.25s ease; }
+.home-cta:hover .home-cta-tag { color: rgba(var(--text-color-rgb), 0.8); }
+.cta-arrow { margin-left: auto; color: var(--dynamic-dominant-color); transition: transform 0.25s ease; }
+.home-cta:hover .cta-arrow { transform: translateX(4px); }
+.cta-sub { font-size: 0.72rem; line-height: 1.4; color: rgba(var(--text-color-rgb), 0.7); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+@media (prefers-reduced-motion: reduce) { .home-cta:hover .cta-arrow { transform: none; } }
+@media (hover: none) { .cta-keys { display: none; } }
 
 /* Corner brackets for the intro and the log cards: top-left and bottom-right on the box, the other two on a span. */
 .intro, .recent-logs li { position: relative; }
@@ -263,11 +290,11 @@
 .home-mail { --hold: 420px; --hold-phone: 420px; }
 
 @media (max-width: 900px) {
-  .home-nav { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; }
-  .home-cta { min-width: 0; font-size: 0.98rem; padding: 0.9rem 0.5rem; }
+  .cta-sub { white-space: normal; }
 }
 @media (max-width: 580px) {
   .home-nav { grid-template-columns: 1fr; }
+  .cta-sub { white-space: nowrap; }
   .seg-path, .seg-ver { display: none; }
 }
 @media (max-width: 500px) {
@@ -276,3 +303,302 @@
   .rl-desc { font-size: 0.8rem; }
   .recent-logs a { padding: 1rem; }
 }
+
+/* ==== Journey and Substrate, the two engines this site runs on, and the languages tide (moved from About) ==== */
+/* Corner brackets: top-left and bottom-right on the box, the other two on an .ab-corners span inside it. */
+.ab-engine, .ab-langs { position: relative; }
+.ab-engine::before, .ab-engine::after, .ab-langs::before, .ab-langs::after, .home-body .ab-corners::before, .home-body .ab-corners::after {
+  content: "";
+  position: absolute;
+  width: 1.2rem;
+  height: 1.2rem;
+  border: 0 solid var(--dynamic-dominant-color);
+  pointer-events: none;
+  z-index: 3;
+}
+.ab-engine::before, .ab-langs::before { top: 0; left: 0; border-width: 2px 0 0 2px; }
+.ab-engine::after, .ab-langs::after { right: 0; bottom: 0; border-width: 0 2px 2px 0; }
+.home-body .ab-corners { position: absolute; inset: 0; pointer-events: none; }
+.home-body .ab-corners::before { top: 0; right: 0; border-width: 2px 2px 0 0; }
+.home-body .ab-corners::after { left: 0; bottom: 0; border-width: 0 0 2px 2px; }
+.ab-engines, .ab-langs { font-family: var(--font-neon); line-height: 1.6; }
+
+/* ---- engine cards (v3 JourneyBadge, SynclippyBadge) --------------------------------------------------------- */
+/* Both cards hold the same twelve rows (title, description, stack, badges, releases, three commands with their
+   badges, activity) and share the grid's row tracks through subgrid, so each box sits level with its twin. Rows are
+   0.5rem apart (a command and its badges); .ab-gap opens a new section at v3's 1.2rem, .ab-gap-s a new command. */
+.ab-engines { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 1rem; row-gap: 0; }
+.ab-engine {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: subgrid;
+  grid-row: span 12;
+  row-gap: 0.5rem;
+  min-width: 0;
+  padding: 1rem 1.5rem 1.5rem;
+  /* v3's top glow: a 4px line from the accent through the average and back, under the top corner brackets */
+  /* top-right (4px, over the glow line) and bottom-left brackets are drawn here as layers; the other two are ::before/::after */
+  --c: var(--dynamic-dominant-color);
+  background:
+    linear-gradient(var(--c), var(--c)) top right / 1.2rem 4px no-repeat,
+    linear-gradient(var(--c), var(--c)) top right / 2px 1.2rem no-repeat,
+    linear-gradient(var(--c), var(--c)) bottom left / 1.2rem 2px no-repeat,
+    linear-gradient(var(--c), var(--c)) bottom left / 2px 1.2rem no-repeat,
+    linear-gradient(to right, rgba(var(--dynamic-dominant-color-rgb), 0.7), rgba(var(--dynamic-hsl-average-rgb), 0.7), rgba(var(--dynamic-dominant-color-rgb), 0.7)) top / 100% 4px no-repeat,
+    rgba(var(--background-color-rgb), 0.5);
+  backdrop-filter: blur(32px) saturate(180%);
+  -webkit-backdrop-filter: blur(32px) saturate(180%);
+}
+.ab-engine > * { align-self: start; }
+.ab-engine > .ab-gap { margin-top: 0.7rem; }
+.ab-engine > .ab-gap-s { margin-top: 0.5rem; }
+/* the top brackets are 4px tall, as v3's, so they cover the glow line exactly; the bottom ones are 2px */
+.ab-engine::before { border-width: 4px 0 0 2px; }
+.ab-engine > .ab-corners { display: none; }
+
+.ab-engine-head { display: flex; align-items: center; gap: 0.3rem; min-height: 31px; }
+.ab-engine-title {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--dynamic-dominant-color);
+  text-decoration: underline rgba(var(--dynamic-dominant-color-rgb), 0.5) 0.25rem;
+  text-underline-offset: 4px;
+}
+/* v3's version badge: a dashed square turning a quarter at a time over a row of dashes running left. */
+.ab-phase { position: relative; flex: none; width: 31px; height: 31px; margin-left: auto; }
+.ab-phase-spin {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to right, var(--dynamic-hsl-average) 20%, transparent 21%) repeat-x;
+  background-size: 18px 4px;
+  background-position: 4.5px bottom;
+  animation: ab-phase-dash 0.5s linear infinite;
+}
+.ab-phase-spin::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 20px;
+  height: 20px;
+  background: var(--dynamic-dominant-color);
+  border: 1px dashed var(--dynamic-hsl-average);
+  transform: translate(-50%, -50%);
+  animation: ab-phase-turn 0.5s linear infinite;
+}
+.ab-phase-label {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 0.8rem;
+  font-weight: 800;
+  line-height: 1;
+  white-space: nowrap;
+  color: var(--text-color);
+}
+@keyframes ab-phase-dash { 0%, 25% { background-position: 5px bottom; } 75%, 100% { background-position: -15px bottom; } }
+@keyframes ab-phase-turn { 0%, 25% { transform: translate(-50%, -50%) rotate(0deg); } 75%, 100% { transform: translate(-55%, -55%) rotate(90deg); } }
+body.bg-off .ab-phase-spin, body.bg-off .ab-phase-spin::before { animation: none; }
+@media (prefers-reduced-motion: reduce) { .ab-phase-spin, .ab-phase-spin::before { animation: none; } }
+
+/* the repo description: three lines, as v3 clamped it, and always that tall so it can arrive late without moving
+   anything; the fourth line never shows */
+.ab-desc {
+  margin: 0;
+  height: 4.8em;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: rgba(var(--text-color-rgb), 0.9);
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+}
+
+/* Tech stack: small keys standing on one 2px accent line, like tabs (v3 techStack). */
+.ab-stack { position: relative; list-style: none; margin: 0; padding: 0; display: flex; align-items: center; gap: 0.3rem; width: fit-content; }
+.ab-stack::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: var(--dynamic-dominant-color); }
+.ab-stack li {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  box-sizing: border-box;
+  padding: 0.25rem;
+  color: var(--text-color);
+  opacity: 0.85;
+  background: rgba(var(--dynamic-dominant-color-rgb), 0.15);
+  border: 1px solid rgba(var(--dynamic-dominant-color-rgb), 0.5);
+}
+.ab-stack li .icon { width: 0.8rem; height: 0.8rem; }
+.ab-stack li .icon.ab-wide { width: 1.25rem; height: 1.25rem; }
+.ab-stack .ab-stack-k { width: 3rem; padding: 0 0.2rem; font-size: 0.7rem; line-height: 1.69; text-transform: uppercase; background: rgba(var(--dynamic-dominant-color-rgb), 0.5); }
+
+/* Badges: v3's echopoint badges drawn in place. A dark label with its icon, then the live value on an accent field;
+   a badge with no value is one accent field. 20px tall, 11px JetBrains Mono, a dashed accent frame. Value slots are
+   sized for their value so nothing reflows when it fills. */
+.ab-badges { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; }
+.ab-badge {
+  position: relative;
+  display: inline-flex;
+  align-items: stretch;
+  height: 22px;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font: 500 11px/1 var(--font-mono);
+  white-space: nowrap;
+  color: var(--text-color);
+  text-decoration: none;
+  background: none;
+  border: 1px dashed var(--dynamic-dominant-color);
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+}
+.ab-badge-k, .ab-badge-v { display: inline-flex; align-items: center; padding: 0 8px; transition: background-color 0.2s ease; }
+.ab-badge-k { gap: 5px; background: rgba(var(--bit-dark-color-rgb), 0.9); }
+.ab-badge-k .icon { width: 13px; height: 13px; }
+.ab-badge.is-solo .ab-badge-k { background: rgba(var(--dynamic-dominant-color-rgb), 0.3); }
+.ab-badge-v { justify-content: center; min-width: 6ch; font-variant-numeric: tabular-nums; background: rgba(var(--dynamic-dominant-color-rgb), 0.55); }
+.ab-badge-v[data-ab-live^="updated"] { min-width: 8ch; }
+.ab-badge-v[data-ab-live^="stars"] { min-width: 3ch; }
+.ab-badge-v[data-ab-live^="license"] { min-width: 4ch; }
+/* hover, the site's rule: the frame turns solid accent at the same width and an accent tint lies over the whole badge */
+.ab-badge:hover { border-style: solid; }
+.ab-badge:hover > span { background-image: linear-gradient(rgba(var(--dynamic-dominant-color-rgb), 0.25), rgba(var(--dynamic-dominant-color-rgb), 0.25)); }
+/* keyboard focus: the brackets over the badge's own frame (its two fields would hide them as a background) */
+.ab-badge:focus-visible { --focus-bg: none; }
+.ab-badge:focus-visible::after { content: ""; position: absolute; inset: -1px; background: var(--brackets); pointer-events: none; }
+
+/* Command boxes (v3 commandBox): click to copy. The copy glyph turns into a check while the text is on the clipboard. */
+.ab-command {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  min-width: 0;
+  padding: 0.4rem 0.6rem;
+  font: inherit;
+  font-size: 0.75rem;
+  text-align: left;
+  color: var(--dynamic-dominant-color);
+  background: rgba(var(--background-color-rgb), 0.3);
+  border: 2px solid rgba(var(--dynamic-dominant-color-rgb), 0.5);
+  cursor: copy;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+.ab-command:hover, .ab-command.is-copied { border-color: var(--dynamic-dominant-color); background-color: rgba(var(--dynamic-dominant-color-rgb), 0.1); }
+.ab-command-p { color: var(--dynamic-hsl-average-ink); font-weight: 700; user-select: none; }
+.ab-command-t { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-family: var(--font-mono); font-size: 0.78rem; }
+.ab-command-ic { display: inline-grid; opacity: 0.5; transition: opacity 0.2s ease; }
+.ab-command:hover .ab-command-ic, .ab-command:focus-visible .ab-command-ic { opacity: 1; }
+.ab-command-ic .icon { grid-area: 1 / 1; }
+.ab-ic-done, .ab-command.is-copied .ab-ic-copy { visibility: hidden; }
+.ab-command.is-copied .ab-ic-done { visibility: visible; color: var(--dynamic-dominant-color); }
+
+/* Timelines (releases, commits): v3's underlined section title resting on the top of its dashed box, which wears a
+   left bracket at the top and a full one at the bottom right. Fixed rows of two single lines each, square markers. */
+.ab-tl-wrap { position: relative; display: flex; flex-direction: column; align-self: stretch; }
+.ab-tl-title {
+  position: relative;
+  z-index: 1;
+  width: fit-content;
+  margin: 0 0 -0.1rem;
+  padding-left: 0.05rem;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 0.7;
+  color: var(--dynamic-dominant-color);
+  border-bottom: 3px solid var(--dynamic-dominant-color);
+}
+.ab-tl {
+  position: relative;
+  flex: 1;
+  list-style: none;
+  margin: 0;
+  padding: 0.55rem 0.9rem 0.5rem;
+  display: flex;
+  flex-direction: column;
+  border: 1px dashed var(--dynamic-dominant-color);
+  background: rgba(var(--background-color-rgb), 0.5);
+}
+.ab-tl::before, .ab-tl::after { content: ""; position: absolute; width: 1rem; height: 1rem; border: 0 solid var(--dynamic-dominant-color); pointer-events: none; }
+.ab-tl::before { top: -1px; left: -1px; border-left-width: 2px; }
+.ab-tl::after { right: -1px; bottom: -1px; border-width: 0 2px 2px 0; }
+/* one line per timeline: the latest entry, its meta after it on the same line */
+.ab-tl-row { display: flex; align-items: baseline; gap: 0.6rem; min-width: 0; }
+.ab-tl-mark { flex: 0 0 auto; align-self: center; width: 8px; height: 8px; background: var(--dynamic-hsl-average); }
+.ab-tl-main, .ab-tl-meta { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ab-tl-main { flex: 0 1 auto; }
+.ab-tl-meta { flex: 1 1 0; text-align: right; }
+.ab-tl-main { font-family: var(--font-mono); font-size: 0.8rem; line-height: 1.6; color: var(--dynamic-dominant-color); }
+.ab-tl-main a { color: inherit; text-decoration: none; transition: background-color 0.2s ease; }
+/* the line clips its link to an ellipsis, which would cut the link's brackets off: the line wears them instead */
+.ab-tl-main a:focus-visible { --focus-bg: rgba(var(--dynamic-dominant-color-rgb), 0.15); }
+.ab-tl-main:has(a:focus-visible) { background: var(--brackets); background-origin: border-box; }
+.ab-tl-main a:hover { background: rgba(var(--dynamic-dominant-color-rgb), 0.18); }
+.ab-tl-tag { margin-left: 0.5rem; color: var(--dynamic-hsl-average-ink); font-size: 0.72rem; }
+.ab-tl-meta { font-family: var(--font-mono); font-size: 0.68rem; line-height: 1.5; color: rgba(var(--text-color-rgb), 0.55); font-variant-numeric: tabular-nums; }
+.ab-tl-meta .ab-add { color: var(--dynamic-dominant-color); }
+
+/* ---- languages bar (v3 LangsBar) ------------------------------------------------------------------------------ */
+.ab-langs {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1rem 1.5rem;
+  background: rgba(var(--background-color-rgb), 0.5);
+  backdrop-filter: blur(32px) saturate(180%);
+  -webkit-backdrop-filter: blur(32px) saturate(180%);
+}
+.ab-langs-title { margin: 0; font-size: 0.75rem; font-weight: 400; letter-spacing: 2px; text-transform: uppercase; color: rgba(var(--text-color-rgb), 0.65); }
+/* the tide: an SVG of 1000 by 100 units stretched over the bar, one band per language (about-langs.js) */
+.ab-langs-bar { position: relative; height: 1.25rem; }
+.ab-tide { display: block; width: 100%; height: 100%; overflow: visible; }
+/* seven shades of the accent, lightest for the biggest share (v3's generateShades, as relative colours) */
+/* shade index by position (no inline style attributes, for the CSP); the tooltip swatch gets --s from TS */
+.ab-bar-seg:nth-child(1), .ab-lang:nth-child(1) { --s: 0; }
+.ab-bar-seg:nth-child(2), .ab-lang:nth-child(2) { --s: 1; }
+.ab-bar-seg:nth-child(3), .ab-lang:nth-child(3) { --s: 2; }
+.ab-bar-seg:nth-child(4), .ab-lang:nth-child(4) { --s: 3; }
+.ab-bar-seg:nth-child(5), .ab-lang:nth-child(5) { --s: 4; }
+.ab-bar-seg:nth-child(6), .ab-lang:nth-child(6) { --s: 5; }
+.ab-bar-seg:nth-child(7), .ab-lang:nth-child(7) { --s: 6; }
+.ab-swatch { background: hsl(from var(--dynamic-dominant-color) h s calc(80% - var(--s) * 10%)); }
+.ab-bar-seg { fill: hsl(from var(--dynamic-dominant-color) h s calc(80% - var(--s) * 10%)); }
+.ab-bar-seg { opacity: 0.8; transition: opacity 0.15s ease; }
+.ab-langs.is-live .ab-bar-seg { cursor: crosshair; }
+.ab-langs.is-live .ab-tide:has(.is-active) .ab-bar-seg:not(.is-active) { opacity: 0.35; }
+.ab-langs.is-live .ab-bar-seg.is-active { opacity: 1; }
+.ab-langs-tip {
+  position: absolute;
+  bottom: calc(100% + 0.5rem);
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.15rem 0.5rem;
+  font-size: 0.68rem;
+  white-space: nowrap;
+  pointer-events: none;
+  background: rgba(var(--bit-dark-color-rgb), 0.95);
+  border: 1px solid rgba(var(--dynamic-dominant-color-rgb), 0.5);
+  z-index: 4;
+}
+.ab-langs-tip b { color: var(--text-color); }
+.ab-langs-tip span { color: rgba(var(--text-color-rgb), 0.6); }
+.ab-langs-legend { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(7.5rem, 1fr)); gap: 0.35rem 0.75rem; }
+.ab-lang { display: flex; align-items: center; gap: 0.4rem; min-width: 0; font-size: 0.72rem; line-height: 1.5; opacity: 0.6; transition: opacity 0.15s ease; }
+.ab-lang.is-active { opacity: 1; }
+.ab-swatch { width: 8px; height: 8px; flex-shrink: 0; }
+.ab-lang-name { font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ab-lang-pct { font-size: 0.66rem; color: rgba(var(--text-color-rgb), 0.7); font-variant-numeric: tabular-nums; }
+
+@media (max-width: 760px) { .ab-engines { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 600px) { .ab-engine, .ab-langs { padding-left: 1rem; padding-right: 1rem; } }

@@ -1,0 +1,11 @@
+{#- The languages tide: bytes of code per language across my repositories (about-langs.js fills and draws it). -#}
+  <section class="ab-langs" aria-labelledby="ab-langs-title" data-ab-langs>
+    <span class="ab-corners" aria-hidden="true"></span>
+    <h2 class="sr-only" id="ab-langs-title">Languages across my repositories</h2>
+    <div class="ab-langs-bar" data-ab-bar aria-hidden="true"></div>
+    <ul class="ab-langs-legend" data-ab-legend aria-label="Languages by bytes of code">
+      {%- for i in range(end=7) %}
+      <li class="ab-lang"><i class="ab-swatch" aria-hidden="true"></i><span class="ab-lang-name">-</span><span class="ab-lang-pct">-</span></li>
+      {%- endfor %}
+    </ul>
+  </section>
