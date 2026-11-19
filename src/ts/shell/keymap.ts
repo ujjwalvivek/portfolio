@@ -1,24 +1,36 @@
 // The keyboard layout (ADR D-023): one shortcut per action, single keys or one chord, no timed chords after a modifier.
 // Single-key shortcuts are ignored while typing, and inside anything marked data-keys="off" (terminals, the navigator).
-// The shortcut sheet and the command palette read KEYS, so the layout is written down once.
+// The shortcut sheet, the command palette (its rows and footer) and the command hint all read KEYS, so the layout is
+// written down once.
 
 import { closeTop } from "./overlay.js";
 import { navigate } from "./router.js";
 
 export type Action = "palette" | "search" | "vibe" | "zen" | "music" | "help" | "home" | "about" | "blog" | "projects";
-export const KEYS: { keys: string; label: string; action?: Action }[] = [
-  { keys: "Ctrl K", label: "command palette", action: "palette" },
-  { keys: "g h", label: "go home", action: "home" },
-  { keys: "g a", label: "go to about", action: "about" },
-  { keys: "g b", label: "go to the blog", action: "blog" },
-  { keys: "g p", label: "go to projects", action: "projects" },
-  { keys: "/", label: "search", action: "search" },
-  { keys: "v", label: "vibe switch: wallpaper and palette", action: "vibe" },
-  { keys: "z", label: "zen: fullscreen", action: "zen" },
-  { keys: "m", label: "music on or off", action: "music" },
-  { keys: "?", label: "this sheet", action: "help" },
-  { keys: "Esc", label: "close the top overlay" },
+// label is the shortcut sheet's line; short is the palette footer's word for it.
+export const KEYS: { keys: string; label: string; short: string; action?: Action }[] = [
+  { keys: "Ctrl K", label: "command palette", short: "palette", action: "palette" },
+  { keys: "g h", label: "go home", short: "home", action: "home" },
+  { keys: "g a", label: "go to about", short: "about", action: "about" },
+  { keys: "g b", label: "go to the blog", short: "blog", action: "blog" },
+  { keys: "g p", label: "go to projects", short: "projects", action: "projects" },
+  { keys: "/", label: "search", short: "search", action: "search" },
+  { keys: "v", label: "vibe switch: wallpaper and palette", short: "vibe", action: "vibe" },
+  { keys: "z", label: "zen: fullscreen", short: "zen", action: "zen" },
+  { keys: "m", label: "music on or off", short: "music", action: "music" },
+  { keys: "?", label: "this sheet", short: "keys", action: "help" },
+  { keys: "Esc", label: "close the top overlay", short: "close" },
 ];
+
+export const PAGES: Partial<Record<Action, string>> = { home: "/", about: "/about/", blog: "/blog/", projects: "/projects/" };
+
+const apple = /Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent);
+
+// The keycaps for an action (or a keys string), as this machine names them: Ctrl reads Cmd on Apple keyboards.
+export function keycaps(of: Action | string): string[] {
+  const keys = KEYS.find((k) => k.action === of)?.keys ?? (KEYS.some((k) => k.keys === of) ? of : "");
+  return keys ? keys.split(" ").map((k) => (k === "Ctrl" && apple ? "⌘" : k)) : [];
+}
 
 const handlers = new Map<Action, () => boolean | void>();
 
@@ -30,12 +42,14 @@ export function handle(action: Action, fn: () => boolean | void): () => void {
   };
 }
 
-function run(action: Action): boolean {
+// Runs an action as its key would. The palette uses this, so a row and its shortcut always do the same thing.
+export function trigger(action: Action): boolean {
   const fn = handlers.get(action);
   if (fn && fn() !== false) return true;
-  const go: Partial<Record<Action, string>> = { home: "/", about: "/about/", blog: "/blog/", projects: "/projects/" };
-  if (go[action]) {
-    navigate(go[action]!);
+  const to = PAGES[action];
+  if (to) {
+    while (closeTop()); // a chord pressed over an open overlay leaves for the new page with nothing on top
+    void navigate(to);
     return true;
   }
   if (action === "zen") {
@@ -43,7 +57,7 @@ function run(action: Action): boolean {
     else void document.documentElement.requestFullscreen?.();
     return true;
   }
-  if (action === "search") return run("palette");
+  if (action === "search") return trigger("palette");
   return false;
 }
 
@@ -61,23 +75,27 @@ export function startKeymap(): void {
       return;
     }
     if ((e.ctrlKey || e.metaKey) && !e.altKey && !e.shiftKey && e.key.toLowerCase() === "k") {
-      if (run("palette")) e.preventDefault();
+      if (trigger("palette")) e.preventDefault();
       return;
     }
     if (e.ctrlKey || e.metaKey || e.altKey || e.repeat || typing(e.target)) return;
 
-    if (pendingG && Date.now() - pendingG < 1000) {
+    if (pendingG) {
+      const fresh = Date.now() - pendingG < 1000;
       pendingG = 0;
       const to = ({ h: "home", a: "about", b: "blog", p: "projects" } as const)[e.key as "h" | "a" | "b" | "p"];
-      if (to && run(to)) e.preventDefault();
-      return;
+      if (fresh && to) {
+        if (trigger(to)) e.preventDefault();
+        return;
+      }
+      // anything else after g is an ordinary key press
     }
-    const single: Record<string, Action> = { "/": "search", v: "vibe", z: "zen", m: "music", "?": "help" };
     if (e.key === "g") {
       pendingG = Date.now();
       return;
     }
+    const single: Record<string, Action> = { "/": "search", v: "vibe", z: "zen", m: "music", "?": "help" };
     const action = single[e.key];
-    if (action && run(action)) e.preventDefault();
+    if (action && trigger(action)) e.preventDefault();
   });
 }

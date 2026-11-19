@@ -136,10 +136,11 @@ async function render(url: URL, push: boolean): Promise<void> {
   await mountModules(main());
 }
 
-export function navigate(path: string): void {
+// Resolves once the new page is swapped in and its modules are mounted (callers that only navigate can ignore it).
+export function navigate(path: string): Promise<void> {
   const url = new URL(path, location.href);
   if (!url.pathname.endsWith("/") && !/\.[a-z0-9]+$/i.test(url.pathname)) url.pathname += "/";
-  void render(url, true);
+  return render(url, true);
 }
 
 export function startRouter(): void {

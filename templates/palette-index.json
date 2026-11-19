@@ -1,0 +1,15 @@
+{#- The command palette's index, written as a Zola "feed" (config.toml: feed_filenames) so it lands at /palette-index.json
+    and stays out of the sitemap. Fetched by command-palette.ts the first time the palette opens (or on idle).
+    t title, u url, d description, g tags, y date. Projects link to their row on /projects/ (the row id is the project id). -#}
+{%- set blog = get_section(path="blog/_index.md") -%}
+{%- set data = load_data(path="data/projects.toml") -%}
+{"posts":[
+{%- for p in blog.pages -%}
+{"t":{{ p.title | json_encode | safe }},"u":{{ p.path | json_encode | safe }},"d":{{ p.description | default(value="") | json_encode | safe }},"g":{{ p.taxonomies.tags | default(value=[]) | json_encode | safe }},"y":{{ p.date | default(value="") | json_encode | safe }}}{% if not loop.last %},{% endif %}
+{%- endfor -%}
+],"projects":[
+{%- for p in data.projects -%}
+{%- set text = p.content | join(sep=" ") -%}
+{"t":{{ p.title | json_encode | safe }},"u":{{ ("/projects/#" ~ p.id) | json_encode | safe }},"d":{{ text | truncate(length=160) | json_encode | safe }},"g":{{ p.tags | json_encode | safe }}}{% if not loop.last %},{% endif %}
+{%- endfor -%}
+]}
