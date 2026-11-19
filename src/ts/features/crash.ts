@@ -3,9 +3,9 @@
 // Try Harder."), minimise opens DuckDuckGo, restart reloads, the bug key writes to Vivek. v3 never let Esc out either;
 // here Esc gets the same refusal as the close key. The right-click menu is off and the console gets v3's note.
 //
-// Restyled to the design system: v3's mac-style coloured dots become three keycaps that keep their jokes, the outlined
-// red headline is drawn with a text stroke in the error colour (this screen is an error), and the green glow on the
-// footer is gone. The page underneath is made inert and the site's shortcuts are held, so nothing reacts behind it.
+// Drawn as a tab that crashed: an opaque flat page, no glass and no wallpaper. v3's traffic lights stay red, amber and
+// green (status colours), as small squares for the site's square corners, with v3's tooltips. The headline is solid
+// in the error colour. The page underneath is made inert and the site's shortcuts are held, so nothing reacts behind it.
 
 import { loadFeature } from "../lib/lazy.js";
 
@@ -41,15 +41,16 @@ function show(reason?: string): void {
   win.tabIndex = -1;
   const bar = el("div", "crash-bar");
   const keys = el("div", "crash-keys");
-  const key = (label: string, title: string, cls = "") => {
-    const b = el("button", `crash-key ${cls}`.trim(), label);
+  const key = (label: string, title: string, cls: string) => {
+    const b = el("button", `crash-light ${cls}`);
     b.type = "button";
     b.title = title;
+    b.setAttribute("aria-label", label);
     return b;
   };
-  const closeKey = key("close", "You wouldn't", "is-close");
-  const minKey = key("minimise", "Embrace Privacy!");
-  const restartKey = key("restart", "Refresh button for the curious.", "is-restart");
+  const closeKey = key("Close", "You wouldn't", "is-red");
+  const minKey = key("Minimise", "Embrace Privacy!", "is-amber");
+  const restartKey = key("Reload", "Refresh button for the curious.", "is-green");
   keys.append(closeKey, minKey, restartKey);
   const title = el("span", "crash-title", "uh oh!");
   const bug = el("a", "crash-bug");
