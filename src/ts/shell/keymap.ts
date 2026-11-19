@@ -7,19 +7,19 @@ import { closeTop } from "./overlay.js";
 import { navigate } from "./router.js";
 
 export type Action = "palette" | "search" | "vibe" | "zen" | "music" | "help" | "home" | "about" | "blog" | "projects";
-// label is the shortcut sheet's line; short is the palette footer's word for it.
-export const KEYS: { keys: string; label: string; short: string; action?: Action }[] = [
-  { keys: "Ctrl K", label: "command palette", short: "palette", action: "palette" },
-  { keys: "g h", label: "go home", short: "home", action: "home" },
-  { keys: "g a", label: "go to about", short: "about", action: "about" },
-  { keys: "g b", label: "go to the blog", short: "blog", action: "blog" },
-  { keys: "g p", label: "go to projects", short: "projects", action: "projects" },
-  { keys: "/", label: "search", short: "search", action: "search" },
-  { keys: "v", label: "vibe switch: wallpaper and palette", short: "vibe", action: "vibe" },
-  { keys: "z", label: "zen: fullscreen", short: "zen", action: "zen" },
-  { keys: "m", label: "music on or off", short: "music", action: "music" },
-  { keys: "?", label: "this sheet", short: "keys", action: "help" },
-  { keys: "Esc", label: "close the top overlay", short: "close" },
+// label is the shortcut sheet's line.
+export const KEYS: { keys: string; label: string; action?: Action }[] = [
+  { keys: "Ctrl K", label: "command palette", action: "palette" },
+  { keys: "g h", label: "go home", action: "home" },
+  { keys: "g a", label: "go to about", action: "about" },
+  { keys: "g b", label: "go to the blog", action: "blog" },
+  { keys: "g p", label: "go to projects", action: "projects" },
+  { keys: "/", label: "search the blog list, else open the palette", action: "search" },
+  { keys: "v", label: "vibe switch: wallpaper and palette", action: "vibe" },
+  { keys: "z", label: "zen mode: fullscreen", action: "zen" },
+  { keys: "m", label: "music on or off", action: "music" },
+  { keys: "?", label: "keyboard shortcuts", action: "help" },
+  { keys: "Esc", label: "close the top overlay" },
 ];
 
 export const PAGES: Partial<Record<Action, string>> = { home: "/", about: "/about/", blog: "/blog/", projects: "/projects/" };

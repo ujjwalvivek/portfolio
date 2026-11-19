@@ -36,6 +36,7 @@ function wireBars(): void {
     if (!opener) return;
     if (opener.dataset.open === "vibe") openVibe();
     if (opener.dataset.open === "stack") openStack();
+    if (opener.dataset.open === "palette") openPalette();
   });
 }
 

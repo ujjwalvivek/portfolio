@@ -4,7 +4,7 @@
 // An icon is used as <svg><use href="/icons.svg#fa-code"/></svg>, or "#ti-flow-switch" for an inlined one.
 import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
 
-const SHELL = ["TiFlowSwitch", "RiStackFill", "TfiLinkedin", "TbBrandGithubFilled", "FaFolderTree", "RxTriangleRight", "FaCode"];
+const SHELL = ["TiFlowSwitch", "RiStackFill", "TfiLinkedin", "TbBrandGithubFilled", "FaFolderTree", "RxTriangleRight", "FaCode", "FiCommand"];
 
 const icons = JSON.parse(readFileSync("assets/icons.json", "utf8"));
 const kebab = (name) => name.replace(/(?<!^)(?=[A-Z])/g, "-").toLowerCase();
