@@ -70,7 +70,7 @@ summary.vibe-sec-head:hover .vibe-sec-title { color: var(--dynamic-dominant-colo
 }
 .vibe-key:hover:not(:disabled) { border-color: var(--dynamic-dominant-color); background: rgba(var(--dynamic-dominant-color-rgb), 0.2); }
 .vibe-key[aria-pressed="true"] {
-  --focus-fill: var(--dynamic-dominant-color);
+  --focus-bg: var(--brackets-ink), var(--dynamic-dominant-color);
   color: var(--background-color);
   background: var(--dynamic-dominant-color);
   border-color: var(--dynamic-dominant-color);
@@ -102,7 +102,7 @@ summary.vibe-sec-head:hover .vibe-sec-title { color: var(--dynamic-dominant-colo
 .vibe-recipe:nth-child(even):not([aria-checked="true"]):not(:disabled):hover { transform: translateY(-3px) rotate(0.8deg); }
 .vibe-recipe:hover:not(:disabled) { border-color: var(--dynamic-dominant-color); border-bottom-color: color-mix(in srgb, var(--dynamic-dominant-color) 45%, #000); background: rgba(var(--dynamic-dominant-color-rgb), 0.2); }
 .vibe-recipe[aria-checked="true"] {
-  --focus-fill: var(--dynamic-dominant-color);
+  --focus-bg: var(--brackets-ink), var(--dynamic-dominant-color);
   color: var(--background-color);
   background: var(--dynamic-dominant-color);
   border-color: var(--dynamic-dominant-color);
@@ -287,3 +287,8 @@ summary.vibe-sec-head:hover .vibe-sec-title { color: var(--dynamic-dominant-colo
 .vibe-sec .vibe-grid { padding: 1.6rem 0.2rem 0.6rem; }
 /* keyboard focus draws the brackets over the swatch's own gradient, not over the site's focus tint */
 .vibe-swatch { --focus-fill: var(--swatch); }
+
+/* Reduced motion: keys and tiles keep their hover colours but do not lift or tilt; a pressed key still sits pressed. */
+@media (prefers-reduced-motion: reduce) {
+  .vibe-recipe:not([aria-checked="true"]):hover, .vibe-swatch:not([aria-checked="true"]):hover { transform: none !important; }
+}

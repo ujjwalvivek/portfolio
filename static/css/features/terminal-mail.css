@@ -228,7 +228,7 @@
   font-family: var(--font-neon);
   font-size: 0.8rem;
 }
-.tm-input::placeholder { color: rgba(var(--primary-color-rgb), 0.5); font-style: normal; }
+.tm-input::placeholder { color: var(--primary-color); font-style: normal; }
 .tm-input:disabled { opacity: 0.4; cursor: not-allowed; }
 
 /* ---- help bar: message preview and the keys for this step ---- */
@@ -269,8 +269,8 @@
 }
 .tm-label::after { content: ":"; }
 .tm-value { min-width: 0; max-width: 100px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--text-color); }
-.tm-waiting { color: rgba(var(--primary-color-rgb), 0.4); }
-.tm-dim { color: rgba(var(--primary-color-rgb), 0.5); }
+.tm-waiting { color: var(--primary-color); }
+.tm-dim { color: var(--primary-color); }
 
 .tm-hints { flex-shrink: 0; display: flex; align-items: center; gap: 0.75rem; }
 .tm-hint { display: flex; align-items: center; gap: 0.3rem; }

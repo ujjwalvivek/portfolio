@@ -235,7 +235,9 @@ export function mount(host: HTMLElement): () => void {
   title.append("terminalmail@ujjwalvivek");
   const status = el("span", "tm-status is-ready");
   status.setAttribute("role", "status");
-  status.setAttribute("aria-label", "ready");
+  // the dot is the visible state; screen readers hear its word, as text, since a live region reads text, not labels
+  const statusText = el("span", "sr-only", "ready");
+  status.append(statusText);
   header.append(dots, title, status);
 
   const termBody = el("div", "tm-body");
@@ -349,7 +351,7 @@ export function mount(host: HTMLElement): () => void {
       prompt.replaceChildren(...promptParts);
     }
     status.className = `tm-status ${sending ? "is-sending" : "is-ready"}`;
-    status.setAttribute("aria-label", sending ? "sending" : "ready");
+    statusText.textContent = sending ? "sending" : "ready";
 
     value(previewSubject, subject ? document.createTextNode(subject) : waiting());
     value(previewBody, body.length ? document.createTextNode(`${body.length} line${body.length === 1 ? "" : "s"}`) : waiting());

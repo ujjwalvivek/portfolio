@@ -13,6 +13,55 @@ export type OverlaySpec = {
 type Open = { id: string; el: HTMLElement; close: () => void };
 const stack: Open[] = [];
 
+// What Tab can reach inside an overlay, in order.
+const FOCUSABLE =
+  'a[href], button:not([disabled]), input:not([disabled]):not([type="hidden"]), select:not([disabled]), textarea:not([disabled]), summary, iframe, [tabindex]:not([tabindex="-1"]), [contenteditable="true"]';
+function tabbable(root: HTMLElement): HTMLElement[] {
+  return [...root.querySelectorAll<HTMLElement>(FOCUSABLE)].filter(
+    (el) => !el.closest("[inert], [hidden]") && el.getClientRects().length > 0,
+  );
+}
+
+// While an overlay is open, Tab and Shift+Tab cycle inside the top one, and focus that lands outside it is pulled back.
+let trapping = false;
+function trap(): void {
+  if (trapping) return;
+  trapping = true;
+  document.addEventListener(
+    "keydown",
+    (e) => {
+      const top = stack.at(-1);
+      if (e.key !== "Tab" || !top || e.defaultPrevented) return;
+      const card = top.el.querySelector<HTMLElement>(".overlay-card") ?? top.el;
+      const list = tabbable(card);
+      if (!list.length) {
+        e.preventDefault();
+        card.focus({ preventScroll: true });
+        return;
+      }
+      const at = list.indexOf(document.activeElement as HTMLElement);
+      const inside = card.contains(document.activeElement);
+      if (e.shiftKey && (!inside || at <= 0)) {
+        e.preventDefault();
+        list.at(-1)!.focus();
+      } else if (!e.shiftKey && (at === list.length - 1 || !inside)) {
+        e.preventDefault();
+        list[0]!.focus();
+      }
+    },
+    true,
+  );
+  document.addEventListener("focusin", (e) => {
+    const top = stack.at(-1);
+    const target = e.target as Node | null;
+    if (!top || !target || top.el.contains(target)) return;
+    // another layer (the crash screen, a lightbox) may sit above the overlays; leave its focus alone
+    const modal = (target as Element).closest?.('[aria-modal="true"]');
+    if (modal && !modal.closest(".overlay")) return;
+    (top.el.querySelector<HTMLElement>(".overlay-card") ?? top.el).focus({ preventScroll: true });
+  });
+}
+
 export function isOpen(id: string): boolean {
   return stack.some((o) => o.id === id);
 }
@@ -51,6 +100,7 @@ export function openOverlay(spec: OverlaySpec): void {
   esc.type = "button";
   esc.className = "chip";
   esc.textContent = "ESC";
+  esc.setAttribute("aria-label", "Close (Esc)");
   head.append(title, esc);
 
   const body = document.createElement("div");
@@ -80,6 +130,7 @@ export function openOverlay(spec: OverlaySpec): void {
   overlay.append(card);
   document.body.append(overlay);
   stack.push({ id: spec.id, el: overlay, close });
+  trap();
   card.focus({ preventScroll: true });
 }
 

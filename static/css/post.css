@@ -306,7 +306,8 @@
   border: 2px solid var(--dynamic-dominant-color);
   background: rgba(var(--background-color-rgb), 0.04);
 }
-.post .markdown img.is-zoomable { cursor: zoom-in; }
+/* the frame is solid in the theme colour, so focus draws the brackets just inside it, in the image's padding */
+.post .markdown img.is-zoomable { cursor: zoom-in; --focus-origin: padding-box; }
 .post .markdown p:has(> img:only-child) { margin: 0; }
 
 /* figures, raw iframes and captions */
@@ -506,6 +507,7 @@
   z-index: 2;
   transition: background 0.2s ease, border-color 0.2s ease;
 }
+.post .code-copy { --focus-fill: rgba(var(--dynamic-dominant-color-rgb), 0.25); }
 .post .code-copy:hover { background: rgba(var(--dynamic-dominant-color-rgb), 0.25); border-color: var(--dynamic-dominant-color); }
 
 /* Syntax colours. Zola (giallo, class mode, one-dark-pro) emits z-1..z-12; these are one-dark-pro's hues, each
@@ -634,7 +636,7 @@
 .post .dino-dead { font-size: 1.5rem; font-weight: 800; letter-spacing: -1px; color: var(--status-ram-color); }
 .post .dino-final { position: absolute; right: 10px; top: 6px; font-size: 1.1rem; font-weight: 700; letter-spacing: -1px; color: var(--text-color); }
 .post .dino-final b { color: var(--dynamic-dominant-color); }
-.post .dino-hint { font-size: 0.8rem; font-weight: 700; color: var(--text-color); opacity: 0.4; }
+.post .dino-hint { font-size: 0.8rem; font-weight: 700; color: var(--text-color); opacity: 0.5; }
 .post .dino-hint u { color: var(--dynamic-dominant-color); }
 .post .dino-hint.is-faint { opacity: 0.25; }
 .post .dino-flicker { animation: dino-flicker 1.2s infinite alternate; }

@@ -100,6 +100,7 @@
 .pj-filter:hover { border-color: var(--dynamic-dominant-color); }
 /* the chosen filter is a pressed key: filled, text in the background colour, its base flattened */
 .pj-filter[aria-pressed="true"] {
+  --focus-bg: var(--brackets-ink), var(--dynamic-dominant-color);
   color: var(--background-color);
   background: var(--dynamic-dominant-color);
   border-color: var(--dynamic-dominant-color);

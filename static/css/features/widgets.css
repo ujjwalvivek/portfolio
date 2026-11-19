@@ -207,8 +207,8 @@
   transition: background 0.15s, border-color 0.15s;
 }
 .cal-cell:hover { background: rgba(var(--dynamic-dominant-color-rgb), 0.16); border-color: rgba(var(--dynamic-dominant-color-rgb), 0.35); }
-.cal-cell.is-today { background: rgba(var(--dynamic-dominant-color-rgb), 0.22); border-color: rgba(var(--dynamic-dominant-color-rgb), 0.45); }
-.cal-cell.is-active { background: rgba(var(--dynamic-dominant-color-rgb), 0.28); border-color: rgba(var(--dynamic-dominant-color-rgb), 0.6); }
+.cal-cell.is-today { --focus-fill: rgba(var(--dynamic-dominant-color-rgb), 0.22); background: rgba(var(--dynamic-dominant-color-rgb), 0.22); border-color: rgba(var(--dynamic-dominant-color-rgb), 0.45); }
+.cal-cell.is-active { --focus-fill: rgba(var(--dynamic-dominant-color-rgb), 0.28); background: rgba(var(--dynamic-dominant-color-rgb), 0.28); border-color: rgba(var(--dynamic-dominant-color-rgb), 0.6); }
 .cal-day { font-size: 0.5rem; text-transform: uppercase; letter-spacing: 0.06em; opacity: 0.55; line-height: 1; }
 .cal-num { font-size: 0.95rem; font-weight: 700; line-height: 1; }
 

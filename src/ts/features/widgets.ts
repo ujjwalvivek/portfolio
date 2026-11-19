@@ -19,7 +19,7 @@ const icon = (id: string) => `<svg class="icon" aria-hidden="true"><use href="/i
 
 function card(title: string, iconId: string, body: string, foot: string): string {
   return `<article class="w-card">
-    <h3 class="w-title">${icon(iconId)}<span>${title}</span></h3>
+    <h2 class="w-title">${icon(iconId)}<span>${title}</span></h2>
     ${body}
     <div class="w-foot">${foot}</div>
   </article>`;
@@ -53,7 +53,7 @@ const TEMPLATE = `<div class="widgets">
     "Clicker",
     "tb-click",
     `<div class="w-frame w-clicker" data-clicker><button class="w-cta" type="button" data-click>
-      <span class="w-count" data-global aria-live="polite">-</span>
+      <span class="w-count" data-global>-</span>
       <span class="w-cta-text">CLICK ME</span>
       <span class="w-personal" data-personal></span>
     </button></div>`,
@@ -221,6 +221,7 @@ function mountCal(root: HTMLElement): () => void {
       <div class="cal-slots">${slots}</div>
       <a class="cal-book" href="${CAL_LINK}?date=${date}" target="_blank" rel="noopener noreferrer">Book on cal.com ${icon("md-open-in-new")}</a>`;
     overlay.inert = false;
+    grid.inert = true; // the days sit under the open slot sheet; Tab should not walk them
     overlay.classList.add("is-open");
     overlay.querySelector<HTMLElement>(".cal-back")?.focus({ preventScroll: true });
   };
@@ -230,6 +231,7 @@ function mountCal(root: HTMLElement): () => void {
     const back = overlay.contains(document.activeElement);
     overlay.classList.remove("is-open");
     overlay.inert = true;
+    grid.inert = false;
     cells[selected]?.classList.remove("is-active");
     if (back) cells[selected]?.focus({ preventScroll: true });
     selected = -1;

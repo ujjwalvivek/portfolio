@@ -302,7 +302,7 @@ body.bg-off .ab-phase-spin, body.bg-off .ab-phase-spin::before { animation: none
 .ab-badge:hover { border-style: solid; }
 .ab-badge:hover > span { background-image: linear-gradient(rgba(var(--dynamic-dominant-color-rgb), 0.25), rgba(var(--dynamic-dominant-color-rgb), 0.25)); }
 /* keyboard focus: the brackets over the badge's own frame (its two fields would hide them as a background) */
-.ab-badge:focus-visible { background: none; }
+.ab-badge:focus-visible { --focus-bg: none; }
 .ab-badge:focus-visible::after { content: ""; position: absolute; inset: -1px; background: var(--brackets); pointer-events: none; }
 
 /* Command boxes (v3 commandBox): click to copy. The copy glyph turns into a check while the text is on the clipboard. */
@@ -369,6 +369,9 @@ body.bg-off .ab-phase-spin, body.bg-off .ab-phase-spin::before { animation: none
 .ab-tl-main, .ab-tl-meta { grid-column: 2; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .ab-tl-main { font-family: var(--font-mono); font-size: 0.8rem; line-height: 1.6; color: var(--dynamic-dominant-color); }
 .ab-tl-main a { color: inherit; text-decoration: none; transition: background-color 0.2s ease; }
+/* the line clips its link to an ellipsis, which would cut the link's brackets off: the line wears them instead */
+.ab-tl-main a:focus-visible { --focus-bg: rgba(var(--dynamic-dominant-color-rgb), 0.15); }
+.ab-tl-main:has(a:focus-visible) { background: var(--brackets); background-origin: border-box; }
 .ab-tl-main a:hover { background: rgba(var(--dynamic-dominant-color-rgb), 0.18); }
 .ab-tl-tag { margin-left: 0.5rem; color: var(--dynamic-hsl-average); font-size: 0.72rem; }
 .ab-tl-meta { font-family: var(--font-mono); font-size: 0.68rem; line-height: 1.5; color: rgba(var(--text-color-rgb), 0.55); font-variant-numeric: tabular-nums; }
@@ -536,7 +539,7 @@ body.bg-off .ab-phase-spin, body.bg-off .ab-phase-spin::before { animation: none
 .ab-resume-body { display: flex; flex-direction: column; overflow: hidden; background: rgba(255, 255, 255, 0.04); }
 .ab-resume-card .pdfv { background: transparent; }
 /* the page area is a container: focus leaves it as it is (no brackets, no fill) */
-.ab-resume-card .pdfv-scroll:focus-visible { background: none; }
+.ab-resume-card .pdfv-scroll:focus-visible { --focus-bg: none; }
 .ab-resume-card .overlay-head { flex-wrap: wrap; row-gap: 0.4rem; padding: 0.45rem 1rem; }
 .ab-resume-card .overlay-title { flex: 1 1 8rem; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .ab-pdf-tools { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem 0.9rem; font-size: 0.8rem; white-space: nowrap; }
