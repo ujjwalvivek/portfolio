@@ -202,7 +202,7 @@ Weapon System Architecture
 ## Putting It Together
 
 | Feature                | CoordinationSystem                         | Inventory-WeaponSystem                           |
-| :--------------------- | :----------------------------------------- | :----------------------------------------------- |
+| ---------------------- | ------------------------------------------ | ------------------------------------------------ |
 | Sync granularity       | Two floats + one yaw per frame             | None (local-only)                                |
 | Determinism guardrails | Fixed timestep, clamped input              | ScriptableObjects avoid runtime mutation         |
 | Extensibility          | Drop-in transport layer later              | Add `Item` subclasses or new `WeaponData` assets |

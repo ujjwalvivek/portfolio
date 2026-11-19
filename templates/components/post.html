@@ -14,5 +14,5 @@
 {%- elif cover == "gogs" -%}{%- set cover_src = "https://cdn.ujjwalvivek.com/posts/media/gogs_load.webp" -%}
 {%- else -%}{%- set cover_src = "https://cdn.ujjwalvivek.com/posts/media/engine_load.webp" -%}
 {%- endif -%}
-<figure class="embed" data-embed data-src="{{ src }}"{% if title %} data-title="{{ title }}"{% endif %}><div class="embed-frame" style="aspect-ratio: {{ ratio }}"><a class="embed-cover" href="{{ src }}" target="_blank" rel="noopener" data-embed-cover><img src="{{ cover_src }}" alt="Click to load{% if title %}: {{ title }}{% endif %}" loading="lazy"></a></div>{% if caption %}<figcaption>{{ caption }}</figcaption>{% endif %}</figure>
+<figure class="embed" data-embed data-src="{{ src }}"{% if title %} data-title="{{ title }}"{% endif %}><div class="embed-frame"{% if ratio != "16/9" %} data-ratio="{{ ratio }}"{% endif %}><a class="embed-cover" href="{{ src }}" target="_blank" rel="noopener" data-embed-cover><img src="{{ cover_src }}" alt="Click to load{% if title %}: {{ title }}{% endif %}" loading="lazy"></a></div>{% if caption %}<figcaption>{{ caption }}</figcaption>{% endif %}</figure>
 {%- endcomponent embed %}
