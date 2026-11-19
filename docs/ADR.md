@@ -43,8 +43,8 @@
 
 | Item                     | Current state                                                        |
 | ------------------------ | -------------------------------------------------------------------- |
-| Current milestone        | M4: projects (M0 to M3 accepted by Vivek; M3 on 2026-11-19)          |
-| Next milestone           | M5: about, after M4 review                                           |
+| Current milestone        | M5: about (M0 to M4 accepted by Vivek; M4 on 2026-11-19)             |
+| Next milestone           | M6: global features, after M5 review                                 |
 | Accepted foundation      | Zola pages, TypeScript modules, substrate consumer, header game      |
 | Immediate decision gate  | None for M0; Q-02 and Q-08 are needed later                          |
 | Production               | v3 stays live from main until M8 cutover                             |
@@ -606,7 +606,7 @@ The 34 CSS modules become plain CSS files, one per page or feature, each scoped 
 | Projects fake 2 s FETCHING bar       | Removed (D-024)                                                | M4        |
 | Notion and PDF overlays on Projects  | Ported                                                         | M4        |
 | About hero, intro, stormtrooper      | Ported                                                         | M5        |
-| Journey and TinyTS badges            | Ported; img tags for echopoint SVGs                            | M5        |
+| Journey and Substrate cards          | Drawn natively from echopoint JSON in theme colours (v3's SVGs were ~600 KB each) | M5 |
 | Langs bar                            | Ported                                                         | M5        |
 | Recent projects                      | Ported; dev/PM selection fixed                                 | M5        |
 | Resume bar, arrow pointer, resume PDF viewer | Ported; viewer rebuilt on pdf.js with the same toolbar, page-width default, thumbnails and dark/light document switch | M5 |
@@ -850,3 +850,4 @@ Merge v4 into main, deploy, verify live, tag v4.0.0, update the root list and Pr
 - 2026-11-19: M3 built by two streams and merged: blog list (84b2b46; search filters the rendered cards, query kept in ?q=, tag clicks filter) and post page (ce5ecf6; window chrome, build-time TOC with scroll spy, code copy, lightbox, click-to-load embeds, dino in TS, highlight classes tinted toward the accent, MathML, related posts by shared tags). log_0010's devhub screenshot now points at a pinned devhub commit. Site links use page paths, not permalinks, so previews and soft navigation stay on the same host. Open for Vivek: reading times (Zola counts lower than v3) and log_0007's date (file 2026-03-07, v3 list 2026-03-14). Awaiting Vivek's review of M3.
 - 2026-11-19: M3 accepted. Header: the v3 HTML title with glitch and glow is gone; the frame shows a pixel spinner (eight squares in a 3 x 3 ring, the dominant colour) until the scene's first frame, or one line if the scene can't start; the heading stays for screen readers. M4 built by two streams and merged: projects page (0af34fd; data/projects.toml with all 25 entries, one list styled as table or cards, filters in ?filter=, keyboard and touch tooltips, row ids for deep links, Notion overlay, no FETCHING bar) and the PDF viewer (02af1e1; pdfjs-dist 6.5.438 vendored, 136 KB + 378 KB gzip loaded only on open; mountPdf(host, url, {title}); lazy pages with canvas release, text layer, links, thumbnails, pinch and ctrl-wheel zoom, real progress, honest errors). The CDN answers OPTIONS with 403 and hides range headers, so PDFs download whole; fine for the resumes. Awaiting Vivek's review of M4.
 - 2026-11-19: Q-07 answered by Vivek: the first-visit command hint toast stays, shows at once (no delay), and is quieter than v3's.
+- 2026-11-19: M4 accepted. M5 built by a stream and merged (556caa1): portrait, intro terminal, stormtroopers as SVG frames, Journey and Substrate cards (TinyTS replaced at Vivek's call; Substrate's releases from npm versions), languages bar, recent projects (v3 bug fixed: top two dev and top two pm), resume bar and overlay on the pdf.js viewer with a dark/light document switch, arrow pointer, easter egg terminal. Echopoint SVG images replaced by JSON drawn in theme colours. Open: run exit in the egg needs M6's crash screen; headless reloads the page when the PDF viewer opens in the first few seconds while the WebGPU probe fails, to check on real hardware. Awaiting Vivek's review of M5, including the resume overlay on screen.
