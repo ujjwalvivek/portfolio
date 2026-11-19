@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block styles %}<link rel="stylesheet" href="/css/about.css">{% endblock styles %}
+{% block page_styles %}/css/about.css{% endblock page_styles %}
+{% block modules %}/js/pages/about.js{% endblock modules %}
+{% block content %}
+{#- v3 About, top to bottom: the portrait, the intro terminal with the stormtroopers, recent projects, the resume bar and the easter egg. Everything is rendered here at its final size;
+    about.js fills the live numbers into slots that already hold their place ("-" until the data is in). -#}
+{%- set cdn = config.extra.cdn -%}
+<div class="ab">
+  <h1 class="sr-only">About Vivek</h1>
+  <figure class="ab-hero">
+    <img class="ab-hero-img" src="/media/profile.webp" alt="it's a me, vivek!" width="2560" height="1190" fetchpriority="high" decoding="async">
+    <span class="ab-hero-grade" aria-hidden="true"></span>
+    <figcaption class="ab-hero-cap"><span class="ab-cap-key" aria-hidden="true">whoami</span><span class="ab-cap-text">hi there! i'm <b>Vivek</b>. i think in systems &amp; experiment relentlessly.</span><span class="ab-cap-caret" aria-hidden="true"></span></figcaption>
+  </figure>
+
+  {% include "partials/about-intro.html" %}
+
+  {% include "partials/about-recent.html" %}
+
+  {% include "partials/langs.html" %}
+
+  <section class="ab-resume" aria-label="Resume" data-ab-resume>
+    <a class="ab-resume-view" href="{{ cdn }}/docs/resume-dark.pdf" target="_blank" rel="noopener" data-ab-view aria-label="View my resume">
+      <span class="ab-resume-thumb">
+        <img src="{{ cdn }}/docs/thumbnail-dark.jpg" alt="" width="282" height="400" loading="lazy" decoding="async">
+        <svg class="icon ab-resume-expand" aria-hidden="true"><use href="/icons.svg#fa-expand"/></svg>
+      </span>
+      <span class="ab-resume-title"><strong>View</strong><span>my Resume</span></span>
+    </a>
+    <a class="ab-resume-dl" href="{{ cdn }}/docs/resume-dark.pdf" target="_blank" rel="noopener" download="UjjwalVivek_Resume.pdf" data-ab-download>
+      <svg class="icon" aria-hidden="true"><use href="/icons.svg#fa-file-download"/></svg><span data-ab-dl-text>Download</span>
+    </a>
+  </section>
+
+  <div class="ab-egg" data-ab-egg>
+    <button class="ab-egg-key" type="button" data-ab-egg-open aria-label="Open the hidden terminal">ђэýýý קรร†!! ý๏µ ки๏ω ý๏µ ωลи† †๏ ¢ℓเ¢к мэ :)</button>
+  </div>
+</div>
+{% endblock content %}

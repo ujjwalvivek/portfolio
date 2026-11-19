@@ -1,0 +1,212 @@
+/* Crash screen (src/ts/features/crash.ts), v3's CrashOverlay drawn as a browser tab that crashed: an opaque flat dark
+   page with no glass, no wallpaper and no glow. v3's traffic lights are kept as small squares (square corners, base.css)
+   in red, amber and green, which are status colours by design. The text is one centred block on a fixed measure,
+   framed like the home widgets: a dashed hairline edge (inert) and the site's corner brackets, here in v3's error red.
+   The headline is solid in that red. Spacing runs on a 0.75rem step. v3's blink (now on the caret) and flickering
+   lines are kept, and stop under reduced motion. */
+
+html.is-crashed, html.is-crashed body { overflow: hidden; }
+
+.crash {
+  --crash-bg: #0c0c0c;
+  --crash-bar: #131313;
+  --crash-line: rgba(255, 255, 255, 0.08);
+  --crash-red: #ff5f56;
+  --crash-err: 255, 80, 80; /* v3's error red, #ff5050 */
+  --crash-step: 0.75rem;
+  --crash-amber: #ffbd2e;
+  --crash-green: #27c93f;
+  --crash-ink: 232, 232, 232; /* neutral, not the palette: a crashed tab has no theme */
+  position: fixed;
+  inset: 0;
+  z-index: 100000;
+  display: flex;
+  color: rgb(var(--crash-ink));
+  font-family: var(--font-neon);
+  background: var(--crash-bg);
+}
+.crash-window {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  overflow: hidden;
+}
+.crash-window:focus, .crash-window:focus-visible { outline: none; background: none; }
+
+/* ---- bar: a plain tab strip ---- */
+.crash-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: 2.4rem;
+  padding: 0 0.75rem;
+  border-bottom: 1px solid var(--crash-line);
+  background: var(--crash-bar);
+}
+.crash-keys { display: flex; gap: 0.15rem; }
+/* the button is the hit area and wears the focus brackets; the square inside it is the light */
+.crash-light {
+  --focus-fill: transparent;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.4rem;
+  height: 1.4rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+.crash-light::before {
+  content: "";
+  width: 0.7rem;
+  height: 0.7rem;
+  background: var(--light);
+  transition: filter 0.15s, transform 0.1s;
+}
+.crash-light.is-red { --light: var(--crash-red); }
+.crash-light.is-amber { --light: var(--crash-amber); }
+.crash-light.is-green { --light: var(--crash-green); }
+.crash-light:hover::before { filter: brightness(1.2); }
+.crash-light:active::before { transform: scale(0.85); }
+.crash-title {
+  margin-left: auto;
+  font-size: 0.85rem;
+  color: rgba(var(--crash-ink), 0.5);
+}
+.crash-bug {
+  --focus-fill: transparent;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.8rem;
+  height: 1.6rem;
+  font-size: 1.05rem;
+  color: rgba(var(--crash-ink), 0.6);
+  border: 1px solid transparent;
+  text-decoration: none;
+  transition: color 0.2s, border-color 0.2s, background-color 0.2s;
+}
+.crash-bug:hover { color: rgb(var(--crash-err)); border-color: rgb(var(--crash-err)); background: rgba(var(--crash-err), 0.1); }
+
+/* ---- content: one centred block on a fixed measure ---- */
+.crash-content {
+  position: relative;
+  flex: 1 1 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: calc(var(--crash-step) * 4) 2rem;
+  box-sizing: border-box;
+}
+.crash-frame {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: min(100%, 46rem);
+  padding: calc(var(--crash-step) * 4) calc(var(--crash-step) * 3);
+  box-sizing: border-box;
+  text-align: center;
+  border: 1px dashed rgba(var(--crash-err), 0.22);
+}
+/* the four corner brackets: two on the frame, two on a span over it */
+.crash-frame::before, .crash-frame::after, .crash-corners::before, .crash-corners::after {
+  content: "";
+  position: absolute;
+  width: 1.2rem;
+  height: 1.2rem;
+  border: 0 solid rgb(var(--crash-err));
+  pointer-events: none;
+}
+.crash-corners { position: absolute; inset: -1px; pointer-events: none; }
+.crash-frame::before { top: -1px; left: -1px; border-width: 2px 0 0 2px; }
+.crash-frame::after { right: -1px; bottom: -1px; border-width: 0 2px 2px 0; }
+.crash-corners::before { top: 0; right: 0; border-width: 2px 2px 0 0; }
+.crash-corners::after { left: 0; bottom: 0; border-width: 0 0 2px 2px; }
+
+/* the refusal sits just above the frame, centred, so nothing in the block moves */
+.crash-nope {
+  position: absolute;
+  top: var(--crash-step);
+  left: 0;
+  right: 0;
+  width: fit-content;
+  margin: 0 auto; /* centred without a transform, which the shake owns */
+  padding: 0.35rem 0.9rem;
+  font-size: 0.85rem;
+  color: rgb(var(--crash-ink));
+  border: 1px solid rgb(var(--crash-err));
+  background: #1c0f0f;
+  pointer-events: none;
+  white-space: nowrap;
+}
+.crash-nope.is-shaking { animation: crash-shake 0.35s ease-in-out; }
+.crash-main {
+  font-size: clamp(1.6rem, 6.5vw, 3.5rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  word-spacing: -0.25em; /* the prompt's space matches the caret's gap */
+  line-height: 1.1;
+  color: rgb(var(--crash-err));
+  white-space: nowrap;
+}
+/* v3 blinked the whole headline down to 0.2, which read as a dim maroon half the time; the headline stays solid now
+   and the caret takes v3's blink */
+.crash-caret { margin-left: 0.25em; animation: crash-blink 0.7s steps(1) infinite; }
+.crash-sub {
+  margin-top: calc(var(--crash-step) * 2);
+  max-width: 40rem;
+  font-size: 1rem;
+  text-wrap: balance;
+  line-height: 1.5;
+  color: rgba(var(--crash-ink), 0.9);
+}
+.crash-reason {
+  margin-top: var(--crash-step);
+  font-family: var(--font-krypton);
+  font-size: 0.75rem;
+  letter-spacing: 1px;
+  color: rgba(var(--crash-ink), 0.45);
+}
+/* the Dino lines under a short dashed rule, the gap the same above and below it */
+.crash-dino {
+  max-width: 30rem;
+  margin-top: calc(var(--crash-step) * 4);
+  padding-top: calc(var(--crash-step) * 2);
+  border-top: 1px dashed rgba(var(--crash-ink), 0.14);
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: rgba(var(--crash-ink), 0.6);
+  text-wrap: balance;
+}
+
+/* ---- foot ---- */
+.crash-foot {
+  display: flex;
+  justify-content: center;
+  padding: 0.6rem 1rem;
+  border-top: 1px solid var(--crash-line);
+  background: var(--crash-bar);
+  pointer-events: none;
+}
+.crash-foot-text { font-size: 0.75rem; color: rgba(var(--crash-ink), 0.45); text-align: center; text-wrap: balance; }
+.crash-flicker { animation: crash-flicker 1.2s infinite alternate; }
+
+@keyframes crash-blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
+@keyframes crash-flicker { 0% { opacity: 1; } 80% { opacity: 0.85; } 85% { opacity: 0.6; } 90% { opacity: 0.95; } 100% { opacity: 1; } }
+@keyframes crash-shake { 0%, 100% { transform: none; } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+
+@media (max-width: 600px) {
+  .crash { --crash-step: 0.6rem; }
+  .crash-window { min-height: 100svh; overflow-y: auto; }
+  .crash-content { padding: calc(var(--crash-step) * 5) 1rem; }
+  .crash-frame { padding: calc(var(--crash-step) * 4) 1.25rem; }
+  .crash-sub { font-size: 0.85rem; }
+  .crash-dino { font-size: 0.8rem; }
+  .crash-foot-text { font-size: 0.68rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .crash-nope.is-shaking, .crash-caret, .crash-flicker { animation: none; }
+}

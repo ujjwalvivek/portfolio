@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block styles %}<link rel="stylesheet" href="/css/home.css">{% endblock styles %}
+{% block page_styles %}/css/home.css{% endblock page_styles %}
+{% block modules %}/js/pages/home.js{% endblock modules %}
+{% block content %}
+<section class="home-header" data-header-game aria-labelledby="home-title">
+  <div class="header-frame">
+    <div class="header-inner">
+      <h1 id="home-title" class="sr-only">Tech isn't the hard part. Systems, behaviour, and questions are.</h1>
+      <span class="header-spinner" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+      <p class="header-off" hidden>scene unavailable in this browser</p>
+    </div>
+  </div>
+  <div class="header-controls">
+    <button class="audio-toggle" type="button" data-music aria-pressed="false" aria-label="Music" title="Music (m)"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path fill="currentColor" d="M12 7h2v1h1v1h2V8h1V7h2v2h-1v1h-1v2h1v1h1v2h-2v-1h-1v-1h-2v1h-1v1h-2v-2h1v-1h1v-2h-1V9h-1zM6 8V7h1V6h1V5h1V4h1V3h1v16h-1v-1H9v-1H8v-1H7v-1H6v-1H2V8zm1 2H4v2h3v1h1v1h1V8H8v1H7z"/></svg></button>
+  </div>
+</section>
+<div class="home-body">
+  {%- set blog_sec = get_section(path="blog/_index.md") -%}
+  {%- set blog_n = blog_sec.pages | length -%}
+  {%- set proj_data = load_data(path="data/projects.toml") -%}
+  {%- set proj_n = proj_data.projects | length %}
+  <nav class="home-nav" aria-label="Sections">
+    {%- for c in [
+      ["01", "/blog/", "~/blog", "b", "Logs", blog_n ~ " logs: engines, tools, postmortems"],
+      ["02", "/about/", "~/about", "a", "About", "who i am, what i build, the resume"],
+      ["03", "/projects/", "~/projects", "p", "Projects", proj_n ~ " projects, product and code"]
+    ] %}
+    <a class="home-cta" href="{{ c[1] }}">
+      <span class="cta-top"><span class="cta-idx">{{ c[0] }}</span><span class="cta-path">{{ c[2] }}</span><span class="cta-keys" aria-hidden="true"><kbd>g</kbd><kbd>{{ c[3] }}</kbd></span></span>
+      <span class="cta-label"><span class="home-cta-tag" aria-hidden="true">&lt;</span>{{ c[4] }}<span class="home-cta-tag" aria-hidden="true">/&gt;</span><span class="cta-arrow" aria-hidden="true">&rarr;</span></span>
+      <span class="cta-sub">{{ c[5] }}</span>
+    </a>
+    {%- endfor %}
+  </nav>
+
+  {% include "partials/intro-home.html" %}
+
+  <section class="recent-logs" aria-label="Recent logs">
+    {%- set blog = get_section(path="blog/_index.md") -%}
+    <ul>
+    {%- for post in blog.pages %}{% if loop.index <= 2 %}
+      <li>
+        <span class="rl-corners" aria-hidden="true"></span>
+        <a href="{{ post.path | safe }}">
+          <span class="rl-head"><span class="rl-date">{{ post.date | date(format="%d/%m/%y") }}</span><span class="rl-title">{{ post.title | truncate(length=50) }}</span></span>
+          {%- if post.taxonomies.tags %}<span class="rl-tags">{% for tag in post.taxonomies.tags %}<span class="rl-tag">{{ tag }}</span>{% endfor %}</span>{% endif %}
+          {%- if post.description %}<span class="rl-desc">{{ post.description }}</span>{% endif %}
+        </a>
+      </li>
+    {%- endif %}{% endfor %}
+    </ul>
+  </section>
+
+  {% include "partials/about-engines.html" %}
+
+  <section class="lazy-host home-widgets" aria-label="Widgets" data-lazy="/js/features/widgets.js" data-lazy-styles="/css/features/widgets.css"></section>
+
+  <section class="lazy-host home-mail" aria-label="Terminal mail" data-lazy="/js/features/terminal-mail.js" data-lazy-styles="/css/features/terminal-mail.css"></section>
+</div>
+{% endblock content %}

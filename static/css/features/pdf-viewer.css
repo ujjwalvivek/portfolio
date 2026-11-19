@@ -1,0 +1,232 @@
+/* PDF viewer (ADR D-004), mounted by src/ts/features/pdf-viewer.ts into a host the caller sizes. Web design system:
+   monospace, borders not shadows, dashed = inert, solid 2px dominant = focus or active, keycaps with a 2px bottom edge,
+   square corners (base.css). Pages render as they are: the resume ships its own dark PDF, so nothing is inverted. */
+
+.pdfv {
+  --pdfv-pad: 1rem;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  min-height: 20rem;
+  overflow: hidden;
+  color: var(--text-color);
+  font-family: var(--font-neon);
+  background: rgba(var(--background-color-rgb), 0.55);
+}
+.pdfv[hidden] { display: none; }
+.pdfv.is-narrow { --pdfv-pad: 0.5rem; }
+
+/* ---- toolbar ---- */
+.pdfv-bar {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+  padding: 0.45rem var(--pdfv-pad);
+  background: rgba(var(--dynamic-dominant-color-rgb), 0.1);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border-bottom: 1px dashed rgba(var(--dynamic-dominant-color-rgb), 0.35);
+  font-size: 0.8rem;
+  line-height: 1;
+  white-space: nowrap;
+}
+.pdfv-group { display: flex; align-items: center; gap: 0.4rem; min-width: 0; }
+
+.pdfv-key {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  min-width: 1.9rem;
+  height: 1.75rem;
+  padding: 0 0.5rem;
+  box-sizing: border-box;
+  color: var(--text-color);
+  font: inherit;
+  font-size: 0.8rem;
+  text-decoration: none;
+  text-transform: lowercase;
+  letter-spacing: 1px;
+  background: rgba(var(--dynamic-dominant-color-rgb), 0.18);
+  border: 1px solid rgba(var(--dynamic-dominant-color-rgb), 0.5);
+  border-bottom: 2px solid rgba(var(--dynamic-dominant-color-rgb), 0.85);
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+.pdfv-key:hover { background: rgba(var(--dynamic-dominant-color-rgb), 0.3); border-color: var(--dynamic-dominant-color); }
+.pdfv-key:active, .pdfv-key[aria-pressed="true"] { color: var(--background-color); background: var(--dynamic-dominant-color); border-color: var(--dynamic-dominant-color); border-bottom-width: 1px; transform: translateY(1px); }
+.pdfv-key:disabled { opacity: 0.35; cursor: default; transform: none; border-style: dashed; }
+.pdfv-key svg { width: 0.95rem; height: 0.95rem; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: square; }
+.pdfv-icon { padding: 0; }
+
+.pdfv-pagein {
+  width: 2.6rem;
+  height: 1.75rem;
+  box-sizing: border-box;
+  padding: 0 0.3rem;
+  color: var(--text-color);
+  font: inherit;
+  font-size: 0.8rem;
+  text-align: center;
+  background: rgba(var(--background-color-rgb), 0.5);
+  border: 1px solid rgba(var(--dynamic-dominant-color-rgb), 0.5);
+}
+.pdfv-pagein:focus { border-color: var(--dynamic-dominant-color); }
+.pdfv-pagein:disabled { opacity: 0.35; border-style: dashed; }
+
+.pdfv-meta { color: rgba(var(--text-color-rgb), 0.65); font-size: 0.8rem; letter-spacing: 1px; text-transform: lowercase; }
+.pdfv-scale { min-width: 3.2rem; text-align: center; font-variant-numeric: tabular-nums; letter-spacing: 1px; color: rgba(var(--text-color-rgb), 0.85); }
+
+.pdfv.is-narrow .pdfv-label { display: none; }
+.pdfv.is-narrow .pdfv-bar { gap: 0.4rem; }
+.pdfv.is-narrow .pdfv-group { gap: 0.25rem; }
+.pdfv.is-narrow .pdfv-scale { min-width: 2.6rem; }
+.pdfv.is-narrow .pdfv-key { min-width: 1.75rem; padding: 0 0.35rem; }
+
+/* ---- body: thumbnail rail and pages ---- */
+.pdfv-body { position: relative; flex: 1 1 auto; min-height: 0; display: flex; }
+
+.pdfv-scroll {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: auto;
+  scrollbar-gutter: stable;
+  overscroll-behavior: contain;
+  touch-action: pan-x pan-y; /* pinch is ours; panning stays native */
+  outline: none;
+}
+.pdfv-scroll::-webkit-scrollbar { width: 0.4rem; height: 0.4rem; background: transparent; }
+.pdfv-scroll::-webkit-scrollbar-thumb { background: rgba(var(--dynamic-dominant-color-rgb), 0.5); }
+.pdfv-scroll::-webkit-scrollbar-thumb:hover { background: var(--dynamic-dominant-color); }
+.pdfv-scroll { scrollbar-width: thin; scrollbar-color: rgba(var(--dynamic-dominant-color-rgb), 0.5) transparent; }
+
+.pdfv-pages {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--pdfv-pad);
+  width: max-content;
+  min-width: 100%;
+  box-sizing: border-box;
+  padding: var(--pdfv-pad);
+}
+
+.pdfv-page {
+  --user-unit: 1;
+  --total-scale-factor: calc(var(--scale-factor) * var(--user-unit));
+  --scale-round-x: 1px;
+  --scale-round-y: 1px;
+  position: relative;
+  flex: 0 0 auto;
+  direction: ltr;
+  background: rgba(var(--text-color-rgb), 0.03);
+  outline: 1px dashed rgba(var(--primary-color-rgb), 0.45);
+}
+.pdfv-page.is-drawn { outline: 1px solid rgba(var(--primary-color-rgb), 0.3); }
+.pdfv-canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+
+.pdfv-links { position: absolute; inset: 0; pointer-events: none; z-index: 2; }
+.pdfv-hit { position: absolute; pointer-events: auto; }
+.pdfv-hit:hover { background: rgba(var(--dynamic-dominant-color-rgb), 0.18); }
+
+.pdfv-side {
+  flex: 0 0 auto;
+  width: calc(112px + 2.2rem);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: rgba(var(--bit-dark-color-rgb), 0.85);
+  border-right: 1px dashed rgba(var(--dynamic-dominant-color-rgb), 0.35);
+  scrollbar-width: thin;
+}
+.pdfv-side[hidden] { display: none; }
+.pdfv.is-narrow .pdfv-side { position: absolute; inset: 0 auto 0 0; z-index: 4; background: rgba(var(--bit-dark-color-rgb), 0.97); }
+.pdfv-thumbs { list-style: none; margin: 0; padding: 0.8rem 0; display: grid; gap: 0.8rem; justify-items: center; }
+.pdfv-thumb {
+  position: relative;
+  display: block;
+  width: 112px;
+  padding: 0;
+  background: rgba(var(--text-color-rgb), 0.03);
+  border: 0;
+  outline: 1px dashed rgba(var(--primary-color-rgb), 0.45);
+  cursor: pointer;
+}
+.pdfv-thumb .pdfv-canvas { position: absolute; }
+.pdfv-thumb .pdfv-meta { position: absolute; right: 0; bottom: 0; z-index: 1; padding: 0.15rem 0.35rem; font-size: 0.7rem; background: rgba(var(--bit-dark-color-rgb), 0.9); }
+.pdfv-thumb:hover { outline: 1px solid var(--dynamic-dominant-color); }
+.pdfv-thumb.is-current { outline: 2px solid var(--dynamic-dominant-color); }
+
+/* ---- loading and error ---- */
+.pdfv-state {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  padding: 1rem;
+  text-align: center;
+  background: rgba(var(--background-color-rgb), 0.6);
+}
+.pdfv-state[hidden] { display: none; }
+.pdfv-state-title { font-family: var(--font-krypton); font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase; color: rgba(var(--text-color-rgb), 0.9); }
+.pdfv-track { width: min(16rem, 70%); height: 2px; background: rgba(var(--primary-color-rgb), 0.3); }
+.pdfv-track[hidden] { display: none; }
+.pdfv-fill { height: 100%; background: var(--dynamic-dominant-color); transform: scaleX(0); transform-origin: left; }
+.pdfv.is-error .pdfv-state-title { color: var(--status-ram-color); }
+.pdfv-direct { margin-top: 0.4rem; }
+
+/* ---- pdf.js text layer: transparent text over the canvas for selection and find (from pdfjs-dist's pdf_viewer.css) ---- */
+.pdfv .textLayer {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: clip;
+  opacity: 1;
+  line-height: 1;
+  text-align: initial;
+  letter-spacing: normal;
+  word-spacing: normal;
+  text-size-adjust: none;
+  -webkit-text-size-adjust: none;
+  forced-color-adjust: none;
+  transform-origin: 0 0;
+  caret-color: CanvasText;
+  text-shadow: none; /* the body glow (base.css) would make the transparent runs visible */
+  --min-font-size: 1;
+  --text-scale-factor: calc(var(--total-scale-factor) * var(--min-font-size));
+  --min-font-size-inv: calc(1 / var(--min-font-size));
+}
+.pdfv .textLayer :is(span, br) {
+  position: absolute;
+  color: transparent;
+  white-space: pre;
+  cursor: text;
+  transform-origin: 0% 0%;
+  user-select: text;
+  -webkit-user-select: text;
+}
+.pdfv .textLayer > :not(.markedContent), .pdfv .textLayer .markedContent span:not(.markedContent) {
+  z-index: 1;
+  --font-height: 0;
+  font-size: calc(var(--text-scale-factor) * var(--font-height));
+  --scale-x: 1;
+  --rotate: 0deg;
+  transform: rotate(var(--rotate)) scaleX(var(--scale-x)) scale(var(--min-font-size-inv));
+}
+.pdfv .textLayer .markedContent { display: contents; }
+.pdfv .textLayer span[role="img"] { user-select: none; -webkit-user-select: none; cursor: default; }
+.pdfv .textLayer ::selection { background: rgba(var(--dynamic-dominant-color-rgb), 0.4); color: transparent; }
+.pdfv .textLayer br::selection { background: transparent; }
+.pdfv .textLayer .endOfContent { display: block; position: absolute; inset: 100% 0 0; z-index: 0; cursor: default; user-select: none; -webkit-user-select: none; }
+.pdfv .textLayer.selecting .endOfContent { top: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  .pdfv-key { transition: none; }
+}

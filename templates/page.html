@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="placeholder">
+  <h1>{{ page.title }}</h1>
+  {{ page.content | safe }}
+  <ul class="placeholder-links"><li><a href="/">Home</a></li><li><a href="/blog/">ReadLogs</a></li><li><a href="/about/">About</a></li><li><a href="/projects/">Projects</a></li></ul>
+</section>
+{% endblock content %}

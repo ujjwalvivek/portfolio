@@ -1,0 +1,318 @@
+/* Vibe switch (ADR D-011), loaded with the overlay. v3's "Choose Your Vibe!" picker in the house style: glass card,
+   keycaps with a thick base, the chosen key pressed and filled, dashed = inert. The palette swatches and the ON/OFF
+   lettered switch are exactly as reviewed; everything else is built around them. */
+
+/* The card: more room than the other overlays, nearer the top on a phone. Glass comes from .overlay-card. */
+.overlay-card:has(.vibe) { max-height: 100%; }
+@media (max-width: 600px) {
+  .overlay-card:has(.vibe) { max-height: 100%; }
+}
+.overlay-foot:has(.vibe-fps) { flex-wrap: nowrap; gap: 0.6rem; }
+
+.vibe { padding: 0.2rem 1.4rem 1.2rem; font-family: var(--font-neon); }
+/* the two columns stand the same height: the recipe tiles stretch to the palette bento beside them */
+.vibe-cols { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 0 2rem; align-items: stretch; }
+.vibe-cols > .vibe-sec { display: flex; flex-direction: column; }
+.vibe-cols > .vibe-sec > .vibe-recipes, .vibe-cols > .vibe-sec > .vibe-grid { flex: 1; }
+@media (max-width: 760px) { .vibe-cols { grid-template-columns: minmax(0, 1fr); } .vibe { padding: 0.2rem 0.9rem 1rem; } }
+
+/* Panels: UPPERCASE title at 2px tracking, lowercase meta at 1px, a dashed rule under the head. */
+.vibe-sec { padding-top: 1.1rem; }
+.vibe-sec-head {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.4rem 0.75rem;
+  padding-bottom: 0.45rem;
+  margin-bottom: 0.9rem;
+  border-bottom: 1px dashed rgba(var(--dynamic-dominant-color-rgb), 0.3);
+}
+.vibe-sec-title { margin: 0; font-size: 0.8rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--text-color); }
+.vibe-sec-meta { margin-right: auto; font-size: 0.7rem; letter-spacing: 1px; text-transform: lowercase; color: var(--primary-color); }
+summary.vibe-sec-head { cursor: pointer; list-style: none; margin-bottom: 0; border-bottom-color: transparent; }
+summary.vibe-sec-head::-webkit-details-marker { display: none; }
+summary.vibe-sec-head .vibe-sec-title::before { content: "▸ "; color: var(--dynamic-dominant-color); }
+details[open] > summary.vibe-sec-head { margin-bottom: 0.9rem; border-bottom-color: rgba(var(--dynamic-dominant-color-rgb), 0.3); }
+details[open] > summary.vibe-sec-head .vibe-sec-title::before { content: "▾ "; }
+summary.vibe-sec-head:hover .vibe-sec-title { color: var(--dynamic-dominant-color); }
+
+/* One plain line when the wallpaper cannot run, and only while it is really starting. */
+.vibe-note {
+  margin: 1rem 0 0;
+  padding: 0.6rem 0.8rem;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: rgba(var(--text-color-rgb), 0.85);
+  border: 1px dashed rgba(var(--dynamic-dominant-color-rgb), 0.45);
+  background: rgba(var(--dynamic-dominant-color-rgb), 0.06);
+}
+.vibe-note.is-off { color: var(--text-color); border-color: rgba(var(--dynamic-dominant-color-rgb), 0.6); }
+
+/* Keys: a 1px edge in the dominant colour and a thicker darker base. Hover tints the whole key and turns its edge to
+   the theme colour; the chosen key is pressed, filled, its base flattened. */
+.vibe-key {
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 auto;
+  box-sizing: border-box;
+  height: 1.75rem;
+  padding: 0 0.6rem;
+  line-height: 1;
+  white-space: nowrap;
+  font-family: var(--font-neon);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text-color);
+  background: rgba(var(--dynamic-dominant-color-rgb), 0.08);
+  border: 1px solid rgba(var(--dynamic-dominant-color-rgb), 0.5);
+  border-bottom-width: 2px;
+  cursor: pointer;
+  transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+}
+.vibe-key:hover:not(:disabled) { border-color: var(--dynamic-dominant-color); background: rgba(var(--dynamic-dominant-color-rgb), 0.2); }
+.vibe-key[aria-pressed="true"] {
+  --focus-bg: var(--brackets-ink), var(--dynamic-dominant-color);
+  color: var(--background-color);
+  background: var(--dynamic-dominant-color);
+  border-color: var(--dynamic-dominant-color);
+  border-bottom-width: 1px;
+  transform: translateY(1px);
+  font-weight: 700;
+}
+.vibe-key:disabled { border-style: dashed; opacity: 0.45; cursor: not-allowed; }
+
+/* Recipes: keycaps in the swatch language. Each lists its layer stack top to bottom, as it composites. */
+.vibe-recipes { display: grid; grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr)); gap: 0.9rem; padding: 0.45rem; align-content: stretch; }
+.vibe-recipe {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.6rem 0.7rem 0.55rem;
+  text-align: left;
+  font-family: var(--font-neon);
+  color: var(--text-color);
+  background: rgba(var(--dynamic-dominant-color-rgb), 0.08);
+  border: 1px solid rgba(var(--dynamic-dominant-color-rgb), 0.45);
+  border-bottom: 3px solid color-mix(in srgb, var(--dynamic-dominant-color) 40%, #000);
+  --focus-fill: rgba(var(--dynamic-dominant-color-rgb), 0.2);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.vibe-recipe:nth-child(odd):not([aria-checked="true"]):not(:disabled):hover { transform: translateY(-3px) rotate(-1deg); }
+.vibe-recipe:nth-child(even):not([aria-checked="true"]):not(:disabled):hover { transform: translateY(-3px) rotate(0.8deg); }
+.vibe-recipe:hover:not(:disabled) { border-color: var(--dynamic-dominant-color); border-bottom-color: color-mix(in srgb, var(--dynamic-dominant-color) 45%, #000); background: rgba(var(--dynamic-dominant-color-rgb), 0.2); }
+.vibe-recipe[aria-checked="true"] {
+  --focus-bg: var(--brackets-ink), var(--dynamic-dominant-color);
+  color: var(--background-color);
+  background: var(--dynamic-dominant-color);
+  border-color: var(--dynamic-dominant-color);
+  border-bottom-width: 1px;
+  transform: translateY(2px);
+}
+.vibe-recipe[aria-checked="true"]::before {
+  content: "";
+  position: absolute;
+  inset: -6px;
+  pointer-events: none;
+  background: var(--brackets);
+}
+.vibe-recipe:disabled { border-style: dashed; opacity: 0.45; cursor: not-allowed; }
+.vibe-recipe-head { display: flex; align-items: baseline; gap: 0.5rem; }
+.vibe-recipe-name { font-size: 0.82rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.vibe-recipe-tag { margin-left: auto; font-size: 0.62rem; letter-spacing: 1px; text-transform: lowercase; opacity: 0.75; white-space: nowrap; }
+.vibe-recipe-stack { margin: 0; padding: 0.4rem 0 0; list-style: none; border-top: 1px dashed currentColor; font-family: var(--font-mono); font-size: 0.66rem; line-height: 1.55; opacity: 0.8; }
+.vibe-recipe-stack li { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.vibe-recipe-n { opacity: 0.55; }
+.vibe-recipe[aria-checked="true"] .vibe-recipe-stack { opacity: 0.9; }
+/* on a phone the tiles sit side by side: name and layer count, no stack */
+@media (max-width: 600px) {
+  .vibe-recipes { grid-template-columns: repeat(auto-fit, minmax(6.2rem, 1fr)); gap: 0.7rem; }
+  .vibe-recipe { gap: 0.25rem; padding: 0.5rem 0.55rem 0.45rem; }
+  .vibe-recipe-head { flex-direction: column; gap: 0.15rem; }
+  .vibe-recipe-tag { margin-left: 0; }
+  .vibe-recipe-stack { display: none; }
+}
+
+/* Paste: the caret is the only focus mark. */
+.vibe-paste {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 6.5rem;
+  max-height: 40vh;
+  resize: vertical;
+  padding: 0.6rem 0.7rem;
+  font: 0.72rem/1.5 var(--font-mono);
+  color: var(--text-color);
+  caret-color: var(--dynamic-dominant-color);
+  background: rgba(var(--background-color-rgb), 0.35);
+  border: 1px solid rgba(var(--dynamic-dominant-color-rgb), 0.35);
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+.vibe-paste:hover:not(:disabled) { border-color: var(--dynamic-dominant-color); background: rgba(var(--dynamic-dominant-color-rgb), 0.08); }
+.vibe-paste::placeholder { color: var(--primary-color); }
+.vibe-paste:disabled { border-style: dashed; opacity: 0.45; cursor: not-allowed; }
+.vibe-paste-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem; margin-top: 0.7rem; }
+.vibe-paste-keys { margin-left: auto; display: inline-flex; gap: 0.25rem; }
+.vibe-result-list { list-style: none; margin: 0.7rem 0 0; padding: 0; display: grid; gap: 0.3rem; max-height: 11rem; overflow: auto; font-family: var(--font-mono); font-size: 0.72rem; line-height: 1.45; overflow-wrap: anywhere; }
+.vibe-result-word { display: inline-block; padding: 0 0.3rem; margin-right: 0.2rem; font-family: var(--font-neon); font-size: 0.6rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; border: 1px solid currentColor; }
+.is-error .vibe-result-word { color: var(--status-ram-color); }
+.is-ok .vibe-result-word { color: var(--status-ok-color); }
+.vibe-result-more { color: var(--primary-color); }
+
+/* Foot: what is on, the measured frame rate, the motion key, and v3's switch. */
+.vibe-fps { font-family: var(--font-neon); font-size: 0.7rem; font-weight: 600; letter-spacing: 1px; color: var(--dynamic-dominant-color); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.vibe-current { flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* Palette swatches and the ON/OFF switch, as reviewed. */
+.vibe-current { font-family: var(--font-neon); font-size: 0.65rem; font-weight: 600; letter-spacing: 1px; text-transform: lowercase; color: var(--primary-color); }
+.vibe-current b { color: var(--text-color); font-weight: 600; }
+/* Palettes as a bento: root, the default, is the big tile; four squares; aurora and neon run wide along the bottom.
+   Each tile is a keycap filled with its palette's drift, with a title strip along its foot. */
+.vibe-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-auto-rows: 3.6rem;
+  grid-template-areas:
+    "root root forest synthwave"
+    "root root sunset midnight"
+    "aurora aurora neon neon";
+  gap: 0.6rem;
+  padding: 0.45rem;
+}
+.vibe-swatch[data-name="root"] { grid-area: root; }
+.vibe-swatch[data-name="forest"] { grid-area: forest; }
+.vibe-swatch[data-name="synthwave"] { grid-area: synthwave; }
+.vibe-swatch[data-name="sunset"] { grid-area: sunset; }
+.vibe-swatch[data-name="midnight"] { grid-area: midnight; }
+.vibe-swatch[data-name="aurora"] { grid-area: aurora; }
+.vibe-swatch[data-name="neon"] { grid-area: neon; }
+.vibe-swatch {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  min-width: 0;
+  padding: 0;
+  overflow: visible;
+  /* a keycap from the design system: an edge in the palette's own accent and a darker, thicker base */
+  border: 1px solid color-mix(in srgb, var(--swatch-edge) 60%, transparent);
+  border-bottom: 3px solid color-mix(in srgb, var(--swatch-edge) 45%, #000);
+  background: var(--swatch);
+  opacity: 0.85;
+  cursor: pointer;
+  transition: transform 0.2s ease, opacity 0.2s ease, border-color 0.2s ease;
+}
+/* the title strip: the name on a dark band, a tick in the palette's accent, the big tile's strip a size up */
+.vibe-swatch-name {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.28rem 0.5rem;
+  font-family: var(--font-neon);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  text-align: left;
+  color: var(--text-color);
+  background: rgba(0, 0, 0, 0.62);
+  border-top: 1px solid color-mix(in srgb, var(--swatch-edge) 55%, transparent);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.vibe-swatch-name::before { content: ""; flex: 0 0 auto; width: 6px; height: 6px; background: var(--swatch-edge); }
+.vibe-swatch[data-name="root"] .vibe-swatch-name { padding: 0.45rem 0.7rem; font-size: 0.78rem; letter-spacing: 2px; }
+.vibe-swatch:not([aria-checked="true"]):hover { transform: translateY(-2px); }
+.vibe-swatch:hover, .vibe-swatch:focus-visible { opacity: 1; border-color: var(--swatch-edge); border-bottom-color: color-mix(in srgb, var(--swatch-edge) 45%, #000); }
+/* the chosen key is pressed: its base flattens, it sits lower, its strip fills with its accent, and it wears the brackets */
+.vibe-swatch[aria-checked="true"] { transform: translateY(2px); opacity: 1; border-color: var(--swatch-edge); border-bottom-width: 1px; }
+.vibe-swatch[aria-checked="true"] .vibe-swatch-name { color: #000; background: var(--swatch-edge); }
+.vibe-swatch[aria-checked="true"] .vibe-swatch-name::before { background: #000; }
+.vibe-swatch[aria-checked="true"]::before {
+  content: "";
+  position: absolute;
+  inset: -6px;
+  pointer-events: none;
+  --c: var(--dynamic-dominant-color);
+  background:
+    linear-gradient(var(--c), var(--c)) top left / 9px 2px no-repeat,
+    linear-gradient(var(--c), var(--c)) top left / 2px 9px no-repeat,
+    linear-gradient(var(--c), var(--c)) top right / 9px 2px no-repeat,
+    linear-gradient(var(--c), var(--c)) top right / 2px 9px no-repeat,
+    linear-gradient(var(--c), var(--c)) bottom left / 9px 2px no-repeat,
+    linear-gradient(var(--c), var(--c)) bottom left / 2px 9px no-repeat,
+    linear-gradient(var(--c), var(--c)) bottom right / 9px 2px no-repeat,
+    linear-gradient(var(--c), var(--c)) bottom right / 2px 9px no-repeat;
+}
+.vibe-swatch:focus-visible { outline: none; }
+
+.vibe-foot-label { font-family: var(--font-neon); font-size: 0.75rem; color: rgba(var(--text-color-rgb), 0.7); margin-right: auto; }
+@media (max-width: 600px) { .vibe-current, .vibe-paste-keys { display: none; } .overlay-foot:has(.vibe-fps) { padding: 0.5rem 0.9rem; gap: 0.5rem; } .vibe-fps { margin-right: auto; } }
+
+/* v3's ON/OFF switch: the strokes redraw the letters between OFF and ON. */
+.switch { display: flex; align-items: center; -webkit-tap-highlight-color: transparent; cursor: pointer; }
+.switch__input {
+  /* no track: the thumb is the "O" of OFF and ON, stroked like the letters beside it */
+  background: none;
+  border: 0;
+  outline: transparent;
+  position: relative;
+  /* inputs do not inherit the font size, and the O below is sized in the letters' em */
+  font-size: inherit;
+  width: 1em;
+  height: 1.5em;
+  padding: 0;
+  margin: 0;
+  transition: transform 0.4s cubic-bezier(0.68, -0.6, 0.32, 1.6);
+  -webkit-appearance: none;
+  appearance: none;
+  cursor: pointer;
+}
+.switch__input:focus-visible { background: var(--brackets); background-origin: border-box; }
+.switch__input::before {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 0.1em;
+  box-sizing: border-box;
+  /* the letters' own metrics: the SVG is 1.45em for 24 units, strokes are 4 units with square caps and span 16 units,
+     so the O is 13 by 16 units, as wide and tall as the drawn N, with the same 4-unit stroke, and sits on the same centre line */
+  width: calc(1.45em * 13 / 24);
+  height: calc(1.45em * 16 / 24);
+  background: none;
+  border: calc(1.45em * 4 / 24) solid rgba(var(--text-color-rgb), 0.5);
+  transform: translateY(-50%);
+  transition: border-color 0.4s cubic-bezier(0.65, 0, 0.35, 1), transform 0.4s cubic-bezier(0.68, -0.6, 0.32, 1.6);
+}
+.switch__letters, .switch__letter { transition: transform 0.4s cubic-bezier(0.68, -0.6, 0.32, 1.6); }
+.switch__letters { margin-left: 0.07em; overflow: visible; pointer-events: none; width: 1.5em; height: 1.45em; }
+.switch__letter:last-child { transform: translateX(14px); }
+.switch__letter-stroke {
+  stroke: rgba(var(--text-color-rgb), 0.5);
+  stroke-linecap: square;
+  transition: stroke 0.4s cubic-bezier(0.65, 0, 0.35, 1), stroke-dashoffset 0.4s cubic-bezier(0.68, -0.6, 0.32, 1.6), transform 0.4s cubic-bezier(0.68, -0.6, 0.32, 1.6);
+}
+.switch__letter-stroke:nth-child(2) { transform-origin: 2px 2px; }
+.switch__input:checked::after { content: none; }
+.switch__input:checked::before { border-color: rgba(var(--dynamic-dominant-color-rgb), 0.9); }
+.switch__input:checked ~ .switch__letters .switch__letter-stroke { stroke: rgba(var(--dynamic-dominant-color-rgb), 0.9); }
+.switch__input:checked ~ .switch__letters .switch__letter-stroke:nth-child(2) { stroke-dashoffset: 6; }
+.switch__input:checked ~ .switch__letters .switch__letter-stroke:last-child { stroke-dashoffset: 4; }
+.switch__input:checked ~ .switch__letters .switch__letter:first-child .switch__letter-stroke:nth-child(2) { stroke-dashoffset: 0; transform: rotate(56.5deg); }
+.switch__input:checked ~ .switch__letters .switch__letter:last-child { stroke-dashoffset: 0; transform: translateX(8px); }
+/* in a panel the grid keeps room above for the swatch names */
+.vibe-sec .vibe-grid { padding: 0.45rem; }
+/* keyboard focus draws the brackets over the swatch's own gradient, not over the site's focus tint */
+.vibe-swatch { --focus-fill: var(--swatch); }
+
+/* Reduced motion: keys and tiles keep their hover colours but do not lift or tilt; a pressed key still sits pressed. */
+@media (prefers-reduced-motion: reduce) {
+  .vibe-recipe:not([aria-checked="true"]):hover, .vibe-swatch:not([aria-checked="true"]):hover { transform: none !important; }
+}

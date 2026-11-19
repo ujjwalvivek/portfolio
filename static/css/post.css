@@ -1,0 +1,776 @@
+/* Blog post (v3 BlogPost.module.css, DinoGame.module.css, index.css math). Every rule is scoped under .post (or
+   .post-lightbox, which lives on body), because the router keeps page stylesheets loaded across navigations.
+   Design system: monospace, borders not shadows, dashed = inert, solid 2px dominant = active, square corners,
+   colours from the palette (--dynamic-*); status colours only where a word says what they mean. */
+
+/* ---------- window ---------- */
+
+.post {
+  --post-pad: 1.5rem;
+  width: min(var(--main-content-width), calc(100% - 3rem));
+  margin: 0 auto 2rem;
+  font-family: var(--font-neon);
+  display: flex;
+  flex-direction: column;
+}
+
+.post-bar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.5rem 1rem;
+  background: rgba(var(--bit-dark-color-rgb), 1);
+}
+/* v3's traffic lights, as three squares in the palette's own colour */
+.post-dots { display: flex; gap: 0.5rem; flex: 0 0 auto; }
+.post-dots i { width: 10px; height: 10px; background: var(--dynamic-dominant-color); transition: transform 0.2s ease; }
+.post-dots i:nth-child(2) { opacity: 0.6; }
+.post-dots i:nth-child(3) { opacity: 0.3; }
+.post-bar:hover .post-dots i { transform: scale(1.1); }
+.post-title {
+  flex: 1;
+  margin: 0;
+  font-family: var(--font-krypton);
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.35;
+  color: var(--text-color);
+}
+.post-status { display: flex; align-items: center; gap: 0.5rem; margin: 0; flex: 0 0 auto; }
+.post-status > * {
+  font-family: var(--font-krypton);
+  font-size: 0.75rem;
+  padding: 0.1rem 0.3rem;
+  color: var(--dynamic-dominant-color);
+  background: rgba(var(--dynamic-dominant-color-rgb), 0.05);
+  border: 1px solid rgba(var(--dynamic-hsl-average-rgb), 0.3);
+  opacity: 0.9;
+  white-space: nowrap;
+}
+
+.post-body {
+  position: relative;
+  padding: 0.5rem var(--post-pad);
+  background: rgba(var(--background-color-rgb), 0.4);
+  backdrop-filter: blur(32px) saturate(180%);
+  -webkit-backdrop-filter: blur(32px) saturate(180%);
+}
+
+.post-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; list-style: none; margin: 0.75rem 0 0; padding: 0; }
+.post-tags li {
+  font-size: 0.7rem;
+  font-weight: 200;
+  letter-spacing: 1px;
+  text-transform: lowercase;
+  padding: 0.1rem 0.3rem;
+  color: rgba(var(--text-color-rgb), 0.8);
+  background: rgba(var(--dynamic-dominant-color-rgb), 0.12);
+  border: 1px dashed rgba(var(--dynamic-dominant-color-rgb), 0.6);
+}
+
+/* ---------- typography ---------- */
+
+.post .markdown {
+  color: var(--text-color);
+  font-family: var(--font-neon);
+  word-break: break-word;
+  text-shadow: 0 0 1.5px rgba(var(--dynamic-dominant-color-rgb), 1);
+}
+.post .markdown p,
+.post .markdown li {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  font-weight: 200;
+  letter-spacing: -0.1px;
+  color: rgba(var(--text-color-rgb), 0.9);
+}
+.post .markdown strong { color: var(--text-color); font-weight: 800; text-transform: uppercase; }
+.post .markdown a { color: var(--text-color); text-decoration: underline; }
+.post .markdown a:hover { opacity: 0.8; }
+.post .markdown hr { display: none; }
+
+/* headings: a dashed bar with one, two or three hash marks in the accent (v3's PiHashStraightFill) */
+.post .markdown :is(h2, h3, h4, h5) {
+  --hashes: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin: 1.2rem 0 0.6rem;
+  padding: 0.3rem;
+  font-family: var(--font-neon);
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--text-color);
+  border: 2px dashed rgba(var(--dynamic-dominant-color-rgb), 0.2);
+  background: rgba(var(--bit-dark-color-rgb), 0.8);
+  scroll-margin-top: 4.5rem;
+}
+.post .markdown h2 { font-size: 1.3rem; }
+.post .markdown h3 { font-size: 1.1rem; --hashes: 2; }
+.post .markdown h4 { font-size: 0.9rem; --hashes: 3; }
+.post .markdown :is(h2, h3, h4)::before {
+  content: "";
+  flex: 0 0 auto;
+  width: calc(var(--hashes) * 1.2em);
+  height: 1.2em;
+  background: var(--dynamic-dominant-color);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'%3E%3Cpath d='M112,112h32v32H112ZM224,48V208a16,16,0,0,1-16,16H48a16,16,0,0,1-16-16V48A16,16,0,0,1,48,32H208A16,16,0,0,1,224,48Zm-64,96V112h32a8,8,0,0,0,0-16H160V64a8,8,0,0,0-16,0V96H112V64a8,8,0,0,0-16,0V96H64a8,8,0,0,0,0,16H96v32H64a8,8,0,0,0,0,16H96v32a8,8,0,0,0,16,0V160h32v32a8,8,0,0,0,16,0V160h32a8,8,0,0,0,0-16Z'/%3E%3C/svg%3E") 0 50% / 1.2em 1.2em repeat-x;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'%3E%3Cpath d='M112,112h32v32H112ZM224,48V208a16,16,0,0,1-16,16H48a16,16,0,0,1-16-16V48A16,16,0,0,1,48,32H208A16,16,0,0,1,224,48Zm-64,96V112h32a8,8,0,0,0,0-16H160V64a8,8,0,0,0-16,0V96H112V64a8,8,0,0,0-16,0V96H64a8,8,0,0,0,0,16H96v32H64a8,8,0,0,0,0,16H96v32a8,8,0,0,0,16,0V160h32v32a8,8,0,0,0,16,0V160h32a8,8,0,0,0,0-16Z'/%3E%3C/svg%3E") 0 50% / 1.2em 1.2em repeat-x;
+}
+/* h5: v3's link lines (DEMO, REPO), a solid inert bar with a caret */
+.post .markdown h5 {
+  display: block;
+  max-width: 600px;
+  margin: 0.5rem 0;
+  font-size: 0.83rem;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  border-style: solid;
+}
+.post .markdown h5::before {
+  content: "";
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  margin-right: 0.4rem;
+  vertical-align: -0.15em;
+  background: var(--dynamic-dominant-color);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 448 512'%3E%3Cpath d='M448 96c0-35.3-28.7-64-64-64L64 32C28.7 32 0 60.7 0 96L0 416c0 35.3 28.7 64 64 64l320 0c35.3 0 64-28.7 64-64l0-320zM320 256c0 6.7-2.8 13-7.7 17.6l-112 104c-7 6.5-17.2 8.2-25.9 4.4s-14.4-12.5-14.4-22l0-208c0-9.5 5.7-18.2 14.4-22s18.9-2.1 25.9 4.4l112 104c4.9 4.5 7.7 10.9 7.7 17.6z'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 448 512'%3E%3Cpath d='M448 96c0-35.3-28.7-64-64-64L64 32C28.7 32 0 60.7 0 96L0 416c0 35.3 28.7 64 64 64l320 0c35.3 0 64-28.7 64-64l0-320zM320 256c0 6.7-2.8 13-7.7 17.6l-112 104c-7 6.5-17.2 8.2-25.9 4.4s-14.4-12.5-14.4-22l0-208c0-9.5 5.7-18.2 14.4-22s18.9-2.1 25.9 4.4l112 104c4.9 4.5 7.7 10.9 7.7 17.6z'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+.post .markdown :is(h2, h3, h4, h5) a { text-decoration-thickness: 1px; }
+
+/* lists: hollow bullets that fill on hover */
+.post .markdown ul,
+.post .markdown ol { margin: 1rem 0; padding-left: 1rem; }
+.post .markdown ul { list-style: none; }
+.post .markdown ol { padding-left: 1.4rem; }
+.post .markdown li { position: relative; margin-bottom: 0.7em; font-weight: 400; color: var(--text-color); }
+.post .markdown ol li::marker { color: var(--dynamic-dominant-color); font-weight: 600; }
+.post .markdown ul > li::before {
+  content: "○";
+  position: absolute;
+  left: -1rem;
+  top: 0.05em;
+  color: var(--primary-color);
+  font-size: 0.9em;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+.post .markdown ul > li:hover::before { content: "●"; color: var(--dynamic-dominant-color); }
+.post .markdown li > ul,
+.post .markdown li > ol { margin: 0.5rem 0 0; }
+
+/* inline code and mark: dashed inert chips */
+.post .markdown :not(pre) > code {
+  font-family: var(--font-neon);
+  font-size: 0.92em;
+  font-weight: 400;
+  padding: 0.05rem 0.3rem;
+  border: 1px dashed var(--primary-color);
+  background: rgba(var(--dynamic-dominant-color-rgb), 0.1);
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+.post .markdown mark {
+  color: var(--text-color);
+  padding: 0.1rem 0.4rem;
+  background: rgba(var(--dynamic-dominant-color-rgb), 0.1);
+  border: 1px solid rgba(var(--dynamic-dominant-color-rgb), 0.5);
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+.post .markdown ::selection { background: rgba(var(--dynamic-dominant-color-rgb), 0.35); color: var(--text-color); }
+
+/* blockquote: an inert frame with v3's ◈ ◈ ◈ tab; the frame turns to the accent on hover */
+.post .markdown blockquote {
+  position: relative;
+  margin: 1.5rem 0;
+  padding: 0.5rem 1rem;
+  background: rgba(var(--primary-color-rgb), 0.05);
+  border: 2px solid rgba(var(--primary-color-rgb), 0.6);
+  transition: border-color 0.3s ease;
+}
+.post .markdown blockquote:hover { border-color: var(--dynamic-dominant-color); }
+.post .markdown blockquote::before {
+  content: "◈ ◈ ◈";
+  position: absolute;
+  top: -0.75rem;
+  left: 1rem;
+  padding: 0.1rem 0.5rem;
+  font-size: 0.7rem;
+  letter-spacing: 1px;
+  color: var(--dynamic-dominant-color);
+  background: var(--background-color);
+  border: 1px solid rgba(var(--dynamic-dominant-color-rgb), 0.5);
+}
+.post .markdown blockquote p { margin: 0.5rem 0 0; line-height: 1.8; color: var(--text-color); }
+.post .markdown blockquote blockquote { margin: 1.25rem 0 0.5rem; }
+
+/* footnotes */
+.post .markdown .footnote-reference a {
+  display: inline-block;
+  margin-left: 0.2rem;
+  padding: 0.05rem 0.25rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  line-height: 1;
+  text-decoration: none;
+  color: var(--dynamic-dominant-color);
+  border: 1px solid rgba(var(--dynamic-dominant-color-rgb), 0.6);
+  background: rgba(var(--dynamic-dominant-color-rgb), 0.1);
+}
+.post .markdown .footnote-reference a { padding: 0 0.2em; }
+.post .markdown .footnote-reference a:hover { background: rgba(var(--dynamic-dominant-color-rgb), 0.3); opacity: 1; }
+.post .markdown .footnote-definition {
+  margin: 1.5rem 0 0.5rem;
+  padding-top: 0.5rem;
+  font-size: 0.85rem;
+  border-top: 1px dashed rgba(var(--dynamic-dominant-color-rgb), 0.4);
+  scroll-margin-top: 4.5rem;
+}
+.post .markdown .footnote-definition p { display: inline; font-size: 0.85rem; }
+/* v3 (remark-gfm) titled the notes; Zola does not, so the first note carries the title */
+.post .markdown :not(.footnote-definition) + .footnote-definition::before {
+  content: "FOOTNOTES";
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: rgba(var(--text-color-rgb), 0.8);
+}
+.post .markdown .footnote-definition + .footnote-definition { margin-top: 0.3rem; padding-top: 0; border-top: 0; }
+.post .markdown .footnote-definition-label { margin-right: 0.4rem; color: var(--dynamic-dominant-color); font-weight: 700; }
+
+/* MathML (KaTeX's place, log_0003): accent colour, mono, a size up, as v3 styled KaTeX */
+.post .markdown math {
+  font-size: 1.2rem;
+  color: var(--dynamic-dominant-color);
+  font-family: var(--font-mono), math;
+  math-style: normal;
+}
+.post .markdown math :is(mi, mn, mtext) { text-transform: none; font-style: normal; }
+.post .markdown math mo { color: rgba(var(--text-color-rgb), 0.85); }
+.post .markdown p:has(> math:only-child) { overflow-x: auto; overflow-y: hidden; padding: 0.3rem 0; }
+
+/* tables */
+.post .markdown table {
+  width: 100%;
+  margin: 1rem 0;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+  background: rgba(var(--background-color-rgb), 0.6);
+  border: 1px solid rgba(var(--primary-color-rgb), 0.3);
+}
+.post .markdown thead th {
+  padding: 0.6rem 1rem;
+  text-align: left;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--dynamic-dominant-color);
+  background: rgba(var(--dynamic-dominant-color-rgb), 0.1);
+  border-bottom: 1px solid rgba(var(--dynamic-dominant-color-rgb), 0.4);
+}
+.post .markdown thead th + th { border-left: 1px dashed rgba(var(--primary-color-rgb), 0.2); }
+.post .markdown tbody td {
+  position: relative;
+  padding: 0.6rem 1rem;
+  line-height: 1.4;
+  color: var(--text-color);
+  font-weight: 300;
+  border-bottom: 1px dashed rgba(var(--primary-color-rgb), 0.15);
+}
+.post .markdown tbody td + td { border-left: 1px dashed rgba(var(--primary-color-rgb), 0.15); }
+.post .markdown tbody tr:last-child td { border-bottom: 0; }
+.post .markdown tbody tr:nth-child(odd) { background: rgba(var(--primary-color-rgb), 0.03); }
+.post .markdown tbody tr:hover { background: rgba(var(--dynamic-dominant-color-rgb), 0.08); }
+.post .markdown tbody td:first-child { padding-left: 1.8rem; }
+.post .markdown tbody td:first-child::before { content: "↪"; position: absolute; left: 0.5rem; color: rgba(var(--dynamic-dominant-color-rgb), 0.8); font-size: 0.8rem; }
+
+/* images: framed in the accent, cropped to half the window like v3; click opens the lightbox */
+.post .markdown img {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  height: auto;
+  max-height: 50vh;
+  margin: 1rem auto;
+  object-fit: cover;
+  object-position: 100% 35%;
+  padding: 0.2rem;
+  border: 2px solid var(--dynamic-dominant-color);
+  background: rgba(var(--background-color-rgb), 0.04);
+}
+/* the frame is solid in the theme colour, so focus draws the brackets just inside it, in the image's padding */
+.post .markdown img.is-zoomable { cursor: zoom-in; --focus-origin: padding-box; }
+.post .markdown p:has(> img:only-child) { margin: 0; }
+
+/* figures, raw iframes and captions */
+.post .markdown iframe.ratio-2-1 { aspect-ratio: 2 / 1; } /* a class, not a style attribute, for the CSP */
+.post .markdown figure { margin: 1rem 0; padding: 0; }
+.post .markdown figure > iframe,
+.post .markdown > iframe {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  max-height: 80vh;
+  padding: 0.2rem;
+  border: 2px solid var(--dynamic-dominant-color);
+  background: rgba(var(--background-color-rgb), 0.04);
+}
+.post .markdown figcaption {
+  margin-top: 1rem;
+  padding: 0.3rem 0.5rem;
+  font-size: 0.8rem;
+  text-align: center;
+  color: var(--text-color);
+  background: rgba(var(--dynamic-dominant-color-rgb), 0.5);
+  border: 1px solid rgba(var(--dynamic-dominant-color-rgb), 0.8);
+}
+
+/* ---------- admonitions ---------- */
+
+.post .admonition {
+  --tone: var(--dynamic-dominant-color);
+  --tone-rgb: var(--dynamic-dominant-color-rgb);
+  margin: 1rem 0;
+  padding: 1rem 1.2rem;
+  border: 2px dashed var(--tone);
+  border-left: 0.4rem solid var(--tone);
+  background: linear-gradient(135deg, rgba(var(--tone-rgb), 0.06), rgba(var(--tone-rgb), 0.12)), rgba(var(--background-color-rgb), 0.5);
+}
+/* warning and danger keep their status colours: their title says what the colour means */
+.post .admonition.warning { --tone: var(--status-warn-color); --tone-rgb: 255, 179, 71; }
+.post .admonition.danger { --tone: var(--status-ram-color); --tone-rgb: 255, 85, 85; }
+.post .admonition-title {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--tone);
+}
+.post .admonition-title .icon { font-size: 0.95rem; }
+.post .markdown .admonition-title { color: var(--tone); font-weight: 700; font-size: 0.95rem; }
+.post .admonition-body { line-height: 1.5; }
+.post .markdown .admonition-body p { margin: 0.5rem 0 0.7rem; font-size: 0.9rem; }
+.post .admonition-body > :last-child { margin-bottom: 0; }
+
+/* ---------- table of contents ---------- */
+
+.post .toc {
+  margin: 1rem 0;
+  background: rgba(var(--background-color-rgb), 0.7);
+  border: 2px solid rgba(var(--dynamic-dominant-color-rgb), 0.3);
+}
+.post .toc[open] { border-color: rgba(var(--dynamic-dominant-color-rgb), 0.5); }
+.post .toc-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.2rem 0.8rem;
+  list-style: none;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--text-color);
+  background: rgba(var(--bit-dark-color-rgb), 0.6);
+  transition: background 0.2s ease;
+}
+.post .toc-toggle::-webkit-details-marker { display: none; }
+.post .toc-toggle:hover { background: rgba(var(--dynamic-dominant-color-rgb), 0.1); }
+.post .toc-toggle .icon { font-size: 1.8rem; color: var(--dynamic-dominant-color); transition: transform 0.2s ease; }
+.post .toc[open] .toc-toggle { border-bottom: 1px solid rgba(var(--dynamic-dominant-color-rgb), 0.2); }
+.post .toc[open] .toc-toggle .icon { transform: rotate(-8deg); }
+.post .toc-list { padding: 0.75rem 1rem; }
+.post .toc ul { list-style: none; margin: 0; padding: 0; }
+.post .toc ul:empty { display: none; }
+.post .toc ul ul { margin-left: 0.8rem; }
+.post .markdown .toc li { margin: 0; padding: 0.3rem 0 0.3rem 0; font-size: 0.95rem; }
+.post .markdown .toc li::before { content: none; }
+.post .toc ul ul > li { position: relative; padding-left: 1.4rem; }
+.post .toc ul ul > li::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  border-left: 1px dashed rgba(var(--dynamic-dominant-color-rgb), 0.35);
+}
+.post .toc ul ul > li:last-child::after { bottom: auto; height: 1.15rem; }
+.post .toc ul ul > li > a::after {
+  content: "";
+  position: absolute;
+  top: 1.15rem;
+  left: -1.4rem;
+  width: 1.2rem;
+  border-top: 1px dashed rgba(var(--dynamic-dominant-color-rgb), 0.35);
+}
+.post .markdown .toc a {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.4rem 0.2rem 2.2rem;
+  font-size: 0.86rem;
+  font-weight: 300;
+  text-decoration: none;
+  color: var(--text-color);
+  border: 1px dashed rgba(var(--dynamic-dominant-color-rgb), 0.3);
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+.post .markdown .toc a::before {
+  content: attr(data-label);
+  position: absolute;
+  left: 0.3rem;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 0.1rem 0.25rem;
+  font-size: 0.65rem;
+  font-weight: 200;
+  letter-spacing: 1px;
+  color: rgba(var(--dynamic-dominant-color-rgb), 0.8);
+  background: rgba(var(--background-color-rgb), 0.7);
+  border: 1px dashed rgba(var(--dynamic-dominant-color-rgb), 0.3);
+}
+.post .markdown .toc a:hover { opacity: 1; border-color: rgba(var(--dynamic-dominant-color-rgb), 0.8); background: rgba(var(--dynamic-dominant-color-rgb), 0.05); }
+/* scroll spy: the section being read is lit like a pressed key, filled in the accent, no extra border */
+.post .markdown .toc a[aria-current] {
+  border-color: var(--dynamic-dominant-color);
+  background: var(--dynamic-dominant-color);
+  color: var(--background-color);
+  font-weight: 600;
+}
+.post .markdown .toc a[aria-current]::before { color: var(--dynamic-dominant-color); border-style: solid; }
+
+/* ---------- code ---------- */
+
+.post .markdown pre {
+  position: relative;
+  margin: 1rem 0;
+  padding: 0.8rem 1rem;
+  overflow-x: auto;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  line-height: 1.55;
+  tab-size: 4;
+  font-variant-ligatures: none;
+  color: rgba(var(--text-color-rgb), 0.85);
+  background: rgba(var(--bit-dark-color-rgb), 0.85);
+  border: 2px dashed rgba(var(--dynamic-dominant-color-rgb), 0.2);
+  text-shadow: none;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(var(--dynamic-dominant-color-rgb), 0.4) transparent;
+}
+.post .markdown pre code { font-family: inherit; font-size: inherit; padding: 0; border: 0; background: none; }
+
+/* the frame JS puts around each block: four accent brackets and the copy button */
+.post .code-block { position: relative; margin: 1rem 0; }
+.post .code-block > pre { margin: 0; padding-right: 4.5rem; }
+.post .code-block::before,
+.post .code-block::after,
+.post .code-corners::before,
+.post .code-corners::after {
+  content: "";
+  position: absolute;
+  width: 1.2rem;
+  height: 1.2rem;
+  border: 0 solid var(--dynamic-dominant-color);
+  pointer-events: none;
+  z-index: 1;
+}
+.post .code-block::before { top: 0; left: 0; border-width: 2px 0 0 2px; }
+.post .code-block::after { right: 0; bottom: 0; border-width: 0 2px 2px 0; }
+.post .code-corners { position: absolute; inset: 0; pointer-events: none; z-index: 1; }
+.post .code-corners::before { top: 0; right: 0; border-width: 2px 2px 0 0; }
+.post .code-corners::after { left: 0; bottom: 0; border-width: 0 0 2px 2px; }
+.post .code-copy {
+  position: absolute;
+  top: 0.7rem;
+  right: 0.7rem;
+  padding: 0.2rem 0.5rem;
+  font-family: var(--font-neon);
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--dynamic-dominant-color);
+  background: rgba(var(--dynamic-dominant-color-rgb), 0.15);
+  border: 1px solid rgba(var(--dynamic-dominant-color-rgb), 0.4);
+  border-bottom-width: 2px;
+  cursor: pointer;
+  z-index: 2;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+.post .code-copy { --focus-fill: rgba(var(--dynamic-dominant-color-rgb), 0.25); }
+.post .code-copy:hover { background: rgba(var(--dynamic-dominant-color-rgb), 0.25); border-color: var(--dynamic-dominant-color); }
+
+/* Syntax colours. Zola (giallo, class mode, one-dark-pro) emits z-1..z-12; these are one-dark-pro's hues, each
+   pulled a quarter of the way toward the palette's accent so code sits in the page's colour; comments lean further. */
+.post .giallo .z-1 { color: color-mix(in oklab, #56b6c2 75%, var(--dynamic-dominant-color)); }   /* support, operators */
+.post .giallo .z-2 { color: color-mix(in oklab, #5c6370 60%, var(--dynamic-dominant-color)); }   /* comments */
+.post .giallo .z-3 { color: color-mix(in oklab, #61afef 75%, var(--dynamic-dominant-color)); }   /* functions */
+.post .giallo .z-4 { color: color-mix(in oklab, #7f848e 60%, var(--dynamic-dominant-color)); }   /* comments */
+.post .giallo .z-5 { color: color-mix(in oklab, #98c379 75%, var(--dynamic-dominant-color)); }   /* strings */
+.post .giallo .z-6 { color: color-mix(in oklab, #be5046 75%, var(--dynamic-dominant-color)); }
+.post .giallo .z-7 { color: color-mix(in oklab, #c678dd 75%, var(--dynamic-dominant-color)); }   /* keywords */
+.post .giallo .z-8 { color: color-mix(in oklab, #d19a66 75%, var(--dynamic-dominant-color)); }   /* numbers, constants */
+.post .giallo .z-9 { color: color-mix(in oklab, #e06c75 75%, var(--dynamic-dominant-color)); }   /* variables, tags */
+.post .giallo .z-10 { color: color-mix(in oklab, #e5c07b 75%, var(--dynamic-dominant-color)); }  /* types */
+.post .giallo .z-11 { color: color-mix(in oklab, #f44747 75%, var(--dynamic-dominant-color)); }  /* invalid */
+.post .giallo .z-12 { color: var(--text-color); }
+.post .giallo .z-b { font-weight: bold; }
+.post .giallo .z-i { font-style: italic; }
+.post .giallo .z-u { text-decoration: underline; }
+.post .giallo .z-s { text-decoration: line-through; }
+.post .giallo .z-us { text-decoration: underline line-through; }
+.post .giallo .z-hl { background: rgba(var(--dynamic-dominant-color-rgb), 0.12); }
+
+/* ---------- embeds (click-to-load iframes) ---------- */
+
+.post .embed { margin: 1rem 0; }
+.post .embed-frame {
+  position: relative;
+  aspect-ratio: 16 / 9; /* other ratios come from data-ratio through post-embed.ts, so no inline style for the CSP */
+  box-sizing: border-box;
+  width: 100%;
+  overflow: hidden;
+  border: 2px solid var(--dynamic-dominant-color);
+  background: rgb(10, 10, 13);
+}
+.post .embed-cover { position: absolute; inset: 0; display: block; cursor: pointer; }
+.post .markdown .embed-cover img {
+  width: 100%;
+  height: 100%;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  object-fit: cover;
+  transition: opacity 0.2s ease;
+}
+.post .embed-cover:hover img { opacity: 0.85; }
+.post .embed-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; display: block; }
+
+/* ---------- dino ---------- */
+
+.post .dino-embed { margin: 1rem 0; }
+.post .dino-host {
+  position: relative;
+  height: 128px;
+  overflow: hidden;
+  border: 2px solid var(--dynamic-dominant-color);
+  font-family: var(--font-neon);
+  text-shadow: none;
+}
+.post .dino-bar,
+.post .dino-stage { width: min(400px, 100%); box-sizing: border-box; }
+.post .dino-bar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 24px;
+  padding: 0 1rem;
+  background: rgb(24, 24, 24);
+  border: 2px solid rgba(var(--primary-color-rgb), 0.4);
+  border-bottom: 0;
+}
+.post .dino-dots { display: flex; gap: 0.5rem; }
+.post .dino-dots i { width: 8px; height: 8px; background: var(--dynamic-dominant-color); }
+.post .dino-dots i:nth-child(2) { opacity: 0.6; }
+.post .dino-dots i:nth-child(3) { opacity: 0.3; }
+.post .dino-name { margin-left: auto; font-size: 0.8rem; font-weight: 800; letter-spacing: 2px; color: rgba(var(--primary-color-rgb), 0.9); }
+.post .dino-tip {
+  position: absolute;
+  bottom: 120%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 5;
+  padding: 4px 10px;
+  font-size: 0.7rem;
+  white-space: nowrap;
+  color: var(--text-color);
+  background: rgba(var(--bit-dark-color-rgb), 1);
+  border: 1px dashed rgba(var(--dynamic-dominant-color-rgb), 0.6);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+.post .dino-bar:hover .dino-tip { opacity: 1; visibility: visible; }
+.post .dino-stage {
+  position: relative;
+  height: 100px;
+  overflow: hidden;
+  background: rgb(34, 34, 34);
+  border: 2px solid rgba(var(--primary-color-rgb), 0.4);
+  user-select: none;
+  touch-action: manipulation;
+  cursor: pointer;
+}
+.post .dino-player { position: absolute; left: 30px; bottom: 10px; width: 32px; height: 32px; }
+.post .markdown .dino-player img { width: 32px; height: 32px; max-height: none; margin: 0; padding: 0; border: 0; background: none; object-fit: contain; }
+.post .dino-obstacle { position: absolute; left: 0; bottom: 10px; width: 16px; background: var(--dynamic-dominant-color); }
+.post .dino-ground { position: absolute; left: 0; right: 0; bottom: 0; height: 10px; background: rgb(31, 31, 31); border-top: 2px solid var(--dynamic-dominant-color); }
+.post .dino-score { position: absolute; right: 10px; top: 6px; font-size: 1rem; color: var(--text-color); opacity: 0.7; }
+.post .dino-start,
+.post .dino-over {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(20, 20, 20, 0.96);
+}
+.post .dino-start[hidden],
+.post .dino-over[hidden] { display: none; }
+.post .markdown .dino-start p { margin: 0; max-width: 90%; font-size: 0.7rem; font-weight: 600; line-height: 1.5; color: var(--dynamic-dominant-color); }
+.post .dino-over-row { display: flex; align-items: center; }
+.post .dino-dead { font-size: 1.5rem; font-weight: 800; letter-spacing: -1px; color: var(--status-ram-color); }
+.post .dino-final { position: absolute; right: 10px; top: 6px; font-size: 1.1rem; font-weight: 700; letter-spacing: -1px; color: var(--text-color); }
+.post .dino-final b { color: var(--dynamic-dominant-color); }
+.post .dino-hint { font-size: 0.8rem; font-weight: 700; color: var(--text-color); opacity: 0.5; }
+.post .dino-hint u { color: var(--dynamic-dominant-color); }
+.post .dino-hint.is-faint { opacity: 0.25; }
+.post .dino-flicker { animation: dino-flicker 1.2s infinite alternate; }
+.post .dino-blink { animation: dino-blink 0.7s steps(1) infinite; }
+@keyframes dino-flicker { 0%, 100% { opacity: 1; } 80% { opacity: 0.85; } 85% { opacity: 0.6; } 90% { opacity: 0.95; } }
+@keyframes dino-blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
+
+/* ---------- footer: signature and related logs ---------- */
+
+.post-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 0.5rem 1rem 1rem;
+  /* glass like the body above it: thin enough that the blurred wallpaper shows through */
+  background: rgba(var(--bit-dark-color-rgb), 0.45);
+  border-top: 1px solid rgba(var(--dynamic-dominant-color-rgb), 0.5);
+  backdrop-filter: blur(32px) saturate(180%);
+  -webkit-backdrop-filter: blur(32px) saturate(180%);
+}
+.post-sign { display: flex; align-items: flex-start; gap: 1rem; padding: 0.5rem 1rem; }
+.post-sign img { width: 42px; height: 42px; object-fit: cover; border: 2px solid var(--dynamic-dominant-color); flex: 0 0 auto; }
+.post-sign p { margin: 0; font-size: 0.9rem; font-weight: 500; letter-spacing: 0.01em; color: var(--primary-color); }
+.post-sign strong { color: var(--dynamic-dominant-color); font-weight: 700; letter-spacing: 0.02em; }
+
+/* related logs: the same cards as home's recent logs (v3 used the RecentLogs module for both) */
+.post-related { padding: 0 1rem; }
+.post-related ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 1rem; }
+.post-related li {
+  position: relative;
+  overflow: hidden;
+  background: rgba(var(--background-color-rgb), 0.3);
+  border: 2px solid transparent;
+  transition: border-color 0.3s ease, background 0.3s ease;
+  text-shadow: 0 0 1px rgba(var(--dynamic-hsl-average-rgb), 1);
+}
+.post-related li::before, .post-related li::after, .post-related .rl-corners::before, .post-related .rl-corners::after {
+  content: "";
+  position: absolute;
+  width: 1.2rem;
+  height: 1.2rem;
+  border: 0 solid var(--dynamic-dominant-color);
+  pointer-events: none;
+  z-index: 3;
+}
+.post-related li::before { top: 0; left: 0; border-width: 2px 0 0 2px; }
+.post-related li::after { right: 0; bottom: 0; border-width: 0 2px 2px 0; }
+.post-related .rl-corners { position: absolute; inset: 0; pointer-events: none; }
+.post-related .rl-corners::before { top: 0; right: 0; border-width: 2px 2px 0 0; }
+.post-related .rl-corners::after { left: 0; bottom: 0; border-width: 0 0 2px 2px; }
+.post-related li:hover { border-color: var(--dynamic-dominant-color); background: rgba(var(--background-color-rgb), 0.5); }
+.post-related li:hover::before, .post-related li:hover::after, .post-related li:hover .rl-corners { opacity: 0; transition: opacity 0.3s ease; }
+.post-related a { display: block; position: relative; padding: 1rem 1.5rem; color: var(--text-color); text-decoration: none; line-height: 1.6; }
+.post-related a::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 0.3rem;
+  background: var(--dynamic-dominant-color);
+  transform-origin: left;
+  transition: transform 220ms cubic-bezier(0.2, 0.9, 0.2, 1), opacity 180ms linear;
+}
+.post-related li:hover a::before { transform: scaleX(0); opacity: 0; }
+.post-related .rl-head { display: flex; align-items: center; gap: 0.5rem; }
+.post-related .rl-date {
+  min-width: 70px;
+  padding: 0.1rem 0.2rem;
+  font-size: 0.8rem;
+  font-weight: 800;
+  text-align: center;
+  color: var(--dynamic-dominant-color);
+  background: rgba(var(--dynamic-dominant-color-rgb), 0.2);
+  border: 2px solid rgba(var(--dynamic-dominant-color-rgb), 0.4);
+}
+.post-related .rl-title { flex: 1; font-size: 0.95rem; font-weight: 600; letter-spacing: -0.5px; text-transform: uppercase; text-decoration: underline var(--text-color) 3px; text-underline-offset: 3px; }
+.post-related .rl-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.75rem; }
+.post-related .rl-tag { font-size: 0.69rem; font-weight: 200; padding: 0.1rem 0.2rem; text-transform: lowercase; color: rgba(var(--text-color-rgb), 0.8); background: rgba(var(--dynamic-dominant-color-rgb), 0.25); border: 1px dashed var(--dynamic-dominant-color); }
+.post-related .rl-desc { display: block; margin-top: 0.75rem; font-size: 0.85rem; font-weight: 200; letter-spacing: -0.3px; color: rgba(var(--text-color-rgb), 0.9); }
+
+/* ---------- lightbox (on body) ---------- */
+
+.post-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(var(--background-color-rgb), 0.3);
+  backdrop-filter: blur(32px) saturate(180%);
+  -webkit-backdrop-filter: blur(32px) saturate(180%);
+  cursor: zoom-out;
+  animation: post-lightbox-in 0.2s ease-out;
+}
+.post-lightbox:focus { outline: none; }
+.post-lightbox img {
+  display: block;
+  max-width: 90vw;
+  max-height: 80vh;
+  width: auto;
+  height: auto;
+  border: 2px solid var(--dynamic-dominant-color);
+  background: rgb(34, 34, 34);
+}
+@keyframes post-lightbox-in { from { opacity: 0; } to { opacity: 1; } }
+
+/* ---------- narrow screens ---------- */
+
+@media (max-width: 600px) {
+  .post { --post-pad: 1rem; width: calc(100% - 2rem); }
+  .post-bar { flex-wrap: wrap; gap: 0.5rem 1rem; }
+  .post-title { flex: 1 1 calc(100% - 30px - 2rem); min-width: 0; }
+  /* v3 hid the date and reading time here; they wrap under the title instead */
+  .post-status { flex-basis: 100%; box-sizing: border-box; flex-wrap: wrap; padding-left: calc(30px + 2rem); }
+  .post .markdown p, .post .markdown li { font-size: 0.85rem; }
+  .post .markdown h2 { font-size: 1.15rem; }
+  .post .markdown h3 { font-size: 1rem; }
+  /* narrow: the table scrolls sideways instead of breaking words mid-way */
+  .post .markdown table { display: block; overflow-x: auto; max-width: 100%; font-size: 0.75rem; }
+  .post .markdown :is(th, td) { word-break: normal; overflow-wrap: normal; }
+  .post .markdown thead th { letter-spacing: 1px; }
+  .post .markdown thead th, .post .markdown tbody td { padding: 0.5rem 0.7rem; }
+  .post .markdown tbody td:first-child { padding-left: 1.5rem; }
+  .post .markdown pre { font-size: 0.75rem; }
+  .post-sign { padding: 0.5rem 0; }
+  .post-related { padding: 0; }
+  .post-related a { padding: 1rem; }
+  .post-related .rl-title { font-size: 1rem; }
+  .post-related .rl-date { font-size: 0.7rem; min-width: 54px; }
+  .post-related .rl-desc { font-size: 0.8rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .post .dino-flicker, .post .dino-blink, .post-lightbox { animation: none; }
+}

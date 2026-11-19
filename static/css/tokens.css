@@ -1,0 +1,70 @@
+/* Design tokens, carried over from v3's index.css. v4 is dark only (ADR D-010), so the dark values are the only values.
+   The --dynamic-* variables are written by the palette drift (src/ts/shell/drift.ts); the values here are what shows before it runs. */
+
+@font-face { font-family: "JetBrains Mono"; src: url("/fonts/jetbrains-mono@s1/Thin.woff2") format("woff2"); font-weight: 100; font-display: swap; }
+@font-face { font-family: "JetBrains Mono"; src: url("/fonts/jetbrains-mono@s1/ExtraLight.woff2") format("woff2"); font-weight: 200; font-display: swap; }
+@font-face { font-family: "JetBrains Mono"; src: url("/fonts/jetbrains-mono@s1/Light.woff2") format("woff2"); font-weight: 300; font-display: swap; }
+@font-face { font-family: "JetBrains Mono"; src: url("/fonts/jetbrains-mono@s1/Regular.woff2") format("woff2"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "JetBrains Mono"; src: url("/fonts/jetbrains-mono@s1/Medium.woff2") format("woff2"); font-weight: 500; font-display: swap; }
+@font-face { font-family: "JetBrains Mono"; src: url("/fonts/jetbrains-mono@s1/SemiBold.woff2") format("woff2"); font-weight: 600; font-display: swap; }
+@font-face { font-family: "JetBrains Mono"; src: url("/fonts/jetbrains-mono@s1/Bold.woff2") format("woff2"); font-weight: 700; font-display: swap; }
+@font-face { font-family: "JetBrains Mono"; src: url("/fonts/jetbrains-mono@s1/ExtraBold.woff2") format("woff2"); font-weight: 800; font-display: swap; }
+
+@font-face { font-family: "Monaspace Neon"; src: url("/fonts/monaspace-neon@s1/ExtraLight.woff2") format("woff2"); font-weight: 200; font-display: swap; }
+@font-face { font-family: "Monaspace Neon"; src: url("/fonts/monaspace-neon@s1/Light.woff2") format("woff2"); font-weight: 300; font-display: swap; }
+@font-face { font-family: "Monaspace Neon"; src: url("/fonts/monaspace-neon@s1/Regular.woff2") format("woff2"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "Monaspace Neon"; src: url("/fonts/monaspace-neon@s1/Medium.woff2") format("woff2"); font-weight: 500; font-display: swap; }
+@font-face { font-family: "Monaspace Neon"; src: url("/fonts/monaspace-neon@s1/SemiBold.woff2") format("woff2"); font-weight: 600; font-display: swap; }
+@font-face { font-family: "Monaspace Neon"; src: url("/fonts/monaspace-neon@s1/Bold.woff2") format("woff2"); font-weight: 700; font-display: swap; }
+@font-face { font-family: "Monaspace Neon"; src: url("/fonts/monaspace-neon@s1/ExtraBold.woff2") format("woff2"); font-weight: 800; font-display: swap; }
+
+@font-face { font-family: "Monaspace Krypton"; src: url("/fonts/monaspace-krypton@s1/ExtraLight.woff2") format("woff2"); font-weight: 200; font-display: swap; }
+@font-face { font-family: "Monaspace Krypton"; src: url("/fonts/monaspace-krypton@s1/Light.woff2") format("woff2"); font-weight: 300; font-display: swap; }
+@font-face { font-family: "Monaspace Krypton"; src: url("/fonts/monaspace-krypton@s1/Regular.woff2") format("woff2"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "Monaspace Krypton"; src: url("/fonts/monaspace-krypton@s1/Medium.woff2") format("woff2"); font-weight: 500; font-display: swap; }
+@font-face { font-family: "Monaspace Krypton"; src: url("/fonts/monaspace-krypton@s1/SemiBold.woff2") format("woff2"); font-weight: 600; font-display: swap; }
+@font-face { font-family: "Monaspace Krypton"; src: url("/fonts/monaspace-krypton@s1/Bold.woff2") format("woff2"); font-weight: 700; font-display: swap; }
+@font-face { font-family: "Monaspace Krypton"; src: url("/fonts/monaspace-krypton@s1/ExtraBold.woff2") format("woff2"); font-weight: 800; font-display: swap; }
+
+:root {
+  --background-color: rgb(0, 0, 0);
+  --bit-dark-color: rgb(15, 15, 15);
+  --text-color: rgb(238, 231, 215);
+  --primary-color: rgb(131, 131, 131);
+  --starship-grey-color: rgb(36, 36, 36);
+
+  --background-color-rgb: 0, 0, 0;
+  --bit-dark-color-rgb: 15, 15, 15;
+  --text-color-rgb: 238, 231, 215;
+  --primary-color-rgb: 131, 131, 131;
+
+  --status-ok-color: #7fffd4;
+  --status-warn-color: #ffb347;
+  --status-ram-color: #ff5555;
+  --status-info-color: #00e6ff;
+
+  /* v3 never overrode these for dark mode, so the live site always showed these values. Kept as they rendered. */
+  --status-ok-color-rgb: 44, 90, 75;
+  --status-warn-color-rgb: 97, 67, 26;
+  --status-ram-color-rgb: 141, 46, 46;
+  --status-info-color-rgb: 0, 110, 122;
+
+  --dynamic-rgb-average: #888888;
+  --dynamic-rgb-average-rgb: 136, 136, 136;
+  --dynamic-hsl-average: #888888;
+  --dynamic-hsl-average-ink: #888888;
+  --dynamic-hsl-average-rgb: 136, 136, 136;
+  --dynamic-dominant-color: #888888;
+  --dynamic-dominant-color-rgb: 136, 136, 136;
+
+  --font-sans: "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+  --font-krypton: "Monaspace Krypton", monospace;
+  --font-neon: "Monaspace Neon", monospace;
+
+  --spacing-unit: 8px;
+  --main-content-width: 1000px;
+  --bar-height: 1.5rem;
+
+  color-scheme: dark;
+}

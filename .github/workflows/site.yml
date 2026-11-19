@@ -1,0 +1,60 @@
+name: Build and deploy
+
+# main deploys production. v4 deploys a preview branch of the same Pages project (ADR D-025).
+on:
+  push:
+    branches: [main, v4]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  deployments: write
+
+concurrency:
+  group: site-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - run: npm ci
+
+      - name: Rust and wasm-pack for the header game
+        if: hashFiles('game/Cargo.toml') != ''
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-unknown-unknown
+
+      - name: Build the header game
+        if: hashFiles('game/Cargo.toml') != ''
+        run: |
+          curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
+          cd game && wasm-pack build --release --target web --out-name game --out-dir ../static/game
+
+      - uses: taiki-e/install-action@v2
+        with:
+          tool: zola@0.23.6
+
+      - run: npm run build
+
+      - name: Budgets
+        run: npm run sizes
+
+      # Known URL gaps are allowed on v4 previews and fail on main, so cutover cannot ship them.
+      - name: v3 URLs
+        run: npm run check:urls -- ${{ github.ref_name == 'main' && '--strict' || '' }}
+
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy public --project-name=portfolio --branch=${{ github.ref_name }}

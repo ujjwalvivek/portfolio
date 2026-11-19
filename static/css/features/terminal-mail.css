@@ -1,0 +1,358 @@
+/* Terminal mail (ADR D-019). v3's TerminalMail.module.css with plain tm- class names, on the web design system: borders,
+   not shadows; dashed = inert, solid 2px dominant = focus; keycaps with a 2px bottom edge; square corners (base.css).
+   The whole terminal is one fixed height at every width, so the host reserves a single number (principle 5):
+   the body takes whatever the header and help bar leave. */
+
+.tm {
+  --tm-height: 420px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 1000px;
+  height: var(--tm-height);
+  box-sizing: border-box;
+  overflow: hidden;
+  background: rgba(var(--background-color-rgb), 0.3);
+  backdrop-filter: blur(32px) saturate(180%);
+  -webkit-backdrop-filter: blur(32px) saturate(180%);
+  outline: 2px solid transparent;
+  outline-offset: -2px;
+  color: var(--text-color);
+  text-align: left;
+}
+
+/* the full frame, drawn over the title and status bars so it runs unbroken round the whole window */
+.tm::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  border: 2px solid var(--dynamic-dominant-color);
+  pointer-events: none;
+}
+
+/* ---- title bar ---- */
+.tm-header {
+  position: relative;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.4rem 1rem;
+  background: rgba(var(--bit-dark-color-rgb), 1);
+  white-space: nowrap;
+  overflow: hidden;
+}
+.tm-header::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--dynamic-dominant-color), var(--dynamic-hsl-average), var(--dynamic-dominant-color));
+  opacity: 0.8;
+  z-index: 10;
+}
+
+.tm-dots { display: flex; gap: 0.5rem; z-index: 2; }
+.tm-dot { display: block; width: 10px; height: 10px; transform: translateY(-1px); transition: transform 0.2s ease; }
+.tm-dot:hover { transform: scale(1.15); }
+.tm-dot-close { background: var(--status-ram-color); }
+.tm-dot-min { background: var(--status-warn-color); }
+.tm-dot-max { background: var(--status-ok-color); }
+
+.tm-title {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--text-color);
+  font-family: var(--font-krypton);
+  font-size: 0.75rem;
+  font-weight: 300;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+.tm-title-icon { flex-shrink: 0; width: 1rem; height: 1rem; color: var(--dynamic-dominant-color); fill: currentColor; transform: translateY(-1px); }
+
+.tm-status { flex-shrink: 0; width: 8px; height: 8px; transform: translateY(-1px); transition: background 0.3s ease; }
+.tm-status.is-ready { background: var(--status-ok-color); }
+.tm-status.is-sending { background: var(--status-warn-color); animation: tm-pulse 1.5s infinite; }
+
+/* ---- body: sidebar | compose, input row under both ---- */
+.tm-body {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 126px minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr) auto;
+  padding: 1rem;
+  overflow: hidden;
+}
+
+.tm-panel {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  box-sizing: border-box;
+  overflow: hidden;
+  border: 2px solid rgba(var(--dynamic-dominant-color-rgb), 0.5);
+  transition: border-color 0.25s ease;
+}
+/* focus changes no borders (no doubled frames); only the compose head warms while the terminal has focus */
+.tm:focus-within .tm-panel.is-focus .tm-panel-head { background: rgba(var(--dynamic-dominant-color-rgb), 0.45); }
+
+.tm-panel-head {
+  flex-shrink: 0;
+  padding: 0.2rem 0.4rem;
+  background: rgba(var(--dynamic-dominant-color-rgb), 0.3);
+  border-bottom: 1px solid rgba(var(--dynamic-dominant-color-rgb), 0.5);
+  color: var(--dynamic-dominant-color);
+  font-family: var(--font-neon);
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.tm-panel-body { flex: 1; min-height: 0; overflow: hidden; }
+
+.tm-side { grid-column: 1; grid-row: 1; margin-right: 0.75rem; }
+.tm-compose { grid-column: 2; grid-row: 1; }
+
+/* ---- step sidebar ---- */
+.tm-side-body { display: flex; flex-direction: column; justify-content: space-between; padding-top: 0.5rem; height: 100%; box-sizing: border-box; }
+.tm-steps { display: flex; flex-direction: column; gap: 0.15rem; }
+.tm-step {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  width: 100%;
+  padding: 0.2rem 0.6rem;
+  border: none;
+  background: transparent;
+  color: var(--primary-color);
+  font-family: var(--font-neon);
+  font-size: 0.75rem;
+  text-align: left;
+  cursor: default;
+  transition: all 0.2s ease;
+}
+.tm-step:disabled { opacity: 1; cursor: default; }
+.tm-step:not(:disabled) { cursor: pointer; }
+.tm-step:not(:disabled):hover { background: rgba(var(--dynamic-dominant-color-rgb), 0.08); }
+.tm-step.is-active { color: var(--dynamic-dominant-color); background: rgba(var(--dynamic-dominant-color-rgb), 0.1); }
+.tm-step.is-done { color: var(--status-ok-color); }
+.tm-step.is-done:not(:disabled):hover { background: rgba(var(--status-ok-color-rgb), 0.3); }
+.tm-marker { flex-shrink: 0; width: 0.7rem; font-size: 0.6rem; line-height: 1; text-align: center; transform: translateY(1px); }
+.tm-step-label { flex: 1; }
+
+.tm-companion {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  width: 110px;
+  height: 110px;
+  margin-top: auto;
+  overflow: hidden;
+}
+.tm-cat { display: block; width: 110px; height: 110px; image-rendering: pixelated; }
+
+/* ---- compose log ---- */
+.tm-output {
+  height: 100%;
+  box-sizing: border-box;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: 0.6rem 0.75rem;
+  color: var(--text-color);
+  font-family: var(--font-neon);
+  font-size: 0.8rem;
+  font-weight: 200;
+  line-height: 1.6;
+}
+.tm-line {
+  margin-bottom: 0.2rem;
+  padding-left: 0.5rem;
+  border-left: 3px solid rgba(var(--dynamic-dominant-color-rgb), 0.25);
+  white-space: pre-wrap;
+  word-break: break-word;
+  animation: tm-line-in 0.15s ease-out;
+}
+.tm-blank { line-height: 0.2rem; border: none; }
+.tm-l-user { color: var(--dynamic-dominant-color); }
+.tm-l-system { color: var(--text-color); font-family: var(--font-krypton); letter-spacing: -0.3px; }
+.tm-l-prompt { color: var(--status-info-color); }
+.tm-l-success { color: var(--status-ok-color); }
+.tm-l-error { color: var(--status-ram-color); }
+.tm-l-warn { color: var(--status-warn-color); }
+.tm-l-info { color: var(--text-color); opacity: 0.8; }
+
+/* ---- input row: inert dashed, solid dominant while typing ---- */
+.tm-input-row {
+  grid-column: 1 / -1;
+  grid-row: 2;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  padding: calc(0.5rem - 1px) calc(0.75rem - 1px);
+  border: 2px dashed rgba(var(--dynamic-dominant-color-rgb), 0.5);
+  font-family: var(--font-neon);
+  transition: border-color 0.2s ease;
+}
+
+.tm-prompt { flex-shrink: 0; display: flex; align-items: center; color: var(--dynamic-dominant-color); font-size: 0.8rem; }
+.tm-tilde { color: var(--dynamic-hsl-average-ink); }
+.tm-slash { color: rgba(var(--primary-color-rgb), 0.5); }
+.tm-step-name { color: var(--dynamic-dominant-color); font-weight: 600; }
+.tm-caret { color: var(--status-ok-color); white-space: pre; }
+.tm-spinner { display: inline-block; width: 1ch; text-align: center; color: var(--status-warn-color); font-size: 0.9rem; }
+
+.tm-input-wrap { flex: 1; display: flex; min-width: 0; }
+.tm-input {
+  flex: 1;
+  width: 0;
+  min-width: 0;
+  padding: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--text-color);
+  caret-color: var(--dynamic-dominant-color);
+  font-family: var(--font-neon);
+  font-size: 0.8rem;
+}
+.tm-input::placeholder { color: var(--primary-color); font-style: normal; }
+.tm-input:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* ---- help bar: message preview and the keys for this step ---- */
+.tm-help {
+  position: relative;
+  flex-shrink: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  min-height: 2.1rem;
+  box-sizing: border-box;
+  padding: 0.4rem 1rem;
+  background: rgba(var(--bit-dark-color-rgb), 1);
+  font-family: var(--font-neon);
+}
+.tm-help::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 1px;
+  background: linear-gradient(90deg, var(--dynamic-dominant-color), var(--dynamic-hsl-average), var(--dynamic-dominant-color));
+  opacity: 0.8;
+  z-index: 10;
+}
+
+.tm-preview { flex: 1; min-width: 0; display: flex; gap: 1rem; overflow: hidden; }
+.tm-field { display: flex; align-items: center; gap: 0.4rem; min-width: 0; font-size: 0.7rem; }
+.tm-label {
+  flex-shrink: 0;
+  color: var(--dynamic-dominant-color);
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+.tm-label::after { content: ":"; }
+.tm-value { min-width: 0; max-width: 100px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--text-color); }
+.tm-waiting { color: var(--primary-color); }
+.tm-dim { color: var(--primary-color); }
+
+.tm-hints { flex-shrink: 0; display: flex; align-items: center; gap: 0.75rem; }
+.tm-hint { display: flex; align-items: center; gap: 0.3rem; }
+.tm-key {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.05rem 0.35rem;
+  border: 1px solid rgba(var(--dynamic-dominant-color-rgb), 0.5);
+  border-bottom-width: 2px;
+  background: rgba(var(--dynamic-dominant-color-rgb), 0.15);
+  color: var(--dynamic-dominant-color);
+  font-family: var(--font-neon);
+  font-size: 0.6rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.tm-hint-label { color: var(--primary-color); font-size: 0.6rem; letter-spacing: 1px; text-transform: lowercase; white-space: nowrap; }
+
+/* ---- send flash: an outline on success (no shadows), v3's shake on failure ---- */
+.tm.is-success { animation: tm-success 0.6s ease-out; }
+.tm.is-error { animation: tm-error 0.5s ease-out; }
+
+@keyframes tm-line-in { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes tm-pulse { 0%, 100% { opacity: 1; transform: translateY(-1px) scale(1); } 50% { opacity: 0.7; transform: translateY(-1px) scale(1.2); } }
+@keyframes tm-success {
+  0% { outline-color: var(--status-ok-color); background-color: rgba(var(--status-ok-color-rgb), 0.3); }
+  100% { outline-color: transparent; }
+}
+@keyframes tm-error {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-3px); }
+  40% { transform: translateX(3px); }
+  60% { transform: translateX(-2px); }
+  80% { transform: translateX(2px); }
+}
+
+/* ---- narrow: the steps become a row of chips over the log, the cat goes, the help bar stacks ---- */
+@media (max-width: 900px) {
+  .tm-body { padding: 0.75rem; }
+  .tm-output, .tm-input { font-size: 0.78rem; }
+}
+
+@media (max-width: 700px) {
+  .tm-body { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr) auto; }
+  .tm-companion { display: none; }
+  .tm-side { grid-row: 1; margin: 0 0 0.5rem; }
+  .tm-side-body { padding: 0.5rem 0; }
+  .tm-steps { flex-direction: row; flex-wrap: wrap; gap: 0.25rem; margin-left: 0.7rem; }
+  .tm-step { width: auto; padding: 0.25rem 0.5rem; border: 1px solid rgba(var(--primary-color-rgb), 0.15); font-size: 0.65rem; }
+  .tm-step.is-active { border-color: rgba(var(--dynamic-dominant-color-rgb), 0.4); }
+  .tm-step.is-done { border-color: rgba(var(--status-ok-color-rgb), 0.6); }
+  .tm-compose { grid-column: 1; grid-row: 2; }
+  .tm-input-row { grid-row: 3; margin-top: 0.5rem; }
+  .tm-output, .tm-prompt { font-size: 0.75rem; }
+
+  /* iOS zooms the page when a field under 16px gets focus. The field stays 16px and is scaled down to the 0.75rem
+     the rest of the terminal uses (12 / 16 = 0.75), stretched so it still fills the row. */
+  .tm-input-wrap { position: relative; height: 1.9em; font-size: 0.75rem; }
+  .tm-input { position: absolute; top: 50%; left: 0; width: calc(100% / 0.75); font-size: 16px; transform: translateY(-50%) scale(0.75); transform-origin: left center; }
+
+  /* stacked, with the hints row always one line tall so the height never changes between steps */
+  .tm-help { flex-direction: column; align-items: flex-start; gap: 0.5rem; padding: 0.35rem 0.75rem; }
+  .tm-preview { width: 100%; }
+  .tm-hints { min-height: 1.1rem; }
+  .tm-key, .tm-hint-label { font-size: 0.55rem; }
+}
+
+@media (max-width: 500px) {
+  .tm-body { padding: 0.5rem; }
+  .tm-header { padding: 0.4rem 0.75rem; }
+  .tm-preview { gap: 0.5rem; }
+  .tm-field { font-size: 0.6rem; }
+  .tm-label { font-size: 0.55rem; letter-spacing: 1px; }
+  .tm-value { max-width: 72px; }
+  .tm-output { padding: 0.4rem 0.5rem; font-size: 0.7rem; }
+  .tm-prompt { font-size: 0.7rem; }
+  .tm-input-wrap { font-size: 0.7rem; }
+  .tm-input { width: calc(100% / 0.7); transform: translateY(-50%) scale(0.7); }
+  .tm-hints { gap: 0.4rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tm-line, .tm.is-success, .tm.is-error, .tm-status.is-sending { animation: none; }
+}

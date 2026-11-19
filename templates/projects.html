@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% block styles %}<link rel="stylesheet" href="/css/projects.css">{% endblock styles %}
+{% block page_styles %}/css/projects.css{% endblock page_styles %}
+{% block modules %}/js/pages/projects.js{% endblock modules %}
+{% block content %}
+{#- v3 Projects: cornered hero, the filter panel (prompt, --ALL/--PM/--DEV, status line, stats), one row per project
+    (a table row on wide screens, a card on phones; same markup), and the entries line. Everything is rendered here
+    with the real counts; projects.js only filters, shows the tooltips and opens the Notion and PDF overlays.
+    No FETCHING bar and no placeholder stats (D-024). -#}
+{%- set data = load_data(path="data/projects.toml") -%}
+{%- set all = data.projects -%}
+{%- set total = all | length -%}
+<section class="projects" aria-labelledby="pj-title" data-pj>
+  <header class="pj-hero">
+    <span class="pj-hero-icon" aria-hidden="true"><svg class="icon"><use href="/icons.svg#ri-archive-fill"/></svg></span>
+    <div class="pj-hero-text">
+      <h1 id="pj-title">Projects Directory</h1>
+      <p>projects.<wbr>failures.<wbr>successes.<wbr>learnings.<wbr>insights</p>
+    </div>
+    <span class="pj-corners" aria-hidden="true"></span>
+  </header>
+
+  <div class="pj-panel" role="group" aria-labelledby="pj-panel-title">
+    <p class="pj-panel-title" id="pj-panel-title">filter_interface_v2.0.0</p>
+    <div class="pj-panel-row">
+      <span class="pj-prompt">eza /projects -l</span>
+      <div class="pj-filters" data-pj-filters>
+        <button class="pj-filter" type="button" aria-pressed="true" data-pj-filter="all">--All</button>
+        <button class="pj-filter" type="button" aria-pressed="false" data-pj-filter="pm">--Pm</button>
+        <button class="pj-filter" type="button" aria-pressed="false" data-pj-filter="dev">--Dev</button>
+      </div>
+      <p class="pj-status" role="status">active filter: <span class="pj-status-filter" data-pj-active>all</span> <span class="pj-status-count"><span data-pj-count>{{ total }}</span> entries found</span> <span class="pj-ok">[ok]</span></p>
+    </div>
+  </div>
+
+  <ul class="pj-list" data-pj-list>
+  {%- for p in all %}
+    {%- set group = "pm" %}{% if p.id is starting_with(pat="dev-") %}{% set group = "dev" %}{% endif %}
+    {%- set links = p.contentLinks | default(value=false) %}
+    {%- set shown = p.visibleTags | default(value=2) %}
+    <li class="pj-row" id="{{ p.id }}" data-project-id="{{ p.id }}" data-pj-group="{{ group }}">
+      <span class="pj-icon" aria-hidden="true"><svg class="icon"><use href="/icons.svg#ri-archive-fill"/></svg></span>
+      <h2 class="pj-title"><button class="pj-title-text" type="button" aria-describedby="{{ p.id }}-desc" data-pj-tip="{{ p.id }}-desc" data-pj-zone="{{ p.id }}-desc">{{ p.title }}</button></h2>
+      <div class="pj-desc" id="{{ p.id }}-desc" hidden>{% for line in p.content %}<p>{{ line | trim }}</p>{% endfor %}</div>
+      <div class="pj-tags"{% if p.tags | length > shown %} data-pj-zone="{{ p.id }}-more"{% endif %}>
+        <span class="pj-tags-label" aria-hidden="true">tags</span>
+        <ul class="pj-tag-list" aria-label="Tags">
+          {%- for tag in p.tags %}{% if loop.index <= shown %}<li class="pj-tag">{{ tag | lower }}</li>{% endif %}{% endfor %}
+          {%- if p.tags | length > shown %}
+          {%- set more = p.tags | length - shown %}
+          <li><button class="pj-tag pj-more" type="button" aria-describedby="{{ p.id }}-more" data-pj-tip="{{ p.id }}-more"><span aria-hidden="true">+{{ more }}</span><span class="sr-only">{{ more }} more {% if more == 1 %}tag{% else %}tags{% endif %}</span></button>
+            <ul class="pj-more-list" id="{{ p.id }}-more" hidden>{% for tag in p.tags %}{% if loop.index > shown %}<li class="pj-tag">{{ tag | lower }}</li>{% endif %}{% endfor %}</ul></li>
+          {%- endif %}
+        </ul>
+      </div>
+      {#- v3 ButtonGroup: the blog button first, then the first of case study, docs, design, code, web; at most two. -#}
+      {%- set blog = false %}{% if links and links.blogPost is defined %}{% set blog = links.blogPost %}{% endif %}
+      {%- set limit = 2 %}{% if blog %}{% set limit = 1 %}{% endif %}
+      {%- set kinds = ["notionEmbed", "pdfDocument", "figmaDesign", "githubRepo", "websiteLink"] %}
+      {%- set_global n_kinds = 0 %}
+      {%- if links %}{% for k in kinds %}{% if links[k] is defined %}{% set_global n_kinds = n_kinds + 1 %}{% endif %}{% endfor %}{% endif %}
+      {%- set n_btn = n_kinds %}{% if n_btn > limit %}{% set n_btn = limit %}{% endif %}{% if blog %}{% set n_btn = n_btn + 1 %}{% endif %}
+      <div class="pj-actions{% if n_btn < 2 %} is-single{% endif %}">
+        {%- if blog %}
+        {%- set post = get_page(path="blog/" ~ blog | replace(from="/blog/", to="")) %}
+        <a class="pj-btn" href="{{ post.path | safe }}"><svg class="icon" aria-hidden="true"><use href="/icons.svg#fa-newspaper"/></svg>Blog</a>
+        {%- endif %}
+        {%- set_global used = 0 %}
+        {%- for k in kinds %}{% if links and links[k] is defined and used < limit %}{% set_global used = used + 1 %}
+        {%- if k == "notionEmbed" %}
+        <a class="pj-btn" href="{{ links.notionEmbed | safe }}" target="_blank" rel="noopener" data-pj-open="notion" data-pj-title="{{ p.title }}"><svg class="icon" aria-hidden="true"><use href="/icons.svg#pi-notion-logo-fill"/></svg>Case Study</a>
+        {%- elif k == "pdfDocument" %}
+        <a class="pj-btn" href="{{ links.pdfDocument | safe }}" target="_blank" rel="noopener" data-pj-open="pdf" data-pj-title="{{ p.title }}"><svg class="icon" aria-hidden="true"><use href="/icons.svg#pi-file-pdf-fill"/></svg>Docs</a>
+        {%- elif k == "figmaDesign" %}
+        <a class="pj-btn" href="{{ links.figmaDesign | safe }}" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="/icons.svg#io-logo-figma"/></svg>Design</a>
+        {%- elif k == "githubRepo" %}
+        <a class="pj-btn" href="{{ links.githubRepo | safe }}" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="/icons.svg#tfi-github"/></svg>Code</a>
+        {%- elif k == "websiteLink" %}
+        <a class="pj-btn" href="{{ links.websiteLink | safe }}" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="/icons.svg#fa-desktop"/></svg>Web</a>
+        {%- endif %}
+        {%- endif %}{% endfor %}
+        {%- if n_btn == 0 %}
+        <span class="pj-btn is-wip" aria-disabled="true"><svg class="icon" aria-hidden="true"><use href="/icons.svg#bs-hourglass-split"/></svg>WIP. Devlog Soon.</span>
+        {%- endif %}
+      </div>
+    </li>
+  {%- endfor %}
+  </ul>
+
+  <p class="pj-end" data-pj-end>console.log() &rArr; PASSED. entries_loaded(<span data-pj-end-count>{{ total }}</span>)</p>
+</section>
+{% endblock content %}

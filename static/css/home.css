@@ -1,0 +1,553 @@
+/* Home. The header box is root's cornered 16:9 frame. It holds root's spinner until the scene draws its first frame;
+   the heading itself is only for screen readers, since the scene draws the words. */
+
+.home-header { width: min(var(--main-content-width), calc(100% - 2rem)); margin: 0 auto; }
+
+.header-frame { position: relative; width: 100%; }
+.header-inner {
+  position: relative;
+  aspect-ratio: 640 / 360;
+  background: rgba(var(--background-color-rgb), 0.3);
+  backdrop-filter: blur(32px) saturate(180%);
+  -webkit-backdrop-filter: blur(32px) saturate(180%);
+  border: 2px dashed rgba(var(--dynamic-dominant-color-rgb), 0.35);
+  display: grid;
+  place-items: center;
+}
+
+/* Four corner brackets, root's. */
+.header-frame::before, .header-frame::after, .header-inner::before, .header-inner::after {
+  content: "";
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border: solid rgba(var(--dynamic-dominant-color-rgb), 1);
+  pointer-events: none;
+  z-index: 20;
+}
+.header-frame::before { top: 0; left: 0; border-width: 2px 0 0 2px; }
+.header-frame::after { top: 0; right: 0; border-width: 2px 2px 0 0; }
+/* the inner box has a 2px border; its brackets sit on it, matching the top pair on the frame's edge */
+.header-inner::before { bottom: -2px; left: -2px; border-width: 0 0 2px 2px; }
+.header-inner::after { bottom: -2px; right: -2px; border-width: 0 2px 2px 0; }
+
+/* A pixel spinner while the scene loads: eight squares in a 3 x 3 ring, the lit one walking round with a fading tail,
+   in the dot language of the scene itself. If the scene can't start, one quiet line instead. */
+.header-spinner {
+  display: grid;
+  grid-template: repeat(3, 8px) / repeat(3, 8px);
+  gap: 3px;
+  transition: opacity 0.4s ease-out;
+}
+.header-spinner i {
+  background: var(--dynamic-dominant-color);
+  opacity: 0.15;
+  animation: header-pixel 0.96s steps(1) infinite;
+}
+/* clockwise from the top left; the centre cell stays empty */
+.header-spinner i:nth-child(1) { grid-area: 1 / 1; animation-delay: 0s; }
+.header-spinner i:nth-child(2) { grid-area: 1 / 2; animation-delay: 0.12s; }
+.header-spinner i:nth-child(3) { grid-area: 1 / 3; animation-delay: 0.24s; }
+.header-spinner i:nth-child(4) { grid-area: 2 / 3; animation-delay: 0.36s; }
+.header-spinner i:nth-child(5) { grid-area: 3 / 3; animation-delay: 0.48s; }
+.header-spinner i:nth-child(6) { grid-area: 3 / 2; animation-delay: 0.6s; }
+.header-spinner i:nth-child(7) { grid-area: 3 / 1; animation-delay: 0.72s; }
+.header-spinner i:nth-child(8) { grid-area: 2 / 1; animation-delay: 0.84s; }
+@keyframes header-pixel {
+  0% { opacity: 1; }
+  12.5% { opacity: 0.6; }
+  25% { opacity: 0.3; }
+  37.5%, 100% { opacity: 0.15; }
+}
+.home-header.is-live .header-spinner, .home-header.is-off .header-spinner { opacity: 0; }
+.home-header.is-live .header-spinner i, .home-header.is-off .header-spinner i { animation: none; }
+/* Reduced motion: the same ring, three times slower (it only fades, nothing moves). Beats the global reset on purpose. */
+@media (prefers-reduced-motion: reduce) {
+  .header-spinner i { animation-duration: 2.4s !important; animation-iteration-count: infinite !important; }
+  .header-spinner i:nth-child(1) { animation-delay: 0.0s; }
+  .header-spinner i:nth-child(2) { animation-delay: 0.3s; }
+  .header-spinner i:nth-child(3) { animation-delay: 0.6s; }
+  .header-spinner i:nth-child(4) { animation-delay: 0.9s; }
+  .header-spinner i:nth-child(5) { animation-delay: 1.2s; }
+  .header-spinner i:nth-child(6) { animation-delay: 1.5s; }
+  .header-spinner i:nth-child(7) { animation-delay: 1.8s; }
+  .header-spinner i:nth-child(8) { animation-delay: 2.1s; }
+}
+.header-off { margin: 0; font-size: 0.8rem; letter-spacing: 1px; color: rgba(var(--text-color-rgb), 0.6); }
+.home-header.is-off .header-off { display: block; position: absolute; }
+
+/* Once the scene is drawing, the canvas fills the box and the HTML text steps back (visually only). */
+#header-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+  outline: none;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  -webkit-tap-highlight-color: transparent;
+  opacity: 0;
+  transition: opacity 0.8s ease-out;
+}
+.home-header.is-live #header-canvas { opacity: 1; }
+
+.header-controls { display: flex; justify-content: flex-start; padding-top: 0.25rem; }
+.audio-toggle {
+  background: none;
+  border: none;
+  color: rgba(var(--text-color-rgb), 0.66);
+  padding: 8px 0;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.audio-toggle:hover, .audio-toggle[aria-pressed="true"] { color: var(--dynamic-dominant-color); }
+
+
+
+@media (max-width: 600px) {
+  #main:has(.home-header) { padding-top: 5rem; }
+}
+
+/* Below the header: v3's home column. */
+.home-body { width: min(var(--main-content-width), calc(100% - 2rem)); margin: 2.5rem auto 0; display: flex; flex-direction: column; gap: 2rem; font-family: var(--font-neon); }
+
+/* Nav: three terminal cards. A glow line on top (as the engine cards), a strip with the index, the path and the
+   page's keyboard chord, then v3's <Label/> with an arrow, and one plain line on what is there. Hover tints the card,
+   turns its frame to the accent, slides the arrow and sweeps v3's light across it. */
+.home-nav { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; width: 100%; }
+.home-cta {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  min-width: 0;
+  padding: 0.75rem 1rem 0.85rem;
+  border: 2px solid rgba(var(--dynamic-dominant-color-rgb), 0.45);
+  background:
+    linear-gradient(to right, rgba(var(--dynamic-dominant-color-rgb), 0.8), rgba(var(--dynamic-hsl-average-rgb), 0.8), rgba(var(--dynamic-dominant-color-rgb), 0.8)) top / 100% 3px no-repeat,
+    rgba(var(--background-color-rgb), 0.35);
+  backdrop-filter: blur(32px) saturate(180%);
+  -webkit-backdrop-filter: blur(32px) saturate(180%);
+  color: var(--text-color);
+  text-decoration: none;
+  transition: border-color 0.25s ease, background-color 0.25s ease;
+}
+.home-cta:hover { border-color: var(--dynamic-dominant-color); background-color: rgba(var(--dynamic-dominant-color-rgb), 0.12); }
+.home-cta::after {
+  content: "";
+  position: absolute;
+  top: -50px;
+  left: -75px;
+  width: 50px;
+  height: 200px;
+  z-index: -1;
+  background: var(--dynamic-hsl-average);
+  opacity: 0.1;
+  filter: blur(20px);
+  transform: rotate(45deg);
+  transition: all 500ms cubic-bezier(0.19, 1, 0.22, 1);
+}
+.home-cta:hover::after { left: 120%; opacity: 0.25; }
+.cta-top { display: flex; align-items: center; gap: 0.6rem; font-size: 0.68rem; letter-spacing: 1px; color: rgba(var(--text-color-rgb), 0.6); }
+.cta-idx { font-weight: 700; color: var(--dynamic-dominant-color); }
+.cta-path { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cta-keys { display: flex; gap: 0.2rem; margin-left: auto; }
+.cta-keys kbd {
+  display: inline-grid;
+  place-items: center;
+  min-width: 1.15rem;
+  height: 1.15rem;
+  box-sizing: border-box;
+  font-family: var(--font-neon);
+  font-size: 0.62rem;
+  font-weight: 700;
+  color: var(--text-color);
+  border: 1px solid rgba(var(--dynamic-dominant-color-rgb), 0.5);
+  border-bottom-width: 2px;
+  background: rgba(var(--dynamic-dominant-color-rgb), 0.08);
+}
+.cta-label { display: flex; align-items: baseline; font-family: var(--font-krypton); font-size: 1.15rem; font-weight: 700; white-space: nowrap; transition: color 0.25s ease; }
+.home-cta:hover .cta-label { color: var(--dynamic-dominant-color); }
+.home-cta-tag { color: var(--primary-color); opacity: 0.8; transition: color 0.25s ease; }
+.home-cta:hover .home-cta-tag { color: rgba(var(--text-color-rgb), 0.8); }
+.cta-arrow { margin-left: auto; color: var(--dynamic-dominant-color); transition: transform 0.25s ease; }
+.home-cta:hover .cta-arrow { transform: translateX(4px); }
+.cta-sub { font-size: 0.72rem; line-height: 1.4; color: rgba(var(--text-color-rgb), 0.7); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+@media (prefers-reduced-motion: reduce) { .home-cta:hover .cta-arrow { transform: none; } }
+@media (hover: none) { .cta-keys { display: none; } }
+
+/* Corner brackets for the intro and the log cards: top-left and bottom-right on the box, the other two on a span. */
+.intro, .recent-logs li { position: relative; }
+.intro::before, .intro::after, .intro-corners::before, .intro-corners::after,
+.recent-logs li::before, .recent-logs li::after, .rl-corners::before, .rl-corners::after {
+  content: "";
+  position: absolute;
+  width: 1.2rem;
+  height: 1.2rem;
+  border: 0 solid var(--dynamic-dominant-color);
+  pointer-events: none;
+  z-index: 3;
+}
+.intro::before, .recent-logs li::before { top: 0; left: 0; border-width: 2px 0 0 2px; }
+.intro::after, .recent-logs li::after { right: 0; bottom: 0; border-width: 0 2px 2px 0; }
+.intro-corners::before, .rl-corners::before { top: 0; right: 0; border-width: 2px 2px 0 0; }
+.intro-corners::after, .rl-corners::after { left: 0; bottom: 0; border-width: 0 0 2px 2px; }
+.intro-corners, .rl-corners { position: absolute; inset: 0; pointer-events: none; }
+
+/* Intro (v3 IntroText): a glass terminal block. */
+.intro {
+  font-family: var(--font-krypton);
+  font-size: 0.85rem;
+  line-height: 1.5;
+  padding: 1rem 1.5rem;
+  background: rgba(var(--background-color-rgb), 0.4);
+  backdrop-filter: blur(32px) saturate(180%);
+  -webkit-backdrop-filter: blur(32px) saturate(180%);
+  text-shadow: 0 0 1.5px rgba(var(--dynamic-dominant-color-rgb), 1);
+}
+.cmd { margin-left: 0.5rem; font-weight: 800; color: var(--text-color); text-decoration: underline rgba(var(--dynamic-dominant-color-rgb), 0.4) 2.5px; vertical-align: middle; }
+.cmd-param { color: rgba(var(--text-color-rgb), 0.5); vertical-align: middle; }
+.intro-out { margin-top: 0.5rem; }
+.intro-out p { margin: 0 0 0 0.5rem; font-family: var(--font-neon); font-weight: 200; letter-spacing: 0.05rem; white-space: normal; }
+.hl { font-weight: 700; color: var(--dynamic-dominant-color); margin: 0 0.15rem; }
+.word { display: inline-block; animation: letter-glow 0.3s both; text-shadow: 0 0 1px rgba(var(--dynamic-hsl-average-rgb), 1); }
+@keyframes letter-glow {
+  0% { opacity: 0.4; text-shadow: 0 0 1px rgba(var(--text-color-rgb), 0.1); }
+  66% { opacity: 0.6; text-shadow: 0 0 20px rgba(var(--dynamic-dominant-color-rgb), 0.9); }
+  77% { opacity: 0.8; }
+  100% { opacity: 0.9; text-shadow: 0 0 20px rgba(var(--dynamic-dominant-color-rgb), 0); }
+}
+
+/* Starship prompt: segments in shades of the accent (v3 generated them in JS; CSS relative colours do it now). */
+.starship { display: inline-flex; align-items: center; height: 2rem; vertical-align: middle; color: var(--starship-grey-color); font-family: var(--font-krypton); flex-wrap: nowrap; }
+.seg { display: inline-flex; align-items: center; height: 1.2rem; padding: 0 0.4rem 0 0.9rem; margin-right: 0.3rem; font-size: 0.7rem; line-height: 1; position: relative; }
+.seg + .seg { margin-left: -0.75rem; }
+.seg-logo { padding: 0; z-index: 4; background: hsl(from var(--dynamic-dominant-color) h s 44%); }
+.seg-path { z-index: 3; background: hsl(from var(--dynamic-dominant-color) h s 56%); }
+.seg-git { z-index: 2; background: hsl(from var(--dynamic-dominant-color) h s 68%); gap: 0.25rem; }
+.seg-ver { z-index: 1; background: hsl(from var(--dynamic-dominant-color) h s 80%); }
+.seg-dots { display: inline-flex; }
+.seg-dots i { display: inline-block; width: 0.8rem; height: 1.2rem; }
+.seg-dots i:nth-child(1) { background: hsl(from var(--dynamic-dominant-color) h s 26%); }
+.seg-dots i:nth-child(2) { background: hsl(from var(--dynamic-dominant-color) h s 32%); }
+.seg-dots i:nth-child(3) { background: hsl(from var(--dynamic-dominant-color) h s 38%); }
+.seg-uv { padding: 0 0.5rem; font-weight: 800; }
+
+/* Recent logs (v3 RecentLogs): two glass cards with an accent bar that slides away on hover. */
+.recent-logs ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 1rem; }
+.recent-logs li {
+  overflow: hidden;
+  background: rgba(var(--background-color-rgb), 0.3);
+  backdrop-filter: blur(32px) saturate(180%);
+  -webkit-backdrop-filter: blur(32px) saturate(180%);
+  border: 2px solid transparent;
+  transition: border-color 0.3s ease, background 0.3s ease;
+  text-shadow: 0 0 1px rgba(var(--dynamic-hsl-average-rgb), 1);
+}
+.recent-logs li:hover { border-color: var(--dynamic-dominant-color); background: rgba(var(--background-color-rgb), 0.5); }
+.recent-logs li:hover::before, .recent-logs li:hover::after, .recent-logs li:hover .rl-corners { opacity: 0; transition: opacity 0.3s ease; }
+.recent-logs a {
+  display: block;
+  position: relative;
+  padding: 1rem 1.5rem;
+  color: var(--text-color);
+  text-decoration: none;
+  line-height: 1.6;
+}
+.recent-logs a::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 0.3rem;
+  background: var(--dynamic-dominant-color);
+  transform-origin: left;
+  transition: transform 220ms cubic-bezier(0.2, 0.9, 0.2, 1), opacity 180ms linear;
+}
+.recent-logs li:hover a::before { transform: scaleX(0); opacity: 0; }
+.rl-head { display: flex; align-items: center; gap: 0.5rem; }
+.rl-date {
+  min-width: 70px;
+  padding: 0.1rem 0.2rem;
+  font-size: 0.8rem;
+  font-weight: 800;
+  text-align: center;
+  color: var(--dynamic-dominant-color);
+  background: rgba(var(--dynamic-dominant-color-rgb), 0.2);
+  border: 2px solid rgba(var(--dynamic-dominant-color-rgb), 0.4);
+}
+.rl-title { flex: 1; font-size: 0.95rem; font-weight: 600; letter-spacing: -0.5px; text-transform: uppercase; text-decoration: underline var(--text-color) 3px; text-underline-offset: 3px; }
+.rl-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.75rem; }
+.rl-tag { font-size: 0.69rem; font-weight: 200; padding: 0.1rem 0.2rem; text-transform: lowercase; color: rgba(var(--text-color-rgb), 0.8); background: rgba(var(--dynamic-dominant-color-rgb), 0.25); border: 1px dashed var(--dynamic-dominant-color); }
+.rl-desc { display: block; margin-top: 0.75rem; font-size: 0.85rem; font-weight: 200; letter-spacing: -0.3px; color: rgba(var(--text-color-rgb), 0.9); }
+
+/* Lazy hosts hold their final height until mounted (values come from the features' measured heights). */
+.home-widgets { --hold: calc((min(var(--main-content-width), 100vw - 2rem) - 3rem) / 4); }
+@media (max-width: 1099px) { .home-widgets { --hold: min(var(--main-content-width), 100vw - 2rem); } }
+@media (max-width: 499px) { .home-widgets { --hold: calc(4 * (100vw - 2rem) + 3rem); --hold-phone: calc(4 * (100vw - 2rem) + 3rem); } }
+.home-mail { --hold: 420px; --hold-phone: 420px; }
+
+@media (max-width: 900px) {
+  .cta-sub { white-space: normal; }
+}
+@media (max-width: 580px) {
+  .home-nav { grid-template-columns: 1fr; }
+  .cta-sub { white-space: nowrap; }
+  .seg-path, .seg-ver { display: none; }
+}
+@media (max-width: 500px) {
+  .rl-title { font-size: 1rem; }
+  .rl-date { font-size: 0.7rem; min-width: 54px; }
+  .rl-desc { font-size: 0.8rem; }
+  .recent-logs a { padding: 1rem; }
+}
+
+/* ==== Journey and Substrate, the two engines this site runs on (moved from About) ==== */
+/* Corner brackets: top-left and bottom-right on the box, the other two on an .ab-corners span inside it. */
+.ab-engine { position: relative; }
+.ab-engine::before, .ab-engine::after, .home-body .ab-corners::before, .home-body .ab-corners::after {
+  content: "";
+  position: absolute;
+  width: 1.2rem;
+  height: 1.2rem;
+  border: 0 solid var(--dynamic-dominant-color);
+  pointer-events: none;
+  z-index: 3;
+}
+.ab-engine::before { top: 0; left: 0; border-width: 2px 0 0 2px; }
+.ab-engine::after { right: 0; bottom: 0; border-width: 0 2px 2px 0; }
+.home-body .ab-corners { position: absolute; inset: 0; pointer-events: none; }
+.home-body .ab-corners::before { top: 0; right: 0; border-width: 2px 2px 0 0; }
+.home-body .ab-corners::after { left: 0; bottom: 0; border-width: 0 0 2px 2px; }
+.ab-engines { font-family: var(--font-neon); line-height: 1.6; }
+
+/* ---- engine cards (v3 JourneyBadge, SynclippyBadge) --------------------------------------------------------- */
+/* Both cards hold the same twelve rows (title, description, stack, badges, releases, three commands with their
+   badges, activity) and share the grid's row tracks through subgrid, so each box sits level with its twin. Rows are
+   0.5rem apart (a command and its badges); .ab-gap opens a new section at v3's 1.2rem, .ab-gap-s a new command. */
+.ab-engines { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 1rem; row-gap: 0; }
+.ab-engine {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: subgrid;
+  grid-row: span 12;
+  row-gap: 0.55rem;
+  min-width: 0;
+  padding: 1.25rem 1.75rem 1.75rem;
+  /* v3's top glow: a 4px line from the accent through the average and back, under the top corner brackets */
+  /* top-right (4px, over the glow line) and bottom-left brackets are drawn here as layers; the other two are ::before/::after */
+  --c: var(--dynamic-dominant-color);
+  background:
+    linear-gradient(var(--c), var(--c)) top right / 1.2rem 4px no-repeat,
+    linear-gradient(var(--c), var(--c)) top right / 2px 1.2rem no-repeat,
+    linear-gradient(var(--c), var(--c)) bottom left / 1.2rem 2px no-repeat,
+    linear-gradient(var(--c), var(--c)) bottom left / 2px 1.2rem no-repeat,
+    linear-gradient(to right, rgba(var(--dynamic-dominant-color-rgb), 0.7), rgba(var(--dynamic-hsl-average-rgb), 0.7), rgba(var(--dynamic-dominant-color-rgb), 0.7)) top / 100% 4px no-repeat,
+    rgba(var(--background-color-rgb), 0.5);
+  backdrop-filter: blur(32px) saturate(180%);
+  -webkit-backdrop-filter: blur(32px) saturate(180%);
+}
+.ab-engine > * { align-self: start; }
+/* breathing room between groups; a command keeps its badges close under it */
+.ab-engine > .ab-gap { margin-top: 1.15rem; }
+.ab-engine > .ab-gap-s { margin-top: 0.95rem; }
+/* the top brackets are 4px tall, as v3's, so they cover the glow line exactly; the bottom ones are 2px */
+.ab-engine::before { border-width: 4px 0 0 2px; }
+.ab-engine > .ab-corners { display: none; }
+
+.ab-engine-head { display: flex; align-items: center; gap: 0.3rem; min-height: 31px; }
+.ab-engine-title {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--dynamic-dominant-color);
+  text-decoration: underline rgba(var(--dynamic-dominant-color-rgb), 0.5) 0.25rem;
+  text-underline-offset: 4px;
+}
+/* v3's version badge: a dashed square turning a quarter at a time over a row of dashes running left. */
+.ab-phase { position: relative; flex: none; width: 31px; height: 31px; margin-left: auto; }
+.ab-phase-spin {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to right, var(--dynamic-hsl-average) 20%, transparent 21%) repeat-x;
+  background-size: 18px 4px;
+  background-position: 4.5px bottom;
+  animation: ab-phase-dash 0.5s linear infinite;
+}
+.ab-phase-spin::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 20px;
+  height: 20px;
+  background: var(--dynamic-dominant-color);
+  border: 1px dashed var(--dynamic-hsl-average);
+  transform: translate(-50%, -50%);
+  animation: ab-phase-turn 0.5s linear infinite;
+}
+.ab-phase-label {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 0.8rem;
+  font-weight: 800;
+  line-height: 1;
+  white-space: nowrap;
+  color: var(--text-color);
+}
+@keyframes ab-phase-dash { 0%, 25% { background-position: 5px bottom; } 75%, 100% { background-position: -15px bottom; } }
+@keyframes ab-phase-turn { 0%, 25% { transform: translate(-50%, -50%) rotate(0deg); } 75%, 100% { transform: translate(-55%, -55%) rotate(90deg); } }
+body.bg-off .ab-phase-spin, body.bg-off .ab-phase-spin::before { animation: none; }
+@media (prefers-reduced-motion: reduce) { .ab-phase-spin, .ab-phase-spin::before { animation: none; } }
+
+/* the repo description: three lines, as v3 clamped it, and always that tall so it can arrive late without moving
+   anything; the fourth line never shows */
+.ab-desc {
+  margin: 0;
+  height: 4.8em;
+  font-size: 0.85rem;
+  color: rgba(var(--text-color-rgb), 0.85);
+  line-height: 1.6;
+  color: rgba(var(--text-color-rgb), 0.9);
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+}
+
+/* Tech stack: small keys standing on one 2px accent line, like tabs (v3 techStack). */
+.ab-stack { position: relative; list-style: none; margin: 0; padding: 0; display: flex; align-items: center; gap: 0.3rem; width: fit-content; }
+.ab-stack::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: var(--dynamic-dominant-color); }
+.ab-stack li {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  box-sizing: border-box;
+  padding: 0.25rem;
+  color: var(--text-color);
+  opacity: 0.85;
+  background: rgba(var(--dynamic-dominant-color-rgb), 0.15);
+  border: 1px solid rgba(var(--dynamic-dominant-color-rgb), 0.5);
+}
+.ab-stack li .icon { width: 0.8rem; height: 0.8rem; }
+.ab-stack li .icon.ab-wide { width: 1.25rem; height: 1.25rem; }
+.ab-stack .ab-stack-k { width: 3rem; padding: 0 0.2rem; font-size: 0.7rem; line-height: 1.69; text-transform: uppercase; background: rgba(var(--dynamic-dominant-color-rgb), 0.5); }
+
+/* Badges: v3's echopoint badges drawn in place. A dark label with its icon, then the live value on an accent field;
+   a badge with no value is one accent field. 20px tall, 11px JetBrains Mono, a dashed accent frame. Value slots are
+   sized for their value so nothing reflows when it fills. */
+.ab-badges { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 0.6rem; }
+.ab-badge {
+  position: relative;
+  display: inline-flex;
+  align-items: stretch;
+  height: 22px;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font: 500 11px/1 var(--font-mono);
+  white-space: nowrap;
+  color: var(--text-color);
+  text-decoration: none;
+  background: none;
+  border: 1px dashed var(--dynamic-dominant-color);
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+}
+.ab-badge-k, .ab-badge-v { display: inline-flex; align-items: center; padding: 0 8px; transition: background-color 0.2s ease; }
+.ab-badge-k { gap: 5px; background: rgba(var(--bit-dark-color-rgb), 0.9); }
+.ab-badge-k .icon { width: 13px; height: 13px; }
+.ab-badge.is-solo .ab-badge-k { background: rgba(var(--dynamic-dominant-color-rgb), 0.3); }
+.ab-badge-v { justify-content: center; min-width: 6ch; font-variant-numeric: tabular-nums; background: rgba(var(--dynamic-dominant-color-rgb), 0.55); }
+.ab-badge-v[data-ab-live^="updated"] { min-width: 8ch; }
+.ab-badge-v[data-ab-live^="stars"] { min-width: 3ch; }
+.ab-badge-v[data-ab-live^="license"] { min-width: 4ch; }
+/* hover, the site's rule: the frame turns solid accent at the same width and an accent tint lies over the whole badge */
+.ab-badge:hover { border-style: solid; }
+.ab-badge:hover > span { background-image: linear-gradient(rgba(var(--dynamic-dominant-color-rgb), 0.25), rgba(var(--dynamic-dominant-color-rgb), 0.25)); }
+/* keyboard focus: the brackets over the badge's own frame (its two fields would hide them as a background) */
+.ab-badge:focus-visible { --focus-bg: none; }
+.ab-badge:focus-visible::after { content: ""; position: absolute; inset: -1px; background: var(--brackets); pointer-events: none; }
+
+/* Command boxes (v3 commandBox): click to copy. The copy glyph turns into a check while the text is on the clipboard. */
+.ab-command {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  min-width: 0;
+  padding: 0.4rem 0.6rem;
+  font: inherit;
+  font-size: 0.75rem;
+  text-align: left;
+  color: var(--dynamic-dominant-color);
+  background: rgba(var(--background-color-rgb), 0.3);
+  border: 2px solid rgba(var(--dynamic-dominant-color-rgb), 0.5);
+  cursor: copy;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+.ab-command:hover, .ab-command.is-copied { border-color: var(--dynamic-dominant-color); background-color: rgba(var(--dynamic-dominant-color-rgb), 0.1); }
+.ab-command-p { color: var(--dynamic-hsl-average-ink); font-weight: 700; user-select: none; }
+.ab-command-t { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-family: var(--font-mono); font-size: 0.78rem; }
+.ab-command-ic { display: inline-grid; opacity: 0.5; transition: opacity 0.2s ease; }
+.ab-command:hover .ab-command-ic, .ab-command:focus-visible .ab-command-ic { opacity: 1; }
+.ab-command-ic .icon { grid-area: 1 / 1; }
+.ab-ic-done, .ab-command.is-copied .ab-ic-copy { visibility: hidden; }
+.ab-command.is-copied .ab-ic-done { visibility: visible; color: var(--dynamic-dominant-color); }
+
+/* Timelines (releases, commits): v3's underlined section title resting on the top of its dashed box, which wears a
+   left bracket at the top and a full one at the bottom right. Fixed rows of two single lines each, square markers. */
+.ab-tl-wrap { position: relative; display: flex; flex-direction: column; align-self: stretch; }
+.ab-tl-title {
+  position: relative;
+  z-index: 1;
+  width: fit-content;
+  margin: 0 0 -0.1rem;
+  padding-left: 0.05rem;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 0.7;
+  color: var(--dynamic-dominant-color);
+  border-bottom: 3px solid var(--dynamic-dominant-color);
+}
+.ab-tl {
+  position: relative;
+  flex: 1;
+  list-style: none;
+  margin: 0;
+  padding: 0.55rem 0.9rem 0.5rem;
+  display: flex;
+  flex-direction: column;
+  border: 1px dashed var(--dynamic-dominant-color);
+  background: rgba(var(--background-color-rgb), 0.5);
+}
+.ab-tl::before, .ab-tl::after { content: ""; position: absolute; width: 1rem; height: 1rem; border: 0 solid var(--dynamic-dominant-color); pointer-events: none; }
+.ab-tl::before { top: -1px; left: -1px; border-left-width: 2px; }
+.ab-tl::after { right: -1px; bottom: -1px; border-width: 0 2px 2px 0; }
+/* one line per timeline: the latest entry, its meta after it on the same line */
+.ab-tl-row { display: flex; align-items: baseline; gap: 0.6rem; min-width: 0; }
+.ab-tl-mark { flex: 0 0 auto; align-self: center; width: 8px; height: 8px; background: var(--dynamic-hsl-average); }
+.ab-tl-main, .ab-tl-meta { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ab-tl-main { flex: 0 1 auto; }
+.ab-tl-meta { flex: 1 1 0; text-align: right; }
+.ab-tl-main { font-family: var(--font-mono); font-size: 0.8rem; line-height: 1.6; color: var(--dynamic-dominant-color); }
+.ab-tl-main a { color: inherit; text-decoration: none; transition: background-color 0.2s ease; }
+/* the line clips its link to an ellipsis, which would cut the link's brackets off: the line wears them instead */
+.ab-tl-main a:focus-visible { --focus-bg: rgba(var(--dynamic-dominant-color-rgb), 0.15); }
+.ab-tl-main:has(a:focus-visible) { background: var(--brackets); background-origin: border-box; }
+.ab-tl-main a:hover { background: rgba(var(--dynamic-dominant-color-rgb), 0.18); }
+.ab-tl-tag { margin-left: 0.5rem; color: var(--dynamic-hsl-average-ink); font-size: 0.72rem; }
+.ab-tl-meta { font-family: var(--font-mono); font-size: 0.68rem; line-height: 1.5; color: rgba(var(--text-color-rgb), 0.55); font-variant-numeric: tabular-nums; }
+.ab-tl-meta .ab-add { color: var(--dynamic-dominant-color); }
+
+@media (max-width: 760px) { .ab-engines { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 600px) { .ab-engine { padding-left: 1rem; padding-right: 1rem; } }

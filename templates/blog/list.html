@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block styles %}<link rel="stylesheet" href="/css/blog-list.css">{% endblock styles %}
+{% block page_styles %}/css/blog-list.css{% endblock page_styles %}
+{% block modules %}/js/pages/blog-list.js{% endblock modules %}
+{% block content %}
+{#- v3 BlogList: hero, search, one card per post (newest first), and the entries line at the end.
+    Everything is rendered here; blog-list.js only filters and reorders these cards. -#}
+<section class="blog-list" aria-labelledby="bl-title">
+  <header class="bl-hero">
+    <span class="bl-hero-icon" aria-hidden="true"><svg class="icon"><use href="/icons.svg#ri-markdown-fill"/></svg></span>
+    <div class="bl-hero-text">
+      <h1 id="bl-title">{{ section.title }}</h1>
+      <p>experiments.thoughts.explorations</p>
+    </div>
+    <span class="bl-corners" aria-hidden="true"></span>
+  </header>
+
+  <form class="bl-search" role="search" action="/blog/" method="get" data-bl-search>
+    <label class="sr-only" for="bl-q">Search posts by title, description or tag</label>
+    <span class="bl-search-icon" aria-hidden="true"><svg class="icon"><use href="/icons.svg#fi-search"/></svg></span>
+    <input id="bl-q" name="q" type="search" placeholder="search posts or tags..." autocomplete="off" spellcheck="false" enterkeyhint="search" data-bl-q>
+    <kbd class="bl-search-key" title="Press / to search" aria-hidden="true">/</kbd>
+    <button class="bl-search-clear" type="button" title="Clear search" aria-label="Clear search" hidden data-bl-clear><svg class="icon" aria-hidden="true"><use href="/icons.svg#vsc-clear-all"/></svg></button>
+  </form>
+
+  <p class="bl-empty" hidden data-bl-empty><svg class="icon" aria-hidden="true"><use href="/icons.svg#tb-face-id-error"/></svg> guess you've hit a dead end with <span class="bl-empty-q" data-bl-empty-q></span></p>
+
+  <ol class="bl-posts" data-bl-posts>
+  {%- for post in section.pages %}
+    {%- set minutes = load_data(path="data/reading.json")[post.slug] | default(value=post.reading_time) %}
+    <li class="bl-post" data-bl-post>
+      <div class="bl-head">
+        <span class="bl-index" aria-hidden="true"><span data-bl-rank>{% if loop.index < 10 %}0{% endif %}{{ loop.index }}</span>.{% if post.extra.id < 10 %}0{% endif %}{{ post.extra.id }}</span>
+        <h2 class="bl-title"><a class="bl-link" href="{{ post.path | safe }}" data-bl-title>{{ post.title }}</a></h2>
+        <span class="bl-view" aria-hidden="true">view <svg class="icon"><use href="/icons.svg#fa-expand"/></svg></span>
+      </div>
+      <div class="bl-body">
+        {%- if post.extra.thumbnail %}
+        <span class="bl-thumb"><img src="{{ post.extra.thumbnail | safe }}" alt="" width="152" height="116" loading="lazy" decoding="async"></span>
+        {%- endif %}
+        <div class="bl-text">
+          <p class="bl-meta">
+            <span class="bl-chip"><svg class="icon" aria-hidden="true"><use href="/icons.svg#fa-calendar-alt"/></svg><time datetime="{{ post.date }}">{{ post.date | date(format="%d/%m/%y") }}</time></span>
+            <span class="bl-chip"><svg class="icon" aria-hidden="true"><use href="/icons.svg#md-timer"/></svg>{{ minutes }} min read</span>
+          </p>
+          {%- if post.description %}
+          <p class="bl-desc" data-bl-desc>{{ post.description }}</p>
+          {%- endif %}
+        </div>
+      </div>
+      {%- if post.taxonomies.tags %}
+      <ul class="bl-tags" aria-label="Tags">
+        {%- for tag in post.taxonomies.tags %}
+        <li><a class="bl-tag" href="{{ get_taxonomy_url(kind="tags", name=tag) | safe }}" title="Filter by {{ tag | lower }}" data-bl-tag><svg class="icon" aria-hidden="true"><use href="/icons.svg#io-md-pricetag"/></svg>{{ tag | lower }}</a></li>
+        {%- endfor %}
+      </ul>
+      {%- endif %}
+    </li>
+  {%- endfor %}
+  </ol>
+
+  <p class="bl-end" role="status" data-bl-end data-total="{{ section.pages | length }}">console.log() &rArr; PASSED. entries_loaded({{ section.pages | length }})</p>
+</section>
+{% endblock content %}

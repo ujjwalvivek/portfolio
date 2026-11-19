@@ -1,0 +1,24 @@
+{#- v3's home intro (IntroTextHomepage): a starship prompt, then `whoami --verbose --exit`. Words carry .glow so the
+    intro module can light them in one by one; the version segment is filled from the birth date by the same module. -#}
+<section class="intro" data-intro aria-label="Introduction">
+  <span class="intro-corners" aria-hidden="true"></span>
+  <div class="intro-block">
+    <span class="starship" aria-hidden="true">
+      <span class="seg seg-logo"><span class="seg-dots"><i></i><i></i><i></i></span><span class="seg-uv">UV</span></span>
+      <span class="seg seg-path">../dreams</span>
+      <span class="seg seg-git"><svg class="icon"><use href="/icons.svg#io-ios-git-branch"/></svg> giting(gud)</span>
+      <span class="seg seg-ver" data-age title="">v0.00.00</span>
+    </span><span class="cmd">whoami</span><span class="cmd-param"> --verbose --exit</span>
+    <div class="intro-out">
+      <p><span class="glow">hi, i'm</span> <b class="hl">Vivek.</b></p>
+      <p><span class="glow">currently writing a</span> <b class="hl">cross-platform game-engine</b> <span class="glow">in</span> <b class="hl">Rust and WASM</b></p>
+      <p aria-hidden="true">&nbsp;</p>
+      <p><span class="glow">my title says</span> <b class="hl">Technical Product Manager,</b> <span class="glow">but my commits say</span> <b class="hl">Systems Engineer.</b></p>
+      <p><span class="glow">i’ve been programming for over a</span> <b class="hl">decade.</b> <span class="glow">architecture first, roadmaps second.</span></p>
+      <p><span class="glow">i’ve been bridging the gap between</span> <b class="hl">Business Requirements</b> <span class="glow">and</span> <b class="hl">Technical Constraints</b> <span class="glow">for 3+ years.</span></p>
+      <p aria-hidden="true">&nbsp;</p>
+      <p><span class="glow">welcome to my corner where I</span> <b class="hl">build</b> <span class="glow">performant systems and</span> <b class="hl">break</b> <span class="glow">them just to see how they work.</span></p>
+      <p><span class="glow">before you move on, do check out my</span> <b class="hl">recent logs below,</b> <span class="glow">and the</span> <b class="hl">two engines</b> <span class="glow">i wrote that run this very site.</span></p>
+    </div>
+  </div>
+</section>
