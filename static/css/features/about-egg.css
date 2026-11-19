@@ -52,7 +52,9 @@
   outline: none;
 }
 .ab-term-input::placeholder { color: rgba(var(--text-color-rgb), 0.35); }
-.ab-term:focus-within { outline: 1px solid var(--dynamic-dominant-color); outline-offset: 2px; }
+/* focus changes no border and draws no ring (that made a doubled frame); only the title bar warms while you type */
+.ab-term-bar { transition: background-color 0.2s ease; }
+.ab-term:focus-within .ab-term-bar { background-color: color-mix(in srgb, rgba(var(--bit-dark-color-rgb), 1) 78%, var(--dynamic-dominant-color)); }
 @media (max-width: 600px) {
   .ab-term { height: 300px; font-size: 0.85rem; }
   .ab-term-scroll { padding: 0.6rem 0.8rem; }

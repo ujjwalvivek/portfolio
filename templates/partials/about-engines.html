@@ -1,16 +1,17 @@
 {#- v3 JourneyBadge, and SynclippyBadge (TinyTS on v3), which shows Substrate now (Vivek, 2026-11-19). v3 drew every badge, release list and commit list as an
-    echopoint SVG image (about 600 KB each, with the font inlined, and in fixed colours); here the same numbers come from
-    echopoint's JSON store and are drawn in the page's own type and colours. -#}
+    echopoint SVG image (about 600 KB each, with the font inlined, and in fixed colours; echopoint's lean /svg/root/ badges are about 45 KB each);
+    here the same numbers come from echopoint's JSON store and are drawn in the page's own type and colours, with v3's icons from the sprite.
+    Both cards have the same twelve rows, and the grid lines them up with subgrid, so every box sits level with its twin. -#}
 {%- set devlog = get_page(path="blog/proj_0004_rust_game_engine.md") -%}
 <section class="ab-engines" aria-label="Engines">
   <article class="ab-engine" data-ab-engine="journey" aria-labelledby="ab-journey">
     <span class="ab-corners" aria-hidden="true"></span>
     <header class="ab-engine-head">
       <h3 class="ab-engine-title" id="ab-journey">Journey Engine</h3>
-      <span class="ab-phase" title="Journey v2">v2</span>
+      <span class="ab-phase" title="Journey Engine v2"><span class="ab-phase-spin" aria-hidden="true"></span><span class="ab-phase-label">v2</span></span>
     </header>
-    <p class="ab-desc" data-ab-desc="journey">-</p>
-    <ul class="ab-stack" aria-label="Tech stack">
+    <p class="ab-desc ab-gap" data-ab-desc="journey">-</p>
+    <ul class="ab-stack ab-gap" aria-label="Tech stack">
       <li class="ab-stack-k">stack</li>
       <li title="Rust"><svg class="icon" aria-hidden="true"><use href="/icons.svg#fa-rust"/></svg><span class="sr-only">Rust</span></li>
       <li title="wGPU"><svg class="icon" aria-hidden="true"><use href="/icons.svg#si-webgpu"/></svg><span class="sr-only">wGPU</span></li>
@@ -18,48 +19,46 @@
       <li title="WebAssembly"><svg class="icon" aria-hidden="true"><use href="/icons.svg#si-webassembly"/></svg><span class="sr-only">WebAssembly</span></li>
       <li title="TypeScript"><svg class="icon" aria-hidden="true"><use href="/icons.svg#si-typescript"/></svg><span class="sr-only">TypeScript</span></li>
     </ul>
-    <div class="ab-badges">
-      <a class="ab-badge" href="https://journey.ujjwalvivek.com/" target="_blank" rel="noopener noreferrer"><span class="ab-badge-k">Tech Demo</span></a>
-      <a class="ab-badge" href="{{ devlog.path | safe }}"><span class="ab-badge-k">Devlog</span></a>
-      <a class="ab-badge" href="https://github.com/ujjwalvivek/journey" target="_blank" rel="noopener noreferrer"><span class="ab-badge-k">updated</span><span class="ab-badge-v" data-ab-live="updated:journey">-</span></a>
+    <div class="ab-badges ab-gap">
+      <a class="ab-badge is-solo" href="https://journey.ujjwalvivek.com/" target="_blank" rel="noopener noreferrer"><span class="ab-badge-k"><svg class="icon" aria-hidden="true"><use href="/icons.svg#ep-demo"/></svg>Tech Demo</span></a>
+      <a class="ab-badge is-solo" href="{{ devlog.path | safe }}"><span class="ab-badge-k"><svg class="icon" aria-hidden="true"><use href="/icons.svg#ep-book"/></svg>Devlog</span></a>
+      <a class="ab-badge" href="https://github.com/ujjwalvivek/journey" target="_blank" rel="noopener noreferrer"><span class="ab-badge-k"><svg class="icon" aria-hidden="true"><use href="/icons.svg#ep-clock"/></svg>updated</span><span class="ab-badge-v" data-ab-live="updated:journey">-</span></a>
     </div>
-    <div class="ab-tl-wrap">
+    <div class="ab-tl-wrap ab-gap">
       <h4 class="ab-tl-title">Recent Releases</h4>
-      <ol class="ab-tl ab-tl-releases" data-ab-releases="journey">
+      <ol class="ab-tl" data-ab-releases="journey">
       <li class="ab-tl-row"><i class="ab-tl-mark" aria-hidden="true"></i><span class="ab-tl-main">-</span><span class="ab-tl-meta">-</span></li>
       <li class="ab-tl-row"><i class="ab-tl-mark" aria-hidden="true"></i><span class="ab-tl-main">-</span><span class="ab-tl-meta">-</span></li>
       </ol>
     </div>
-    <div class="ab-commands">
-      <button class="ab-command" type="button" data-ab-copy="npm i @ujjwalvivek/journey-engine" title="Copy: npm i @ujjwalvivek/journey-engine">
-        <span class="ab-command-p" aria-hidden="true">$</span><code class="ab-command-t">npm i @ujjwalvivek/journey-engine</code>
-        <span class="ab-command-ic" aria-hidden="true"><svg class="icon ab-ic-copy"><use href="/icons.svg#io-copy-sharp"/></svg><svg class="icon ab-ic-done"><use href="/icons.svg#fa-check"/></svg></span>
-      </button>
-      <div class="ab-badges">
-        <a class="ab-badge" href="https://www.npmjs.com/package/@ujjwalvivek/journey-engine" target="_blank" rel="noopener noreferrer"><span class="ab-badge-k">WASM</span><span class="ab-badge-v" data-ab-live="npm:journey-engine">-</span></a>
-        <a class="ab-badge" href="https://www.npmjs.com/package/@ujjwalvivek/dino-blink" target="_blank" rel="noopener noreferrer"><span class="ab-badge-k">Dino Blink</span><span class="ab-badge-v" data-ab-live="npm:dino-blink">-</span></a>
-        <a class="ab-badge" href="https://ujjwalvivek.itch.io/dino-blink" target="_blank" rel="noopener noreferrer"><span class="ab-badge-k">Dino_Blink</span></a>
-      </div>
-      <button class="ab-command" type="button" data-ab-copy="cargo add journey-engine" title="Copy: cargo add journey-engine">
-        <span class="ab-command-p" aria-hidden="true">$</span><code class="ab-command-t">cargo add journey-engine</code>
-        <span class="ab-command-ic" aria-hidden="true"><svg class="icon ab-ic-copy"><use href="/icons.svg#io-copy-sharp"/></svg><svg class="icon ab-ic-done"><use href="/icons.svg#fa-check"/></svg></span>
-      </button>
-      <div class="ab-badges">
-        <a class="ab-badge" href="https://crates.io/crates/journey-engine" target="_blank" rel="noopener noreferrer"><span class="ab-badge-k">cargo</span><span class="ab-badge-v" data-ab-live="crates:journey-engine">-</span></a>
-        <a class="ab-badge" href="https://docs.journey.ujjwalvivek.com/" target="_blank" rel="noopener noreferrer"><span class="ab-badge-k">Docs</span></a>
-      </div>
-      <button class="ab-command" type="button" data-ab-copy="git clone https://github.com/ujjwalvivek/journey.git" title="Copy: git clone https://github.com/ujjwalvivek/journey.git">
-        <span class="ab-command-p" aria-hidden="true">$</span><code class="ab-command-t">git clone https://github.com/ujjwalvivek/journey.git</code>
-        <span class="ab-command-ic" aria-hidden="true"><svg class="icon ab-ic-copy"><use href="/icons.svg#io-copy-sharp"/></svg><svg class="icon ab-ic-done"><use href="/icons.svg#fa-check"/></svg></span>
-      </button>
-      <div class="ab-badges">
-        <a class="ab-badge" href="https://github.com/ujjwalvivek/journey/releases" target="_blank" rel="noopener noreferrer"><span class="ab-badge-k">Native</span><span class="ab-badge-v" data-ab-live="release:journey">-</span></a>
-        <a class="ab-badge" href="https://github.com/ujjwalvivek/journey" target="_blank" rel="noopener noreferrer"><span class="ab-badge-k">stars</span><span class="ab-badge-v" data-ab-live="stars:journey">-</span></a>
-      </div>
+    <button class="ab-command ab-gap" type="button" data-ab-copy="npm i @ujjwalvivek/journey-engine" title="Copy: npm i @ujjwalvivek/journey-engine">
+      <span class="ab-command-p" aria-hidden="true">$</span><code class="ab-command-t">npm i @ujjwalvivek/journey-engine</code>
+      <span class="ab-command-ic" aria-hidden="true"><svg class="icon ab-ic-copy"><use href="/icons.svg#io-copy-sharp"/></svg><svg class="icon ab-ic-done"><use href="/icons.svg#fa-check"/></svg></span>
+    </button>
+    <div class="ab-badges">
+      <a class="ab-badge" href="https://www.npmjs.com/package/@ujjwalvivek/journey-engine" target="_blank" rel="noopener noreferrer"><span class="ab-badge-k"><svg class="icon" aria-hidden="true"><use href="/icons.svg#ep-npm"/></svg>WASM</span><span class="ab-badge-v" data-ab-live="npm:journey-engine">-</span></a>
+      <a class="ab-badge" href="https://www.npmjs.com/package/@ujjwalvivek/dino-blink" target="_blank" rel="noopener noreferrer"><span class="ab-badge-k"><svg class="icon" aria-hidden="true"><use href="/icons.svg#ep-npm"/></svg>Dino Blink</span><span class="ab-badge-v" data-ab-live="npm:dino-blink">-</span></a>
+      <a class="ab-badge is-solo" href="https://ujjwalvivek.itch.io/dino-blink" target="_blank" rel="noopener noreferrer"><span class="ab-badge-k"><svg class="icon" aria-hidden="true"><use href="/icons.svg#ep-bolt"/></svg>Dino_Blink</span></a>
     </div>
-    <div class="ab-tl-wrap">
+    <button class="ab-command ab-gap-s" type="button" data-ab-copy="cargo add journey-engine" title="Copy: cargo add journey-engine">
+      <span class="ab-command-p" aria-hidden="true">$</span><code class="ab-command-t">cargo add journey-engine</code>
+      <span class="ab-command-ic" aria-hidden="true"><svg class="icon ab-ic-copy"><use href="/icons.svg#io-copy-sharp"/></svg><svg class="icon ab-ic-done"><use href="/icons.svg#fa-check"/></svg></span>
+    </button>
+    <div class="ab-badges">
+      <a class="ab-badge" href="https://crates.io/crates/journey-engine" target="_blank" rel="noopener noreferrer"><span class="ab-badge-k"><svg class="icon" aria-hidden="true"><use href="/icons.svg#fa-rust"/></svg>cargo</span><span class="ab-badge-v" data-ab-live="crates:journey-engine">-</span></a>
+      <a class="ab-badge is-solo" href="https://docs.journey.ujjwalvivek.com/" target="_blank" rel="noopener noreferrer"><span class="ab-badge-k"><svg class="icon" aria-hidden="true"><use href="/icons.svg#ep-book"/></svg>Docs</span></a>
+    </div>
+    <button class="ab-command ab-gap-s" type="button" data-ab-copy="git clone https://github.com/ujjwalvivek/journey.git" title="Copy: git clone https://github.com/ujjwalvivek/journey.git">
+      <span class="ab-command-p" aria-hidden="true">$</span><code class="ab-command-t">git clone https://github.com/ujjwalvivek/journey.git</code>
+      <span class="ab-command-ic" aria-hidden="true"><svg class="icon ab-ic-copy"><use href="/icons.svg#io-copy-sharp"/></svg><svg class="icon ab-ic-done"><use href="/icons.svg#fa-check"/></svg></span>
+    </button>
+    <div class="ab-badges">
+      <a class="ab-badge" href="https://github.com/ujjwalvivek/journey/releases" target="_blank" rel="noopener noreferrer"><span class="ab-badge-k"><svg class="icon" aria-hidden="true"><use href="/icons.svg#ep-windows"/></svg>Native</span><span class="ab-badge-v" data-ab-live="release:journey">-</span></a>
+      <a class="ab-badge" href="https://github.com/ujjwalvivek/journey" target="_blank" rel="noopener noreferrer"><span class="ab-badge-k"><svg class="icon" aria-hidden="true"><use href="/icons.svg#ep-star"/></svg>stars</span><span class="ab-badge-v" data-ab-live="stars:journey">-</span></a>
+    </div>
+    <div class="ab-tl-wrap ab-gap">
       <h4 class="ab-tl-title">Recent Activiti</h4>
-      <ol class="ab-tl ab-tl-commits" data-ab-commits="journey">
+      <ol class="ab-tl" data-ab-commits="journey">
       <li class="ab-tl-row"><i class="ab-tl-mark" aria-hidden="true"></i><span class="ab-tl-main">-</span><span class="ab-tl-meta">-</span></li>
       <li class="ab-tl-row"><i class="ab-tl-mark" aria-hidden="true"></i><span class="ab-tl-main">-</span><span class="ab-tl-meta">-</span></li>
       <li class="ab-tl-row"><i class="ab-tl-mark" aria-hidden="true"></i><span class="ab-tl-main">-</span><span class="ab-tl-meta">-</span></li>
@@ -71,44 +70,50 @@
     <span class="ab-corners" aria-hidden="true"></span>
     <header class="ab-engine-head">
       <h3 class="ab-engine-title" id="ab-substrate">Substrate</h3>
-      <span class="ab-phase" title="Substrate v2">v2</span>
+      <span class="ab-phase" title="Substrate v2"><span class="ab-phase-spin" aria-hidden="true"></span><span class="ab-phase-label">v2</span></span>
     </header>
-    <p class="ab-desc" data-ab-desc="substrate">-</p>
-    <p class="ab-note">it draws the wallpaper behind this page. <button class="ab-note-key" type="button" data-open="vibe">vibeSwitch</button></p>
-    <ul class="ab-stack" aria-label="Tech stack">
+    <p class="ab-desc ab-gap" data-ab-desc="substrate">-</p>
+    <ul class="ab-stack ab-gap" aria-label="Tech stack">
       <li class="ab-stack-k">stack</li>
       <li title="WebGPU"><svg class="icon" aria-hidden="true"><use href="/icons.svg#si-webgpu"/></svg><span class="sr-only">WebGPU</span></li>
       <li title="JavaScript"><svg class="icon" aria-hidden="true"><use href="/icons.svg#io-logo-javascript"/></svg><span class="sr-only">JavaScript</span></li>
     </ul>
-    <div class="ab-badges">
-      <a class="ab-badge" href="https://substrate.ujjwalvivek.com" target="_blank" rel="noopener noreferrer"><span class="ab-badge-k">Playground</span></a>
-      <a class="ab-badge" href="https://github.com/ujjwalvivek/substrate" target="_blank" rel="noopener noreferrer"><span class="ab-badge-k">updated</span><span class="ab-badge-v" data-ab-live="updated:substrate">-</span></a>
+    <div class="ab-badges ab-gap">
+      <button class="ab-badge" type="button" data-open="vibe" title="Substrate draws the wallpaper behind this page. Open the vibe switch to change it."><span class="ab-badge-k"><svg class="icon" aria-hidden="true"><use href="/icons.svg#ti-flow-switch"/></svg>wallpaper</span><span class="ab-badge-v">vibeSwitch</span></button>
+      <a class="ab-badge" href="https://github.com/ujjwalvivek/substrate" target="_blank" rel="noopener noreferrer"><span class="ab-badge-k"><svg class="icon" aria-hidden="true"><use href="/icons.svg#ep-clock"/></svg>updated</span><span class="ab-badge-v" data-ab-live="updated:substrate">-</span></a>
     </div>
-    <div class="ab-tl-wrap">
+    <div class="ab-tl-wrap ab-gap">
       <h4 class="ab-tl-title">Recent Releases</h4>
       <ol class="ab-tl" data-ab-npm-versions="@ujjwalvivek/substrate">
       <li class="ab-tl-row"><i class="ab-tl-mark" aria-hidden="true"></i><span class="ab-tl-main">-</span><span class="ab-tl-meta">-</span></li>
       <li class="ab-tl-row"><i class="ab-tl-mark" aria-hidden="true"></i><span class="ab-tl-main">-</span><span class="ab-tl-meta">-</span></li>
       </ol>
     </div>
-    <div class="ab-commands">
-      <button class="ab-command" type="button" data-ab-copy="npm i @ujjwalvivek/substrate" title="Copy: npm i @ujjwalvivek/substrate">
-        <span class="ab-command-p" aria-hidden="true">$</span><code class="ab-command-t">npm i @ujjwalvivek/substrate</code>
-        <span class="ab-command-ic" aria-hidden="true"><svg class="icon ab-ic-copy"><use href="/icons.svg#io-copy-sharp"/></svg><svg class="icon ab-ic-done"><use href="/icons.svg#fa-check"/></svg></span>
-      </button>
-      <div class="ab-badges">
-        <a class="ab-badge" href="https://www.npmjs.com/package/@ujjwalvivek/substrate" target="_blank" rel="noopener noreferrer"><span class="ab-badge-k">npm</span><span class="ab-badge-v" data-ab-live="npm:substrate">-</span></a>
-      </div>
-      <button class="ab-command" type="button" data-ab-copy="git clone https://github.com/ujjwalvivek/substrate.git" title="Copy: git clone https://github.com/ujjwalvivek/substrate.git">
-        <span class="ab-command-p" aria-hidden="true">$</span><code class="ab-command-t">git clone https://github.com/ujjwalvivek/substrate.git</code>
-        <span class="ab-command-ic" aria-hidden="true"><svg class="icon ab-ic-copy"><use href="/icons.svg#io-copy-sharp"/></svg><svg class="icon ab-ic-done"><use href="/icons.svg#fa-check"/></svg></span>
-      </button>
-      <div class="ab-badges">
-        <a class="ab-badge" href="https://github.com/ujjwalvivek/substrate" target="_blank" rel="noopener noreferrer"><span class="ab-badge-k">stars</span><span class="ab-badge-v" data-ab-live="stars:substrate">-</span></a>
-        <a class="ab-badge" href="https://github.com/ujjwalvivek/substrate/tags" target="_blank" rel="noopener noreferrer"><span class="ab-badge-k">tag</span><span class="ab-badge-v" data-ab-live="tag:substrate">-</span></a>
-      </div>
+    <button class="ab-command ab-gap" type="button" data-ab-copy="npm i @ujjwalvivek/substrate" title="Copy: npm i @ujjwalvivek/substrate">
+      <span class="ab-command-p" aria-hidden="true">$</span><code class="ab-command-t">npm i @ujjwalvivek/substrate</code>
+      <span class="ab-command-ic" aria-hidden="true"><svg class="icon ab-ic-copy"><use href="/icons.svg#io-copy-sharp"/></svg><svg class="icon ab-ic-done"><use href="/icons.svg#fa-check"/></svg></span>
+    </button>
+    <div class="ab-badges">
+      <a class="ab-badge" href="https://www.npmjs.com/package/@ujjwalvivek/substrate" target="_blank" rel="noopener noreferrer"><span class="ab-badge-k"><svg class="icon" aria-hidden="true"><use href="/icons.svg#ep-npm"/></svg>npm</span><span class="ab-badge-v" data-ab-live="npm:substrate">-</span></a>
+      <a class="ab-badge" href="https://github.com/ujjwalvivek/substrate/blob/main/LICENSE" target="_blank" rel="noopener noreferrer"><span class="ab-badge-k"><svg class="icon" aria-hidden="true"><use href="/icons.svg#ep-docs"/></svg>license</span><span class="ab-badge-v" data-ab-live="license:substrate">-</span></a>
     </div>
-    <div class="ab-tl-wrap">
+    <button class="ab-command ab-gap-s" type="button" data-ab-copy="https://substrate.ujjwalvivek.com" title="Copy: https://substrate.ujjwalvivek.com">
+      <span class="ab-command-p" aria-hidden="true">$</span><code class="ab-command-t">https://substrate.ujjwalvivek.com</code>
+      <span class="ab-command-ic" aria-hidden="true"><svg class="icon ab-ic-copy"><use href="/icons.svg#io-copy-sharp"/></svg><svg class="icon ab-ic-done"><use href="/icons.svg#fa-check"/></svg></span>
+    </button>
+    <div class="ab-badges">
+      <a class="ab-badge is-solo" href="https://substrate.ujjwalvivek.com" target="_blank" rel="noopener noreferrer"><span class="ab-badge-k"><svg class="icon" aria-hidden="true"><use href="/icons.svg#ep-demo"/></svg>Playground</span></a>
+      <a class="ab-badge is-solo" href="https://github.com/ujjwalvivek/substrate#readme" target="_blank" rel="noopener noreferrer"><span class="ab-badge-k"><svg class="icon" aria-hidden="true"><use href="/icons.svg#ep-book"/></svg>Docs</span></a>
+    </div>
+    <button class="ab-command ab-gap-s" type="button" data-ab-copy="git clone https://github.com/ujjwalvivek/substrate.git" title="Copy: git clone https://github.com/ujjwalvivek/substrate.git">
+      <span class="ab-command-p" aria-hidden="true">$</span><code class="ab-command-t">git clone https://github.com/ujjwalvivek/substrate.git</code>
+      <span class="ab-command-ic" aria-hidden="true"><svg class="icon ab-ic-copy"><use href="/icons.svg#io-copy-sharp"/></svg><svg class="icon ab-ic-done"><use href="/icons.svg#fa-check"/></svg></span>
+    </button>
+    <div class="ab-badges">
+      <a class="ab-badge" href="https://github.com/ujjwalvivek/substrate" target="_blank" rel="noopener noreferrer"><span class="ab-badge-k"><svg class="icon" aria-hidden="true"><use href="/icons.svg#ep-star"/></svg>stars</span><span class="ab-badge-v" data-ab-live="stars:substrate">-</span></a>
+      <a class="ab-badge" href="https://github.com/ujjwalvivek/substrate/tags" target="_blank" rel="noopener noreferrer"><span class="ab-badge-k"><svg class="icon" aria-hidden="true"><use href="/icons.svg#ep-tag"/></svg>tag</span><span class="ab-badge-v" data-ab-live="tag:substrate">-</span></a>
+    </div>
+    <div class="ab-tl-wrap ab-gap">
       <h4 class="ab-tl-title">Recent Activiti</h4>
       <ol class="ab-tl" data-ab-commits="substrate">
       <li class="ab-tl-row"><i class="ab-tl-mark" aria-hidden="true"></i><span class="ab-tl-main">-</span><span class="ab-tl-meta">-</span></li>
