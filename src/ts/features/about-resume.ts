@@ -14,7 +14,7 @@ import { load, save } from "../lib/store.js";
 import { loadFeature } from "../lib/lazy.js";
 
 type Doc = "dark" | "light";
-type PdfViewer = { mountPdf(host: HTMLElement, url: string, opts?: { title?: string }): () => void };
+type PdfViewer = { mountPdf(host: HTMLElement, url: string, opts?: { title?: string; toolbarHost?: HTMLElement }): () => void };
 
 const CDN = "https://cdn.ujjwalvivek.com/docs";
 const URLS: Record<Doc, string> = { dark: `${CDN}/resume-dark.pdf`, light: `${CDN}/resume-light.pdf` };
@@ -37,10 +37,8 @@ function el<K extends keyof HTMLElementTagNameMap>(tag: K, cls?: string, text?: 
 
 // ---- overlay ---------------------------------------------------------------------------------------------------------
 
-// One title bar (v3 had one): the viewer's own toolbar is lifted out of the viewer into the overlay's head, in this
-// order: title, page n/N, zoom, fit, thumbnails, dark / light, download, open, ESC. The controls keep their listeners
-// when they move; keys typed on them (+ - 0, page keys) are passed to the viewer, which listens on its own root.
-const VIEWER_KEYS = new Set(["+", "=", "-", "_", "0", "PageUp", "PageDown", "Home", "End"]);
+// One title bar (v3 had one): the viewer puts its toolbar in the overlay's head (its toolbarHost option), and the
+// document switch joins it before download and open. The viewer's keys work from there too.
 
 function build(body: HTMLElement): () => void {
   const card = body.parentElement;
@@ -78,35 +76,6 @@ function build(body: HTMLElement): () => void {
   let unmount: (() => void) | null = null;
   let closed = false;
 
-  // Moves the freshly mounted viewer's controls into the head, around the document switch.
-  function lift(): void {
-    const bar = host.querySelector<HTMLElement>(".pdfv-bar");
-    if (!bar) return;
-    const [nav, zoom, file] = [...bar.querySelectorAll<HTMLElement>(":scope > .pdfv-group")];
-    const side = nav?.querySelector<HTMLElement>(".pdfv-icon");
-    const parts: HTMLElement[] = [];
-    if (nav) parts.push(nav);
-    if (zoom) parts.push(zoom);
-    if (side) {
-      const g = el("div", "pdfv-group");
-      g.append(side);
-      parts.push(g);
-    }
-    parts.push(group);
-    if (file) parts.push(file);
-    tools.replaceChildren(...parts);
-    bar.remove();
-  }
-  const forward = (e: KeyboardEvent) => {
-    const t = e.target as HTMLElement | null;
-    if (!VIEWER_KEYS.has(e.key) || e.ctrlKey || e.metaKey || e.altKey || t?.matches("input, textarea")) return;
-    const scroller = host.querySelector<HTMLElement>(".pdfv-scroll");
-    if (!scroller) return;
-    e.preventDefault();
-    e.stopPropagation();
-    scroller.dispatchEvent(new KeyboardEvent("keydown", { key: e.key, shiftKey: e.shiftKey, bubbles: true, cancelable: true }));
-  };
-  tools.addEventListener("keydown", forward);
 
   function show(next: Doc): void {
     doc = next;
@@ -116,8 +85,10 @@ function build(body: HTMLElement): () => void {
     unmount?.();
     tools.replaceChildren(group);
     host.replaceChildren();
-    unmount = viewer.mountPdf(host, URLS[doc], { title: `${TITLE} (${doc})` });
-    lift();
+    unmount = viewer.mountPdf(host, URLS[doc], { title: `${TITLE} (${doc})`, toolbarHost: tools });
+    // the document switch sits just before the file actions (download, open)
+    const file = tools.querySelector(".pdfv-bar > .pdfv-group:last-child");
+    file?.before(group);
   }
 
   show(doc);
@@ -143,7 +114,6 @@ function build(body: HTMLElement): () => void {
 
   return () => {
     closed = true;
-    tools.removeEventListener("keydown", forward);
     unmount?.();
     tools.remove();
   };

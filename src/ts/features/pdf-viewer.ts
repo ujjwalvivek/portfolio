@@ -94,7 +94,8 @@ function cancelled(err: unknown): boolean {
   return (err as { name?: string } | null)?.name === "RenderingCancelledException";
 }
 
-export function mountPdf(host: HTMLElement, url: string, opts: { title?: string } = {}): () => void {
+// opts.toolbarHost: put the toolbar there (a caller's title bar, say) instead of above the pages; its keys still work.
+export function mountPdf(host: HTMLElement, url: string, opts: { title?: string; toolbarHost?: HTMLElement } = {}): () => void {
   const name = fileName(url);
   const title = opts.title ?? name;
   const ac = new AbortController();
@@ -149,7 +150,10 @@ export function mountPdf(host: HTMLElement, url: string, opts: { title?: string 
   scroller.append(pages);
   const state = el("div", "pdfv-state", { role: "status", "aria-live": "polite" });
   body.append(side, scroller, state);
-  root.append(bar, body);
+  if (opts.toolbarHost) {
+    opts.toolbarHost.append(bar);
+    root.append(body);
+  } else root.append(bar, body);
   host.append(root);
 
   // ---- states (every line here is real work in progress; D-024) ---------------------------------------------------
@@ -652,9 +656,7 @@ export function mountPdf(host: HTMLElement, url: string, opts: { title?: string 
     { signal },
   );
 
-  root.addEventListener(
-    "keydown",
-    (e) => {
+  const onKey = (e: KeyboardEvent) => {
       if (e.altKey || !doc) return;
       const mod = e.ctrlKey || e.metaKey;
       const inField = e.target === pageIn;
@@ -681,9 +683,9 @@ export function mountPdf(host: HTMLElement, url: string, opts: { title?: string 
         e.preventDefault();
         e.stopPropagation();
       }
-    },
-    { signal },
-  );
+  };
+  root.addEventListener("keydown", onKey, { signal });
+  if (opts.toolbarHost) bar.addEventListener("keydown", onKey, { signal });
 
   // Ctrl + wheel and trackpad pinch (which arrives as ctrl + wheel) zoom around the pointer.
   scroller.addEventListener(
@@ -764,6 +766,7 @@ export function mountPdf(host: HTMLElement, url: string, opts: { title?: string 
     doc = null;
     if (t) void t.destroy().catch(() => {}); // destroys the document and terminates its worker
     if (live === 0 && pdfjs) pdfjs.TextLayer.cleanup();
+    bar.remove();
     root.remove();
   };
 }

@@ -4,6 +4,7 @@
 // The PDF viewer belongs to another module and is imported only when a PDF is first opened.
 
 import { closeOverlay, openOverlay } from "../shell/overlay.js";
+import { loadFeature } from "../lib/lazy.js";
 
 export type EmbedKind = "notion" | "pdf";
 type PdfViewer = { mountPdf(host: HTMLElement, url: string, opts?: { title?: string }): () => void };
@@ -69,8 +70,15 @@ function pdf(body: HTMLElement, url: string, title: string): () => void {
   };
 }
 
+const CSS = "/css/features/projects-embed.css";
+
 export function openEmbed(kind: EmbedKind, url: string, title: string): void {
   closeOverlay(ID);
+  // the stylesheet first (cached after the first time), so the card never shows unstyled
+  void loadFeature(import.meta.url, [CSS]).then(() => show(kind, url, title));
+}
+
+function show(kind: EmbedKind, url: string, title: string): void {
   openOverlay({
     id: ID,
     title,

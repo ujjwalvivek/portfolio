@@ -277,14 +277,6 @@ a.pj-btn:hover, a.pj-btn:focus-visible {
 }
 
 /* Notion and PDF overlays: the shell's overlay frame, made tall enough to read a document in. */
-.overlay:has(.pj-embed-card) { align-items: stretch; }
-.overlay-card.pj-embed-card { height: 85vh; height: 85svh; max-height: none; }
-.pj-embed-body { display: flex; flex-direction: column; overflow: hidden; background: rgba(var(--background-color-rgb), 0.9); }
-.pj-embed-frame { flex: 1; width: 100%; min-height: 0; border: 0; background: rgba(var(--bit-dark-color-rgb), 1); }
-.pj-pdf-host { flex: 1; min-height: 0; display: flex; flex-direction: column; }
-.pj-pdf-host > * { flex: 1; min-height: 0; }
-.pj-embed-note { margin: 0; padding: 1rem 1.4rem; font-size: 0.8rem; letter-spacing: 1px; color: rgba(var(--text-color-rgb), 0.75); }
-.pj-embed-note .chip { margin-left: 0.3rem; }
 
 /* Phones and narrow windows: each row becomes v3's card: icon and title, then tags, then the buttons. */
 @media (max-width: 800px) {
