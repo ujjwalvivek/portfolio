@@ -86,6 +86,7 @@
 .ghn-tab:hover { color: var(--text-color); background: rgba(var(--dynamic-dominant-color-rgb), 0.2); border-color: var(--dynamic-dominant-color); }
 /* the selected tab is a pressed key, with a little notch that ties it to the pane below */
 .ghn-tab[aria-selected="true"] {
+  --focus-bg: var(--brackets-ink), var(--dynamic-dominant-color);
   position: relative;
   color: var(--background-color);
   background: var(--dynamic-dominant-color);
@@ -152,8 +153,9 @@
   cursor: pointer;
   transition: background 0.2s, border-color 0.2s, transform 0.15s;
 }
+.ghn-key { --focus-fill: rgba(var(--dynamic-dominant-color-rgb), 0.3); }
 .ghn-key:hover { background: rgba(var(--dynamic-dominant-color-rgb), 0.3); border-color: var(--dynamic-dominant-color); }
-.ghn-key:active, .ghn-key[aria-pressed="true"] { color: var(--background-color); background: var(--dynamic-dominant-color); border-color: var(--dynamic-dominant-color); border-bottom-width: 1px; transform: translateY(1px); }
+.ghn-key:active, .ghn-key[aria-pressed="true"] { --focus-bg: var(--brackets-ink), var(--dynamic-dominant-color); color: var(--background-color); background: var(--dynamic-dominant-color); border-color: var(--dynamic-dominant-color); border-bottom-width: 1px; transform: translateY(1px); }
 .ghn-key:disabled { opacity: 0.35; cursor: default; transform: none; border-style: dashed; background: none; }
 .ghn-icon { padding: 0; }
 .ghn-key .icon { font-size: 0.95rem; }
@@ -292,7 +294,7 @@
   gap: 0.75rem;
   align-items: center;
 }
-.ghn-table-head { padding: 0 0.5rem 0.3rem; font-family: var(--font-krypton); font-size: 0.62rem; letter-spacing: 1px; color: rgba(var(--text-color-rgb), 0.45); }
+.ghn-table-head { padding: 0 0.5rem 0.3rem; font-family: var(--font-krypton); font-size: 0.62rem; letter-spacing: 1px; color: rgba(var(--text-color-rgb), 0.55); }
 .ghn-row, .ghn-help-cmd, .ghn-link, .ghn-commit {
   font: inherit;
   color: inherit;
@@ -384,7 +386,7 @@
 .ghn-editor[hidden] { display: none; }
 .ghn-ed-view { position: relative; flex: 1 1 auto; min-height: 0; overflow: auto; padding: 0.6rem 0; scrollbar-width: thin; scrollbar-color: rgba(var(--dynamic-dominant-color-rgb), 0.6) transparent; }
 /* the buffer is read only and has no caret, so its focus shows in the tab bar's warmth instead of brackets */
-.ghn-ed-view:focus-visible { background: none; }
+.ghn-ed-view:focus-visible { --focus-bg: none; }
 .ghn-sheet { background: transparent; }
 .ghn-sheet .ghn-gutter { background: rgba(var(--background-color-rgb), 0.55); }
 .ghn-ed-view.is-pdf { padding: 0; overflow: hidden; display: flex; }
@@ -441,7 +443,7 @@
   border: 0;
   outline: none;
 }
-.ghn-input::placeholder { color: rgba(var(--text-color-rgb), 0.3); }
+.ghn-input::placeholder { color: rgba(var(--text-color-rgb), 0.5); }
 .ghn.is-busy .ghn-input { color: rgba(var(--text-color-rgb), 0.4); }
 
 /* ---- foot: quick commands ---- */

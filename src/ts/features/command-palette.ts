@@ -191,6 +191,12 @@ export function openPalette(): void {
       list.setAttribute("aria-label", "Results");
       box.setAttribute("aria-controls", list.id);
       body.append(list);
+      // the count of results, read once typing pauses; the list itself is announced through aria-activedescendant
+      const count = document.createElement("p");
+      count.className = "sr-only";
+      count.setAttribute("role", "status");
+      body.append(count);
+      let countTimer = 0;
 
       let shown: Item[] = [];
       let rows: HTMLElement[] = [];
@@ -293,6 +299,13 @@ export function openPalette(): void {
         }
         select(0, false);
         list.scrollTop = 0;
+        clearTimeout(countTimer);
+        if (box.value.trim()) {
+          const n = rows.length;
+          countTimer = window.setTimeout(() => {
+            count.textContent = waiting ? "loading posts and projects" : n ? `${n} result${n === 1 ? "" : "s"}` : "No results";
+          }, 400);
+        } else count.textContent = "";
       };
 
       box.addEventListener("input", draw);
@@ -319,6 +332,7 @@ export function openPalette(): void {
       draw();
       return () => {
         alive = false;
+        clearTimeout(countTimer);
       };
     },
     foot(foot, close) {

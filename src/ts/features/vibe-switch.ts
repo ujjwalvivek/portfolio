@@ -262,7 +262,7 @@ function build(): void {
         }
         if (lines.length > MAX_ERRORS) list.append(el("li", "vibe-result-more", `${lines.length - MAX_ERRORS} more`));
         where.replaceChildren(list);
-        list.scrollIntoView({ block: "nearest", behavior: "smooth" });
+        list.scrollIntoView({ block: "nearest", behavior: reducedMotion() ? "auto" : "smooth" });
       };
 
       const submit = async () => {

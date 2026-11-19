@@ -2,7 +2,7 @@
    Frame, top bar and footer follow v3's App, TopBar and Footer modules; the backdrop is root's. */
 
 html, body { margin: 0; padding: 0; width: 100%; max-width: 100%; overflow-x: hidden; font-size: 16px; }
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; scroll-padding: 4rem 0 calc(var(--bar-height) + 1rem); } /* focus and anchors land clear of the fixed bars */
 
 body {
   min-height: 100vh;
@@ -34,14 +34,28 @@ a { color: inherit; }
     linear-gradient(var(--dynamic-dominant-color), var(--dynamic-dominant-color)) bottom left / 2px 8px no-repeat,
     linear-gradient(var(--dynamic-dominant-color), var(--dynamic-dominant-color)) bottom right / 8px 2px no-repeat,
     linear-gradient(var(--dynamic-dominant-color), var(--dynamic-dominant-color)) bottom right / 2px 8px no-repeat;
+  /* the same brackets in the background colour, for keys that are filled with the theme colour (pressed, selected) */
+  --brackets-ink:
+    linear-gradient(var(--background-color), var(--background-color)) top left / 8px 2px no-repeat,
+    linear-gradient(var(--background-color), var(--background-color)) top left / 2px 8px no-repeat,
+    linear-gradient(var(--background-color), var(--background-color)) top right / 8px 2px no-repeat,
+    linear-gradient(var(--background-color), var(--background-color)) top right / 2px 8px no-repeat,
+    linear-gradient(var(--background-color), var(--background-color)) bottom left / 8px 2px no-repeat,
+    linear-gradient(var(--background-color), var(--background-color)) bottom left / 2px 8px no-repeat,
+    linear-gradient(var(--background-color), var(--background-color)) bottom right / 8px 2px no-repeat,
+    linear-gradient(var(--background-color), var(--background-color)) bottom right / 2px 8px no-repeat;
 }
 /* Keyboard focus: the brackets sit on the element's border, never a second ring around it. */
 :focus { outline: none; }
-/* Text fields are left out: their caret shows focus, and they sit inside framed rows that already read as the field. */
-:focus-visible:not(input, textarea, select, [contenteditable], canvas) {
+/* Text fields are left out: their caret shows focus, and they sit inside framed rows that already read as the field.
+   Containers that script focuses (main after a page swap, dialog cards, the crash window) are left out too.
+   #main in the list gives the rule an id's weight, so a component's own background (a key's fill, a status item's
+   shade) cannot hide the brackets. A component tunes its focus with --focus-fill (the tint under the brackets),
+   --focus-bg (the whole background: none to opt out, or --brackets-ink on a filled key) and --focus-origin. */
+:focus-visible:not(input, textarea, select, [contenteditable], canvas, #main, [role="dialog"], .crash-window) {
   outline: none;
-  background: var(--brackets), var(--focus-fill, rgba(var(--dynamic-dominant-color-rgb), 0.15));
-  background-origin: border-box;
+  background: var(--focus-bg, var(--brackets), var(--focus-fill, rgba(var(--dynamic-dominant-color-rgb), 0.15)));
+  background-origin: var(--focus-origin, border-box);
 }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
 
@@ -144,6 +158,10 @@ body.bg-off #bg-canvas { opacity: 0; }
 .bg-toggle:hover { transform: scale(1.2); }
 .bg-toggle:active { transform: rotate(360deg) scale(0.3); background: var(--text-color); }
 .bg-toggle[aria-pressed="true"] { background: var(--dynamic-hsl-average); }
+/* the key is 12px, too small for brackets of its own: focus keeps its fill and the frame around it wears them */
+.bg-toggle { --focus-bg: none; }
+.bg-toggle[aria-pressed="true"] { --focus-bg: var(--dynamic-hsl-average); }
+.bg-toggle-frame:has(.bg-toggle:focus-visible) { background: var(--brackets); background-origin: border-box; border-color: transparent; }
 
 .crumbs { display: flex; align-items: center; gap: 0.1rem; font-size: 0.85rem; min-width: 0; }
 .crumbs ol { display: flex; align-items: center; list-style: none; margin: 0; padding: 0; min-width: 0; }
@@ -212,6 +230,7 @@ body.bg-off #bg-canvas { opacity: 0; }
   transition: background-color 0.1s ease;
 }
 .status-item:hover { background-color: rgba(var(--dynamic-dominant-color-rgb), 0.35); }
+.status-item { --focus-fill: rgba(var(--dynamic-dominant-color-rgb), 0.35); } /* focus as hover, a shade above the keys' rest */
 .status-item.is-vibe { background: rgba(var(--dynamic-hsl-average-rgb), 0.25); }
 .status-item.is-cmd { background: rgba(var(--dynamic-dominant-color-rgb), 0.25); } /* the right side's second shade, so the two keys read as two */
 .status-item.is-variant { background: rgba(var(--dynamic-dominant-color-rgb), 0.25); }
@@ -318,6 +337,7 @@ kbd {
   color: rgba(var(--text-color-rgb), 0.8);
   cursor: default;
   transition: transform 0.2s ease, border-color 0.2s ease, color 0.2s ease, background-color 0.2s ease;
+  --focus-fill: rgba(var(--dynamic-dominant-color-rgb), 0.2);
 }
 .stack-item .icon { font-size: 26px; }
 .stack-item:nth-child(odd):hover { transform: translateY(-3px) rotate(-2deg); }
@@ -348,7 +368,7 @@ kbd {
   z-index: 10;
 }
 .stack-item:hover::after, .stack-item:focus-visible::after { opacity: 1; }
-@media (prefers-reduced-motion: reduce) { .stack-item:hover { transform: none !important; } }
+@media (prefers-reduced-motion: reduce) { .stack-item:hover, .bg-toggle:hover, .bg-toggle:active { transform: none !important; } }
 
 /* Shortcut sheet. */
 /* Shortcut sheet: a two-column table. Every key cell is the same three slots (key, joiner, key) of fixed widths, so
