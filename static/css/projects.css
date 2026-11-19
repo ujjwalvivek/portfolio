@@ -1,0 +1,324 @@
+/* Projects (v3 Projects page). Same parts as v3: cornered hero, the filter panel with its prompt, filters, status line and
+   stats, one row per project (table-like on wide screens, a card on phones, from the same markup), the tooltips, and the
+   entries line. Restyled to the house rules: dashed while inert, solid 2px in the accent when hovered, focused or chosen;
+   no shadows or glows; no v3 RGB-split title glitch, button shine or row slide-in; no FETCHING bar (D-024). */
+
+.projects { width: min(var(--main-content-width), calc(100% - 2rem)); font-family: var(--font-neon); }
+
+/* Hero: the v3 "Projects Directory" bar with its four corner brackets (same frame as the blog list). */
+.pj-hero {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-bottom: 4rem;
+  background: rgba(var(--bit-dark-color-rgb), 0.8);
+  backdrop-filter: blur(32px) saturate(150%);
+  -webkit-backdrop-filter: blur(32px) saturate(150%);
+  border: 2px dashed rgba(var(--dynamic-dominant-color-rgb), 0.2);
+}
+.pj-hero::before, .pj-hero::after, .pj-corners::before, .pj-corners::after {
+  content: "";
+  position: absolute;
+  width: 1.2rem;
+  height: 1.2rem;
+  border: 0 solid var(--dynamic-dominant-color);
+  pointer-events: none;
+}
+.pj-hero::before { top: -2px; left: -2px; border-width: 2px 0 0 2px; }
+.pj-hero::after { right: -2px; bottom: -2px; border-width: 0 2px 2px 0; }
+.pj-corners { position: absolute; inset: -2px; pointer-events: none; }
+.pj-corners::before { top: 0; right: 0; border-width: 2px 2px 0 0; }
+.pj-corners::after { left: 0; bottom: 0; border-width: 0 0 2px 2px; }
+.pj-hero-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.2rem;
+  font-size: 2.5rem;
+  color: var(--dynamic-dominant-color);
+  border-right: 2px dashed rgba(var(--dynamic-dominant-color-rgb), 0.2);
+}
+.pj-hero-text { flex: 1; min-width: 0; padding: 0 1.5rem; }
+.pj-hero h1 {
+  margin: 0;
+  font-family: var(--font-krypton);
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+  color: var(--text-color);
+}
+.pj-hero p {
+  margin: 0;
+  font-family: var(--font-krypton);
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: rgba(var(--dynamic-dominant-color-rgb), 0.8);
+}
+
+/* Filter panel: v3's FILTER_INTERFACE box. The title tab is the panel title; filters are keycaps. */
+.pj-panel {
+  position: relative;
+  margin-bottom: 1.5rem;
+  padding: 1.4rem 1rem 1rem;
+  background: rgba(var(--background-color-rgb), 0.5);
+  backdrop-filter: blur(32px) saturate(180%);
+  -webkit-backdrop-filter: blur(32px) saturate(180%);
+  border: 1px dashed rgba(var(--dynamic-dominant-color-rgb), 0.6);
+}
+.pj-panel-title {
+  position: absolute;
+  top: -0.65rem;
+  left: 1rem;
+  margin: 0;
+  padding: 0.1rem 0.6rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  line-height: 1.4;
+  text-transform: uppercase;
+  color: var(--background-color);
+  background: var(--dynamic-dominant-color);
+}
+.pj-panel-row { display: flex; align-items: center; flex-wrap: wrap; gap: 0.75rem 1rem; }
+.pj-prompt { font-weight: 500; font-size: 0.95rem; color: var(--text-color); white-space: nowrap; }
+.pj-filters { display: flex; flex: 1; flex-wrap: wrap; gap: 0.75rem; }
+.pj-filter {
+  padding: 0.35rem 0.6rem 0.3rem;
+  font-family: var(--font-neon);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text-color);
+  background: rgba(var(--dynamic-dominant-color-rgb), 0.08);
+  border: 1px solid rgba(var(--dynamic-dominant-color-rgb), 0.5);
+  border-bottom-width: 2px;
+  cursor: pointer;
+  transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+}
+.pj-filter:hover { border-color: var(--dynamic-dominant-color); }
+.pj-filter:focus-visible { outline: 2px solid var(--dynamic-dominant-color); outline-offset: 2px; }
+.pj-filter[aria-pressed="true"] {
+  color: var(--dynamic-dominant-color);
+  background: rgba(var(--dynamic-dominant-color-rgb), 0.25);
+  border: 2px solid var(--dynamic-dominant-color);
+  padding: 0.3rem 0.55rem;
+}
+.pj-status { margin: 0; font-size: 0.7rem; letter-spacing: 1px; color: rgba(var(--text-color-rgb), 0.75); }
+.pj-status-filter { color: var(--dynamic-dominant-color); text-transform: uppercase; font-weight: 600; }
+.pj-status-count { color: var(--text-color); }
+.pj-ok { color: var(--status-ok-color); }
+
+.pj-stats {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.3rem 1rem;
+  margin: 1rem 0 0;
+  padding: 0.45rem 1.5rem;
+  font-size: 0.7rem;
+  letter-spacing: 1px;
+  border: 1px dashed rgba(var(--dynamic-dominant-color-rgb), 0.4);
+  background: rgba(var(--background-color-rgb), 0.6);
+}
+.pj-stats div { display: flex; gap: 0.4rem; }
+.pj-stats div::before { content: "["; color: var(--dynamic-dominant-color); }
+.pj-stats div::after { content: "]"; color: var(--dynamic-dominant-color); }
+.pj-stats dt { text-transform: uppercase; color: rgba(var(--text-color-rgb), 0.7); }
+.pj-stats dd { margin: 0; font-weight: 700; color: var(--text-color); text-transform: uppercase; }
+.pj-stats dd.pj-ok { color: var(--status-ok-color); }
+
+/* Rows. One grid per project: icon | title | tags | buttons. */
+.pj-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 1.2rem; }
+.pj-row {
+  display: grid;
+  grid-template-columns: 3rem minmax(0, 1.2fr) minmax(0, 1fr) 11rem;
+  grid-template-areas: "icon title tags actions";
+  align-items: center;
+  column-gap: 1.25rem;
+  min-height: 4.25rem;
+  padding-right: 0.75rem;
+  background: rgba(var(--background-color-rgb), 0.4);
+  backdrop-filter: blur(32px) saturate(180%);
+  -webkit-backdrop-filter: blur(32px) saturate(180%);
+  border: 2px dashed rgba(var(--dynamic-dominant-color-rgb), 0.2);
+  scroll-margin: 5rem 0;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+.pj-row[hidden] { display: none; }
+.pj-row:hover, .pj-row:focus-within, .pj-row.is-target {
+  border-style: solid;
+  border-color: var(--dynamic-dominant-color);
+  background: rgba(var(--background-color-rgb), 0.55);
+}
+.pj-row.is-target { background-image: linear-gradient(90deg, rgba(var(--dynamic-dominant-color-rgb), 0.12), transparent 60%); }
+
+.pj-icon {
+  grid-area: icon;
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  color: rgba(var(--text-color-rgb), 0.85);
+  background: rgba(var(--dynamic-dominant-color-rgb), 0.12);
+  border-right: 1px dashed rgba(var(--dynamic-dominant-color-rgb), 0.6);
+  transition: color 0.2s ease, background 0.2s ease;
+}
+.pj-row:hover .pj-icon, .pj-row.is-target .pj-icon { color: var(--dynamic-dominant-color); background: rgba(var(--dynamic-dominant-color-rgb), 0.22); }
+
+.pj-title { grid-area: title; margin: 0; padding: 1rem 0; font-size: 0.9rem; font-weight: 300; line-height: 1.45; }
+.pj-title-text {
+  padding: 0;
+  font: inherit;
+  text-align: left;
+  color: var(--text-color);
+  background: none;
+  border: 0;
+  cursor: help;
+}
+.pj-title-text:focus-visible { outline: 2px solid var(--dynamic-dominant-color); outline-offset: 3px; }
+.pj-desc, .pj-more-list { display: none; }
+
+.pj-tags { grid-area: tags; padding: 1.15rem 0 0.9rem; min-width: 0; }
+.pj-tags-label {
+  display: block;
+  margin-bottom: 0.3rem;
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--dynamic-dominant-color);
+}
+.pj-tag-list, .pj-tip.is-tags { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.pj-tag-list > li { display: flex; }
+.pj-tag {
+  display: inline-block;
+  padding: 0.2rem 0.4rem;
+  font-family: var(--font-neon);
+  font-size: 0.7rem;
+  font-weight: 300;
+  line-height: 1.2;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+  text-transform: lowercase;
+  color: rgba(var(--text-color-rgb), 0.85);
+  background: rgba(var(--dynamic-dominant-color-rgb), 0.14);
+  border: 1px dashed rgba(var(--dynamic-dominant-color-rgb), 0.6);
+}
+.pj-more { cursor: help; color: rgba(var(--text-color-rgb), 0.7); transition: border-color 0.2s ease, color 0.2s ease; }
+.pj-more:hover, .pj-tags:hover .pj-more { border-style: solid; border-color: var(--dynamic-dominant-color); color: var(--text-color); }
+.pj-more:focus-visible { outline: 2px solid var(--dynamic-dominant-color); outline-offset: 2px; }
+
+/* Buttons (v3 ButtonGroup): at most two, or one full width. */
+.pj-actions { grid-area: actions; display: flex; gap: 0.6rem; }
+.pj-btn {
+  flex: 1 1 0;
+  min-width: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  padding: 0.45rem 0.4rem;
+  font-size: 0.85rem;
+  line-height: 1;
+  white-space: nowrap;
+  text-decoration: none;
+  color: var(--text-color);
+  background: rgba(var(--background-color-rgb), 0.4);
+  border: 2px dashed rgba(var(--dynamic-dominant-color-rgb), 0.6);
+  transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+}
+.pj-btn .icon { flex-shrink: 0; font-size: 0.9rem; }
+a.pj-btn:hover, a.pj-btn:focus-visible {
+  outline: none;
+  color: var(--dynamic-dominant-color);
+  border-style: solid;
+  border-color: var(--dynamic-dominant-color);
+  background: rgba(var(--dynamic-dominant-color-rgb), 0.12);
+}
+.pj-btn.is-wip { cursor: not-allowed; opacity: 0.5; border-color: rgba(var(--dynamic-dominant-color-rgb), 0.3); }
+
+/* The floating tooltip (one for the page, appended to body). */
+.pj-tip {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9000;
+  box-sizing: border-box;
+  width: max-content;
+  min-width: min(300px, calc(100vw - 24px));
+  max-width: min(400px, calc(100vw - 24px));
+  padding: 0.9rem 1.1rem;
+  font-family: var(--font-neon);
+  font-size: 0.85rem;
+  font-weight: 300;
+  line-height: 1.6;
+  color: var(--text-color);
+  background: rgba(var(--background-color-rgb), 0.85);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border: 1px dashed var(--dynamic-dominant-color);
+  pointer-events: none;
+}
+.pj-tip[hidden] { display: none; }
+.pj-tip p { margin: 0; }
+.pj-tip p + p { margin-top: 0.6rem; }
+.pj-tip.is-tags { min-width: 0; max-width: min(320px, calc(100vw - 24px)); padding: 0.6rem; }
+
+/* End of the list. */
+.pj-end {
+  margin: 1.5rem 0 3rem;
+  padding: 0.5rem;
+  font-size: 0.8rem;
+  text-align: center;
+  border: 1px dashed rgba(var(--dynamic-dominant-color-rgb), 0.5);
+}
+
+/* Notion and PDF overlays: the shell's overlay frame, made tall enough to read a document in. */
+.overlay:has(.pj-embed-card) { align-items: center; padding: 4vh 1rem; }
+.overlay-card.pj-embed-card { height: 85vh; height: 85svh; max-height: none; }
+.pj-embed-body { display: flex; flex-direction: column; overflow: hidden; background: rgba(var(--background-color-rgb), 0.9); }
+.pj-embed-frame { flex: 1; width: 100%; min-height: 0; border: 0; background: rgba(var(--bit-dark-color-rgb), 1); }
+.pj-pdf-host { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+.pj-pdf-host > * { flex: 1; min-height: 0; }
+.pj-embed-note { margin: 0; padding: 1rem 1.4rem; font-size: 0.8rem; letter-spacing: 1px; color: rgba(var(--text-color-rgb), 0.75); }
+.pj-embed-note .chip { margin-left: 0.3rem; }
+
+/* Phones and narrow windows: each row becomes v3's card: icon and title, then tags, then the buttons. */
+@media (max-width: 800px) {
+  .pj-row {
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-areas: "icon title" "tags tags" "actions actions";
+    column-gap: 0.8rem;
+    padding: 0.4rem 1rem 1rem;
+  }
+  .pj-icon { align-self: center; padding: 0; background: none; border: 0; }
+  .pj-row:hover .pj-icon, .pj-row.is-target .pj-icon { background: none; }
+  .pj-title { padding: 0.6rem 0; font-size: 0.95rem; }
+  .pj-tags { padding: 0.2rem 0 1rem; }
+}
+/* v3 hid the stats on phones; the status line stays, since it is the only sign that a filter changed the list. */
+@media (max-width: 780px) {
+  .pj-stats { display: none; }
+}
+@media (max-width: 600px) {
+  .pj-hero-text { padding: 0 1rem; }
+  .pj-hero h1 { font-size: 1.8rem; }
+  .pj-hero p { font-size: 0.8rem; }
+}
+@media (max-width: 520px) {
+  .pj-hero { margin-bottom: 2.5rem; }
+  .pj-hero h1 { font-size: 1.6rem; }
+  .pj-hero p { font-size: 0.7rem; }
+  .pj-hero-icon { font-size: 2rem; }
+}
+@media (max-width: 470px) {
+  .pj-hero-icon { padding: 1rem; }
+  .pj-hero h1 { font-size: 1.4rem; }
+  .pj-prompt { width: 100%; }
+}
+@media (max-width: 400px) {
+  .pj-hero h1 { font-size: clamp(1.2rem, 5vw, 1.4rem); }
+}

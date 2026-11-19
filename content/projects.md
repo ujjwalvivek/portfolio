@@ -1,5 +1,5 @@
 +++
 title = "Projects"
-template = "page.html"
+description = "Projects directory: engines, tools, games and product work by Ujjwal Vivek."
+template = "projects.html"
 +++
-The projects page lands in M4.
