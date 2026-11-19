@@ -128,7 +128,10 @@ async function render(url: URL, push: boolean): Promise<void> {
   };
 
   if ("startViewTransition" in document && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
-    await document.startViewTransition(swap).updateCallbackDone;
+    document.documentElement.classList.add("is-swapping");
+    const vt = document.startViewTransition(swap);
+    void vt.finished.finally(() => document.documentElement.classList.remove("is-swapping"));
+    await vt.updateCallbackDone;
   } else swap();
   await mountModules(main());
 }

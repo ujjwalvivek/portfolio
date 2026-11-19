@@ -39,8 +39,10 @@ a { color: inherit; }
   box-sizing: border-box;
   position: relative;
   z-index: 1;
-  view-transition-name: page;
 }
+/* Named only while a page swap runs: a named element is a backdrop root, which would stop every glass panel inside
+   #main from blurring the wallpaper behind it. */
+html.is-swapping #main { view-transition-name: page; }
 
 /* Wallpaper and its backdrop (root's). The backdrop shows until the first frames are painted, and stays when
    WebGPU is missing. With the wallpaper switched off, both go and the plain background remains. */
@@ -217,10 +219,13 @@ body.bg-off #bg-canvas { opacity: 0; }
   max-height: 70vh;
   overflow: hidden;
   animation: overlay-card-in 0.3s ease-out;
-  backdrop-filter: blur(16px) saturate(180%);
-  -webkit-backdrop-filter: blur(16px) saturate(180%);
-  background: rgba(var(--bit-dark-color-rgb), 1);
+  /* glass, as v3's footer overlays: the wallpaper shows through, blurred, and warms to the palette on hover */
+  backdrop-filter: blur(32px) saturate(180%);
+  -webkit-backdrop-filter: blur(32px) saturate(180%);
+  background: rgba(var(--background-color-rgb), 0.3);
+  transition: background-color 0.3s;
 }
+.overlay-card:hover { background: rgba(var(--dynamic-hsl-average-rgb), 0.2); }
 .overlay-head, .overlay-foot {
   flex: 0 0 auto;
   display: flex;
