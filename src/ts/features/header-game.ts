@@ -1,5 +1,5 @@
-// Home header (ADR D-012). The HTML header is there from the first byte; once the page has painted, the scene loads and,
-// when its first frame is drawn, takes over the box. Leaving home parks and pauses the scene; coming back resumes it.
+// Home header (ADR D-012). The box shows root's spinner from the first byte; once the page has painted, the scene loads and,
+// when its first frame is drawn, takes over the box. If it can't start, the box says so in one line. Leaving home parks and pauses the scene; coming back resumes it.
 
 import { onMusic, toggleMusic } from "../shell/audio.js";
 import { hideGame, showGame } from "../shell/game.js";
@@ -22,7 +22,10 @@ export function mount(root: HTMLElement): () => void {
         if (left) return hideGame();
         box.classList.add("is-live");
       })
-      .catch((err) => console.warn("Header scene unavailable, keeping the HTML header:", err));
+      .catch((err) => {
+        console.warn("Header scene unavailable:", err);
+        if (!left) box.classList.add("is-off");
+      });
   };
   // After first paint and once the browser is idle, so the scene never delays the page itself.
   const idle = (fn: () => void) => (typeof requestIdleCallback === "function" ? requestIdleCallback(fn, { timeout: 1500 }) : setTimeout(fn, 300));
@@ -41,7 +44,7 @@ export function mount(root: HTMLElement): () => void {
     left = true;
     stop();
     button?.removeEventListener("click", click);
-    box.classList.remove("is-live");
+    box.classList.remove("is-live", "is-off");
     hideGame();
   };
 }
