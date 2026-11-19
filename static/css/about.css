@@ -134,19 +134,17 @@
 }
 .ab-soldier { position: absolute; right: 0; top: -20%; width: 96px; height: 48px; opacity: 0.8; animation: ab-walk 10s linear infinite; }
 .ab-soldier.is-mini { width: 72px; height: 36px; animation-delay: 0.3s; z-index: 1; }
-.ab-soldier svg { display: block; width: 100%; height: 100%; shape-rendering: crispEdges; }
-.ab-frame { animation: ab-frame 1s steps(1) infinite; }
-.ab-frame:nth-child(2) { animation-delay: -0.6667s; }
-.ab-frame:nth-child(3) { animation-delay: -0.3333s; }
+.ab-soldier canvas { display: block; width: 100%; height: 100%; image-rendering: pixelated; }
 @keyframes ab-walk { from { top: -20%; } to { top: 120%; } }
-@keyframes ab-frame { 0% { visibility: visible; } 33.33%, 100% { visibility: hidden; } }
-.ab-px-a { fill: var(--text-color); }
-.ab-px-b { fill: color-mix(in srgb, var(--text-color) 78%, var(--background-color)); }
-.ab-px-c { fill: color-mix(in srgb, var(--text-color) 62%, var(--background-color)); }
-.ab-px-d { fill: var(--primary-color); }
-.ab-px-e { fill: color-mix(in srgb, var(--primary-color) 72%, var(--background-color)); }
-.ab-px-f { fill: hsl(from var(--dynamic-dominant-color) h s 16%); }
-body.bg-off .ab-soldier, body.bg-off .ab-frame { animation-play-state: paused; }
+.ab-trooper {
+  --ab-px-a: var(--text-color);
+  --ab-px-b: color-mix(in srgb, var(--text-color) 78%, var(--background-color));
+  --ab-px-c: color-mix(in srgb, var(--text-color) 62%, var(--background-color));
+  --ab-px-d: var(--primary-color);
+  --ab-px-e: color-mix(in srgb, var(--primary-color) 72%, var(--background-color));
+  --ab-px-f: hsl(from var(--dynamic-dominant-color) h s 16%);
+}
+body.bg-off .ab-soldier { animation-play-state: paused; }
 @media (prefers-reduced-motion: reduce) { .ab-soldier { display: none; } }
 @media (max-width: 800px) { .ab-trooper { display: none; } }
 
