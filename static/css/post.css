@@ -296,11 +296,9 @@
 .post .markdown img {
   display: block;
   box-sizing: border-box;
-  /* v3's frame: the box hugs the whole image (no cropping), a dark mat, and a thin light ring against the picture */
-  width: auto;
-  max-width: 100%;
+  /* v3's frame: full width, the whole image (no cropping), a dark mat, and a thin light ring against the picture */
+  width: 100%;
   height: auto;
-  max-height: 70vh;
   margin: 1rem auto;
   padding: 6px;
   border: 2px solid var(--dynamic-dominant-color);

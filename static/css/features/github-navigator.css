@@ -13,8 +13,8 @@
 .ghn-card .overlay-head { gap: 0.9rem; transition: background-color 0.3s; }
 .ghn-card:focus-within .overlay-head { background: color-mix(in srgb, rgb(var(--bit-dark-color-rgb)) 88%, var(--dynamic-dominant-color)); }
 /* compact title: small spaced caps over the remote, both with room for their ascenders and descenders */
-.ghn-titles { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 0.1rem; }
-.ghn-card .overlay-title { flex: 0 0 auto; font-family: var(--font-krypton); font-size: 0.75rem; font-weight: 800; letter-spacing: 3px; text-transform: uppercase; line-height: 1.4; color: var(--text-color); }
+.ghn-titles { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 0; }
+.ghn-card .overlay-title { flex: 0 0 auto; font-family: var(--font-krypton); font-size: 0.68rem; font-weight: 800; letter-spacing: 3px; text-transform: uppercase; line-height: 1.4; color: var(--text-color); }
 .ghn-body.overlay-body { overflow: hidden; display: flex; flex-direction: column; }
 
 .ghn-remote {
@@ -29,7 +29,7 @@
   line-height: 1.5;
   font: inherit;
   font-family: var(--font-krypton);
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   letter-spacing: 1px;
   color: rgba(var(--text-color-rgb), 0.6);
   background: none;
@@ -453,7 +453,7 @@
 .ghn.is-busy .ghn-input { color: rgba(var(--text-color-rgb), 0.4); }
 
 /* ---- foot: quick commands ---- */
-.overlay-foot.ghn-foot { justify-content: space-between; flex-wrap: wrap; gap: 0.5rem 1rem; padding: 0.45rem 1rem; }
+.overlay-foot.ghn-foot { justify-content: space-between; flex-wrap: wrap; gap: 0.5rem 1rem; }
 .ghn-quick { flex: 0 0 auto; display: flex; flex-wrap: wrap; gap: 0.15rem; }
 .ghn-qcmd {
   padding: 0.05rem 0.4rem;
@@ -508,7 +508,6 @@
   .ghn-ed-keys, .ghn-foot-keys { display: none; }
   .ghn-live { flex-wrap: wrap; row-gap: 0.25rem; }
   .ghn-input { flex-basis: 100%; font-size: 16px; } /* 16px keeps iOS from zooming into the field */
-  .overlay-foot.ghn-foot { padding: 0.4rem 0.6rem; }
 }
 @media (prefers-reduced-motion: reduce) {
   .ghn-log > *, .ghn-editor, .ghn-lang-fill { animation: none; }

@@ -25,7 +25,9 @@
   align-items: center;
   justify-content: space-between;
   gap: 0.5rem 1rem;
-  padding: 0.45rem var(--pdfv-pad);
+  min-height: var(--bar-h);
+  box-sizing: border-box;
+  padding: 0.25rem var(--pdfv-pad);
   background: rgba(var(--dynamic-dominant-color-rgb), 0.1);
   backdrop-filter: blur(16px) saturate(180%);
   -webkit-backdrop-filter: blur(16px) saturate(180%);
@@ -42,8 +44,8 @@
   justify-content: center;
   gap: 0.35rem;
   min-width: 1.9rem;
-  height: 1.75rem;
-  padding: 0 0.5rem;
+  height: var(--bar-key);
+  padding: 0 0.45rem;
   box-sizing: border-box;
   color: var(--text-color);
   font: inherit;
@@ -65,7 +67,7 @@
 
 .pdfv-pagein {
   width: 2.6rem;
-  height: 1.75rem;
+  height: var(--bar-key);
   box-sizing: border-box;
   padding: 0 0.3rem;
   color: var(--text-color);

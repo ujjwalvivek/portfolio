@@ -39,7 +39,9 @@
   display: flex;
   align-items: center;
   gap: 1rem;
-  padding: 0.4rem 1rem;
+  min-height: var(--bar-h);
+  box-sizing: border-box;
+  padding: 0.25rem 0.9rem;
   background: rgba(var(--bit-dark-color-rgb), 1);
   white-space: nowrap;
   overflow: hidden;
@@ -239,9 +241,9 @@
   justify-content: space-between;
   align-items: center;
   gap: 1rem;
-  min-height: 2.1rem;
+  min-height: var(--bar-h);
   box-sizing: border-box;
-  padding: 0.4rem 1rem;
+  padding: 0.25rem 0.9rem;
   background: rgba(var(--bit-dark-color-rgb), 1);
   font-family: var(--font-neon);
 }
