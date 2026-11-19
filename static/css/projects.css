@@ -277,7 +277,7 @@ a.pj-btn:hover, a.pj-btn:focus-visible {
 }
 
 /* Notion and PDF overlays: the shell's overlay frame, made tall enough to read a document in. */
-.overlay:has(.pj-embed-card) { align-items: center; padding: 4vh 1rem; }
+.overlay:has(.pj-embed-card) { align-items: stretch; }
 .overlay-card.pj-embed-card { height: 85vh; height: 85svh; max-height: none; }
 .pj-embed-body { display: flex; flex-direction: column; overflow: hidden; background: rgba(var(--background-color-rgb), 0.9); }
 .pj-embed-frame { flex: 1; width: 100%; min-height: 0; border: 0; background: rgba(var(--bit-dark-color-rgb), 1); }

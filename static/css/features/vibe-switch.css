@@ -3,11 +3,9 @@
    lettered switch are exactly as reviewed; everything else is built around them. */
 
 /* The card: more room than the other overlays, nearer the top on a phone. Glass comes from .overlay-card. */
-.overlay:has(.vibe) { padding-top: 12vh; }
-.overlay-card:has(.vibe) { max-height: 80vh; }
+.overlay-card:has(.vibe) { max-height: 100%; }
 @media (max-width: 600px) {
-  .overlay:has(.vibe) { padding: 5vh 0.6rem 0; }
-  .overlay-card:has(.vibe) { max-height: 88vh; }
+  .overlay-card:has(.vibe) { max-height: 100%; }
 }
 .overlay-foot:has(.vibe-fps) { flex-wrap: nowrap; gap: 0.6rem; }
 

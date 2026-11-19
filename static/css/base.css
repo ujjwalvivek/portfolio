@@ -228,7 +228,8 @@ body.bg-off #bg-canvas { opacity: 0; }
   display: flex;
   align-items: flex-start;
   justify-content: center;
-  padding: 20vh 1.5rem 0;
+  /* every overlay starts on the same line, just under the top bar, and may grow to just above the status bar */
+  padding: calc(var(--top-h, 0px) + 0.6rem) 1.5rem calc(var(--bottom-h, 0px) + 0.6rem);
   animation: overlay-in 0.2s ease-out;
 }
 .overlay:has(.overlay-card:hover) { background: rgba(var(--background-color-rgb), 0.2); transition: background 0.3s; }
@@ -237,7 +238,7 @@ body.bg-off #bg-canvas { opacity: 0; }
   flex-direction: column;
   width: 100%;
   max-width: 952px;
-  max-height: 70vh;
+  max-height: 100%;
   overflow: hidden;
   animation: overlay-card-in 0.3s ease-out;
   /* glass, as v3's footer overlays: the wallpaper shows through, blurred, and warms to the palette on hover */
