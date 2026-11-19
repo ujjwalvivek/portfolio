@@ -1,30 +1,30 @@
 /* Design tokens, carried over from v3's index.css. v4 is dark only (ADR D-010), so the dark values are the only values.
    The --dynamic-* variables are written by the palette drift (src/ts/shell/drift.ts); the values here are what shows before it runs. */
 
-@font-face { font-family: "JetBrains Mono"; src: url("https://cdn.ujjwalvivek.com/fonts/JetBrainsMono/Thin.woff2") format("woff2"); font-weight: 100; font-display: swap; }
-@font-face { font-family: "JetBrains Mono"; src: url("https://cdn.ujjwalvivek.com/fonts/JetBrainsMono/ExtraLight.woff2") format("woff2"); font-weight: 200; font-display: swap; }
-@font-face { font-family: "JetBrains Mono"; src: url("https://cdn.ujjwalvivek.com/fonts/JetBrainsMono/Light.woff2") format("woff2"); font-weight: 300; font-display: swap; }
-@font-face { font-family: "JetBrains Mono"; src: url("https://cdn.ujjwalvivek.com/fonts/JetBrainsMono/Regular.woff2") format("woff2"); font-weight: 400; font-display: swap; }
-@font-face { font-family: "JetBrains Mono"; src: url("https://cdn.ujjwalvivek.com/fonts/JetBrainsMono/Medium.woff2") format("woff2"); font-weight: 500; font-display: swap; }
-@font-face { font-family: "JetBrains Mono"; src: url("https://cdn.ujjwalvivek.com/fonts/JetBrainsMono/SemiBold.woff2") format("woff2"); font-weight: 600; font-display: swap; }
-@font-face { font-family: "JetBrains Mono"; src: url("https://cdn.ujjwalvivek.com/fonts/JetBrainsMono/Bold.woff2") format("woff2"); font-weight: 700; font-display: swap; }
-@font-face { font-family: "JetBrains Mono"; src: url("https://cdn.ujjwalvivek.com/fonts/JetBrainsMono/ExtraBold.woff2") format("woff2"); font-weight: 800; font-display: swap; }
+@font-face { font-family: "JetBrains Mono"; src: url("/fonts/jetbrains-mono@s1/Thin.woff2") format("woff2"); font-weight: 100; font-display: swap; }
+@font-face { font-family: "JetBrains Mono"; src: url("/fonts/jetbrains-mono@s1/ExtraLight.woff2") format("woff2"); font-weight: 200; font-display: swap; }
+@font-face { font-family: "JetBrains Mono"; src: url("/fonts/jetbrains-mono@s1/Light.woff2") format("woff2"); font-weight: 300; font-display: swap; }
+@font-face { font-family: "JetBrains Mono"; src: url("/fonts/jetbrains-mono@s1/Regular.woff2") format("woff2"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "JetBrains Mono"; src: url("/fonts/jetbrains-mono@s1/Medium.woff2") format("woff2"); font-weight: 500; font-display: swap; }
+@font-face { font-family: "JetBrains Mono"; src: url("/fonts/jetbrains-mono@s1/SemiBold.woff2") format("woff2"); font-weight: 600; font-display: swap; }
+@font-face { font-family: "JetBrains Mono"; src: url("/fonts/jetbrains-mono@s1/Bold.woff2") format("woff2"); font-weight: 700; font-display: swap; }
+@font-face { font-family: "JetBrains Mono"; src: url("/fonts/jetbrains-mono@s1/ExtraBold.woff2") format("woff2"); font-weight: 800; font-display: swap; }
 
-@font-face { font-family: "Monaspace Neon"; src: url("https://cdn.ujjwalvivek.com/fonts/Monaspace/Neon/ExtraLight.woff2") format("woff2"); font-weight: 200; font-display: swap; }
-@font-face { font-family: "Monaspace Neon"; src: url("https://cdn.ujjwalvivek.com/fonts/Monaspace/Neon/Light.woff2") format("woff2"); font-weight: 300; font-display: swap; }
-@font-face { font-family: "Monaspace Neon"; src: url("https://cdn.ujjwalvivek.com/fonts/Monaspace/Neon/Regular.woff2") format("woff2"); font-weight: 400; font-display: swap; }
-@font-face { font-family: "Monaspace Neon"; src: url("https://cdn.ujjwalvivek.com/fonts/Monaspace/Neon/Medium.woff2") format("woff2"); font-weight: 500; font-display: swap; }
-@font-face { font-family: "Monaspace Neon"; src: url("https://cdn.ujjwalvivek.com/fonts/Monaspace/Neon/SemiBold.woff2") format("woff2"); font-weight: 600; font-display: swap; }
-@font-face { font-family: "Monaspace Neon"; src: url("https://cdn.ujjwalvivek.com/fonts/Monaspace/Neon/Bold.woff2") format("woff2"); font-weight: 700; font-display: swap; }
-@font-face { font-family: "Monaspace Neon"; src: url("https://cdn.ujjwalvivek.com/fonts/Monaspace/Neon/ExtraBold.woff2") format("woff2"); font-weight: 800; font-display: swap; }
+@font-face { font-family: "Monaspace Neon"; src: url("/fonts/monaspace-neon@s1/ExtraLight.woff2") format("woff2"); font-weight: 200; font-display: swap; }
+@font-face { font-family: "Monaspace Neon"; src: url("/fonts/monaspace-neon@s1/Light.woff2") format("woff2"); font-weight: 300; font-display: swap; }
+@font-face { font-family: "Monaspace Neon"; src: url("/fonts/monaspace-neon@s1/Regular.woff2") format("woff2"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "Monaspace Neon"; src: url("/fonts/monaspace-neon@s1/Medium.woff2") format("woff2"); font-weight: 500; font-display: swap; }
+@font-face { font-family: "Monaspace Neon"; src: url("/fonts/monaspace-neon@s1/SemiBold.woff2") format("woff2"); font-weight: 600; font-display: swap; }
+@font-face { font-family: "Monaspace Neon"; src: url("/fonts/monaspace-neon@s1/Bold.woff2") format("woff2"); font-weight: 700; font-display: swap; }
+@font-face { font-family: "Monaspace Neon"; src: url("/fonts/monaspace-neon@s1/ExtraBold.woff2") format("woff2"); font-weight: 800; font-display: swap; }
 
-@font-face { font-family: "Monaspace Krypton"; src: url("https://cdn.ujjwalvivek.com/fonts/Monaspace/Krypton/ExtraLight.woff2") format("woff2"); font-weight: 200; font-display: swap; }
-@font-face { font-family: "Monaspace Krypton"; src: url("https://cdn.ujjwalvivek.com/fonts/Monaspace/Krypton/Light.woff2") format("woff2"); font-weight: 300; font-display: swap; }
-@font-face { font-family: "Monaspace Krypton"; src: url("https://cdn.ujjwalvivek.com/fonts/Monaspace/Krypton/Regular.woff2") format("woff2"); font-weight: 400; font-display: swap; }
-@font-face { font-family: "Monaspace Krypton"; src: url("https://cdn.ujjwalvivek.com/fonts/Monaspace/Krypton/Medium.woff2") format("woff2"); font-weight: 500; font-display: swap; }
-@font-face { font-family: "Monaspace Krypton"; src: url("https://cdn.ujjwalvivek.com/fonts/Monaspace/Krypton/SemiBold.woff2") format("woff2"); font-weight: 600; font-display: swap; }
-@font-face { font-family: "Monaspace Krypton"; src: url("https://cdn.ujjwalvivek.com/fonts/Monaspace/Krypton/Bold.woff2") format("woff2"); font-weight: 700; font-display: swap; }
-@font-face { font-family: "Monaspace Krypton"; src: url("https://cdn.ujjwalvivek.com/fonts/Monaspace/Krypton/ExtraBold.woff2") format("woff2"); font-weight: 800; font-display: swap; }
+@font-face { font-family: "Monaspace Krypton"; src: url("/fonts/monaspace-krypton@s1/ExtraLight.woff2") format("woff2"); font-weight: 200; font-display: swap; }
+@font-face { font-family: "Monaspace Krypton"; src: url("/fonts/monaspace-krypton@s1/Light.woff2") format("woff2"); font-weight: 300; font-display: swap; }
+@font-face { font-family: "Monaspace Krypton"; src: url("/fonts/monaspace-krypton@s1/Regular.woff2") format("woff2"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "Monaspace Krypton"; src: url("/fonts/monaspace-krypton@s1/Medium.woff2") format("woff2"); font-weight: 500; font-display: swap; }
+@font-face { font-family: "Monaspace Krypton"; src: url("/fonts/monaspace-krypton@s1/SemiBold.woff2") format("woff2"); font-weight: 600; font-display: swap; }
+@font-face { font-family: "Monaspace Krypton"; src: url("/fonts/monaspace-krypton@s1/Bold.woff2") format("woff2"); font-weight: 700; font-display: swap; }
+@font-face { font-family: "Monaspace Krypton"; src: url("/fonts/monaspace-krypton@s1/ExtraBold.woff2") format("woff2"); font-weight: 800; font-display: swap; }
 
 :root {
   --background-color: rgb(0, 0, 0);
