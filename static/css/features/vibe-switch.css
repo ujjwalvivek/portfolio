@@ -10,7 +10,10 @@
 .overlay-foot:has(.vibe-fps) { flex-wrap: nowrap; gap: 0.6rem; }
 
 .vibe { padding: 0.2rem 1.4rem 1.2rem; font-family: var(--font-neon); }
-.vibe-cols { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 0 2rem; align-items: start; }
+/* the two columns stand the same height: the recipe tiles stretch to the palette bento beside them */
+.vibe-cols { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 0 2rem; align-items: stretch; }
+.vibe-cols > .vibe-sec { display: flex; flex-direction: column; }
+.vibe-cols > .vibe-sec > .vibe-recipes, .vibe-cols > .vibe-sec > .vibe-grid { flex: 1; }
 @media (max-width: 760px) { .vibe-cols { grid-template-columns: minmax(0, 1fr); } .vibe { padding: 0.2rem 0.9rem 1rem; } }
 
 /* Panels: UPPERCASE title at 2px tracking, lowercase meta at 1px, a dashed rule under the head. */
@@ -81,7 +84,7 @@ summary.vibe-sec-head:hover .vibe-sec-title { color: var(--dynamic-dominant-colo
 .vibe-key:disabled { border-style: dashed; opacity: 0.45; cursor: not-allowed; }
 
 /* Recipes: keycaps in the swatch language. Each lists its layer stack top to bottom, as it composites. */
-.vibe-recipes { display: grid; grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr)); gap: 0.9rem; padding: 0.3rem 0.3rem 0.2rem; }
+.vibe-recipes { display: grid; grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr)); gap: 0.9rem; padding: 0.45rem; align-content: stretch; }
 .vibe-recipe {
   position: relative;
   display: flex;
@@ -178,7 +181,7 @@ summary.vibe-sec-head:hover .vibe-sec-title { color: var(--dynamic-dominant-colo
     "root root sunset midnight"
     "aurora aurora neon neon";
   gap: 0.6rem;
-  padding: 0.9rem 0.4rem 0.6rem;
+  padding: 0.45rem;
 }
 .vibe-swatch[data-name="root"] { grid-area: root; }
 .vibe-swatch[data-name="forest"] { grid-area: forest; }
@@ -280,9 +283,9 @@ summary.vibe-sec-head:hover .vibe-sec-title { color: var(--dynamic-dominant-colo
   left: 0.1em;
   box-sizing: border-box;
   /* the letters' own metrics: the SVG is 1.45em for 24 units, strokes are 4 units with square caps and span 16 units,
-     so the O is 13 by 17 units, as wide and tall as the drawn N, with the same 4-unit stroke, and sits on the same centre line */
+     so the O is 13 by 16 units, as wide and tall as the drawn N, with the same 4-unit stroke, and sits on the same centre line */
   width: calc(1.45em * 13 / 24);
-  height: calc(1.45em * 17 / 24);
+  height: calc(1.45em * 16 / 24);
   background: none;
   border: calc(1.45em * 4 / 24) solid rgba(var(--text-color-rgb), 0.5);
   transform: translateY(-50%);
@@ -305,7 +308,7 @@ summary.vibe-sec-head:hover .vibe-sec-title { color: var(--dynamic-dominant-colo
 .switch__input:checked ~ .switch__letters .switch__letter:first-child .switch__letter-stroke:nth-child(2) { stroke-dashoffset: 0; transform: rotate(56.5deg); }
 .switch__input:checked ~ .switch__letters .switch__letter:last-child { stroke-dashoffset: 0; transform: translateX(8px); }
 /* in a panel the grid keeps room above for the swatch names */
-.vibe-sec .vibe-grid { padding: 0.9rem 0.4rem 0.6rem; }
+.vibe-sec .vibe-grid { padding: 0.45rem; }
 /* keyboard focus draws the brackets over the swatch's own gradient, not over the site's focus tint */
 .vibe-swatch { --focus-fill: var(--swatch); }
 

@@ -152,14 +152,14 @@ websiteLink = "https://devhub.ujjwalvivek.com"
 
 [[projects]]
 id = "dev-12"
-title = "Procedural Graphics Engine & React Architecture"
+title = "ujjwalvivek.com v4: Zola, TypeScript and Two Engines of My Own"
 content = [
-  "Engineered a custom procedural rendering engine using HTML5 Canvas to visualize mathematical concepts without heavy 3D libraries. Architected a React-based performance-first portfolio site around this engine that prioritizes performant canvas rendering over standard DOM manipulation. The result is a unique blend of terminal aesthetics and interactive visuals, all while maintaining accessibility and cross-device performance.",
+  "Rebuilt this site from React to Zola and plain TypeScript with no runtime dependencies. Pages ship as finished HTML and each feature mounts on demand, which took a fresh home page visit from 17.4 MB to 1.6 MB and the largest paint from 2.9 s to 0.26 s. The header game runs on my Rust engine Journey through wasm and WebGPU, the wallpaper on my procedural engine Substrate, and a strict CSP, a budget gate and a v3 URL check run in CI.",
 ]
-tags = ["Algorithms", "Canvas API", "System Design", "Performance Optimization", "React", "Accessibility"]
+tags = ["Zola", "TypeScript", "Rust", "WebGPU", "Performance Optimization", "Accessibility"]
 
 [projects.contentLinks]
-blogPost = "/blog/log_0000_boot_sequence.md"
+blogPost = "/blog/log_0011_portfolio_v4.md"
 githubRepo = "https://github.com/ujjwalvivek/portfolio"
 
 [[projects]]

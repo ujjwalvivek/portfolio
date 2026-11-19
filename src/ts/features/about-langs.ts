@@ -42,6 +42,17 @@ export function mount(host: HTMLElement): () => void {
   svg.setAttribute("class", "ab-tide");
   svg.setAttribute("viewBox", "0 0 1000 100");
   svg.setAttribute("preserveAspectRatio", "none");
+  // depth: a shade that deepens towards the bed, laid over every band; crest: a bright line along the surface
+  svg.innerHTML =
+    '<defs><linearGradient id="ab-tide-depth" x1="0" y1="0" x2="0" y2="1">' +
+    '<stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity="0.55"/></linearGradient></defs>';
+  const bands = document.createElementNS(NS, "g");
+  const depth = document.createElementNS(NS, "path");
+  depth.setAttribute("class", "ab-tide-depth");
+  depth.setAttribute("fill", "url(#ab-tide-depth)");
+  const crest = document.createElementNS(NS, "path");
+  crest.setAttribute("class", "ab-tide-crest");
+  svg.append(bands, depth, crest);
   bar.replaceChildren(svg);
   let segs: SVGPathElement[] = [];
   let spans: { x0: number; x1: number; h: number }[] = [];
@@ -99,7 +110,7 @@ export function mount(host: HTMLElement): () => void {
       segs = got.map(() => {
         const path = document.createElementNS(NS, "path");
         path.setAttribute("class", "ab-bar-seg");
-        svg.append(path);
+        bands.append(path);
         return path;
       });
       draw(0);
@@ -155,15 +166,20 @@ export function mount(host: HTMLElement): () => void {
 
   // The SVG is 1000 by 100 units, stretched to the bar; each band is the area under the surface across its span.
   function draw(t: number): void {
+    let line = "";
     spans.forEach((s, i) => {
       const steps = Math.max(2, Math.ceil((s.x1 - s.x0) * 60));
       let d = `M${(s.x0 * 1000).toFixed(1)} 100`;
       for (let k = 0; k <= steps; k++) {
         const x = s.x0 + ((s.x1 - s.x0) * k) / steps;
-        d += ` L${(x * 1000).toFixed(1)} ${(100 - surface(x, t) * 100).toFixed(2)}`;
+        const pt = `${(x * 1000).toFixed(1)} ${(100 - surface(x, t) * 100).toFixed(2)}`;
+        d += ` L${pt}`;
+        line += `${line ? " L" : "M"}${pt}`;
       }
       segs[i]!.setAttribute("d", d + ` L${(s.x1 * 1000).toFixed(1)} 100 Z`);
     });
+    crest.setAttribute("d", line);
+    depth.setAttribute("d", `${line} L1000 100 L0 100 Z`);
   }
 
   function tick(t: number): void {
