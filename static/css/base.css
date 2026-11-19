@@ -242,10 +242,14 @@ body.bg-off #bg-canvas { opacity: 0; }
   /* glass, as v3's footer overlays: the wallpaper shows through, blurred, and warms to the palette on hover */
   backdrop-filter: blur(32px) saturate(180%);
   -webkit-backdrop-filter: blur(32px) saturate(180%);
-  background: rgba(var(--background-color-rgb), 0.3);
+  /* its own frame in the theme colour, with the site's corner brackets drawn on that border */
+  box-sizing: border-box;
+  border: 2px solid rgba(var(--dynamic-dominant-color-rgb), 0.6);
+  background: var(--brackets), rgba(var(--background-color-rgb), 0.3);
+  background-origin: border-box;
   transition: background-color 0.3s;
 }
-.overlay-card:hover { background: rgba(var(--dynamic-hsl-average-rgb), 0.2); }
+.overlay-card:hover { background: var(--brackets), rgba(var(--dynamic-hsl-average-rgb), 0.2); background-origin: border-box; }
 .overlay-head, .overlay-foot {
   flex: 0 0 auto;
   display: flex;

@@ -1,7 +1,7 @@
-// The vibe switch (ADR D-011): v3's "Choose Your Vibe!" picker on substrate. Recipes (root and the two candidates, plus
-// the visitor's pasted one), the palette swatches, global speed, density and opacity, an animation toggle that holds one
-// static frame, a real FPS readout, the ON/OFF lettered wallpaper switch, and a field that takes a recipe in the
-// section 11.1 format. A pasted recipe is read with JSON.parse, checked by substrate's validator, and stored locally.
+// The vibe switch (ADR D-011): v3's "Choose Your Vibe!" picker on substrate. Recipes (root and nebula, plus the
+// visitor's pasted one), the palette swatches, an animation toggle that holds one static frame, a real FPS readout, the
+// ON/OFF lettered wallpaper switch, and a field that takes a finished recipe in the section 11.1 format. Tuning lives in
+// substrate's playground, not here. A pasted recipe is read with JSON.parse, checked by substrate's validator, and stored locally.
 // Without WebGPU the palettes still work and the picker says plainly that the wallpaper needs it (D-008).
 //
 // Entry points: open() opens it (?vibe, the command palette); openVibeSwitch() toggles it (the v key, the status bar).
@@ -14,23 +14,20 @@ import { DEFAULT_CUSTOM, PALETTES, customPalette, type Palette } from "../shell/
 import type { Recipe, RecipeBook } from "../shell/recipe.js";
 import { recipeBook, recipeTools } from "../shell/recipes-local.js";
 import {
-  DEFAULT_OPTIONS,
   PASTED,
+  RECIPES,
   animated,
   chooseRecipe,
   clearPastedRecipe,
   framesDrawn,
-  globalOptions,
   onWallpaperChange,
   pastedRecipe,
   recipeChoice,
   setAnimated,
-  setGlobalOptions,
   setPastedRecipe,
   setWallpaper,
   wallpaperOn,
   wallpaperStatus,
-  type GlobalOptions,
 } from "../shell/wallpaper.js";
 
 const CSS = "/css/features/vibe-switch.css";
@@ -39,19 +36,16 @@ const MAX_PASTE = 16_384;
 const MAX_ERRORS = 12;
 const FPS_SAMPLE_MS = 1000;
 
+// Display names for the named recipes. The ids stay as they are, so saved choices keep working.
+const LABELS: Record<string, string> = { root: "Arcology" };
+const label = (id: string, recipe: Recipe | null | undefined) => (LABELS[id] ?? recipe?.name ?? id).slice(0, 40);
+
 // v3's switch markup: the stroked letters redraw from OFF to ON.
-const SWITCH = `<label class="switch"><input class="switch__input" type="checkbox" role="switch" aria-label="Wallpaper">
+const SWITCH = `<label class="switch"><input id="vibe-wall" class="switch__input" type="checkbox" role="switch" aria-label="Wallpaper">
 <svg class="switch__letters" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><g stroke="currentcolor" stroke-linecap="round" stroke-width="4" transform="translate(0,4)">
 <g class="switch__letter"><polyline class="switch__letter-stroke" points="2 2,2 14"/><polyline class="switch__letter-stroke" points="2 2,16 2" stroke-dasharray="14 16" stroke-dashoffset="8" transform="rotate(0,2,2)"/><polyline class="switch__letter-stroke" points="2 8,6 8" stroke-dasharray="4 6"/></g>
 <g class="switch__letter" transform="translate(14,0)"><polyline class="switch__letter-stroke" points="2 2,2 14"/><polyline class="switch__letter-stroke" points="2 2,8 2" stroke-dasharray="6 8"/><polyline class="switch__letter-stroke" points="2 8,6 8" stroke-dasharray="4 6"/></g>
 </g></svg></label>`;
-
-// v3's labels and roughly its ranges; the neutral value of each is substrate's default.
-const SLIDERS: { key: keyof GlobalOptions; label: string; min: number; max: number; step: number }[] = [
-  { key: "speed", label: "Flow Speed", min: 0, max: 3, step: 0.05 },
-  { key: "density", label: "Pattern Density", min: 0.2, max: 3, step: 0.05 },
-  { key: "opacity", label: "Opacity", min: 0.1, max: 1, step: 0.05 },
-];
 
 const PLACEHOLDER = `{ "recipe": 1, "name": "mine", "layers": [
   { "name": "vignette", "opacity": 1, "params": { "innerRadius": 0.1 } } ] }`;
@@ -148,14 +142,16 @@ function palettes(onMark: (label: string) => void): HTMLElement {
   return grid;
 }
 
-// A recipe tile: a keycap with the recipe's name and its layer stack listed top to bottom, the way it composites.
-function recipeTile(recipe: Recipe, id: string, tag: string): HTMLButtonElement {
+// A recipe tile: a keycap with the recipe's name, its layer count, and its layer stack top to bottom, as it composites.
+function recipeTile(recipe: Recipe, id: string): HTMLButtonElement {
   const tile = el("button", "vibe-recipe");
   tile.type = "button";
   tile.dataset.id = id;
   tile.setAttribute("role", "radio");
   const head = el("span", "vibe-recipe-head");
-  head.append(el("span", "vibe-recipe-name", recipe.name.slice(0, 40)), el("span", "vibe-recipe-tag", tag));
+  const name = label(id, recipe);
+  const count = `${recipe.layers.length} layer${recipe.layers.length === 1 ? "" : "s"}`;
+  head.append(el("span", "vibe-recipe-name", name), el("span", "vibe-recipe-tag", id === PASTED ? `pasted · ${count}` : count));
   const stack = el("ol", "vibe-recipe-stack");
   stack.setAttribute("aria-hidden", "true");
   [...recipe.layers].reverse().forEach((layer, i) => {
@@ -163,8 +159,8 @@ function recipeTile(recipe: Recipe, id: string, tag: string): HTMLButtonElement 
     li.append(el("span", "vibe-recipe-n", String(recipe.layers.length - i).padStart(2, "0")), ` ${layer.name}`);
     stack.append(li);
   });
-  tile.setAttribute("aria-label", `${recipe.name}, ${recipe.layers.length} layers`);
-  tile.append(head, el("span", "vibe-recipe-count", `${recipe.layers.length} layers`), stack);
+  tile.setAttribute("aria-label", `${name}, ${id === PASTED ? "pasted, " : ""}${count}`);
+  tile.append(head, stack);
   return tile;
 }
 
@@ -192,6 +188,9 @@ function build(): void {
   const recipeName = el("b");
   const fps = el("span", "vibe-fps");
   const motion = el("button", "vibe-key vibe-motion", "Animated");
+  // "Visuals" names the ON/OFF switch beside it, and is the same keycap as the motion key; a click on it flips the switch.
+  const visuals = el("label", "vibe-key vibe-visuals", "Visuals");
+  visuals.htmlFor = "vibe-wall";
   let refresh = () => {};
   let fpsTimer = 0;
   const cleanups: (() => void)[] = [];
@@ -208,7 +207,7 @@ function build(): void {
       note.setAttribute("role", "status");
 
       // Wallpaper: the recipes.
-      const wall = section("Wallpaper", "substrate recipes");
+      const wall = section("Wallpaper", "");
       const tiles = el("div", "vibe-recipes");
       tiles.setAttribute("role", "radiogroup");
       tiles.setAttribute("aria-label", "Recipe");
@@ -227,57 +226,13 @@ function build(): void {
       const pal = section("Palette", "");
       pal.root.append(
         palettes((label) => {
-          pal.meta.textContent = `${label.toLowerCase()} · two ends, drifting`;
+          pal.meta.textContent = label.toLowerCase();
           paletteName.textContent = label;
         }),
       );
 
-      // Tune: global multipliers on every layer, through substrate's effectiveLayerOptions.
-      const tune = section("Tune", "applies to every layer");
-      const reset = el("button", "vibe-key vibe-reset", "Reset");
-      reset.type = "button";
-      reset.title = "Recipe root, sliders at neutral, animated";
-      tune.meta.after(reset);
-      const sliders: { input: HTMLInputElement; out: HTMLOutputElement; key: keyof GlobalOptions }[] = [];
-      for (const s of SLIDERS) {
-        const row = el("label", "vibe-slider");
-        const input = el("input");
-        input.type = "range";
-        input.min = String(s.min);
-        input.max = String(s.max);
-        input.step = String(s.step);
-        const out = el("output", "vibe-slider-value");
-        row.append(el("span", "vibe-slider-label", s.label), input, out);
-        input.addEventListener("input", () => {
-          setGlobalOptions({ [s.key]: Number(input.value) });
-          paintSlider(sliders.find((x) => x.input === input)!);
-        });
-        sliders.push({ input, out, key: s.key });
-        tune.root.append(row);
-      }
-      const paintSlider = ({ input, out, key }: (typeof sliders)[number]) => {
-        const min = Number(input.min);
-        const max = Number(input.max);
-        const v = Number(input.value);
-        input.style.setProperty("--fill", `${((v - min) / (max - min)) * 100}%`);
-        // opacity reads as a share of the recipe's own (0.8 is neutral), the others as multipliers
-        out.textContent = key === "opacity" ? `${Math.round((v / DEFAULT_OPTIONS.opacity) * 100)}%` : `${v.toFixed(2)}×`;
-      };
-      const loadSliders = () =>
-        sliders.forEach((s) => {
-          s.input.value = String(globalOptions()[s.key]);
-          paintSlider(s);
-        });
-      loadSliders();
-      reset.addEventListener("click", () => {
-        setGlobalOptions(DEFAULT_OPTIONS);
-        setAnimated(true);
-        loadSliders();
-        void chooseRecipe("root");
-      });
-
-      // Paste: a recipe from the playground's COPY RECIPE.
-      const paste = section("Paste a recipe", "json from the substrate playground's copy recipe", true);
+      // Paste: a finished recipe from the playground's COPY RECIPE.
+      const paste = section("Paste a recipe", "", true);
       const field = el("textarea", "vibe-paste");
       field.spellcheck = false;
       field.rows = 5;
@@ -289,7 +244,9 @@ function build(): void {
       apply.type = "button";
       const clear = el("button", "vibe-key", "Clear saved");
       clear.type = "button";
-      const hint = el("span", "vibe-sec-meta", "ctrl+enter applies · saved in this browser only");
+      const hint = el("span", "vibe-paste-keys");
+      hint.innerHTML = "<kbd>Ctrl</kbd><kbd>Enter</kbd>";
+      hint.title = "Apply";
       actions.append(apply, clear, hint);
       const result = el("div", "vibe-result");
       result.setAttribute("aria-live", "polite");
@@ -303,22 +260,22 @@ function build(): void {
           li.append(el("span", "vibe-result-word", kind === "error" ? "error" : "ok"), ` ${line}`);
           list.append(li);
         }
-        if (lines.length > MAX_ERRORS) list.append(el("li", "vibe-result-more", `and ${lines.length - MAX_ERRORS} more`));
+        if (lines.length > MAX_ERRORS) list.append(el("li", "vibe-result-more", `${lines.length - MAX_ERRORS} more`));
         where.replaceChildren(list);
         list.scrollIntoView({ block: "nearest", behavior: "smooth" });
       };
 
       const submit = async () => {
         const text = field.value.trim();
-        if (!text) return say("Paste a recipe first.", "error");
+        if (!text) return say("Field is empty.", "error");
         if (text.length > MAX_PASTE)
-          return say(`That is ${text.length.toLocaleString("en")} characters; a recipe fits in ${MAX_PASTE.toLocaleString("en")}.`, "error");
+          return say(`Too long: ${text.length.toLocaleString("en")} characters, limit ${MAX_PASTE.toLocaleString("en")}.`, "error");
         const tools = await recipeTools();
         const check = tools.parseRecipe(text);
         if (!check.ok || !check.recipe) return say(check.errors, "error");
         const err = await setPastedRecipe(check.recipe);
         if (err) return say(err, "error");
-        say(`${check.recipe.name.slice(0, 40)} is on, ${check.recipe.layers.length} layers. Saved in this browser.`, "ok");
+        say(`Applied ${check.recipe.name.slice(0, 40)}, ${check.recipe.layers.length} layers.`, "ok");
       };
       apply.addEventListener("click", () => void submit());
       field.addEventListener("keydown", (e) => {
@@ -333,31 +290,30 @@ function build(): void {
       });
 
       const cols = el("div", "vibe-cols");
-      cols.append(pal.root, tune.root);
-      root.append(note, wall.root, cols, paste.root);
+      cols.append(wall.root, pal.root);
+      root.append(note, cols, paste.root);
       body.append(root);
 
       // Everything that follows the wallpaper's state.
-      const gpuControls = () => [...tiles.querySelectorAll<HTMLButtonElement>("button"), ...sliders.map((s) => s.input), field, apply, clear, motion, reset];
+      const gpuControls = () => [...tiles.querySelectorAll<HTMLButtonElement>("button"), field, apply, clear, motion];
       refresh = () => {
         const st = wallpaperStatus();
         const off = st.state === "unavailable";
         note.hidden = st.state === "running";
         note.className = "vibe-note" + (off ? " is-off" : "");
-        note.textContent = off
-          ? `${st.reason} The wallpaper needs WebGPU, so the plain backdrop stays. Palettes still colour the page.`
-          : "Starting the wallpaper.";
+        note.textContent = off ? `${st.reason}: wallpaper off. Palettes still apply.` : "Starting wallpaper.";
         root.classList.toggle("is-inert", off);
         for (const c of gpuControls()) c.disabled = off;
 
         // tiles: the named recipes, then the pasted one if there is one
         if (book.value) {
-          const want = [...book.value.recipeNames, ...(pastedRecipe() ? [PASTED] : [])].join(",");
+          const named = RECIPES.filter((n) => book.value!.recipeNames.includes(n));
+          const want = [...named, ...(pastedRecipe() ? [PASTED] : [])].join(",");
           if (tiles.dataset.ids !== want) {
             tiles.dataset.ids = want;
             tiles.replaceChildren(
-              ...book.value.recipeNames.map((n) => recipeTile(book.value!.getRecipe(n)!, n, n === "root" ? "root's own" : "substrate")),
-              ...(pastedRecipe() ? [recipeTile(pastedRecipe()!, PASTED, "pasted")] : []),
+              ...named.map((n) => recipeTile(book.value!.getRecipe(n)!, n)),
+              ...(pastedRecipe() ? [recipeTile(pastedRecipe()!, PASTED)] : []),
             );
             for (const t of tiles.querySelectorAll<HTMLButtonElement>("button")) t.disabled = off;
           }
@@ -372,7 +328,7 @@ function build(): void {
         }
         if (!any) tiles.querySelector<HTMLButtonElement>(".vibe-recipe")?.setAttribute("tabindex", "0");
         const chosen = choice === PASTED ? pastedRecipe() : book.value?.getRecipe(choice);
-        recipeName.textContent = chosen?.name.slice(0, 40) ?? choice;
+        recipeName.textContent = label(choice, chosen);
         clear.disabled = off || !pastedRecipe();
 
         const still = reducedMotion();
@@ -400,11 +356,8 @@ function build(): void {
       motion.type = "button";
       motion.title = "Animate, or hold one still frame";
       motion.addEventListener("click", () => setAnimated(!animated()));
-      const label = el("span", "vibe-foot-label vibe-current");
-      label.append("recipe ", recipeName, " · palette ", paletteName);
-      const visuals = el("span", "vibe-foot-label");
-      visuals.innerHTML = "<kbd>Visuals</kbd>";
-      visuals.style.marginRight = "0";
+      const current = el("span", "vibe-foot-label vibe-current");
+      current.append("recipe ", recipeName, " · palette ", paletteName);
       const wrap = el("div");
       wrap.innerHTML = SWITCH;
       const sw = wrap.firstElementChild as HTMLElement;
@@ -412,7 +365,7 @@ function build(): void {
       box.checked = wallpaperOn();
       box.addEventListener("change", () => setWallpaper(box.checked));
       cleanups.push(onWallpaperChange(() => (box.checked = wallpaperOn())));
-      foot.append(label, fps, motion, visuals, sw);
+      foot.append(current, fps, motion, visuals, sw);
       refresh();
     },
   });

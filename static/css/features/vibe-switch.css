@@ -9,10 +9,10 @@
   .overlay:has(.vibe) { padding: 5vh 0.6rem 0; }
   .overlay-card:has(.vibe) { max-height: 88vh; }
 }
-.overlay-foot:has(.vibe-fps) { flex-wrap: wrap; row-gap: 0.5rem; }
+.overlay-foot:has(.vibe-fps) { flex-wrap: nowrap; gap: 0.6rem; }
 
 .vibe { padding: 0.2rem 1.4rem 1.2rem; font-family: var(--font-neon); }
-.vibe-cols { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 0 2rem; }
+.vibe-cols { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 0 2rem; align-items: start; }
 @media (max-width: 760px) { .vibe-cols { grid-template-columns: minmax(0, 1fr); } .vibe { padding: 0.2rem 0.9rem 1rem; } }
 
 /* Panels: UPPERCASE title at 2px tracking, lowercase meta at 1px, a dashed rule under the head. */
@@ -35,7 +35,7 @@ details[open] > summary.vibe-sec-head { margin-bottom: 0.9rem; border-bottom-col
 details[open] > summary.vibe-sec-head .vibe-sec-title::before { content: "▾ "; }
 summary.vibe-sec-head:hover .vibe-sec-title { color: var(--dynamic-dominant-color); }
 
-/* Said plainly when the wallpaper cannot run, and only while it is really starting. */
+/* One plain line when the wallpaper cannot run, and only while it is really starting. */
 .vibe-note {
   margin: 1rem 0 0;
   padding: 0.6rem 0.8rem;
@@ -45,12 +45,19 @@ summary.vibe-sec-head:hover .vibe-sec-title { color: var(--dynamic-dominant-colo
   border: 1px dashed rgba(var(--dynamic-dominant-color-rgb), 0.45);
   background: rgba(var(--dynamic-dominant-color-rgb), 0.06);
 }
-.vibe-note.is-off::before { content: "no webgpu "; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--status-warn-color); margin-right: 0.4rem; }
+.vibe-note.is-off { color: var(--text-color); border-color: rgba(var(--dynamic-dominant-color-rgb), 0.6); }
 
 /* Keys: a 1px edge in the dominant colour and a thicker darker base. Hover tints the whole key and turns its edge to
    the theme colour; the chosen key is pressed, filled, its base flattened. */
 .vibe-key {
-  padding: 0.35rem 0.6rem 0.3rem;
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 auto;
+  box-sizing: border-box;
+  height: 1.75rem;
+  padding: 0 0.6rem;
+  line-height: 1;
+  white-space: nowrap;
   font-family: var(--font-neon);
   font-size: 0.72rem;
   font-weight: 600;
@@ -114,86 +121,19 @@ summary.vibe-sec-head:hover .vibe-sec-title { color: var(--dynamic-dominant-colo
 .vibe-recipe:disabled { border-style: dashed; opacity: 0.45; cursor: not-allowed; }
 .vibe-recipe-head { display: flex; align-items: baseline; gap: 0.5rem; }
 .vibe-recipe-name { font-size: 0.82rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.vibe-recipe-tag { margin-left: auto; font-size: 0.62rem; letter-spacing: 1px; text-transform: lowercase; opacity: 0.7; white-space: nowrap; }
+.vibe-recipe-tag { margin-left: auto; font-size: 0.62rem; letter-spacing: 1px; text-transform: lowercase; opacity: 0.75; white-space: nowrap; }
 .vibe-recipe-stack { margin: 0; padding: 0.4rem 0 0; list-style: none; border-top: 1px dashed currentColor; font-family: var(--font-mono); font-size: 0.66rem; line-height: 1.55; opacity: 0.8; }
 .vibe-recipe-stack li { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .vibe-recipe-n { opacity: 0.55; }
 .vibe-recipe[aria-checked="true"] .vibe-recipe-stack { opacity: 0.9; }
-.vibe-recipe-count { display: none; font-size: 0.62rem; letter-spacing: 1px; opacity: 0.75; }
-/* on a phone the tiles sit three across: name and layer count, no stack */
+/* on a phone the tiles sit side by side: name and layer count, no stack */
 @media (max-width: 600px) {
   .vibe-recipes { grid-template-columns: repeat(auto-fit, minmax(6.2rem, 1fr)); gap: 0.7rem; }
   .vibe-recipe { gap: 0.25rem; padding: 0.5rem 0.55rem 0.45rem; }
   .vibe-recipe-head { flex-direction: column; gap: 0.15rem; }
   .vibe-recipe-tag { margin-left: 0; }
   .vibe-recipe-stack { display: none; }
-  .vibe-recipe-count { display: block; }
-  .vibe-slider { grid-template-columns: 7.6rem minmax(0, 1fr) 2.8rem; gap: 0.6rem; }
-  .vibe-slider-label { font-size: 0.6rem; }
 }
-
-/* Sliders: a dashed track that fills solid up to the value, and a square keycap for a thumb. */
-.vibe-slider { display: grid; grid-template-columns: 9rem minmax(0, 1fr) 3.2rem; align-items: center; gap: 0.9rem; padding: 0.45rem 0; }
-.vibe-slider-label {
-  justify-self: start;
-  padding: 0.15rem 0.4rem;
-  font-size: 0.68rem;
-  font-weight: 600;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  color: rgba(var(--text-color-rgb), 0.85);
-  border: 1px dashed rgba(var(--dynamic-dominant-color-rgb), 0.5);
-}
-.vibe-slider-value { font-size: 0.75rem; font-weight: 600; text-align: right; font-variant-numeric: tabular-nums; color: var(--dynamic-dominant-color); }
-.vibe-slider input {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 100%;
-  height: 1.3rem;
-  margin: 0;
-  background: transparent;
-  cursor: pointer;
-}
-.vibe-slider input::-webkit-slider-runnable-track {
-  height: 1.3rem;
-  background:
-    linear-gradient(var(--dynamic-dominant-color), var(--dynamic-dominant-color)) 0 50% / var(--fill, 50%) 2px no-repeat,
-    repeating-linear-gradient(90deg, rgba(var(--dynamic-dominant-color-rgb), 0.55) 0 4px, transparent 4px 8px) 0 50% / 100% 1px no-repeat;
-}
-.vibe-slider input::-moz-range-track {
-  height: 1.3rem;
-  background:
-    linear-gradient(var(--dynamic-dominant-color), var(--dynamic-dominant-color)) 0 50% / var(--fill, 50%) 2px no-repeat,
-    repeating-linear-gradient(90deg, rgba(var(--dynamic-dominant-color-rgb), 0.55) 0 4px, transparent 4px 8px) 0 50% / 100% 1px no-repeat;
-}
-.vibe-slider input::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  box-sizing: border-box;
-  width: 0.95rem;
-  height: 1.15rem;
-  margin-top: 0.075rem;
-  background: rgba(var(--bit-dark-color-rgb), 1);
-  border: 1px solid var(--dynamic-dominant-color);
-  border-bottom: 3px solid color-mix(in srgb, var(--dynamic-dominant-color) 45%, #000);
-  transition: background 0.2s ease, transform 0.2s ease;
-}
-.vibe-slider input::-moz-range-thumb {
-  box-sizing: border-box;
-  width: 0.95rem;
-  height: 1.15rem;
-  background: rgba(var(--bit-dark-color-rgb), 1);
-  border: 1px solid var(--dynamic-dominant-color);
-  border-bottom: 3px solid color-mix(in srgb, var(--dynamic-dominant-color) 45%, #000);
-  transition: background 0.2s ease, transform 0.2s ease;
-}
-.vibe-slider input:hover::-webkit-slider-thumb { background: rgba(var(--dynamic-dominant-color-rgb), 0.35); }
-.vibe-slider input:hover::-moz-range-thumb { background: rgba(var(--dynamic-dominant-color-rgb), 0.35); }
-/* held or focused, the thumb is a pressed key */
-.vibe-slider input:is(:active, :focus-visible)::-webkit-slider-thumb { background: var(--dynamic-dominant-color); border-bottom-width: 1px; transform: translateY(1px); }
-.vibe-slider input:is(:active, :focus-visible)::-moz-range-thumb { background: var(--dynamic-dominant-color); border-bottom-width: 1px; transform: translateY(1px); }
-.vibe-slider:focus-within .vibe-slider-label { border-style: solid; color: var(--text-color); }
-.vibe-slider input:disabled { cursor: not-allowed; opacity: 0.4; }
-.vibe-reset { margin-left: auto; padding: 0.15rem 0.5rem 0.1rem; font-size: 0.65rem; }
 
 /* Paste: the caret is the only focus mark. */
 .vibe-paste {
@@ -215,7 +155,7 @@ summary.vibe-sec-head:hover .vibe-sec-title { color: var(--dynamic-dominant-colo
 .vibe-paste::placeholder { color: var(--primary-color); }
 .vibe-paste:disabled { border-style: dashed; opacity: 0.45; cursor: not-allowed; }
 .vibe-paste-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem; margin-top: 0.7rem; }
-.vibe-paste-actions .vibe-sec-meta { margin: 0 0 0 auto; }
+.vibe-paste-keys { margin-left: auto; display: inline-flex; gap: 0.25rem; }
 .vibe-result-list { list-style: none; margin: 0.7rem 0 0; padding: 0; display: grid; gap: 0.3rem; max-height: 11rem; overflow: auto; font-family: var(--font-mono); font-size: 0.72rem; line-height: 1.45; overflow-wrap: anywhere; }
 .vibe-result-word { display: inline-block; padding: 0 0.3rem; margin-right: 0.2rem; font-family: var(--font-neon); font-size: 0.6rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; border: 1px solid currentColor; }
 .is-error .vibe-result-word { color: var(--status-ram-color); }
@@ -224,7 +164,7 @@ summary.vibe-sec-head:hover .vibe-sec-title { color: var(--dynamic-dominant-colo
 
 /* Foot: what is on, the measured frame rate, the motion key, and v3's switch. */
 .vibe-fps { font-family: var(--font-neon); font-size: 0.7rem; font-weight: 600; letter-spacing: 1px; color: var(--dynamic-dominant-color); white-space: nowrap; font-variant-numeric: tabular-nums; }
-.vibe-current b { overflow-wrap: anywhere; }
+.vibe-current { flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
 /* Palette swatches and the ON/OFF switch, as reviewed. */
 .vibe-current { font-family: var(--font-neon); font-size: 0.65rem; font-weight: 600; letter-spacing: 1px; text-transform: lowercase; color: var(--primary-color); }
@@ -295,7 +235,7 @@ summary.vibe-sec-head:hover .vibe-sec-title { color: var(--dynamic-dominant-colo
 .vibe-plus { position: absolute; inset: 0; display: grid; place-items: center; font-family: var(--font-neon); font-weight: 800; color: rgba(255, 255, 255, 0.85); text-shadow: 0 0 4px #000; pointer-events: none; }
 
 .vibe-foot-label { font-family: var(--font-neon); font-size: 0.75rem; color: rgba(var(--text-color-rgb), 0.7); margin-right: auto; }
-.vibe-foot-label kbd { margin-right: 0.3rem; }
+@media (max-width: 600px) { .vibe-current, .vibe-paste-keys { display: none; } .overlay-foot:has(.vibe-fps) { padding: 0.5rem 0.9rem; gap: 0.5rem; } .vibe-fps { margin-right: auto; } }
 
 /* v3's ON/OFF switch: the strokes redraw the letters between OFF and ON. */
 .switch { display: flex; align-items: center; -webkit-tap-highlight-color: transparent; cursor: pointer; }
@@ -330,7 +270,7 @@ summary.vibe-sec-head:hover .vibe-sec-title { color: var(--dynamic-dominant-colo
   transition: border-color 0.4s cubic-bezier(0.65, 0, 0.35, 1), transform 0.4s cubic-bezier(0.68, -0.6, 0.32, 1.6);
 }
 .switch__letters, .switch__letter { transition: transform 0.4s cubic-bezier(0.68, -0.6, 0.32, 1.6); }
-.switch__letters { margin-left: 0.05em; overflow: visible; pointer-events: none; width: 1.5em; height: 1.45em; }
+.switch__letters { margin-left: 0.2em; overflow: visible; pointer-events: none; width: 1.5em; height: 1.45em; }
 .switch__letter:last-child { transform: translateX(14px); }
 .switch__letter-stroke {
   stroke: rgba(var(--text-color-rgb), 0.5);
