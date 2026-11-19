@@ -183,6 +183,7 @@ function build(): void {
   openOverlay({
     id: "vibe",
     title: "Moods",
+    live: true,
     icon: "#ti-flow-switch",
     build(body) {
       const book: { value: RecipeBook | null } = { value: null };

@@ -8,7 +8,7 @@ import { load, reducedMotion, save, emit } from "../lib/store.js";
 import { DEFAULT_PALETTE, findPalette, mixColours, type Colours, type Palette } from "./palettes.js";
 
 const PERIOD_MS = 120_000; // one full A to B to A cycle
-const CSS_STEP_MS = 100;
+const CSS_STEP_MS = 1000; // the theme colours move this often; each step restyles and repaints the whole page, so not every frame
 const SCROLL_REST_MS = 160;
 
 type Listener = (c: Colours, t: number) => void;

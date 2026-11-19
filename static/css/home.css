@@ -549,5 +549,5 @@ body.bg-off .ab-phase-spin, body.bg-off .ab-phase-spin::before { animation: none
 .ab-tl-meta { font-family: var(--font-mono); font-size: 0.68rem; line-height: 1.5; color: rgba(var(--text-color-rgb), 0.55); font-variant-numeric: tabular-nums; }
 .ab-tl-meta .ab-add { color: var(--dynamic-dominant-color); }
 
-@media (max-width: 760px) { .ab-engines { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 760px) { .ab-engines { grid-template-columns: minmax(0, 1fr); row-gap: 1.5rem; } }
 @media (max-width: 600px) { .ab-engine { padding-left: 1rem; padding-right: 1rem; } }

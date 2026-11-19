@@ -8,9 +8,11 @@ export type OverlaySpec = {
   build(body: HTMLElement, close: () => void): void | (() => void);
   foot?(foot: HTMLElement, close: () => void): void;
   wide?: boolean;
+  /** the panel previews the wallpaper (Moods), so it keeps drawing behind this one */
+  live?: boolean;
 };
 
-type Open = { id: string; el: HTMLElement; close: () => void };
+type Open = { id: string; el: HTMLElement; close: () => void; live: boolean };
 const stack: Open[] = [];
 
 // What Tab can reach inside an overlay, in order.
@@ -60,6 +62,12 @@ function trap(): void {
     if (modal && !modal.closest(".overlay")) return;
     (top.el.querySelector<HTMLElement>(".overlay-card") ?? top.el).focus({ preventScroll: true });
   });
+}
+
+// The wallpaper and the header game hold still while any overlay is open: the card's backdrop blur would otherwise be
+// worked out again for every frame they draw, and that is what made panels slow to open on phones and in Firefox.
+function announce(): void {
+  dispatchEvent(new CustomEvent("overlays", { detail: stack.filter((o) => !o.live).length }));
 }
 
 export function isOpen(id: string): boolean {
@@ -113,6 +121,7 @@ export function openOverlay(spec: OverlaySpec): void {
     if (i >= 0) stack.splice(i, 1);
     if (typeof teardown === "function") teardown();
     overlay.remove();
+    announce();
     returnFocus?.focus?.({ preventScroll: true });
   };
   esc.addEventListener("click", close);
@@ -129,7 +138,8 @@ export function openOverlay(spec: OverlaySpec): void {
   }
   overlay.append(card);
   document.body.append(overlay);
-  stack.push({ id: spec.id, el: overlay, close });
+  stack.push({ id: spec.id, el: overlay, close, live: !!spec.live });
+  announce();
   trap();
   card.focus({ preventScroll: true });
 }

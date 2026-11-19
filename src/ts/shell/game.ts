@@ -183,6 +183,16 @@ function restart(): void {
   );
 }
 
+// Paused under an open overlay (see overlay.ts), running again when the last one closes, if home is still showing it.
+addEventListener("overlays", (e) => {
+  const inst = current;
+  if (!inst || !host) return;
+  const open = (e as CustomEvent<number>).detail > 0;
+  void inst.module.then((m) => {
+    if (host && current === inst) m.set_paused(open);
+  }, () => {});
+});
+
 export function loadGame(): Promise<GameModule> {
   if (!current) {
     const inst = (current = instantiate());

@@ -42,6 +42,11 @@ let renderer: Renderer | null = null;
 let tools: RecipeTools | null = null;
 let engine: Substrate | null = null;
 let canvas: HTMLCanvasElement | null = null;
+let held = false; // an overlay is open: the last frame stays up, nothing new is drawn
+addEventListener("overlays", (e) => {
+  held = (e as CustomEvent<number>).detail > 0;
+  sync();
+});
 let looping = false; // the renderer's frame loop is going (animated and on)
 let on = load("wallpaper", true);
 let animate = load("animate", true);
@@ -88,7 +93,7 @@ const options = (): Record<string, number> => ({ ...NEUTRAL, fps: animating() ? 
 // Brings the renderer in line with on/off and animated/static. A static frame is drawn by setOptions with fps 0.
 function sync(): void {
   if (!renderer) return;
-  if (!on) {
+  if (!on || held) {
     renderer.stop();
     looping = false;
   } else if (animating()) {

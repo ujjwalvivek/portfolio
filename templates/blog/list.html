@@ -36,7 +36,7 @@
       </div>
       <div class="bl-body">
         {%- if post.extra.thumbnail %}
-        <span class="bl-thumb"><img src="{{ post.extra.thumbnail | safe }}" alt="" width="152" height="116" loading="lazy" decoding="async"></span>
+        <span class="bl-thumb"><span class="bl-ring" aria-hidden="true"></span><img src="{{ post.extra.thumbnail | safe }}" alt="" width="152" height="116" loading="lazy" decoding="async"></span>
         {%- endif %}
         <div class="bl-text">
           <p class="bl-meta">
