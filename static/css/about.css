@@ -23,8 +23,8 @@
 }
 
 /* Corner brackets: top-left and bottom-right on the box, the other two on an .ab-corners span inside it. */
-.ab-intro { position: relative; }
-.ab-intro::before, .ab-intro::after,
+.ab-intro, .ab-langs { position: relative; }
+.ab-intro::before, .ab-intro::after, .ab-langs::before, .ab-langs::after,
 .ab-corners::before, .ab-corners::after {
   content: "";
   position: absolute;
@@ -34,8 +34,8 @@
   pointer-events: none;
   z-index: 3;
 }
-.ab-intro::before { top: 0; left: 0; border-width: 2px 0 0 2px; }
-.ab-intro::after { right: 0; bottom: 0; border-width: 0 2px 2px 0; }
+.ab-intro::before, .ab-langs::before { top: 0; left: 0; border-width: 2px 0 0 2px; }
+.ab-intro::after, .ab-langs::after { right: 0; bottom: 0; border-width: 0 2px 2px 0; }
 .ab-corners { position: absolute; inset: 0; pointer-events: none; }
 .ab-corners::before { top: 0; right: 0; border-width: 2px 2px 0 0; }
 .ab-corners::after { left: 0; bottom: 0; border-width: 0 0 2px 2px; }
@@ -171,6 +171,57 @@
 body.bg-off .ab-soldier { animation-play-state: paused; }
 @media (prefers-reduced-motion: reduce) { .ab-soldier { display: none; } }
 @media (max-width: 800px) { .ab-trooper { display: none; } }
+
+/* ---- languages bar (v3 LangsBar) ------------------------------------------------------------------------------ */
+.ab-langs {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1rem 1.5rem;
+  background: rgba(var(--background-color-rgb), 0.5);
+  backdrop-filter: blur(32px) saturate(180%);
+  -webkit-backdrop-filter: blur(32px) saturate(180%);
+}
+.ab-langs-title { margin: 0; font-size: 0.75rem; font-weight: 400; letter-spacing: 2px; text-transform: uppercase; color: rgba(var(--text-color-rgb), 0.65); }
+/* the tide: a canvas of square pixels, one band of columns per language (about-langs.js) */
+.ab-langs-bar { position: relative; height: 30px; margin-top: 0.35rem; }
+.ab-tide { display: block; width: 100%; height: 100%; image-rendering: pixelated; }
+/* seven shades of the accent, lightest for the biggest share (v3's generateShades, as relative colours) */
+/* shade index by position (no inline style attributes, for the CSP); the tooltip swatch gets --s from TS */
+.ab-lang:nth-child(1) { --s: 0; }
+.ab-lang:nth-child(2) { --s: 1; }
+.ab-lang:nth-child(3) { --s: 2; }
+.ab-lang:nth-child(4) { --s: 3; }
+.ab-lang:nth-child(5) { --s: 4; }
+.ab-lang:nth-child(6) { --s: 5; }
+.ab-lang:nth-child(7) { --s: 6; }
+.ab-swatch { background: hsl(from var(--dynamic-dominant-color) h s calc(80% - var(--s) * 10%)); }
+.ab-langs.is-live .ab-tide { cursor: crosshair; }
+.ab-langs-tip {
+  position: absolute;
+  bottom: calc(100% + 0.5rem);
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.15rem 0.5rem;
+  font-size: 0.68rem;
+  white-space: nowrap;
+  pointer-events: none;
+  background: rgba(var(--bit-dark-color-rgb), 0.95);
+  border: 1px solid rgba(var(--dynamic-dominant-color-rgb), 0.5);
+  z-index: 4;
+}
+.ab-langs-tip b { color: var(--text-color); }
+.ab-langs-tip span { color: rgba(var(--text-color-rgb), 0.6); }
+.ab-langs-legend { list-style: none; margin: 0; padding: 0.6rem 0 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(7.5rem, 1fr)); gap: 0.4rem 0.75rem; border-top: 1px dashed rgba(var(--dynamic-dominant-color-rgb), 0.3); }
+.ab-lang { display: flex; align-items: baseline; gap: 0.45rem; min-width: 0; font-size: 0.74rem; line-height: 1.5; opacity: 0.75; transition: opacity 0.15s ease; }
+.ab-lang.is-active { opacity: 1; }
+.ab-swatch { align-self: center; width: 10px; height: 10px; flex-shrink: 0; border-bottom: 2px solid rgba(0, 0, 0, 0.45); box-sizing: border-box; }
+.ab-lang-name { font-weight: 700; letter-spacing: 0.5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ab-lang-pct { font-size: inherit; line-height: inherit; font-weight: 700; color: var(--dynamic-dominant-color); font-variant-numeric: tabular-nums; }
+
+@media (min-width: 900px) { .ab-langs-legend { display: flex; justify-content: space-between; gap: 0.75rem; } .ab-lang-name { overflow: visible; } }
 
 /* ---- recent projects (v3 RecentProjects) ---------------------------------------------------------------------- */
 .ab-rp-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; }
@@ -396,7 +447,7 @@ body.bg-off .ab-egg-key { animation: none; }
 @media (max-width: 600px) {
   .ab { gap: 1.25rem; }
   .ab-seg-path, .ab-seg-ver { display: none; }
-  .ab-intro { padding-left: 1rem; padding-right: 1rem; }
+  .ab-intro, .ab-langs { padding-left: 1rem; padding-right: 1rem; }
   .overlay:has(.ab-resume-card) { padding: 0; }
   .overlay-card.ab-resume-card { height: 100vh; height: 100dvh; }
   .ab-resume-card .overlay-head { padding: 0.5rem 0.75rem; gap: 0.5rem; }
