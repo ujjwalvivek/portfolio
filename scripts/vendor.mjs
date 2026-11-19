@@ -8,9 +8,9 @@ import { dirname, join } from "node:path";
 const PACKAGES = [
   {
     name: "@ujjwalvivek/substrate",
-    version: "2.0.2",
-    integrity: "sha512-59V5LK0zSitLkHUu26fHosZYJVgS7lTyYM6EKcGFZbeuWmrONLMfCSq0L90qPej9xZNJKEfsYU5YZNoou1O1jg==",
-    files: { "package/dist/index.js": "substrate/index.js" },
+    version: "2.1.0",
+    integrity: "sha512-+IlqQ2yZdDRfU9c2Ph1RVUiq1C18P9szFb/pPlUV8wd5xjvrrcUUN69ribBqH8ylC/p5wEtR3BYzCOcQwOqx8Q==",
+    files: { "package/dist/index.js": "substrate/index.js", "package/dist/recipes.js": "substrate/recipes.js" },
   },
   // PDF viewer (D-004). The modern ESM build only: no cmaps, standard fonts or wasm decoders, since the resume PDFs
   // embed their fonts and carry no JPX/JBIG2 images. pdf.js then falls back to built-in handling for anything else.
@@ -90,7 +90,10 @@ for (const pkg of PACKAGES) {
     if (!data) throw new Error(`${pkg.name}@${pkg.version}: ${from} not in the tarball`);
     // a file is copied as it is, or, given { to, wrap }, rewritten by wrap(text) on the way
     const spec = typeof to === "string" ? { to } : to;
-    const dest = join("static/vendor", spec.to);
+    // The folder carries the version (substrate@2.1.0/index.js): /vendor/* is cached for a year as immutable, so a new
+    // version must live at a new URL or returning visitors would keep the old file.
+    const [dir, ...rest] = spec.to.split("/");
+    const dest = join("static/vendor", `${dir}@${pkg.version}${pkg.rev ? `-${pkg.rev}` : ""}`, ...rest);
     mkdirSync(dirname(dest), { recursive: true });
     writeFileSync(dest, spec.wrap ? spec.wrap(data.toString("utf8")) : data);
   }

@@ -11,9 +11,9 @@ import { load, on as onShell, reducedMotion, save, emit } from "../lib/store.js"
 import { currentColours, onColours } from "./drift.js";
 import type { Colours } from "./palettes.js";
 import type { Recipe, RecipeTools } from "./recipe.js";
-import { recipeBook, recipeTools } from "./recipes-local.js";
+import { recipeBook, recipeTools } from "./recipes.js";
 
-const SUBSTRATE = "/vendor/substrate/index.js";
+const SUBSTRATE = "/vendor/substrate@2.1.0/index.js";
 const FPS = 30;
 
 type Renderer = {
@@ -31,7 +31,7 @@ type Substrate = {
 // Substrate's own defaults: at these values every layer draws exactly as its recipe says (opacity 0.8 is neutral).
 const NEUTRAL = { speed: 1, density: 1, opacity: 0.8 };
 export const PASTED = "pasted";
-// The named recipes the site offers, in order. Substrate ships more (signal); only these are shown or loaded.
+// The named recipes the site offers, in order; anything else substrate ships is not shown or loaded.
 export const RECIPES: readonly string[] = ["root", "nebula"];
 
 // waiting: not started or still loading; running: frames are painting; unavailable: the CSS backdrop is the wallpaper.

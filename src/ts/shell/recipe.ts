@@ -1,5 +1,5 @@
 // Recipe format v1 (ADR section 11.1), the types only. The data, the validator and recipeToScene come from substrate
-// 2.1.0; until that is published and vendored (stream S1) they come from the local mirror in recipes-local.ts.
+// 2.1.0, vendored; recipes.ts loads them.
 
 export type RecipeLayer = {
   name: string;

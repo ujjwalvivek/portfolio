@@ -1,5 +1,5 @@
 // PDF viewer on pdf.js (ADR D-004), the v4 rebuild of v3's @react-pdf-viewer overlays (resume, project documents).
-// pdf.js is vendored at /vendor/pdfjs (D-015) and imported on the first mount only. The caller owns the overlay chrome
+// pdf.js is vendored at /vendor/pdfjs@<version> (D-015) and imported on the first mount only. The caller owns the overlay chrome
 // and the close button; mountPdf fills `host` with a toolbar, an optional thumbnail rail and the pages, and returns a
 // cleanup that cancels every render, destroys the document and its worker, and drops observers and listeners.
 //
@@ -12,8 +12,8 @@
 import type { PdfJs, PDFDocumentProxy, PDFDocumentLoadingTask, PDFPageProxy, RenderTask, TextLayer, RefProxy } from "../types/pdfjs.js";
 import { loadFeature } from "../lib/lazy.js";
 
-const PDFJS = "/vendor/pdfjs/pdf.min.mjs";
-const WORKER = "/vendor/pdfjs/pdf.worker.min.mjs";
+const PDFJS = "/vendor/pdfjs@6.5.438/pdf.min.mjs";
+const WORKER = "/vendor/pdfjs@6.5.438/pdf.worker.min.mjs";
 const CSS = "/css/features/pdf-viewer.css";
 
 const CSS_UNITS = 96 / 72; // pdf.js convention: 100% is the page at its printed size on a 96 dpi screen

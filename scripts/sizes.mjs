@@ -44,7 +44,7 @@ for (const page of pages(ROOT)) {
   const kb = (n) => (n / 1024).toFixed(1).padStart(5) + " KB";
   console.log(`${over ? "OVER" : "ok  "} ${page.slice(ROOT.length).padEnd(44)} html ${kb(htmlBytes)}  css ${kb(cssBytes)}  js ${kb(jsBytes)} (${own.length} files)`);
 }
-for (const f of ["vendor/substrate/index.js", "game/game_bg.wasm"]) {
+for (const f of ["vendor/substrate@2.1.0/index.js", "game/game_bg.wasm"]) {
   if (existsSync(join(ROOT, f))) console.log(`     /${f.padEnd(43)} ${(gz(join(ROOT, f)) / 1024).toFixed(1)} KB gzip, loaded after first paint`);
 }
 process.exit(failed ? 1 : 0);

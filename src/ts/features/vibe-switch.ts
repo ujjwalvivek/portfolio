@@ -12,7 +12,7 @@ import { currentPalette, setPalette } from "../shell/drift.js";
 import { closeOverlay, isOpen, openOverlay } from "../shell/overlay.js";
 import { DEFAULT_CUSTOM, PALETTES, customPalette, type Palette } from "../shell/palettes.js";
 import type { Recipe, RecipeBook } from "../shell/recipe.js";
-import { recipeBook, recipeTools } from "../shell/recipes-local.js";
+import { recipeBook, recipeTools } from "../shell/recipes.js";
 import {
   PASTED,
   RECIPES,

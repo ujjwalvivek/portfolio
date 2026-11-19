@@ -9,7 +9,7 @@
 
 import type { Prism, Token, TokenStream, PrismCore, PrismGrammar } from "../types/prism.js";
 
-const BASE = "/vendor/prism/";
+const BASE = "/vendor/prism@1.30.0-esm-1/";
 
 // The grammars that are vendored, each with the grammars it needs loaded first (Prism's components.json "require").
 const NEEDS: Record<string, string[]> = {

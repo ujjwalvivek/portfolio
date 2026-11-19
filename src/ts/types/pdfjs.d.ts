@@ -1,4 +1,4 @@
-// The part of pdf.js (pdfjs-dist 6.5.438, vendored at /vendor/pdfjs/pdf.min.mjs by scripts/vendor.mjs) that the PDF
+// The part of pdf.js (pdfjs-dist 6.5.438, vendored at /vendor/pdfjs@6.5.438/pdf.min.mjs by scripts/vendor.mjs) that the PDF
 // viewer uses. Hand-written from the package's own types, trimmed to what src/ts/features/pdf-viewer.ts calls.
 
 export interface PageViewport {
