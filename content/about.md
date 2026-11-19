@@ -1,5 +1,5 @@
 +++
 title = "About"
-template = "page.html"
+description = "hi there! i'm Vivek. i think in systems & experiment relentlessly."
+template = "about.html"
 +++
-The about page lands in M5.

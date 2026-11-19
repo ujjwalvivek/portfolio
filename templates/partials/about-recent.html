@@ -1,0 +1,50 @@
+{#- v3 RecentProjects: the top two dev projects and the top two PM projects from data/projects.toml, in its order.
+    v3 meant this (topDevProjects / topPmProjects) but read both pairs from the PM list, so it showed four PM projects.
+    Buttons follow v3's ButtonGroup, as on /projects: the blog first, then the first of case study, docs, design, code,
+    web; at most two. Case study and docs open in the same overlay as on /projects. -#}
+{%- set data = load_data(path="data/projects.toml") -%}{%- set all = data.projects -%}
+{%- set_global picked = "," -%}
+{%- set_global n_dev = 0 -%}{%- set_global n_pm = 0 -%}
+{%- for p in all -%}
+  {%- if p.id is starting_with(pat="dev-") and n_dev < 2 -%}{%- set_global picked = picked ~ p.id ~ "," -%}{%- set_global n_dev = n_dev + 1 -%}{%- endif -%}
+  {%- if p.id is starting_with(pat="pm-") and n_pm < 2 -%}{%- set_global picked = picked ~ p.id ~ "," -%}{%- set_global n_pm = n_pm + 1 -%}{%- endif -%}
+{%- endfor -%}
+{%- set projects_page = get_page(path="projects.md") -%}
+<section class="ab-recent" aria-label="Recent projects">
+  <ul class="ab-rp-list">
+  {%- for p in all %}{% if picked is containing(pat="," ~ p.id ~ ",") %}
+    {%- set group = "pm" %}{% if p.id is starting_with(pat="dev-") %}{% set group = "dev" %}{% endif %}
+    {%- set links = p.contentLinks | default(value=false) %}
+    <li class="ab-rp">
+      <span class="ab-rp-type">{{ group }}</span>
+      <a class="ab-rp-title" href="{{ projects_page.path | safe }}#{{ p.id }}" title="{{ p.title }}">{{ p.title | truncate(length=50, end="...") }}</a>
+      {%- set blog = false %}{% if links and links.blogPost is defined %}{% set blog = links.blogPost %}{% endif %}
+      {%- set limit = 2 %}{% if blog %}{% set limit = 1 %}{% endif %}
+      {%- set kinds = ["notionEmbed", "pdfDocument", "figmaDesign", "githubRepo", "websiteLink"] %}
+      {%- set_global used = 0 %}
+      <div class="ab-rp-actions">
+        {%- if blog %}
+        {%- set post = get_page(path="blog/" ~ blog | replace(from="/blog/", to="")) %}
+        <a class="ab-rp-btn" href="{{ post.path | safe }}"><svg class="icon" aria-hidden="true"><use href="/icons.svg#fa-newspaper"/></svg>Blog</a>
+        {%- endif %}
+        {%- for k in kinds %}{% if links and links[k] is defined and used < limit %}{% set_global used = used + 1 %}
+        {%- if k == "notionEmbed" %}
+        <a class="ab-rp-btn" href="{{ links.notionEmbed | safe }}" target="_blank" rel="noopener" data-ab-open="notion" data-ab-title="{{ p.title }}"><svg class="icon" aria-hidden="true"><use href="/icons.svg#pi-notion-logo-fill"/></svg>Case Study</a>
+        {%- elif k == "pdfDocument" %}
+        <a class="ab-rp-btn" href="{{ links.pdfDocument | safe }}" target="_blank" rel="noopener" data-ab-open="pdf" data-ab-title="{{ p.title }}"><svg class="icon" aria-hidden="true"><use href="/icons.svg#pi-file-pdf-fill"/></svg>Docs</a>
+        {%- elif k == "figmaDesign" %}
+        <a class="ab-rp-btn" href="{{ links.figmaDesign | safe }}" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="/icons.svg#io-logo-figma"/></svg>Design</a>
+        {%- elif k == "githubRepo" %}
+        <a class="ab-rp-btn" href="{{ links.githubRepo | safe }}" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="/icons.svg#tfi-github"/></svg>Code</a>
+        {%- elif k == "websiteLink" %}
+        <a class="ab-rp-btn" href="{{ links.websiteLink | safe }}" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="/icons.svg#fa-desktop"/></svg>Web</a>
+        {%- endif %}
+        {%- endif %}{% endfor %}
+        {%- if not blog and used == 0 %}
+        <span class="ab-rp-btn is-wip" aria-disabled="true"><svg class="icon" aria-hidden="true"><use href="/icons.svg#bs-hourglass-split"/></svg>WIP. Devlog Soon.</span>
+        {%- endif %}
+      </div>
+    </li>
+  {%- endif %}{% endfor %}
+  </ul>
+</section>
