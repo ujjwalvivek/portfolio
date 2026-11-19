@@ -1,0 +1,3 @@
+# GitHub language stats: build scripts and the standalone dino game are tooling, not the site's code.
+scripts/** linguist-vendored
+static/games/** linguist-vendored
