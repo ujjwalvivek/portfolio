@@ -1,20 +1,25 @@
-/* Crash screen (src/ts/features/crash.ts), v3's CrashOverlay restyled. Glass over the still-running wallpaper, with the
-   site's error colour where it means error: the outlined headline and the bug key. Keycaps replace v3's coloured dots;
-   v3's entrance (a springy rise), its blinking headline and the flickering lines are kept. Square corners (base.css). */
+/* Crash screen (src/ts/features/crash.ts), v3's CrashOverlay drawn as a browser tab that crashed: an opaque flat dark
+   page with no glass, no wallpaper and no glow. v3's traffic lights are kept as small squares (square corners, base.css)
+   in red, amber and green, which are status colours by design. The headline is solid in the error colour. v3's
+   blinking headline and flickering lines are kept. */
 
 html.is-crashed, html.is-crashed body { overflow: hidden; }
 
 .crash {
+  --crash-bg: #161616;
+  --crash-bar: #1f1f1f;
+  --crash-line: #2c2c2c;
+  --crash-red: #ff5f56;
+  --crash-amber: #ffbd2e;
+  --crash-green: #27c93f;
+  --crash-ink: 232, 232, 232; /* neutral, not the palette: a crashed tab has no theme */
   position: fixed;
   inset: 0;
   z-index: 100000;
   display: flex;
-  color: var(--text-color);
+  color: rgb(var(--crash-ink));
   font-family: var(--font-neon);
-  background: rgba(var(--background-color-rgb), 0.55);
-  backdrop-filter: blur(32px) saturate(180%);
-  -webkit-backdrop-filter: blur(32px) saturate(180%);
-  animation: crash-fade 0.25s ease-out;
+  background: var(--crash-bg);
 }
 .crash-window {
   flex: 1 1 auto;
@@ -22,162 +27,139 @@ html.is-crashed, html.is-crashed body { overflow: hidden; }
   flex-direction: column;
   min-height: 100dvh;
   overflow: hidden;
-  animation: crash-in 0.4s cubic-bezier(0.4, 1.6, 0.6, 1);
 }
 .crash-window:focus, .crash-window:focus-visible { outline: none; background: none; }
 
-/* ---- bar ---- */
+/* ---- bar: a plain tab strip ---- */
 .crash-bar {
-  position: relative;
-  z-index: 1;
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  min-height: 2.6rem;
-  padding: 0 1rem;
-  border-bottom: 1px dashed rgba(var(--status-ram-color-rgb), 0.9);
-  background: rgba(var(--status-ram-color-rgb), 0.12);
-  transition: background-color 0.3s;
+  min-height: 2.4rem;
+  padding: 0 0.75rem;
+  border-bottom: 1px solid var(--crash-line);
+  background: var(--crash-bar);
 }
-.crash-window:focus-within .crash-bar { background: rgba(var(--status-ram-color-rgb), 0.2); }
-.crash-keys { display: flex; gap: 0.4rem; }
-.crash-key {
-  height: 1.6rem;
-  padding: 0 0.55rem;
-  font: inherit;
-  font-size: 0.72rem;
-  letter-spacing: 1px;
-  text-transform: lowercase;
-  color: var(--text-color);
-  background: rgba(var(--dynamic-dominant-color-rgb), 0.14);
-  border: 1px solid rgba(var(--dynamic-dominant-color-rgb), 0.5);
-  border-bottom: 2px solid rgba(var(--dynamic-dominant-color-rgb), 0.85);
-  cursor: pointer;
-  transition: background 0.2s, border-color 0.2s, transform 0.15s;
-}
-.crash-key:hover { background: rgba(var(--dynamic-dominant-color-rgb), 0.3); border-color: var(--dynamic-dominant-color); }
-.crash-key:active { color: var(--background-color); background: var(--dynamic-dominant-color); border-color: var(--dynamic-dominant-color); border-bottom-width: 1px; transform: translateY(1px); }
-/* close is the one that will not work, so it wears the error colour */
-.crash-key.is-close { border-color: rgba(var(--status-ram-color-rgb), 1); border-bottom-color: var(--status-ram-color); background: rgba(var(--status-ram-color-rgb), 0.25); }
-.crash-key.is-close:hover { border-color: var(--status-ram-color); background: rgba(var(--status-ram-color-rgb), 0.45); }
-.crash-key.is-close:active { color: var(--background-color); background: var(--status-ram-color); }
-.crash-title {
-  margin-left: auto;
-  font-size: 1rem;
-  letter-spacing: -1px;
-  color: rgba(var(--text-color-rgb), 0.4);
-}
-.crash-bug {
+.crash-keys { display: flex; gap: 0.15rem; }
+/* the button is the hit area and wears the focus brackets; the square inside it is the light */
+.crash-light {
+  --focus-fill: transparent;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  height: 1.6rem;
-  padding: 0 0.5rem;
-  font-size: 1.15rem;
-  color: var(--background-color);
-  background: var(--status-ram-color);
-  border: 1px solid var(--status-ram-color);
-  border-bottom: 2px solid rgba(var(--status-ram-color-rgb), 1);
-  text-decoration: none;
-  transition: background 0.2s, color 0.2s;
+  width: 1.4rem;
+  height: 1.4rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
 }
-.crash-bug:hover { color: var(--text-color); background: rgba(var(--status-ram-color-rgb), 0.6); }
+.crash-light::before {
+  content: "";
+  width: 0.7rem;
+  height: 0.7rem;
+  background: var(--light);
+  transition: filter 0.15s, transform 0.1s;
+}
+.crash-light.is-red { --light: var(--crash-red); }
+.crash-light.is-amber { --light: var(--crash-amber); }
+.crash-light.is-green { --light: var(--crash-green); }
+.crash-light:hover::before { filter: brightness(1.2); }
+.crash-light:active::before { transform: scale(0.85); }
+.crash-title {
+  margin-left: auto;
+  font-size: 0.85rem;
+  color: rgba(var(--crash-ink), 0.5);
+}
+.crash-bug {
+  --focus-fill: transparent;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.8rem;
+  height: 1.6rem;
+  font-size: 1.05rem;
+  color: rgba(var(--crash-ink), 0.6);
+  border: 1px solid transparent;
+  text-decoration: none;
+  transition: color 0.2s, border-color 0.2s, background-color 0.2s;
+}
+.crash-bug:hover { color: var(--crash-red); border-color: var(--crash-red); background: rgba(255, 95, 86, 0.1); }
 
-/* ---- content ---- */
+/* ---- content: a left-aligned column, like a crashed tab's page ---- */
 .crash-content {
   position: relative;
   flex: 1 1 0;
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
+  width: min(100%, 72rem);
+  margin: 0 auto;
   padding: 0 2.5rem;
-  text-align: center;
+  box-sizing: border-box;
 }
 .crash-nope {
   position: absolute;
-  top: 0.6rem;
-  left: 50%;
-  transform: translateX(-50%);
-  padding: 0.4rem 1.2rem;
-  font-size: 0.9rem;
-  color: var(--text-color);
-  border: 1px solid var(--status-ram-color);
-  background: rgba(var(--status-ram-color-rgb), 0.35);
+  top: 1rem;
+  left: 2.5rem;
+  padding: 0.35rem 0.9rem;
+  font-size: 0.85rem;
+  color: rgb(var(--crash-ink));
+  border: 1px solid var(--crash-red);
+  background: #2a1716;
   pointer-events: none;
   white-space: nowrap;
 }
 .crash-nope.is-shaking { animation: crash-shake 0.35s ease-in-out; }
 .crash-main {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  margin-bottom: 0.2rem;
-  font-size: 8rem;
+  margin-bottom: 1rem;
+  font-size: clamp(2rem, 6vw, 6rem);
   font-weight: 800;
-  letter-spacing: -4px;
+  letter-spacing: -0.04em;
   line-height: 1.05;
-  color: rgba(var(--background-color-rgb), 0.85);
-  -webkit-text-stroke: 2px var(--status-ram-color);
-  paint-order: stroke fill;
+  color: var(--crash-red);
   word-break: break-word;
 }
 .crash-blink { animation: crash-blink 0.7s steps(1) infinite; }
-.crash-caret { animation: crash-blink 1.4s steps(1) infinite; color: var(--status-ram-color); -webkit-text-stroke: 0; }
-.crash-sub { margin-bottom: 4rem; font-size: 1.1rem; letter-spacing: -0.5px; opacity: 0.9; }
+.crash-caret { animation: crash-blink 1.4s steps(1) infinite; }
+.crash-sub { margin-bottom: 0.6rem; font-size: 1.05rem; opacity: 0.9; }
 .crash-reason {
-  margin: -3rem 0 2.5rem;
+  margin-bottom: 2.5rem;
   font-family: var(--font-krypton);
-  font-size: 0.7rem;
-  letter-spacing: 1px;
-  text-transform: lowercase;
-  color: rgba(var(--text-color-rgb), 0.55);
+  font-size: 0.75rem;
+  color: rgba(var(--crash-ink), 0.5);
 }
 .crash-dino {
-  max-width: 800px;
-  margin-bottom: 2rem;
-  font-size: 1rem;
-  letter-spacing: -0.5px;
-  color: color-mix(in oklab, var(--dynamic-dominant-color) 65%, var(--text-color));
+  max-width: 46rem;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: rgba(var(--crash-ink), 0.7);
 }
+.crash-sub + .crash-dino { margin-top: 2.5rem; }
 
 /* ---- foot ---- */
 .crash-foot {
   display: flex;
   justify-content: center;
-  min-height: 2.5rem;
-  padding: 0.7rem 1rem;
-  box-sizing: border-box;
-  border-top: 1px dashed rgba(var(--dynamic-dominant-color-rgb), 0.35);
-  background: rgba(var(--dynamic-dominant-color-rgb), 0.06);
+  padding: 0.6rem 1rem;
+  border-top: 1px solid var(--crash-line);
   pointer-events: none;
 }
-.crash-foot-text { font-size: 1.1rem; letter-spacing: -0.5px; color: var(--dynamic-dominant-color); opacity: 0.9; text-align: center; }
+.crash-foot-text { font-size: 0.75rem; color: rgba(var(--crash-ink), 0.5); text-align: center; }
 .crash-flicker { animation: crash-flicker 1.2s infinite alternate; }
 
-@keyframes crash-fade { from { opacity: 0; } }
-@keyframes crash-in { 0% { opacity: 0; transform: scale(0.95) translateY(30px); } 100% { opacity: 1; transform: none; } }
 @keyframes crash-blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
 @keyframes crash-flicker { 0% { opacity: 1; } 80% { opacity: 0.85; } 85% { opacity: 0.6; } 90% { opacity: 0.95; } 100% { opacity: 1; } }
-@keyframes crash-shake { 0%, 100% { transform: translateX(-50%); } 25% { transform: translateX(calc(-50% - 6px)); } 75% { transform: translateX(calc(-50% + 6px)); } }
+@keyframes crash-shake { 0%, 100% { transform: none; } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
 
-@media (max-width: 1500px) { .crash-main { font-size: 6rem; letter-spacing: -1px; } }
-@media (max-width: 1200px) { .crash-main { font-size: 5rem; } }
-@media (max-width: 1000px) { .crash-main { font-size: 4rem; } .crash-sub { font-size: 0.95rem; letter-spacing: -1px; } }
-@media (max-width: 800px) { .crash-main { font-size: 2.9rem; } .crash-dino { font-size: 0.8rem; } }
 @media (max-width: 600px) {
   .crash-window { min-height: 100svh; overflow-y: auto; }
-  .crash-bar { padding: 0 0.6rem; gap: 0.5rem; }
-  .crash-key { padding: 0 0.4rem; font-size: 0.68rem; }
-  .crash-title { font-size: 0.85rem; }
-  .crash-content { padding: 1.2rem 0.7rem 1rem; gap: 0.5rem; }
-  .crash-main { font-size: 2rem; -webkit-text-stroke-width: 1px; }
-  .crash-sub { font-size: 0.7rem; letter-spacing: -1px; margin-bottom: 2rem; }
-  .crash-reason { margin: -1.5rem 0 1.5rem; }
-  .crash-foot-text { font-size: 0.7rem; letter-spacing: -1px; }
-  .crash-foot { padding: 0.5rem 0.7rem; }
+  .crash-content { padding: 1.5rem 1rem; }
+  .crash-nope { left: 1rem; }
+  .crash-sub { font-size: 0.85rem; }
+  .crash-dino { font-size: 0.8rem; }
+  .crash-foot-text { font-size: 0.68rem; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .crash, .crash-window, .crash-nope.is-shaking { animation: none; }
-  .crash-blink, .crash-caret, .crash-flicker { animation: none; }
+  .crash-nope.is-shaking, .crash-blink, .crash-caret, .crash-flicker { animation: none; }
 }

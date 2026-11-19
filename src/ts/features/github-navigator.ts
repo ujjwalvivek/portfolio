@@ -1,30 +1,28 @@
-// The GitHub navigator (v3's "GitHub Terminal Explorer", ADR ledger M6): a shell over one of Vivek's public repos with
-// ls, cd, pwd, tree, find, cat and code, a read-only editor with syntax highlighting, and a boot screen of the repo's
-// recent commits, stats and languages. open() is what the command palette calls; it is idempotent.
+// The GitHub navigator (v3's "GitHub Terminal Explorer", ADR ledger M6): a shell over github.com/ujjwalvivek/portfolio
+// with ls, cd, pwd, tree, find, cat and code, a read-only editor with syntax highlighting, and a boot screen of the
+// repo's recent commits, stats and languages. open() is what the command palette calls; it is idempotent.
 //
 // Kept from v3: the layout (title bar with the copyable remote URL, Shell / Editor tabs, transcript of framed panels,
 // live prompt uv@repo:~/path $, braille spinner while a command runs), every command and its output panel, the
 // 50-line cat preview, the 1 MB editor limit, history on the arrows, Ctrl+L, Ctrl+S download, copy buffer, VS Code
 // for the web, the empty-transcript line. Esc closes the editor, then the navigator (D-023; v3 used Ctrl+Q).
 //
-// Better than v3: it works again (v3's contents proxy now needs a token, see navigator-data.ts), the whole file list
-// comes in one request so tree and find are instant, rows in listings and the explorer open what they show, an
-// explorer side bar with the open file marked, Tab completion, Ctrl+C cancels, `repo` switches to any of Vivek's public
-// repos, images show as images, PDFs open in the site's PDF viewer, binaries say so instead of printing noise, the
-// boot screen shows what loaded even when one part fails, downloads show real byte progress, and GitHub's rate limit
-// is shown and explained when it runs out (D-024: every spinner and bar is a request in flight).
+// Changed from v3: it works again (v3's contents proxy now needs a token; see navigator-data.ts for echopoint first,
+// GitHub second), the whole file list comes in one request so tree and find are instant, rows open what they show,
+// an explorer side bar, Tab completion, Ctrl+C cancels, images show as images, PDFs open in the site's PDF viewer,
+// binaries say so, the boot screen shows what loaded even when one part fails, downloads show real byte progress,
+// and GitHub's rate limit is shown when the GitHub path is in use (D-024: every spinner and bar is a request).
 
 import { openOverlay, isOpen } from "../shell/overlay.js";
 import { loadFeature } from "../lib/lazy.js";
 import {
-  OWNER, boot, loadTree, fileBytes, rawUrl, publicRepos, repoFromGitHub, currentQuota, FetchError,
-  type Boot, type Entry, type Tree, type Repo,
+  OWNER, REPO, boot, loadTree, fileBytes, rawUrl, currentQuota, FetchError,
+  type Boot, type Entry, type Tree,
 } from "./navigator-data.js";
 import { languageFor, ready, highlight, plain, type Language } from "./navigator-highlight.js";
 
 const ID = "github-navigator";
 const CSS = "/css/features/github-navigator.css";
-const DEFAULT_REPO = "portfolio";
 const MAX_CAT_LINES = 50;
 const MAX_EDITOR_BYTES = 1024 * 1024;
 const MAX_HIGHLIGHT_BYTES = 256 * 1024; // above this the buffer shows as plain text, so a big file never stalls the page
@@ -42,7 +40,7 @@ const BINARY = new Set([
 const HELP: { title: string; rows: [string, string][] }[] = [
   { title: "navigation", rows: [["ls [path]", "List directory contents"], ["cd [dir]", "Enter a directory"], ["pwd", "Show current repo path"], ["tree [n]", "Render directory tree"]] },
   { title: "files", rows: [["cat [file]", "Preview file contents"], ["code [file]", "Open file buffer"], ["find [name]", "Search files and folders"]] },
-  { title: "session", rows: [["repo [name]", "List or switch repositories"], ["help", "Show command reference"], ["clear", "Clear transcript"], ["exit", "Close the navigator"]] },
+  { title: "session", rows: [["help", "Show command reference"], ["clear", "Clear transcript"], ["exit", "Close the navigator"]] },
 ];
 const KEYS_SHELL: [string, string][] = [["Tab", "complete"], ["↑ ↓", "history"], ["Ctrl+L", "clear"], ["Ctrl+C", "cancel"]];
 const KEYS_EDITOR: [string, string][] = [["Ctrl+S", "Download buffer"], ["Esc", "Close buffer"]];
@@ -155,7 +153,7 @@ export function open(): void {
     .catch(() => {})
     .finally(() => {
       opening = false;
-      if (!isOpen(ID)) openOverlay({ id: ID, title: "Repository Navigator", icon: "/icons.svg#fa-github", build, foot });
+      if (!isOpen(ID)) openOverlay({ id: ID, title: `${OWNER}/${REPO}`, icon: "/icons.svg#fa-github", build, foot });
     });
 }
 
@@ -176,9 +174,8 @@ function build(body: HTMLElement, close: () => void): () => void {
     return t;
   };
 
-  let repoName = DEFAULT_REPO;
+  const repoName = REPO;
   let ref = "HEAD";
-  let repoInfo: Repo | null = null;
   let tree: Tree | null = null;
   let treeLoad: Promise<Tree> | null = null;
   let cwd = "";
@@ -509,18 +506,16 @@ function build(body: HTMLElement, close: () => void): () => void {
 
   // ---- data ------------------------------------------------------------------------------------------------------
   async function ensureTree(signal: AbortSignal): Promise<Tree> {
-    if (tree && tree.repo === repoName && tree.fromCache !== "stale") return tree;
+    if (tree && tree.fromCache !== "stale") return tree;
     if (!treeLoad) {
-      const name = repoName;
-      treeLoad = loadTree(name, ref, session.signal).finally(() => (treeLoad = null));
+      treeLoad = loadTree(ref, session.signal).finally(() => (treeLoad = null));
       treeLoad
         .then((t) => {
-          if (name !== repoName) return;
           tree = t;
           syncQuota();
           renderExplorer();
-          if (t.truncated) push(message("warning", "file list", ["GitHub truncated this repository's file list; some deep paths may be missing."]));
-          if (t.fromCache === "stale") push(message("warning", "file list", [t.note ?? "GitHub could not be reached.", `Showing the copy saved ${Math.max(1, Math.round((Date.now() - t.fetchedAt) / 60000))} min ago.`], "cached"));
+          if (t.truncated) push(message("warning", "file list", ["File list truncated by GitHub; some deep paths are missing."]));
+          if (t.fromCache === "stale") push(message("warning", "file list", [t.note ?? "Could not reach GitHub.", `Showing a copy from ${Math.max(1, Math.round((Date.now() - t.fetchedAt) / 60000))} min ago.`], "cached"));
         })
         .catch(() => {});
     }
@@ -618,7 +613,7 @@ function build(body: HTMLElement, close: () => void): () => void {
       if (IMAGE.has(ext(f.name)) || BINARY.has(ext(f.name)) || ext(f.name) === "pdf")
         return message("warning", "cat", [`${f.name} is a binary file (${size(f.size)}).`, `Use code ${f.name} to view it.`]);
       if (f.size > MAX_EDITOR_BYTES) return message("warning", "cat", [`${f.name} is ${size(f.size)}; too large to preview here.`]);
-      const bytes = await fileBytes(repoName, ref, path, f.size, signal);
+      const bytes = await fileBytes(ref, f, signal);
       if (binaryish(bytes)) return message("warning", "cat", [`${f.name} is a binary file (${size(f.size)}).`]);
       const text = new TextDecoder("utf-8").decode(bytes);
       const lines = text.split("\n");
@@ -652,26 +647,6 @@ function build(body: HTMLElement, close: () => void): () => void {
       if (f.kind === "dir") return message("error", "editor", [`${args[0]} is not a file.`]);
       void openEditor(f);
       return message("success", "editor", [`Opened /${path}`], "buffer");
-    },
-    async repo(args, signal) {
-      if (!args[0]) {
-        const names = await publicRepos(signal);
-        const [sec, inner] = panel("repositories", `${names.length} public, tracked by echopoint`);
-        const grid = el("div", "ghn-repos");
-        for (const n of names) {
-          const b = runner(`ghn-repo${n === repoName ? " is-current" : ""}`, `repo ${n}`);
-          b.textContent = n;
-          if (n === repoName) b.setAttribute("aria-current", "true");
-          grid.append(b);
-        }
-        inner.append(grid);
-        sec.append(el("div", "ghn-panel-foot", "repo <name> works for any public repo of ujjwalvivek."));
-        return sec;
-      }
-      const name = args[0].replace(/^.*\//, "");
-      if (name === repoName) return message("info", "repo", [`Already on ${name}.`]);
-      await switchRepo(name, signal);
-      return null;
     },
     async help() {
       return help();
@@ -732,26 +707,6 @@ function build(body: HTMLElement, close: () => void): () => void {
       spinTimer = window.setInterval(() => (spin.textContent = SPINNER[(f = (f + 1) % SPINNER.length)]!), 80);
     } else if (!buffer && root.contains(document.activeElement) === false) input.focus({ preventScroll: true });
     scrollDown();
-  }
-
-  async function switchRepo(name: string, signal: AbortSignal) {
-    push(message("muted", "repo", [`Connecting to ${OWNER}/${name}...`]));
-    let b = await boot(name, signal);
-    if (!b.repo) {
-      // not tracked by echopoint: ask GitHub directly (one API call), which also tells us the repo exists
-      b = { ...b, repo: await repoFromGitHub(name, signal) };
-      syncQuota();
-    }
-    repoName = b.repo?.name ?? name;
-    repoInfo = b.repo;
-    ref = repoInfo?.branch ?? "HEAD";
-    tree = null;
-    cwd = "";
-    syncPrompt();
-    sideList.replaceChildren();
-    push(bootPanel(b));
-    const t = await ensureTree(signal);
-    push(message("success", "repo", [`Switched to ${OWNER}/${repoName} (${ref}), ${t.files.size} entries.`]));
   }
 
   // ---- explorer --------------------------------------------------------------------------------------------------
@@ -917,7 +872,7 @@ function build(body: HTMLElement, close: () => void): () => void {
       };
       a("open on github", blobUrl());
       a("vs code for the web", vscodeUrl());
-      if (buffer.kind !== "link") a("raw file", rawUrl(repoName, ref, buffer.path));
+      if (buffer.kind !== "link") a("raw file", rawUrl(ref, buffer.path));
       box.append(row);
     }
     return box;
@@ -937,7 +892,7 @@ function build(body: HTMLElement, close: () => void): () => void {
 
     if (kind === "link") {
       info("SUBMODULE");
-      edView.append(stateCard("submodule", [`${f.name} points at another repository; GitHub serves no file here.`], "info"));
+      edView.append(stateCard("submodule", ["Submodule; no file to show."], "info"));
       return;
     }
     if (kind === "large") {
@@ -947,7 +902,7 @@ function build(body: HTMLElement, close: () => void): () => void {
     }
     if (kind === "binary") {
       info("BINARY", size(f.size));
-      edView.append(stateCard("binary file", [`${f.name} is ${size(f.size)} of binary data; there is no text to show.`], "info"));
+      edView.append(stateCard("binary file", [`Binary file, ${size(f.size)}.`], "info"));
       return;
     }
     if (kind === "image") {
@@ -965,9 +920,9 @@ function build(body: HTMLElement, close: () => void): () => void {
       img.addEventListener("error", () => {
         if (ac.signal.aborted) return;
         resetView();
-        edView.append(stateCard("cannot show this image", ["The browser could not decode it, or GitHub did not serve it."], "error"));
+        edView.append(stateCard("cannot show this image", ["Could not load this image."], "error"));
       }, { once: true });
-      img.src = rawUrl(repoName, ref, f.path);
+      img.src = rawUrl(ref, f.path);
       fig.append(img, cap);
       edView.append(fig);
       return;
@@ -978,7 +933,7 @@ function build(body: HTMLElement, close: () => void): () => void {
       try {
         const viewer = (await import("./pdf-viewer.js")) as { mountPdf(host: HTMLElement, url: string, opts?: { title?: string }): () => void };
         if (ac.signal.aborted) return;
-        undoViewer = viewer.mountPdf(edView, rawUrl(repoName, ref, f.path), { title: f.name });
+        undoViewer = viewer.mountPdf(edView, rawUrl(ref, f.path), { title: f.name });
       } catch {
         if (!ac.signal.aborted) edView.append(stateCard("cannot show this pdf", ["The PDF viewer did not load."], "error"));
       }
@@ -998,7 +953,7 @@ function build(body: HTMLElement, close: () => void): () => void {
     try {
       const lang = languageFor(f.name);
       const grammar = lang ? ready(lang) : Promise.resolve(false); // the grammar loads while the file downloads
-      const bytes = await fileBytes(repoName, ref, f.path, f.size, ac.signal, (got, total) => {
+      const bytes = await fileBytes(ref, f, ac.signal, (got, total) => {
         lm.textContent = `${f.path} · ${size(got)} of ${size(total)}`;
         fill.style.transform = `scaleX(${Math.min(1, got / Math.max(1, total))})`;
       });
@@ -1006,7 +961,7 @@ function build(body: HTMLElement, close: () => void): () => void {
       if (binaryish(bytes)) {
         resetView();
         info("BINARY", size(bytes.length));
-        edView.append(stateCard("binary file", [`${f.name} is ${size(bytes.length)} of binary data; there is no text to show.`], "info"));
+        edView.append(stateCard("binary file", [`Binary file, ${size(bytes.length)}.`], "info"));
         return;
       }
       const text = new TextDecoder("utf-8").decode(bytes);
@@ -1059,7 +1014,7 @@ function build(body: HTMLElement, close: () => void): () => void {
     scrollDown();
   }
   function download() {
-    if (buffer?.kind !== "text") return status("Nothing to download here; use the GitHub link.");
+    if (buffer?.kind !== "text") return status("Nothing to download.");
     const blob = new Blob([buffer.text], { type: "text/plain;charset=utf-8" });
     const url = URL.createObjectURL(blob);
     const a = el("a");
@@ -1179,7 +1134,7 @@ function build(body: HTMLElement, close: () => void): () => void {
   footHook = (f) => {
     f.classList.add("ghn-foot");
     const q = el("div", "ghn-quick");
-    for (const c of ["help", "ls", "tree 2", "cd ..", "repo", "clear"]) {
+    for (const c of ["help", "ls", "tree 2", "cd ..", "clear"]) {
       const b = runner("ghn-key", c);
       b.textContent = c;
       q.append(b);
@@ -1197,7 +1152,7 @@ function build(body: HTMLElement, close: () => void): () => void {
   syncPrompt();
   shellTab.setAttribute("aria-selected", "true");
   editorTab.setAttribute("aria-selected", "false");
-  const connecting = message("muted", "boot", ["Connecting to echopoint...", "Fetching the file list from GitHub..."]);
+  const connecting = message("muted", "boot", ["Connecting to echopoint..."]);
   push(connecting);
   const bootAc = new AbortController();
   busy = bootAc;
@@ -1205,24 +1160,20 @@ function build(body: HTMLElement, close: () => void): () => void {
   session.signal.addEventListener("abort", () => bootAc.abort(), { once: true });
   void (async () => {
     try {
-      const b = await boot(repoName, bootAc.signal);
+      const b = await boot(bootAc.signal);
       if (session.signal.aborted) return;
-      repoInfo = b.repo;
       ref = b.repo?.branch ?? "HEAD";
       syncHead();
       connecting.remove();
       push(bootPanel(b));
-      if (b.failed.length) push(message("warning", "limited mode", [`echopoint could not supply: ${b.failed.join(", ")}.`, "Core commands still work against GitHub.", "Try help, ls, tree, find, cat, or code."], "telemetry"));
-      const t = await ensureTree(bootAc.signal);
-      if (session.signal.aborted) return;
-      const via = t.fromCache === "fresh" || t.fromCache === "revalidated" ? "saved copy" : t.fromCache === "stale" ? "old copy" : "GitHub";
-      push(message("muted", "", [`${t.files.size} entries on ${t.ref} from ${via}. Type help, or click any row.`]));
+      if (b.failed.length) push(message("warning", "echopoint", [`Not loaded: ${b.failed.join(", ")}.`]));
+      await ensureTree(bootAc.signal);
     } catch (err) {
       if (session.signal.aborted) return;
       connecting.remove();
       const e = err as FetchError;
-      if (e?.status === -1) push(message("muted", "", ["^C cancelled; commands fetch the file list when needed."]));
-      else push(message("error", "file list", [e?.message ?? String(err), "Commands will retry when you run them."], "github"));
+      if (e?.status === -1) push(message("muted", "", ["^C cancelled"]));
+      else push(message("error", "file list", [e?.message ?? String(err)], "github"));
     } finally {
       if (busy === bootAc) busy = null;
       setBusy(false);
