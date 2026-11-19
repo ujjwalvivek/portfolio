@@ -9,7 +9,10 @@
     "ts": "tsc -p .",
     "ts:watch": "tsc -p . --watch",
     "build": "npm run icons && npm run vendor && npm run ts && zola build && rm -f public/giallo.css",
-    "sizes": "node scripts/sizes.mjs"
+    "sizes": "node scripts/sizes.mjs",
+    "check:urls": "node scripts/check-urls.mjs",
+    "check:leaks": "node scripts/check-leaks.mjs",
+    "check:drift": "node scripts/check-drift.mjs"
   },
   "devDependencies": {
     "typescript": "7.0.2"
