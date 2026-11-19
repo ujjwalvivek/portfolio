@@ -8,7 +8,7 @@
     "vendor": "node scripts/vendor.mjs",
     "ts": "tsc -p .",
     "ts:watch": "tsc -p . --watch",
-    "build": "npm run icons && npm run vendor && npm run ts && zola build && rm -f public/giallo.css",
+    "build": "npm run icons && npm run vendor && npm run ts && zola build && node scripts/meta.mjs && rm -f public/giallo.css",
     "sizes": "node scripts/sizes.mjs",
     "check:urls": "node scripts/check-urls.mjs",
     "check:leaks": "node scripts/check-leaks.mjs",

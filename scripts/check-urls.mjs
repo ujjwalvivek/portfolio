@@ -43,9 +43,7 @@ const EXPECT = {
 };
 
 // URLs that do not resolve yet, each with why and what fixes it. Printed as GAP; they fail only with --strict.
-const GAPS = {
-  "/posts/meta.json": "ADR section 13 keeps it as a Zola-generated JSON; nothing generates it yet",
-};
+const GAPS = {};
 
 // v3 URLs that are meant to 404 in v4, with the decision behind it. Printed as GONE, never fail; if one starts to
 // resolve, the check says so.
