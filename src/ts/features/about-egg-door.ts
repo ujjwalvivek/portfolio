@@ -1,5 +1,6 @@
 // The easter egg's door (v3 EasterEgg): a near-invisible line at the bottom of the page, with a "Click me :)" tip that
-// follows the cursor. Clicking it swaps the line for the hidden terminal, whose module and styles load only then.
+// follows the cursor. The line glows and blinks as in v3; its styles live with the terminal's in about-egg.css, which
+// loads once the page is idle. Clicking the line swaps it for the hidden terminal, whose module loads only then.
 
 import { loadFeature } from "../lib/lazy.js";
 
@@ -15,6 +16,22 @@ export function mount(root: HTMLElement): () => void {
   let tip: HTMLElement | null = null;
   let undo: void | (() => void);
   let gone = false;
+
+  // wrap the text so the glow and blink sit on the glyphs while the button keeps its own fade and flicker
+  if (!key.querySelector(".ab-egg-glyphs")) {
+    const glyphs = document.createElement("span");
+    glyphs.className = "ab-egg-glyphs";
+    glyphs.append(...key.childNodes);
+    key.append(glyphs);
+  }
+  const idle = typeof requestIdleCallback === "function" ? requestIdleCallback : (fn: () => void) => setTimeout(fn, 1500);
+  idle(() => {
+    if (gone || document.querySelector(`link[href="${STYLES[0]}"]`)) return;
+    const link = document.createElement("link");
+    link.rel = "stylesheet";
+    link.href = STYLES[0]!;
+    document.head.append(link);
+  });
 
   const hideTip = () => {
     tip?.remove();
