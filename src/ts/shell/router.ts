@@ -127,7 +127,9 @@ async function render(url: URL, push: boolean): Promise<void> {
     main().focus({ preventScroll: true });
   };
 
-  if ("startViewTransition" in document && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  // No fade on iOS: Safari there stalled for seconds blending the projects page into home's live GPU canvas.
+  const ios = /iP(hone|ad|od)/.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+  if ("startViewTransition" in document && !ios && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
     document.documentElement.classList.add("is-swapping");
     const vt = document.startViewTransition(swap);
     void vt.finished.finally(() => document.documentElement.classList.remove("is-swapping"));
