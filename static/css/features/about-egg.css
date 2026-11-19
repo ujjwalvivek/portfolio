@@ -74,7 +74,7 @@
   outline: none;
 }
 .ab-term-input:focus { font-weight: 700; }
-.ab-term-input::placeholder { color: rgba(var(--text-color-rgb), 0.35); font-weight: 300; }
+.ab-term-input::placeholder { color: rgba(var(--text-color-rgb), 0.5); font-weight: 300; }
 
 /* the terminal dims: dark, faded and out of focus (v3 .dimmed) */
 .ab-term-line.is-dim {
