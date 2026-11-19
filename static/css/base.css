@@ -252,7 +252,7 @@ body.bg-off #bg-canvas { opacity: 0; }
   align-items: center;
   gap: 0.75rem;
   padding: 0.6rem 1.4rem;
-  background: rgba(var(--bit-dark-color-rgb), 1);
+  background: rgba(var(--background-color-rgb), 0.25); /* glass, a shade darker than the card */
   line-height: 1;
 }
 .overlay-head { border-bottom: 1px solid rgba(var(--primary-color-rgb), 0.2); }
