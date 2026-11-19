@@ -1,0 +1,46 @@
+/* First-visit command hint (v3's CommandHint, quieter). A small glass note in the empty band under the top bar,
+   positioned in the page (not fixed), so it scrolls away and never sits on content. Dashed frame: it is a note, not a
+   control; its two buttons take the usual hover. Fades in once; no fade with reduced motion. */
+.cmd-hint {
+  position: absolute;
+  top: 4.4rem;
+  left: 1.5rem;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 0.15rem;
+  padding: 0.2rem;
+  font-family: var(--font-neon);
+  font-size: 0.7rem;
+  letter-spacing: 1px;
+  color: rgba(var(--text-color-rgb), 0.55);
+  text-shadow: none;
+  border: 1px dashed rgba(var(--dynamic-dominant-color-rgb), 0.35);
+  background: rgba(var(--background-color-rgb), 0.3);
+  backdrop-filter: blur(32px) saturate(180%);
+  -webkit-backdrop-filter: blur(32px) saturate(180%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.cmd-hint.is-shown { opacity: 1; }
+.cmd-hint button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin: 0;
+  padding: 0.15rem 0.35rem;
+  font: inherit;
+  letter-spacing: inherit;
+  color: inherit;
+  background: transparent;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+.cmd-hint button:hover { background: rgba(var(--dynamic-dominant-color-rgb), 0.15); border-color: var(--dynamic-dominant-color); color: var(--text-color); }
+.cmd-hint .icon { font-size: 0.85rem; color: rgba(var(--dynamic-dominant-color-rgb), 0.8); }
+.cmd-hint kbd { font-size: 0.65rem; padding: 0 0.3rem; letter-spacing: 0; background: rgba(var(--dynamic-dominant-color-rgb), 0.12); border-color: rgba(var(--dynamic-dominant-color-rgb), 0.35); color: rgba(var(--text-color-rgb), 0.8); }
+.cmd-hint kbd + kbd { margin-left: -0.15rem; }
+.cmd-hint-x { font-size: 0.85rem; line-height: 1; }
+@media (max-width: 600px) { .cmd-hint { top: 3.6rem; left: var(--spacing-unit); } }
+@media (prefers-reduced-motion: reduce) { .cmd-hint, .cmd-hint button { transition: none; } }

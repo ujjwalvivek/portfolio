@@ -6,6 +6,8 @@ import { handle, startKeymap } from "./keymap.js";
 import { startRouter } from "./router.js";
 import { setWallpaper, startWallpaper, wallpaperOn } from "./wallpaper.js";
 import { on } from "../lib/store.js";
+import { loadFeature } from "../lib/lazy.js";
+import { dismissHint, startHint } from "../features/command-hint.js";
 
 const lazy = <T>(spec: string, pick: (m: T) => () => void) => () => {
   void import(spec).then((m) => pick(m as T)());
@@ -13,6 +15,13 @@ const lazy = <T>(spec: string, pick: (m: T) => () => void) => () => {
 
 const openVibe = lazy<typeof import("../features/vibe-switch.js")>("../features/vibe-switch.js", (m) => m.openVibeSwitch);
 const openStack = lazy<typeof import("../features/tech-stack.js")>("../features/tech-stack.js", (m) => m.openTechStack);
+type Palette = typeof import("../features/command-palette.js");
+const palette = () =>
+  loadFeature("/js/features/command-palette.js", ["/css/features/command-palette.css"]) as unknown as Promise<Palette>;
+const openPalette = () => {
+  dismissHint();
+  void palette().then((m) => m.openPalette());
+};
 const openKeys = lazy<typeof import("../features/shortcuts.js")>("../features/shortcuts.js", (m) => m.openShortcuts);
 
 function wireBars(): void {
@@ -34,12 +43,21 @@ startDrift();
 startKeymap();
 startRouter();
 wireBars();
+handle("palette", openPalette);
 handle("vibe", openVibe);
 handle("help", openKeys);
 handle("music", () => void import("./audio.js").then((m) => m.toggleMusic()));
 
 // After the first frame is on screen, so the wallpaper never competes with the page's own content.
 requestAnimationFrame(() => setTimeout(() => void startWallpaper(), 0));
+
+// The first-visit hint shows now; with a keyboard and pointer, the palette and its index load once the page is idle,
+// so the first Ctrl+K finds them ready.
+startHint(openPalette);
+if (matchMedia("(pointer: fine)").matches) {
+  const idle = (fn: () => void) => (typeof requestIdleCallback === "function" ? requestIdleCallback(fn, { timeout: 4000 }) : setTimeout(fn, 2000));
+  idle(() => void palette().then((m) => m.prefetchIndex()).catch(() => {}));
+}
 
 // /?vibe (where v3's /bg-test now redirects) opens the vibe switch.
 if (new URLSearchParams(location.search).has("vibe")) openVibe();
