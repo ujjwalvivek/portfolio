@@ -4,7 +4,7 @@
 // site's single-key shortcuts stay quiet while typing. The terminal is one fixed height, so the page does not grow
 // line by line. v3's glitch line effect (fixed-colour RGB splits) is not carried over; story lines that dimmed or
 // alarmed in v3 are set dim or in the accent instead.
-// "run exit" opened v3's crash screen, which arrives with M6; until then it is an unknown command.
+// "run exit" opens the crash screen (crash.ts, loaded only then), as in v3.
 
 import { setWallpaper, wallpaperOn } from "../shell/wallpaper.js";
 
@@ -203,6 +203,10 @@ function respond(cmd: string): string | null {
   const c = cmd.trim();
   const lower = c.toLowerCase();
   if (c === "") return "";
+  if (lower === "run exit") {
+    void import("./crash.js").then((m: { crash(reason?: string): void }) => m.crash());
+    return null;
+  }
   if (c === "help") return "Available commands: whoami, clear, hint";
   if (c === "whoami") return "You are a Creator! Keep Building and Exploring.";
   if (c === "hint") {
