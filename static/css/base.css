@@ -259,35 +259,58 @@ kbd {
 @keyframes overlay-in { from { opacity: 0; } to { opacity: 1; } }
 @keyframes overlay-card-in { from { opacity: 0; transform: translateY(-20px) scale(0.95); } to { opacity: 1; transform: none; } }
 
-/* Tech stack overlay. */
-.stack-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.8rem; padding: 0.6rem 1rem; }
+/* Tech stack overlay: the vibe switch's keycaps, with the tool's icon on the key and its name above on hover. */
+.stack-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(3.6rem, 1fr));
+  gap: 1.1rem 0.8rem;
+  padding: 2.2rem 1.4rem 1.4rem;
+  justify-items: center;
+}
 .stack-item {
   position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 60px;
-  padding: 1rem;
+  display: grid;
+  place-items: center;
+  width: 3.2rem;
+  height: 3.2rem;
   box-sizing: border-box;
-  border: 2px solid rgba(var(--dynamic-dominant-color-rgb), 0.4);
-  cursor: cell;
-  transition: transform 0.18s, box-shadow 0.18s;
+  border: 1px solid rgba(var(--dynamic-dominant-color-rgb), 0.45);
+  border-bottom: 3px solid color-mix(in srgb, var(--dynamic-dominant-color) 40%, #000);
+  background: rgba(var(--dynamic-dominant-color-rgb), 0.08);
+  color: rgba(var(--text-color-rgb), 0.8);
+  cursor: default;
+  transition: transform 0.2s ease, border-color 0.2s ease, color 0.2s ease, background-color 0.2s ease;
 }
-.stack-item .icon { font-size: 36px; opacity: 0.8; }
-.stack-item:hover { transform: translateY(-4px); border-color: var(--dynamic-dominant-color); background-color: rgba(var(--dynamic-dominant-color-rgb), 0.35); }
-.stack-item::before {
-  content: "";
+.stack-item .icon { font-size: 26px; }
+.stack-item:nth-child(odd):hover { transform: translateY(-3px) rotate(-2deg); }
+.stack-item:nth-child(even):hover { transform: translateY(-3px) rotate(1.5deg); }
+.stack-item:hover, .stack-item:focus-visible {
+  outline: none;
+  border-color: var(--dynamic-dominant-color);
+  border-bottom-color: color-mix(in srgb, var(--dynamic-dominant-color) 45%, #000);
+  background: rgba(var(--dynamic-dominant-color-rgb), 0.2);
+  color: var(--text-color);
+}
+.stack-item::after {
+  content: attr(data-label);
   position: absolute;
-  top: 50%;
+  bottom: calc(100% + 0.5rem);
   left: 50%;
-  transform: translate(-50%, -50%);
-  width: 18px;
-  height: 18px;
-  background: var(--text-color);
-  opacity: 0.7;
-  filter: blur(12px) saturate(180%);
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.9);
+  color: var(--text-color);
+  padding: 0.2rem 0.4rem;
+  border: 1px solid rgba(var(--dynamic-dominant-color-rgb), 0.5);
+  font-size: 0.75rem;
+  font-family: var(--font-neon);
+  white-space: nowrap;
   pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  z-index: 10;
 }
+.stack-item:hover::after, .stack-item:focus-visible::after { opacity: 1; }
+@media (prefers-reduced-motion: reduce) { .stack-item:hover { transform: none !important; } }
 
 /* Shortcut sheet. */
 .keys { display: grid; grid-template-columns: max-content 1fr; gap: 0.6rem 1.2rem; padding: 1rem 1.4rem; font-family: var(--font-neon); font-size: 0.8rem; align-items: center; }
@@ -404,10 +427,10 @@ html::-webkit-scrollbar-thumb:hover, body::-webkit-scrollbar-thumb:hover { backg
   border: 0;
   outline: transparent;
   position: relative;
-  width: 2.25em;
+  width: 1.3em;
   height: 1.5em;
   padding: 0;
-  margin: 0 0.1rem 0 0;
+  margin: 0;
   transition: transform 0.4s cubic-bezier(0.68, -0.6, 0.32, 1.6);
   -webkit-appearance: none;
   appearance: none;
@@ -419,7 +442,7 @@ html::-webkit-scrollbar-thumb:hover, body::-webkit-scrollbar-thumb:hover { backg
   display: block;
   position: absolute;
   top: 50%;
-  left: 0.2em;
+  left: 0.1em;
   box-sizing: border-box;
   width: 1.05em;
   height: 1.05em;
@@ -429,7 +452,7 @@ html::-webkit-scrollbar-thumb:hover, body::-webkit-scrollbar-thumb:hover { backg
   transition: border-color 0.4s cubic-bezier(0.65, 0, 0.35, 1), transform 0.4s cubic-bezier(0.68, -0.6, 0.32, 1.6);
 }
 .switch__letters, .switch__letter { transition: transform 0.4s cubic-bezier(0.68, -0.6, 0.32, 1.6); }
-.switch__letters { margin-left: 0.15em; overflow: visible; pointer-events: none; width: 1.5em; height: 1.45em; }
+.switch__letters { margin-left: 0.05em; overflow: visible; pointer-events: none; width: 1.5em; height: 1.45em; }
 .switch__letter:last-child { transform: translateX(14px); }
 .switch__letter-stroke {
   stroke: rgba(var(--text-color-rgb), 0.5);
@@ -438,8 +461,7 @@ html::-webkit-scrollbar-thumb:hover, body::-webkit-scrollbar-thumb:hover { backg
 }
 .switch__letter-stroke:nth-child(2) { transform-origin: 2px 2px; }
 .switch__input:checked::after { content: none; }
-.switch__input:checked, .switch__input:checked + .switch__letters { transform: translateX(0.075em); }
-.switch__input:checked::before { transform: translateX(0.63em) translateY(-50%); border-color: rgba(var(--dynamic-dominant-color-rgb), 0.9); }
+.switch__input:checked::before { border-color: rgba(var(--dynamic-dominant-color-rgb), 0.9); }
 .switch__input:checked ~ .switch__letters .switch__letter-stroke { stroke: rgba(var(--dynamic-dominant-color-rgb), 0.9); }
 .switch__input:checked ~ .switch__letters .switch__letter-stroke:nth-child(2) { stroke-dashoffset: 6; }
 .switch__input:checked ~ .switch__letters .switch__letter-stroke:last-child { stroke-dashoffset: 4; }

@@ -21,7 +21,8 @@ export function openTechStack(): void {
       for (const [title, id] of STACK) {
         const item = document.createElement("div");
         item.className = "stack-item";
-        item.title = title;
+        item.dataset.label = title;
+        item.tabIndex = 0;
         item.innerHTML = `<svg class="icon" role="img" aria-label="${title}"><use href="/icons.svg#${id}"/></svg>`;
         grid.append(item);
       }
