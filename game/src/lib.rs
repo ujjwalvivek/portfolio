@@ -716,6 +716,7 @@ impl GameApp for HeaderGame {
 
     fn init(ctx: &mut Context<HeaderAction>) -> Self {
         ctx.show_perf_hud = false;
+        ctx.target_fps = 30; // a pixel-art header needs no more, and phones thank it
         ctx.bloom = BloomSettings { enabled: true, threshold: 0.62, intensity: 0.5, radius: 2.0 };
         // a new seed per visit, so the letters fly in and the lemmings arrive differently every time
         let mut rng = ((js_sys::Math::random() * u32::MAX as f64) as u32) | 1;

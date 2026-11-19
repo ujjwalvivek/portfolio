@@ -7,7 +7,7 @@ edition = "2021"
 crate-type = ["cdylib", "rlib"]
 
 [dependencies]
-engine = { package = "journey-engine", version = "1.4.0", default-features = false }
+engine = { package = "journey-engine", version = "1.4.1", default-features = false }
 resonance = { package = "journey-sound", version = "1.4.0" }
 cadence = { package = "journey-sequencer", version = "1.4.0" }
 wasm-bindgen = "0.2.87"
