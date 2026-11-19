@@ -21,6 +21,7 @@ body {
 *, *::before, *::after { border-radius: 0 !important; }
 
 code { font-family: var(--font-mono); }
+::selection { background: rgba(var(--dynamic-dominant-color-rgb), 0.4); color: var(--text-color); }
 a { color: inherit; }
 :root {
   /* the site's corner brackets, as background layers: keyboard focus and selected keys wear them on their own border */

@@ -30,6 +30,10 @@ export function openOverlay(spec: OverlaySpec): void {
 
   const overlay = document.createElement("div");
   overlay.className = "overlay";
+  // the bars' heights, so a tall card can sit exactly between the top bar and the status bar
+  const barH = (sel: string) => `${Math.round(document.querySelector(sel)?.getBoundingClientRect().height ?? 0)}px`;
+  overlay.style.setProperty("--top-h", barH(".topbar"));
+  overlay.style.setProperty("--bottom-h", barH(".statusbar"));
   const card = document.createElement("div");
   card.className = "overlay-card";
   card.setAttribute("role", "dialog");

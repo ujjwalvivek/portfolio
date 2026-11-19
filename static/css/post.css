@@ -222,6 +222,7 @@
   border: 1px solid rgba(var(--dynamic-dominant-color-rgb), 0.6);
   background: rgba(var(--dynamic-dominant-color-rgb), 0.1);
 }
+.post .markdown .footnote-reference a { padding: 0 0.2em; }
 .post .markdown .footnote-reference a:hover { background: rgba(var(--dynamic-dominant-color-rgb), 0.3); opacity: 1; }
 .post .markdown .footnote-definition {
   margin: 1.5rem 0 0.5rem;

@@ -54,7 +54,16 @@
 /* the portrait is already a wide crop (2560x1190): the frame takes its shape at every width, so it is never cut and his face
    stays whole on a phone; the width and height attributes hold the space before it loads */
 .ab-hero-img { display: block; width: 100%; height: auto; aspect-ratio: 2560 / 1190; object-fit: cover; object-position: center top; }
-/* no tint over the photo: it is warm and dark, and an accent wash only lifted its blacks to grey */
+/* graded in the palette: a colour-blend layer gives the photo the dominant hue while it keeps its own light and shadow,
+   so it follows the vibe switch and the drift. (A plain wash would lift its blacks to grey; the colour blend does not.) */
+.ab-hero-grade {
+  position: absolute;
+  inset: 4px;
+  background: var(--dynamic-dominant-color);
+  mix-blend-mode: color;
+  opacity: 0.55;
+  pointer-events: none;
+}
 .ab-hero-cap {
   position: absolute;
   left: 4px;
@@ -166,9 +175,8 @@ body.bg-off .ab-soldier { animation-play-state: paused; }
 .ab-engine > * { align-self: start; }
 .ab-engine > .ab-gap { margin-top: 0.7rem; }
 .ab-engine > .ab-gap-s { margin-top: 0.5rem; }
-/* the top brackets are 4px tall, as v3's, so they cover the glow line exactly; the bottom ones are 2px */
-.ab-engine::before { border-width: 4px 0 0 2px; }
-.ab-engine > .ab-corners::before { border-width: 4px 2px 0 0; }
+/* the glow line is the card's top edge on its own; only the bottom brackets remain */
+.ab-engine::before, .ab-engine > .ab-corners::before { display: none; }
 
 .ab-engine-head { display: flex; align-items: center; gap: 0.3rem; min-height: 31px; }
 .ab-engine-title {
@@ -429,6 +437,7 @@ body.bg-off .ab-phase-spin, body.bg-off .ab-phase-spin::before { animation: none
   border: 1px dashed var(--dynamic-dominant-color);
 }
 .ab-rp-title { min-height: 3.9em; font-size: 0.85rem; line-height: 1.3; color: var(--dynamic-dominant-color); text-decoration: none; }
+.ab-rp-title { padding: 0.1em 0.3em; margin: -0.1em -0.3em; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
 .ab-rp-title:hover { background: rgba(var(--dynamic-dominant-color-rgb), 0.15); }
 .ab-rp-actions { margin-top: auto; padding-top: 0.6rem; display: flex; flex-wrap: wrap; gap: 0.5rem; }
 /* v3 openAppBtn: a 2px accent frame, the icon small in a dashed box (22px with its padding, as react-icons drew it) */
@@ -522,8 +531,9 @@ body.bg-off .ab-phase-spin, body.bg-off .ab-phase-spin::before { animation: none
 
 /* The resume overlay (v3 ResumeOverlay): glass over the blurred page, nearly the full viewport, and one title bar that
    holds the title, the viewer's controls (lifted out of its own toolbar by about-resume.js), the document switch and ESC. */
-.overlay:has(.ab-resume-card) { align-items: center; padding: 2vh 1rem; }
-.overlay-card.ab-resume-card { max-width: 1100px; height: 96vh; height: 96svh; max-height: none; }
+.overlay:has(.ab-resume-card) { align-items: stretch; padding: calc(var(--top-h, 0px) + 0.6rem) 1rem calc(var(--bottom-h, 0px) + 0.6rem); }
+/* between the bars: its top line sits below the top bar as its base sits above the status bar */
+.overlay-card.ab-resume-card { max-width: 1100px; height: auto; max-height: none; }
 .ab-resume-body { display: flex; flex-direction: column; overflow: hidden; background: rgba(255, 255, 255, 0.04); }
 .ab-resume-card .pdfv { background: transparent; }
 /* the page area is a container: focus leaves it as it is (no brackets, no fill) */
@@ -535,14 +545,22 @@ body.bg-off .ab-phase-spin, body.bg-off .ab-phase-spin::before { animation: none
 .ab-pdf-tools .pdfv-icon { padding: 0; }
 /* the viewer's keys and the document switch, in the site's states: hover tints and lights the frame, the chosen one is a
    pressed key, filled in the accent with its base flattened */
-.ab-resume-card .pdfv-key, .ab-doc button {
-  height: 1.75rem;
+.ab-resume-card .pdfv-key, .ab-doc button, .ab-resume-card .overlay-head > .chip, .ab-resume-card .pdfv-pagein {
+  height: 1.45rem;
+  min-width: 1.45rem;
+  padding: 0 0.45rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.72rem;
+  font-family: var(--font-neon);
+  line-height: 1;
   box-sizing: border-box;
   border: 1px solid rgba(var(--dynamic-dominant-color-rgb), 0.5);
   border-bottom: 2px solid rgba(var(--dynamic-dominant-color-rgb), 0.85);
   transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 }
-.ab-resume-card .pdfv-key:hover:not(:disabled), .ab-doc button:hover { background-color: rgba(var(--dynamic-dominant-color-rgb), 0.3); border-color: var(--dynamic-dominant-color); }
+.ab-resume-card .pdfv-key:hover:not(:disabled), .ab-doc button:hover, .ab-resume-card .overlay-head > .chip:hover { background-color: rgba(var(--dynamic-dominant-color-rgb), 0.3); border-color: var(--dynamic-dominant-color); }
 .ab-resume-card .pdfv-key:active:not(:disabled), .ab-resume-card .pdfv-key[aria-pressed="true"], .ab-doc button[aria-pressed="true"] {
   color: var(--background-color);
   background: var(--dynamic-dominant-color);
