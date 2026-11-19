@@ -12,6 +12,18 @@ const PACKAGES = [
     integrity: "sha512-59V5LK0zSitLkHUu26fHosZYJVgS7lTyYM6EKcGFZbeuWmrONLMfCSq0L90qPej9xZNJKEfsYU5YZNoou1O1jg==",
     files: { "package/dist/index.js": "substrate/index.js" },
   },
+  // PDF viewer (D-004). The modern ESM build only: no cmaps, standard fonts or wasm decoders, since the resume PDFs
+  // embed their fonts and carry no JPX/JBIG2 images. pdf.js then falls back to built-in handling for anything else.
+  {
+    name: "pdfjs-dist",
+    version: "6.5.438",
+    integrity: "sha512-vg8Pw1x+AFKy4AMDvhuWl5cOYV8d698UoEANoFFhc79hqXDnZQqnOXoxw3HG907WHOg1JYOvLhP756boddFxpA==",
+    files: {
+      "package/build/pdf.min.mjs": "pdfjs/pdf.min.mjs",
+      "package/build/pdf.worker.min.mjs": "pdfjs/pdf.worker.min.mjs",
+      "package/LICENSE": "pdfjs/LICENSE",
+    },
+  },
 ];
 
 // A tar archive is a run of 512-byte headers, each followed by the file's bytes padded to 512.
