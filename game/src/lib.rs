@@ -825,9 +825,8 @@ impl GameApp for HeaderGame {
     }
 
     fn render(&mut self, ctx: &mut Context<HeaderAction>) {
-        if PAUSED.load(Ordering::Relaxed) {
-            return;
-        }
+        // Paused, update() stops the clock and the engine asks for no new frames, but a frame already on its way (and any
+        // resize) still draws: it must draw the scene where it stopped, frozen as in v3, not skip and leave a blank box.
         let pal = palette();
         let reduced = REDUCED.load(Ordering::Relaxed);
 
