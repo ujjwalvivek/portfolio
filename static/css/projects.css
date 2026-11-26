@@ -259,7 +259,7 @@ a.pj-btn:hover, a.pj-btn:focus-visible {
   border: 1px dashed rgba(var(--dynamic-dominant-color-rgb), 0.5);
 }
 
-/* Notion and PDF overlays: the shell's overlay frame, made tall enough to read a document in. */
+/* The PDF overlay: the shell's overlay frame, made tall enough to read a document in. */
 
 /* Phones and narrow windows: each row becomes v3's card: icon and title, then tags, then the buttons. */
 @media (max-width: 800px) {

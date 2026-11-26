@@ -1,18 +1,18 @@
-// Projects overlays (v3 notionOverlay). "Case Study" opens the Notion page in an iframe and "Docs" opens a PDF, each in
-// the shell's overlay frame, so Esc, the ESC chip and a click outside close it (overlay.ts). Both buttons are real links
-// in the HTML, so without JS, or with a modifier key, they open in a new tab instead.
+// Projects overlay (v3 notionOverlay, now PDFs only: the Notion case studies became blog posts). "Docs" opens the PDF
+// in the shell's overlay frame, so Esc, the ESC chip and a click outside close it (overlay.ts). The button is a real
+// link in the HTML, so without JS, or with a modifier key, it opens in a new tab instead.
 // The PDF viewer belongs to another module and is imported only when a PDF is first opened.
 
 import { closeOverlay, openOverlay } from "../shell/overlay.js";
 import { loadFeature } from "../lib/lazy.js";
 
-export type EmbedKind = "notion" | "pdf";
+export type EmbedKind = "pdf";
 type PdfViewer = { mountPdf(host: HTMLElement, url: string, opts?: { title?: string }): () => void };
 
 const ID = "projects-embed";
 // Not a literal, so tsc leaves the specifier alone and does not need the viewer's source to compile this file.
 const PDF_VIEWER: string = "/js/features/pdf-viewer.js";
-const ICONS: Record<EmbedKind, string> = { notion: "/icons.svg#pi-notion-logo-fill", pdf: "/icons.svg#pi-file-pdf-fill" };
+const ICONS: Record<EmbedKind, string> = { pdf: "/icons.svg#pi-file-pdf-fill" };
 
 function newTabLink(url: string, label: string): HTMLAnchorElement {
   const a = document.createElement("a");
@@ -29,15 +29,6 @@ function frame(body: HTMLElement): void {
   body.parentElement?.classList.add("pj-embed-card");
 }
 
-function notion(body: HTMLElement, url: string, title: string): void {
-  frame(body);
-  const iframe = document.createElement("iframe");
-  iframe.className = "pj-embed-frame is-notion";
-  iframe.src = url;
-  iframe.title = title;
-  iframe.allowFullscreen = true;
-  body.append(iframe);
-}
 
 function pdf(body: HTMLElement, url: string, title: string): () => void {
   frame(body);
@@ -86,7 +77,7 @@ function show(kind: EmbedKind, url: string, title: string): void {
     build: (body) => {
       // "open in new tab" sits in the title bar, next to ESC
       body.parentElement?.querySelector(".overlay-head button.chip")?.before(newTabLink(url, "open in new tab"));
-      return kind === "pdf" ? pdf(body, url, title) : notion(body, url, title);
+      return pdf(body, url, title);
     },
   });
 }

@@ -2,7 +2,7 @@
 //   filters the rendered rows (--all, --pm, --dev), keeping the choice in ?filter= so back and reload return to it;
 //   marks the row named in the hash (/projects/#dev-3, also the command palette's target) and makes sure the filter
 //   shows it, fixing v3's palette link to a data-project-id that did not exist;
-//   mounts the tooltips and opens the Notion and PDF overlays.
+//   mounts the tooltips and opens the PDF overlay.
 
 import { mountTips } from "../features/projects-tip.js";
 import { closeEmbed, openEmbed, type EmbedKind } from "../features/projects-embed.js";

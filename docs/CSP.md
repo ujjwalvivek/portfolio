@@ -14,7 +14,7 @@ Every origin below was seen in a headless run of every page and feature, or is a
 | img-src     | 'self' data: cdn.ujjwalvivek.com raw.githubusercontent.com              | Post images and covers, the dino sprite, navigator images and post screenshots from GitHub; data: for small CSS icons |
 | font-src    | 'self' https://cdn.ujjwalvivek.com                                       | Subset fonts live on the CDN under fonts/<family>/s1/ |
 | connect-src | 'self' echopoint (https and wss) cdn.ujjwalvivek.com api.github.com raw.githubusercontent.com api.emailjs.com | Widgets, langs, store and the click socket; resume PDF fetch; navigator fallbacks; terminal mail send |
-| frame-src   | 'self' challenges.cloudflare.com ujjwalvivek.notion.site www.youtube.com journey, baremetal and gogs on ujjwalvivek.com | Turnstile; Notion case studies; post embeds; 'self' for /games/dino-blink.html |
+| frame-src   | 'self' challenges.cloudflare.com www.youtube.com journey, baremetal and gogs on ujjwalvivek.com | Turnstile; post embeds; 'self' for /games/dino-blink.html |
 | worker-src  | 'self'                                                                  | pdf.js runs its worker as a same-origin module worker (no blob:) |
 | child-src   | 'self'                                                                  | Only for old browsers without worker-src |
 | media-src, manifest-src | 'self'                                                      | |

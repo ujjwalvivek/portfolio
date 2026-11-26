@@ -20,7 +20,7 @@
       <a class="ab-rp-title" href="{{ projects_page.path | safe }}#{{ p.id }}" title="{{ p.title }}">{{ p.title | truncate(length=50, end="...") }}</a>
       {%- set blog = false %}{% if links and links.blogPost is defined %}{% set blog = links.blogPost %}{% endif %}
       {%- set limit = 2 %}{% if blog %}{% set limit = 1 %}{% endif %}
-      {%- set kinds = ["notionEmbed", "pdfDocument", "figmaDesign", "githubRepo", "websiteLink"] %}
+      {%- set kinds = ["pdfDocument", "figmaDesign", "githubRepo", "websiteLink"] %}
       {%- set_global used = 0 %}
       <div class="ab-rp-actions">
         {%- if blog %}
@@ -28,9 +28,7 @@
         <a class="ab-rp-btn" href="{{ post.path | safe }}"><svg class="icon" aria-hidden="true"><use href="/icons.svg#fa-newspaper"/></svg>Blog</a>
         {%- endif %}
         {%- for k in kinds %}{% if links and links[k] is defined and used < limit %}{% set_global used = used + 1 %}
-        {%- if k == "notionEmbed" %}
-        <a class="ab-rp-btn" href="{{ links.notionEmbed | safe }}" target="_blank" rel="noopener" data-ab-open="notion" data-ab-title="{{ p.title }}"><svg class="icon" aria-hidden="true"><use href="/icons.svg#pi-notion-logo-fill"/></svg>Case Study</a>
-        {%- elif k == "pdfDocument" %}
+        {%- if k == "pdfDocument" %}
         <a class="ab-rp-btn" href="{{ links.pdfDocument | safe }}" target="_blank" rel="noopener" data-ab-open="pdf" data-ab-title="{{ p.title }}"><svg class="icon" aria-hidden="true"><use href="/icons.svg#pi-file-pdf-fill"/></svg>Docs</a>
         {%- elif k == "figmaDesign" %}
         <a class="ab-rp-btn" href="{{ links.figmaDesign | safe }}" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="/icons.svg#io-logo-figma"/></svg>Design</a>

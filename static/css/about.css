@@ -278,7 +278,7 @@ body.bg-off .ab-soldier { animation-play-state: paused; }
 .ab-rp-btn:hover { opacity: 1; color: var(--dynamic-dominant-color); background: rgba(var(--dynamic-dominant-color-rgb), 0.12); }
 .ab-rp-btn.is-wip { border-style: dashed; color: rgba(var(--text-color-rgb), 0.6); }
 
-/* The Notion and PDF overlay frame, as on /projects (projects-embed.js; its rules live in projects.css). */
+/* The PDF overlay frame, as on /projects (projects-embed.js; its rules live in projects.css). */
 
 /* ---- resume bar (v3 ResumeBar) -------------------------------------------------------------------------------- */
 .ab-resume {

@@ -5,7 +5,7 @@
 {% block content %}
 {#- v3 Projects: cornered hero, the filter panel (prompt, --ALL/--PM/--DEV, status line, stats), one row per project
     (a table row on wide screens, a card on phones; same markup), and the entries line. Everything is rendered here
-    with the real counts; projects.js only filters, shows the tooltips and opens the Notion and PDF overlays.
+    with the real counts; projects.js only filters, shows the tooltips and opens the PDF overlay.
     No FETCHING bar and no placeholder stats (D-024). -#}
 {%- set data = load_data(path="data/projects.toml") -%}
 {%- set all = data.projects -%}
@@ -56,7 +56,7 @@
       {#- v3 ButtonGroup: the blog button first, then the first of case study, docs, design, code, web; at most two. -#}
       {%- set blog = false %}{% if links and links.blogPost is defined %}{% set blog = links.blogPost %}{% endif %}
       {%- set limit = 2 %}{% if blog %}{% set limit = 1 %}{% endif %}
-      {%- set kinds = ["notionEmbed", "pdfDocument", "figmaDesign", "githubRepo", "websiteLink"] %}
+      {%- set kinds = ["pdfDocument", "figmaDesign", "githubRepo", "websiteLink"] %}
       {%- set_global n_kinds = 0 %}
       {%- if links %}{% for k in kinds %}{% if links[k] is defined %}{% set_global n_kinds = n_kinds + 1 %}{% endif %}{% endfor %}{% endif %}
       {%- set n_btn = n_kinds %}{% if n_btn > limit %}{% set n_btn = limit %}{% endif %}{% if blog %}{% set n_btn = n_btn + 1 %}{% endif %}
@@ -67,9 +67,7 @@
         {%- endif %}
         {%- set_global used = 0 %}
         {%- for k in kinds %}{% if links and links[k] is defined and used < limit %}{% set_global used = used + 1 %}
-        {%- if k == "notionEmbed" %}
-        <a class="pj-btn" href="{{ links.notionEmbed | safe }}" target="_blank" rel="noopener" data-pj-open="notion" data-pj-title="{{ p.title }}"><svg class="icon" aria-hidden="true"><use href="/icons.svg#pi-notion-logo-fill"/></svg>Case Study</a>
-        {%- elif k == "pdfDocument" %}
+        {%- if k == "pdfDocument" %}
         <a class="pj-btn" href="{{ links.pdfDocument | safe }}" target="_blank" rel="noopener" data-pj-open="pdf" data-pj-title="{{ p.title }}"><svg class="icon" aria-hidden="true"><use href="/icons.svg#pi-file-pdf-fill"/></svg>Docs</a>
         {%- elif k == "figmaDesign" %}
         <a class="pj-btn" href="{{ links.figmaDesign | safe }}" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="/icons.svg#io-logo-figma"/></svg>Design</a>
