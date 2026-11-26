@@ -8,7 +8,7 @@ tags = ["Product", "EdTech", "Behavioural Design", "Metrics", "MVP"]
 
 [extra]
 id = 18
-thumbnail = "https://cdn.ujjwalvivek.com/posts/media/student_engagement_thumb.webp"
+thumbnail = "https://cdn.ujjwalvivek.com/posts/media/student_engagement_thumb_v2.webp"
 +++
 
 <p id="n-ff7c7d4334f3">Enhancing Student Engagement on NxtWave’s Learning Platform - Focus on Practicing</p>
