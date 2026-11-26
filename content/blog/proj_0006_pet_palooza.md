@@ -8,7 +8,7 @@ tags = ["Product", "Game Design", "Roblox", "Roadmap", "PRD"]
 
 [extra]
 id = 17
-thumbnail = "/posts/pet-palooza/thumb.webp"
+thumbnail = "https://cdn.ujjwalvivek.com/posts/media/pet_palooza_thumb.webp"
 +++
 
 <p id="n-f28a1cfddf51">A Product Plan - Associate Product Manager, Games</p>
@@ -155,7 +155,7 @@ thumbnail = "/posts/pet-palooza/thumb.webp"
 
 <p id="n-289f2c70e457">I have included a Figma design representing the teams, color-coded. These colors will help us when making the timeline estimates and the roadmap.</p>
 
-{{ <figma slug="team-allocation" src="/posts/pet-palooza/team-allocation.webp" width="2760" height="1586" title="Team Allocation" href="https://www.figma.com/file/wwd73DfpB8psS770DlOOUf/Team-Allocation?node-id=0%3A1&amp;t=edHFxFkipIZHOGVU-1" updated="2025-11-13" /> }}
+{{ <figma slug="team-allocation" src="https://cdn.ujjwalvivek.com/posts/media/pet_palooza_team_allocation.webp" width="2760" height="1586" title="Team Allocation" href="https://www.figma.com/file/wwd73DfpB8psS770DlOOUf/Team-Allocation?node-id=0%3A1&amp;t=edHFxFkipIZHOGVU-1" updated="2025-11-13" /> }}
 
 <p id="n-bf10dccb329a"><strong>Disclaimer:</strong> We have taken an Start-up environment for the assumption on the team sizes. Most of the employees are generalists and not specialists. We will see a bit of knowledge overlap here, and a handful of these team members will have to wear a lot of different hats.</p>
 
@@ -169,7 +169,7 @@ thumbnail = "/posts/pet-palooza/thumb.webp"
 
 <p id="n-eec185c6cbdd">I have included a Figma design representing the teams coordination, color-coded as mentioned in the previous section.</p>
 
-{{ <figma slug="team-coordination" src="/posts/pet-palooza/team-coordination.webp" width="6000" height="2076" title="Team Coordination &amp; Product Pipeline" href="https://www.figma.com/file/H5V8NpYtigeu6MKA6z0LUn/Roadmap?node-id=0%3A1&amp;t=0q8mBgS7mciDcmrm-1" updated="2025-11-13" /> }}
+{{ <figma slug="team-coordination" src="https://cdn.ujjwalvivek.com/posts/media/pet_palooza_team_coordination.webp" width="6000" height="2076" title="Team Coordination &amp; Product Pipeline" href="https://www.figma.com/file/H5V8NpYtigeu6MKA6z0LUn/Roadmap?node-id=0%3A1&amp;t=0q8mBgS7mciDcmrm-1" updated="2025-11-13" /> }}
 
 <p id="n-587e4f25837f"><strong>Disclaimer:</strong> We have taken an Start-up environment for the assumption on the team coordination. Following which a rough Product Roadmap is created to showcase various cross functional responsibilities. We will again see a bit of knowledge overlap here, and a handful of these team members will have to wear a lot of different hats.</p>
 
@@ -207,7 +207,7 @@ thumbnail = "/posts/pet-palooza/thumb.webp"
 
 <p id="n-c0dbb2944cea">Below that, is a timeline view of the roadmap in detail with all the teams involved. Use left-right scroll to view the timeline and click on any ticket to view its content.</p>
 
-{{ <figma slug="weekly-progression" src="/posts/pet-palooza/weekly-progression.webp" width="1920" height="894" title="Weekly Progression" href="https://www.figma.com/file/SN2pJYm0h4R1bXhQWwtJ6O/Progression?node-id=0%3A1&amp;t=AUPXhwRRkjOckn99-1" updated="2025-11-13" /> }}
+{{ <figma slug="weekly-progression" src="https://cdn.ujjwalvivek.com/posts/media/pet_palooza_weekly_progression.webp" width="1920" height="894" title="Weekly Progression" href="https://www.figma.com/file/SN2pJYm0h4R1bXhQWwtJ6O/Progression?node-id=0%3A1&amp;t=AUPXhwRRkjOckn99-1" updated="2025-11-13" /> }}
 
 {{ <roadmap data="data/pet-roadmap.toml" title="Pet Palooza roadmap" /> }}
 
