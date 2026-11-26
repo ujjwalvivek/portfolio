@@ -4,7 +4,7 @@
 // device is lost, the instance is replaced by a fresh one (watchEngineDevice).
 
 import { derive, hexToRgb } from "../lib/colour.js";
-import { reducedMotion } from "../lib/store.js";
+import { on, reducedMotion } from "../lib/store.js";
 import { onColours } from "./drift.js";
 
 export type GameModule = {
@@ -171,7 +171,7 @@ function restart(): void {
   next.module.then(
     async (m) => {
       if (!host) return;
-      m.set_paused(false);
+      m.set_paused(held());
       const c = await next.canvas;
       if (host && current === next) host.append(c);
     },
@@ -183,15 +183,22 @@ function restart(): void {
   );
 }
 
-// Paused under an open overlay (see overlay.ts), running again when the last one closes, if home is still showing it.
-addEventListener("overlays", (e) => {
+// While home shows the scene, it is paused under an open overlay (overlay.ts) and while the wallpaper is switched off
+// (the top-left square, as in v3), and runs again once neither holds.
+let overlaysOpen = false;
+const held = () => overlaysOpen || document.body.classList.contains("bg-off");
+function applyPause(): void {
   const inst = current;
   if (!inst || !host) return;
-  const open = (e as CustomEvent<number>).detail > 0;
   void inst.module.then((m) => {
-    if (host && current === inst) m.set_paused(open);
+    if (host && current === inst) m.set_paused(held());
   }, () => {});
+}
+addEventListener("overlays", (e) => {
+  overlaysOpen = (e as CustomEvent<number>).detail > 0;
+  applyPause();
 });
+on("wallpaper", applyPause);
 
 export function loadGame(): Promise<GameModule> {
   if (!current) {
@@ -211,7 +218,7 @@ export async function showGame(to: HTMLElement): Promise<HTMLCanvasElement> {
   const c = await inst.canvas;
   if (host === to && current === inst) {
     to.append(c);
-    (await inst.module).set_paused(false);
+    (await inst.module).set_paused(held());
   }
   return c;
 }
