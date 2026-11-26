@@ -96,6 +96,6 @@ Feel free to check out the demos below. The first being the port of the old Dino
 
 ## Journey Engine: A v1.1.2 Demo
 
-{{ <embed src="https://journey.ujjwalvivek.com/?v=1.1.2" title="Journey Engine v1.1.2 Demo" cover="journey" caption="Use WASD to move, Shift to Run, and Alt to Dodge. Mouse clicks Attack and Parries." ratio="16/9" /> }}
+{{ <embed gpu="webgpu" src="https://journey.ujjwalvivek.com/?v=1.1.2" title="Journey Engine v1.1.2 Demo" cover="journey" caption="Use WASD to move, Shift to Run, and Alt to Dodge. Mouse clicks Attack and Parries." ratio="16/9" /> }}
 
 > I’m going to sleep.

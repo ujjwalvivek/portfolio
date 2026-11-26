@@ -16,7 +16,7 @@ legacy = "log_0004_journey_updates.md"
 <https://journey.ujjwalvivek.com/?v=0.3.2> - OR - SCROLL DOWN
 {% </warning> %}
 
-{{ <embed src="https://journey.ujjwalvivek.com/?v=0.3.2" title="Journey Engine v0.3.2 Demo" cover="journey" ratio="16/9" /> }}
+{{ <embed gpu="webgpu" src="https://journey.ujjwalvivek.com/?v=0.3.2" title="Journey Engine v0.3.2 Demo" cover="journey" ratio="16/9" /> }}
 
 Use WASD to move, Shift to Run, and Alt to Dodge. Mouse clicks Attack and Parries.
 

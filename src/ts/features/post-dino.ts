@@ -2,7 +2,8 @@
 // vanishes, and on release it reappears higher the longer it was held. Same rules, speeds and obstacles as v3.
 // Changes from v3: keys act only while the game has focus (v3 took space from the whole page, so space could not
 // scroll a post that had the game in it); one pointerdown replaces v3's touchstart plus click, which jumped twice;
-// colours come from the palette instead of fixed aqua.
+// colours come from the palette instead of fixed aqua; the stage spans the post's width instead of v3's 400px, with
+// obstacles entering at its right edge and the same spacing between them, so it plays the same with more to see.
 
 const DINO_SRC = "https://cdn.ujjwalvivek.com/images/dino.svg";
 const BASE_SPEED = 200;
@@ -27,7 +28,7 @@ const html = `
   <div class="dino-start"><p><span class="dino-flicker">&gt;</span> dino doesn't jump. he just blinks ahead.<br>
     <span class="dino-flicker">&gt;</span> why you ask?<br>
     <span class="dino-flicker">&gt;</span> he thinks he's a warlock. he's not.<br>
-    <span class="dino-blink">&gt;</span> press <u>space</u> or tap to start.</p></div>
+    <span class="dino-blink">&gt;</span> click or tap to start, then <u>space</u>.</p></div>
   <div class="dino-player"><img src="${DINO_SRC}" alt="" width="32" height="32" draggable="false"></div>
   <div class="dino-ground"></div>
   <div class="dino-score">0</div>
@@ -66,7 +67,7 @@ export function mount(host: HTMLElement): () => void {
   const reset = () => {
     obstacles.forEach((o) => o.el.remove());
     obstacles = [];
-    addObstacle(400, 32);
+    addObstacle(stage.clientWidth, 32);
     score = 0;
     dead = false;
     draw();
@@ -98,7 +99,8 @@ export function mount(host: HTMLElement): () => void {
     const speed = speedFor(score);
     for (const o of obstacles) o.x -= speed * delta;
     const tail = obstacles.at(-1);
-    if (!tail || tail.x < 200 + Math.random() * 80) addObstacle(400 + Math.random() * 100, 24 + Math.floor(Math.random() * 32));
+    const w = stage.clientWidth;
+    if (!tail || tail.x < w - 200 - Math.random() * 80) addObstacle(w + Math.random() * 100, 24 + Math.floor(Math.random() * 32));
     for (const o of obstacles) {
       if (!o.passed && o.x + 10 < 0) {
         o.passed = true;
@@ -154,6 +156,9 @@ export function mount(host: HTMLElement): () => void {
   };
   const onPointerDown = (e: PointerEvent) => {
     if (e.button !== 0) return;
+    // The press hides the start or game-over overlay under the pointer, and the browser's own click focus would then
+    // land on that hidden overlay and fall back to the page, so space would scroll. Cancel it; the stage focuses itself.
+    e.preventDefault();
     stage.focus({ preventScroll: true });
     press(true);
   };

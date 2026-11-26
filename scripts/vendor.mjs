@@ -12,6 +12,17 @@ const PACKAGES = [
     integrity: "sha512-+IlqQ2yZdDRfU9c2Ph1RVUiq1C18P9szFb/pPlUV8wd5xjvrrcUUN69ribBqH8ylC/p5wEtR3BYzCOcQwOqx8Q==",
     files: { "package/dist/index.js": "substrate/index.js", "package/dist/recipes.js": "substrate/recipes.js" },
   },
+  // Dino Blink, the game in log_0005's iframe (/games/dino-blink.html). dino_blink.js finds its wasm next to itself.
+  {
+    name: "@ujjwalvivek/dino-blink",
+    version: "1.0.0",
+    integrity: "sha512-pHs6N1ATqd6e5lIYFxepks4AN6WhuT88PLkl3V5dnuBjz/++ys+qaXTIMGz93sZcABGVJQZOJUzrY5gZW0CoVg==",
+    files: {
+      "package/dino_blink.js": "dino-blink/dino_blink.js",
+      "package/dino_blink_bg.wasm": "dino-blink/dino_blink_bg.wasm",
+      "package/LICENSE": "dino-blink/LICENSE",
+    },
+  },
   // PDF viewer (D-004). The modern ESM build only: no cmaps, standard fonts or wasm decoders, since the resume PDFs
   // embed their fonts and carry no JPX/JBIG2 images. pdf.js then falls back to built-in handling for anything else.
   {

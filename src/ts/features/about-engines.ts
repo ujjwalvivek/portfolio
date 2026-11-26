@@ -1,17 +1,16 @@
 // The engine cards' live numbers (v3 JourneyBadge, and its second card, now Substrate). Everything comes from echopoint's
-// JSON store, which caches GitHub, npm and crates.io, except Substrate's version list, which comes from the npm registry
-// (Substrate has git tags but no GitHub releases). Each slot holds "-" from the HTML until its answer is in; a request
+// JSON store, which caches GitHub, npm and crates.io. Substrate has git tags but no GitHub releases, so its latest
+// release row reads echopoint's npm:<name>:time entry instead. Each slot holds "-" from the HTML until its answer is in; a request
 // that fails leaves its slots at "-" and marks the first timeline row "unavailable". Nothing is ever made up.
 // Answers are kept for the visit, so coming back to the page draws at once.
 
 const EP = "https://echopoint.ujjwalvivek.com/v1/store/";
-const NPM = "https://registry.npmjs.org/";
 
 type Repo = { description?: string | null; pushed_at?: string; stargazers_count?: number; license?: { spdx_id?: string | null } | null };
 type Release = { name?: string | null; tag_name: string; published_at?: string | null; html_url?: string; draft?: boolean; author?: { login?: string } };
 type Commit = { sha: string; message: string; url?: string; date: string; additions?: number; deletions?: number };
 type Tag = { name: string };
-type NpmDoc = { name?: string; time?: Record<string, string> };
+type NpmTime = { latest?: string; published_at?: string };
 
 const cache = new Map<string, Promise<unknown>>();
 function json<T>(url: string): Promise<T> {
@@ -87,16 +86,15 @@ const releaseRows = (list: Release[]): Row[] =>
       return { main, meta: [document.createTextNode(`${when} · ${r.author?.login ?? "-"}`)], title: name };
     });
 
-function npmRows(doc: NpmDoc): Row[] {
-  const pkg = doc.name ?? "";
-  return Object.entries(doc.time ?? {})
-    .filter(([v]) => v !== "created" && v !== "modified")
-    .sort((a, b) => Date.parse(b[1]) - Date.parse(a[1]))
-    .map(([v, when]) => ({
-      main: [link(`v${v}`, `https://www.npmjs.com/package/${pkg}/v/${v}`)],
-      meta: [document.createTextNode(`${longDate(when)} · npm`)],
-      title: `${pkg} ${v}`,
-    }));
+function npmRows(name: string, t: NpmTime): Row[] {
+  if (!t.latest) return [];
+  const pkg = `@ujjwalvivek/${name}`;
+  const v = t.latest;
+  return [{
+    main: [link(`v${v}`, `https://www.npmjs.com/package/${pkg}/v/${v}`)],
+    meta: [document.createTextNode(`${t.published_at ? longDate(t.published_at) : "-"} · npm`)],
+    title: `${pkg} ${v}`,
+  }];
 }
 
 const commitRows = (list: Commit[]): Row[] =>
@@ -173,8 +171,9 @@ export function mount(host: HTMLElement): () => void {
   for (const list of host.querySelectorAll<HTMLElement>("[data-ab-releases]")) {
     when(store<Release[]>(`github:${list.dataset.abReleases}:releases`), (l) => fillRows(list, releaseRows(l)), () => failRows(list));
   }
-  for (const list of host.querySelectorAll<HTMLElement>("[data-ab-npm-versions]")) {
-    when(json<NpmDoc>(NPM + list.dataset.abNpmVersions), (d) => fillRows(list, npmRows(d)), () => failRows(list));
+  for (const list of host.querySelectorAll<HTMLElement>("[data-ab-npm-latest]")) {
+    const name = list.dataset.abNpmLatest ?? "";
+    when(store<NpmTime>(`npm:${name}:time`), (t) => fillRows(list, npmRows(name, t)), () => failRows(list));
   }
   for (const list of host.querySelectorAll<HTMLElement>("[data-ab-commits]")) {
     when(store<Commit[]>(`github:${list.dataset.abCommits}:commits`), (l) => fillRows(list, commitRows(l)), () => failRows(list));

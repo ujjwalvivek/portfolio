@@ -16,3 +16,8 @@ canvas {
   cursor: default !important;
   user-select: none !important;
 }
+
+/* shown instead of the game when the browser has no WebGPU adapter; post.css draws .embed-nogpu the same way */
+@font-face { font-family: "JetBrains Mono"; src: url("https://cdn.ujjwalvivek.com/fonts/JetBrainsMono/s1/Regular.woff2") format("woff2"); font-weight: 400; font-display: swap; }
+.no-gpu { max-width: 32rem; padding: 1.5rem; font: 400 13px/1.6 "JetBrains Mono", ui-monospace, monospace; color: #b8b8c0; text-align: center; }
+.no-gpu-k { margin-bottom: 0.5rem; font-size: 12px; letter-spacing: 0.3em; text-transform: uppercase; color: #e8e8ee; }
