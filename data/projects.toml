@@ -5,9 +5,9 @@
 # title        row title; hovering or focusing it shows content
 # content      description paragraphs
 # tags         all tags; the first visibleTags show, the rest sit behind a +n chip (default 2, as v3's TagCell)
-# contentLinks blogPost (a /blog/<file>.md path), caseStudy (a /work/ page), notionEmbed and pdfDocument (open in an
-#              overlay), figmaDesign, githubRepo, websiteLink. At most two buttons show, in v3's ButtonGroup order:
-#              blog first, then the first of case study, notion, pdf, figma, github, web.
+# contentLinks blogPost (a /blog/<file>.md path), notionEmbed and pdfDocument (open in an overlay),
+#              figmaDesign, githubRepo, websiteLink. At most two buttons show, in v3's ButtonGroup order:
+#              blog first, then the first of notion, pdf, figma, github, web.
 
 [[projects]]
 id = "dev-1"
@@ -293,7 +293,7 @@ content = [
 tags = ["Product Plan", "Gaming", "Economy Design", "Trust & Safety", "Roadmap"]
 
 [projects.contentLinks]
-caseStudy = "/work/pet-palooza/"
+blogPost = "/blog/proj_0006_pet_palooza.md"
 
 [[projects]]
 id = "pm-4"

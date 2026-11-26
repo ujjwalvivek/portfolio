@@ -1,4 +1,4 @@
-{#- Components for case studies (content/work), the documents that used to live on Notion. Styles in static/css/case.css.
+{#- Components for posts converted from Notion documents (notion/convert.py). Styles in static/css/post.css.
     figma: the design's exported frame in a card like Notion's Figma preview, with a link out to the file.
     roadmap: the roadmap database, as Notion showed it: a timeline tab and a table tab (radio buttons, no JS). -#}
 {% component figma(slug, src, width, height, title, href, updated="") %}
@@ -7,12 +7,12 @@
 <figcaption class="figma-foot"><svg class="icon figma-logo" aria-hidden="true"><use href="/icons.svg#io-logo-figma"/></svg><span class="figma-meta"><span class="figma-title">{{ title }}</span>{% if updated %}<span class="figma-when">Figma · last modified {{ updated | date(format="%-d %b %Y") }}</span>{% endif %}</span><a class="chip figma-open" href="{{ href }}" target="_blank" rel="noopener noreferrer">open in figma</a></figcaption>
 </figure>
 {%- endcomponent figma %}
-{% component roadmap() %}
-{%- set rm = load_data(path="data/pet-roadmap.toml") -%}
-<section class="roadmap" aria-label="Pet Palooza roadmap">
+{% component roadmap(data, title="Roadmap") %}
+{%- set rm = load_data(path=data) -%}
+<section class="roadmap" aria-label="{{ title }}">
 <input class="rm-view" type="radio" name="rm-view" id="rm-view-timeline" checked>
 <input class="rm-view" type="radio" name="rm-view" id="rm-view-table">
-<div class="rm-tabs" role="presentation"><label for="rm-view-timeline"><svg class="icon" aria-hidden="true"><use href="/icons.svg#bs-journal-album"/></svg>Pet Palooza Roadmap</label><label for="rm-view-table"><svg class="icon" aria-hidden="true"><use href="/icons.svg#ep-docs"/></svg>Table View Roadmap</label></div>
+<div class="rm-tabs" role="presentation"><label for="rm-view-timeline"><svg class="icon" aria-hidden="true"><use href="/icons.svg#bs-journal-album"/></svg>Timeline</label><label for="rm-view-table"><svg class="icon" aria-hidden="true"><use href="/icons.svg#ep-docs"/></svg>Table</label></div>
 <ul class="rm-legend" aria-label="Teams">{% for t in rm.teams %}<li><i class="rm-dot" data-team="{{ t.label }}"></i>{{ t.label }}</li>{% endfor %}</ul>
 
 <div class="rm-pane rm-timeline">
