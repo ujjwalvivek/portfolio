@@ -126,7 +126,7 @@ So the architecture expanded.
 At one point the system looked roughly like this:
 
 ``` bash
-┌─────────────────────────────────────────────────────────────────────────┐
+ ┌─────────────────────────────────────────────────────────────────────────┐
  │                           FRONTEND LAYER                                │
  │-------------------------------------------------------------------------│
  │  ▸ React / Vue UI (Desktop & Web)                                       │
@@ -225,7 +225,7 @@ That’s it.
 The entire distributed clipboard idea collapsed into a much smaller model.
 
 ```bash
-Client A ─────┐
+ Client A ─────┐
                │
                ▼
          Synclippy Room

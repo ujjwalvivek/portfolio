@@ -22,7 +22,7 @@ legacy = "log_0003_going_open_source.md"
 ---
 
 ```bash
-┏━━━━━━━━━━━━━━━━━━━━━━━┓
+ ┏━━━━━━━━━━━━━━━━━━━━━━━┓
  ┃   TABLE OF CONTENTS   ┃
  ┗━━━━━━━━━━━━━━━━━━━━━━━┛
    1. Re-Booting the Site (Why Open Source?)
