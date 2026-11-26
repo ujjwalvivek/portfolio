@@ -27,7 +27,7 @@ The audio worklet (/js/shell/audio-worklet.js) is governed by script-src 'self'.
 
 ## /games/*
 
-The Dino Blink frame gets its own policy: the /* CSP is detached with `! Content-Security-Policy` and replaced with a stricter one that only allows the site itself, the site's font CDN for the no-WebGPU message, and frame-ancestors 'self' so posts can frame it. The game is vendored into /vendor/dino-blink@1.0.0/ by scripts/vendor.mjs, so nothing in the frame comes from another origin. Its inline style and scripts moved to dino-blink.css and dino-blink.js.
+The Dino Blink frame gets its own policy: the /* CSP is detached with `! Content-Security-Policy` and replaced with a stricter one that only allows the site itself, the site's font CDN for the no-WebGPU message, and frame-ancestors 'self' so posts can frame it. The game is vendored into /vendor/dino-blink@1.0.1/ by scripts/vendor.mjs, so nothing in the frame comes from another origin. Its inline style and scripts moved to dino-blink.css and dino-blink.js.
 
 ## Keeping it clean
 

@@ -15,8 +15,8 @@ const PACKAGES = [
   // Dino Blink, the game in log_0005's iframe (/games/dino-blink.html). dino_blink.js finds its wasm next to itself.
   {
     name: "@ujjwalvivek/dino-blink",
-    version: "1.0.0",
-    integrity: "sha512-pHs6N1ATqd6e5lIYFxepks4AN6WhuT88PLkl3V5dnuBjz/++ys+qaXTIMGz93sZcABGVJQZOJUzrY5gZW0CoVg==",
+    version: "1.0.1",
+    integrity: "sha512-Wy8llBzS5aA/YfVdeoAtH/UTGnV605l/CPksRraSmhIbLEBjPcqevHiktoMIgT6lJ4Z2qrOpecaGvsQH1SgNfw==",
     files: {
       "package/dino_blink.js": "dino-blink/dino_blink.js",
       "package/dino_blink_bg.wasm": "dino-blink/dino_blink_bg.wasm",

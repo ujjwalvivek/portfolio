@@ -1,6 +1,6 @@
 // Dino Blink frame boot, moved out of inline scripts so the page runs under the site CSP.
 // The game itself is vendored by scripts/vendor.mjs, so the frame loads nothing from other origins.
-import init from "/vendor/dino-blink@1.0.0/dino_blink.js";
+import init from "/vendor/dino-blink@1.0.1/dino_blink.js";
 
 // focusing the canvas must not scroll the parent post
 const nativeFocus = HTMLElement.prototype.focus;
@@ -8,7 +8,7 @@ HTMLElement.prototype.focus = function (options) {
   nativeFocus.call(this, { ...options, preventScroll: true });
 };
 
-// Dino Blink 1.0.0 is built on journey-engine 1.1.2, whose wgpu has no WebGL fallback: with no WebGPU adapter it
+// Dino Blink 1.0.x is built on journey-engine 1.1.2, whose wgpu has no WebGL fallback: with no WebGPU adapter it
 // panics and the canvas stays black. So ask for an adapter first and say so instead.
 function noGpu() {
   document.body.classList.remove("pre-start");
