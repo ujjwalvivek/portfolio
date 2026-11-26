@@ -20,13 +20,13 @@ Could I learn GPUI, or at least get an idea of it, by building a tiny native pla
 
 I already had a working project hub called [DevHub](https://github.com/ujjwalvivek/devhub), built with egui. Asking an LLM to rewrite the port completely, and replacing it immediately would have turned an experiment into a migration before I even understood the new framework, and honestly, a hot pile of mess. The safer approach was to leave the existing application intact, create a separate workspace, and use `DevHub` only as a read-only behavioral reference.
 
-<img src="https://raw.githubusercontent.com/ujjwalvivek/devhub/b381cbbff767acd4067d23680aec5c44b5d58eab/web/public/images/legacy/shot-2.webp" alt="Devhub">
+<img src="https://cdn.ujjwalvivek.com/posts/media/log_0010_devhub_legacy.webp" alt="Devhub">
 
 A good four days later, the playground had become a complete GPUI successor with local and SSH project discovery, file browsing, content search, Markdown and code views, versioned persistence, themes, cancellation, native Windows integration, and cross-platform release automation. This sounds like a story about code-generation speed.
 
 It is not.
 
-<img src="https://raw.githubusercontent.com/ujjwalvivek/devhub/a19035008ac5ed1aedd42cea370fed73b65d257b/web/public/images/gpui/shot-5.webp" alt="Devhub-GPUI">
+<img src="https://cdn.ujjwalvivek.com/posts/media/log_0010_devhub_gpui.webp" alt="Devhub-GPUI">
 
 The code was the comparatively easy part. The difficult part was keeping a long-running LLM collaboration coherent while requirements changed rapidly, visual experiments failed, platform behavior contradicted assumptions, and the definition of parity kept becoming more precise. The project succeeded because its state lived in a continuously maintained architecture decision record, a.k.a. the **ADR**, referenced throughout the blog.
 
