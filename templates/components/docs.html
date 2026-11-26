@@ -40,7 +40,7 @@
 <thead><tr><th scope="col">Name</th><th scope="col">Team</th><th scope="col">Date</th><th scope="col">Tasks</th></tr></thead>
 <tbody>
 {%- for r in rm.rows %}
-<tr><th scope="row">{{ r.name }}</th><td><ul class="rm-chips">{% for t in r.teams %}<li data-team="{{ t }}">{{ t }}</li>{% endfor %}</ul></td><td class="rm-when">{{ r.when }}</td><td>{% if r.tasks %}<details class="rm-tasks"><summary>{{ r.tasks | length }} task{% if r.tasks | length != 1 %}s{% endif %}</summary><ul class="checklist">{% for k in r.tasks %}<li><span class="cl-box" aria-hidden="true"></span><span class="cl-text">{{ k }}</span></li>{% endfor %}</ul></details>{% else %}<span class="rm-none">-</span>{% endif %}</td></tr>
+<tr><th scope="row">{{ r.name }}</th><td data-label="Team"><ul class="rm-chips">{% for t in r.teams %}<li data-team="{{ t }}">{{ t }}</li>{% endfor %}</ul></td><td class="rm-when" data-label="Date">{{ r.when }}</td><td data-label="Tasks">{% if r.tasks %}<details class="rm-tasks"><summary>{{ r.tasks | length }} task{% if r.tasks | length != 1 %}s{% endif %}</summary><ul class="checklist">{% for k in r.tasks %}<li><span class="cl-box" aria-hidden="true"></span><span class="cl-text">{{ k }}</span></li>{% endfor %}</ul></details>{% else %}<span class="rm-none">-</span>{% endif %}</td></tr>
 {%- endfor %}
 </tbody></table></div>
 </div>

@@ -850,7 +850,27 @@
 
 @media (max-width: 700px) {
   .post .rm-head, .post .rm-row { grid-template-columns: 10rem 1fr; }
-  .post .markdown table.nt tbody th[scope="row"] { width: auto; }
+  /* tables stack into cards on a phone: one row per card, each cell full width under its column's name */
+  .post .markdown table.nt,
+  .post .markdown table.nt :is(tbody, tr, th, td) { display: block; width: auto; }
+  .post .markdown table.nt thead { display: none; }
+  .post .markdown table.nt tbody tr { padding: 0.4rem 0; border-bottom: 1px dashed rgba(var(--primary-color-rgb), 0.25); }
+  .post .markdown table.nt tbody tr:last-child { border-bottom: 0; }
+  .post .markdown table.nt tbody :is(td, th) { padding: 0.35rem 1rem; border: 0; }
+  .post .markdown table.nt tbody th[scope="row"] { color: var(--dynamic-dominant-color); }
+  /* the first cell is the card's title (the arrow rule above already keeps it unlabelled) */
+  .post .markdown table.nt tbody td:first-child[data-label] { font-weight: 600; color: var(--text-color); }
+  .post .markdown table.nt td[data-label]::before {
+    content: attr(data-label);
+    display: block;
+    margin-bottom: 0.15rem;
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: rgba(var(--dynamic-dominant-color-rgb), 0.85);
+  }
+  .post .rm-when { white-space: normal; }
 }
 
 /* ---------- lightbox (on body) ---------- */
