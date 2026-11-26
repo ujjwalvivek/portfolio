@@ -5,9 +5,9 @@
 # title        row title; hovering or focusing it shows content
 # content      description paragraphs
 # tags         all tags; the first visibleTags show, the rest sit behind a +n chip (default 2, as v3's TagCell)
-# contentLinks blogPost (a /blog/<file>.md path), notionEmbed and pdfDocument (open in an overlay),
-#              figmaDesign, githubRepo, websiteLink. At most two buttons show, in v3's ButtonGroup order:
-#              blog first, then the first of notion, pdf, figma, github, web.
+# contentLinks blogPost (a /blog/<file>.md path), caseStudy (a /work/ page), notionEmbed and pdfDocument (open in an
+#              overlay), figmaDesign, githubRepo, websiteLink. At most two buttons show, in v3's ButtonGroup order:
+#              blog first, then the first of case study, notion, pdf, figma, github, web.
 
 [[projects]]
 id = "dev-1"
@@ -286,22 +286,22 @@ websiteLink = "https://www.autovrse.com/case-study-ultratech"
 
 [[projects]]
 id = "pm-3"
-title = "Roblox Virtual Economy: Social Mechanics & Safety Architecture"
+title = "Roblox Kids' Game: Product Plan, Economy & Safety Design"
 content = [
-  "Developed a comprehensive Product Spec for 'Pet Palooza,' a Roblox educational MMO inspired by 'Adopt Me' mechanics. modeled the virtual economy (currency sinks/faucets) to drive financial literacy KPIs while implementing a strict 'Safety-by-Design' framework for COPPA/GDPR-K compliance.",
+  "A product plan for Pet Palooza, a Roblox pet-care game for kids aged 6 to 8, written for PlayShifu in 2023. It breaks down why Adopt Me works and where it fails young players (the grind, trading and pay-to-win purchases), then designs a simpler game that teaches pet care, empathy and money habits through a virtual currency and savings account, with parental controls and reporting in place of trading and gift boxes. Covers team allocation, cross-team coordination, a week-by-week roadmap and a PRD.",
 ]
-tags = ["Strategy", "Gaming", "Economy Design", "Platform Compliance", "Trust & Safety"]
+tags = ["Product Plan", "Gaming", "Economy Design", "Trust & Safety", "Roadmap"]
 
 [projects.contentLinks]
-notionEmbed = "https://ujjwalvivek.notion.site/ebd//4bb4920a63f7452eb2f05eef1bb3868c"
+caseStudy = "/work/pet-palooza/"
 
 [[projects]]
 id = "pm-4"
-title = "EdTech Engagement Strategy: Behavioral Analytics & UX Optimization"
+title = "EdTech Engagement Strategy: Behavioural Design & MVP Plan"
 content = [
-  "Engineered a data-driven retention framework for NxtWave’s learning platform. Leveraged behavioral analytics to identify user churn points and implemented a gamified UX overhaul, resulting in a 2x increase in student engagement metrics.",
+  "A strategy and MVP plan for getting NxtWave students to practise, not just watch, written as a job assignment in 2024. It reviews the learning portal, proposes features from product technology, behavioural science (commitment devices, feedback loops, streaks) and community, then prioritises three: integrated practice environments, automated feedback and grading, and goal-setting commitments. Includes success metrics, team allocation and a seven-stage MVP roadmap.",
 ]
-tags = ["Product Strategy", "Analytics", "User Retention", "A/B Testing"]
+tags = ["Product Strategy", "Behavioural Design", "Engagement Metrics", "MVP Planning"]
 
 [projects.contentLinks]
 notionEmbed = "https://ujjwalvivek.notion.site/ebd//b54e0f4355ea49b6841d9e4b9d2954ff"

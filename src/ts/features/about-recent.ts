@@ -10,7 +10,7 @@ export function mount(root: HTMLElement): () => void {
     const a = (e.target as Element | null)?.closest?.<HTMLAnchorElement>("a[data-ab-open]");
     if (!a || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
     const kind = a.dataset.abOpen;
-    if (kind !== "notion" && kind !== "pdf") return;
+    if (kind !== "case" && kind !== "notion" && kind !== "pdf") return;
     e.preventDefault();
     void (import(EMBED) as Promise<Embed>)
       .then((m) => {

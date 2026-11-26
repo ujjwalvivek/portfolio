@@ -1,0 +1,48 @@
+{#- Components for case studies (content/work), the documents that used to live on Notion. Styles in static/css/case.css.
+    figma: the design's exported frame in a card like Notion's Figma preview, with a link out to the file.
+    roadmap: the roadmap database, as Notion showed it: a timeline tab and a table tab (radio buttons, no JS). -#}
+{% component figma(slug, src, width, height, title, href, updated="") %}
+<figure class="figma-card" id="fig-{{ slug }}">
+<div class="figma-shot"><img src="{{ src }}" alt="{{ title }}, a Figma design" width="{{ width }}" height="{{ height }}" loading="lazy"></div>
+<figcaption class="figma-foot"><svg class="icon figma-logo" aria-hidden="true"><use href="/icons.svg#io-logo-figma"/></svg><span class="figma-meta"><span class="figma-title">{{ title }}</span>{% if updated %}<span class="figma-when">Figma · last modified {{ updated | date(format="%-d %b %Y") }}</span>{% endif %}</span><a class="chip figma-open" href="{{ href }}" target="_blank" rel="noopener noreferrer">open in figma</a></figcaption>
+</figure>
+{%- endcomponent figma %}
+{% component roadmap() %}
+{%- set rm = load_data(path="data/pet-roadmap.toml") -%}
+<section class="roadmap" aria-label="Pet Palooza roadmap">
+<input class="rm-view" type="radio" name="rm-view" id="rm-view-timeline" checked>
+<input class="rm-view" type="radio" name="rm-view" id="rm-view-table">
+<div class="rm-tabs" role="presentation"><label for="rm-view-timeline"><svg class="icon" aria-hidden="true"><use href="/icons.svg#bs-journal-album"/></svg>Pet Palooza Roadmap</label><label for="rm-view-table"><svg class="icon" aria-hidden="true"><use href="/icons.svg#ep-docs"/></svg>Table View Roadmap</label></div>
+<ul class="rm-legend" aria-label="Teams">{% for t in rm.teams %}<li><i class="rm-dot" data-team="{{ t.label }}"></i>{{ t.label }}</li>{% endfor %}</ul>
+
+<div class="rm-pane rm-timeline">
+<div class="rm-scroll">
+<div class="rm-grid">
+<div class="rm-head"><span class="rm-name-h">Name</span><svg class="rm-axis" role="img" aria-label="Weeks from {{ rm.start }} to {{ rm.end }}">{% for w in rm.weeks %}{% if w.month %}<text x="{{ w.left }}%" y="12" class="rm-month">{{ w.month }}</text>{% endif %}<text x="{{ w.left }}%" y="28" class="rm-week">{{ w.label }}</text>{% endfor %}</svg></div>
+{%- for r in rm.rows %}
+<div class="rm-row{% if r.milestone %} is-milestone{% endif %}">
+<span class="rm-name" title="{{ r.name }}, {{ r.when }}">{{ r.name }}</span>
+<svg class="rm-track" role="img" aria-label="{{ r.name }}: {{ r.when }}; {{ r.teams | join(sep=', ') }}">
+{%- for w in rm.weeks %}<line class="rm-tick" x1="{{ w.left }}%" x2="{{ w.left }}%" y1="0" y2="100%"/>{% endfor -%}
+{%- if r.milestone %}<svg x="{{ r.left + r.width / 2 }}%" y="50%" overflow="visible"><rect class="rm-diamond" x="-6" y="-6" width="12" height="12" transform="rotate(45)"/></svg>
+{%- else %}<rect class="rm-bar" x="{{ r.left }}%" width="{{ r.width }}%" y="5" height="18"/>{% endif -%}
+{%- set n = r.teams | length -%}
+{%- for t in r.teams %}<svg x="{{ r.left + r.width }}%" y="0" overflow="visible"><rect class="rm-team" data-team="{{ t }}" x="{{ loop.index0 * 7 }}" transform="translate({% if r.milestone %}10{% else %}6{% endif %},0)" y="7" width="5" height="14"/></svg>{% endfor -%}
+</svg>
+</div>
+{%- endfor %}
+</div>
+</div>
+</div>
+
+<div class="rm-pane rm-table">
+<div class="nt-wrap"><table class="nt rm-list">
+<thead><tr><th scope="col">Name</th><th scope="col">Team</th><th scope="col">Date</th><th scope="col">Tasks</th></tr></thead>
+<tbody>
+{%- for r in rm.rows %}
+<tr><th scope="row">{{ r.name }}</th><td><ul class="rm-chips">{% for t in r.teams %}<li data-team="{{ t }}">{{ t }}</li>{% endfor %}</ul></td><td class="rm-when">{{ r.when }}</td><td>{% if r.tasks %}<details class="rm-tasks"><summary>{{ r.tasks | length }} task{% if r.tasks | length != 1 %}s{% endif %}</summary><ul class="checklist">{% for k in r.tasks %}<li><span class="cl-box" aria-hidden="true"></span><span class="cl-text">{{ k }}</span></li>{% endfor %}</ul></details>{% else %}<span class="rm-none">-</span>{% endif %}</td></tr>
+{%- endfor %}
+</tbody></table></div>
+</div>
+</section>
+{%- endcomponent roadmap %}

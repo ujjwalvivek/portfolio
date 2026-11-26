@@ -1,0 +1,230 @@
+/* Case studies (content/work, templates/case.html): the documents that used to be Notion pages, shown inside the
+   projects overlay's frame. Built on post.css's markdown rules, with what a Notion document needs on top: its own
+   emphasis (bold is not shouted in capitals), dividers, Notion's text colours mapped to the palette, tables with row
+   headers, columns, checklists, Figma cards and the roadmap. Same design system: square corners, borders not shadows,
+   dashed = inert, palette colours. */
+
+/* ---------- page ---------- */
+
+html:has(body.case-page) { background: rgb(var(--bit-dark-color-rgb)); scrollbar-gutter: stable; }
+body.case-page { min-height: 100vh; background: rgb(var(--bit-dark-color-rgb)); }
+.post.case { width: min(var(--main-content-width), 100%); margin: 0 auto; padding: 1.5rem 0 3rem; }
+.post.case .post-body { padding: 0 var(--post-pad); background: none; }
+.post.case .post-body::before { content: none; }
+
+.case-head { padding: 0 var(--post-pad) 1rem; }
+.case-kind { display: flex; gap: 0.5rem; margin: 0 0 0.6rem; font-family: var(--font-krypton); font-size: 0.75rem; }
+.case-kind span {
+  padding: 0.1rem 0.4rem;
+  color: var(--dynamic-dominant-color);
+  background: rgba(var(--dynamic-dominant-color-rgb), 0.05);
+  border: 1px solid rgba(var(--dynamic-hsl-average-rgb), 0.3);
+}
+.case-title {
+  margin: 0;
+  font-family: var(--font-neon);
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  color: var(--text-color);
+  text-shadow: 0 0 1.5px rgba(var(--dynamic-dominant-color-rgb), 1);
+}
+
+/* ---------- text ---------- */
+
+/* Notion's bold marks phrases inside sentences, hundreds of them; the post rule's capitals would shout every one */
+.post.case .markdown strong { font-weight: 700; text-transform: none; }
+.post.case .markdown hr { display: block; height: 0; margin: 2rem 0 1rem; border: 0; border-top: 1px dashed rgba(var(--primary-color-rgb), 0.3); }
+.post.case .markdown p { margin: 0.6rem 0; }
+.post.case .markdown .nindent { padding-left: 1.5rem; }
+
+/* Notion's text colours: yellow was the document's highlight, purple its second voice */
+.post.case .markdown .nc-yellow { color: var(--dynamic-dominant-color); }
+.post.case .markdown .nc-purple { color: var(--dynamic-hsl-average-ink); }
+.post.case .markdown .nc-red { color: var(--status-ram-color); }
+.post.case .markdown .nc-gray { color: rgba(var(--text-color-rgb), 0.6); }
+.post.case .markdown .nc-yellow-bg { background: rgba(var(--dynamic-dominant-color-rgb), 0.12); }
+/* a coloured run is often bold too, and the bold rule sets its own colour: the run's colour wins */
+.post.case .markdown [class*="nc-"] :is(strong, em, u, a) { color: inherit; }
+
+/* a link to another part of this document, or to a Figma card on it */
+.post.case .markdown a.nm {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3em;
+  padding: 0 0.35em;
+  text-decoration: none;
+  color: var(--dynamic-dominant-color);
+  border: 1px dashed rgba(var(--dynamic-dominant-color-rgb), 0.5);
+}
+.post.case .markdown a.nm:hover { opacity: 1; border-style: solid; background: rgba(var(--dynamic-dominant-color-rgb), 0.1); }
+.post.case .markdown a.nm::before { content: "↗"; font-size: 0.8em; }
+.post.case .markdown a.nm-figma::before { content: none; }
+
+/* the TOC is open here: a document reader expects it */
+.post.case .toc { margin: 1rem 0 0.5rem; }
+
+/* ---------- checklists ---------- */
+
+.post .markdown ul.checklist { padding-left: 0; }
+.post .markdown ul.checklist > li { display: flex; align-items: flex-start; gap: 0.6rem; margin-bottom: 0.45em; }
+.post .markdown ul.checklist > li::before { content: none; }
+.post .markdown .cl-box {
+  position: relative;
+  flex: 0 0 auto;
+  width: 0.9rem;
+  height: 0.9rem;
+  margin-top: 0.2rem;
+  border: 1px solid rgba(var(--dynamic-dominant-color-rgb), 0.7);
+}
+.post .markdown li.is-done > .cl-box { background: rgba(var(--dynamic-dominant-color-rgb), 0.85); border-color: var(--dynamic-dominant-color); }
+.post .markdown li.is-done > .cl-box::after {
+  content: "";
+  position: absolute;
+  left: 0.26rem;
+  top: 0.05rem;
+  width: 0.25rem;
+  height: 0.5rem;
+  border: solid rgb(var(--bit-dark-color-rgb));
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+.post .markdown li.is-done > .cl-text { color: rgba(var(--text-color-rgb), 0.55); text-decoration: line-through; text-decoration-color: rgba(var(--text-color-rgb), 0.35); }
+
+/* ---------- tables ---------- */
+
+.post.case .nt-wrap { overflow-x: auto; margin: 1rem 0; }
+.post.case .markdown table.nt { margin: 0; }
+.post.case .markdown table.nt tbody td:first-child { padding-left: 1rem; }
+.post.case .markdown table.nt tbody td:first-child::before { content: none; }
+.post.case .markdown table.nt :is(td, th) { vertical-align: top; }
+/* a header column: the row's label, in the accent, like Notion's grey header cells */
+.post.case .markdown table.nt tbody th[scope="row"] {
+  width: 14rem;
+  padding: 0.6rem 1rem;
+  text-align: left;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  color: var(--dynamic-dominant-color);
+  background: rgba(var(--dynamic-dominant-color-rgb), 0.06);
+  border-bottom: 1px dashed rgba(var(--primary-color-rgb), 0.15);
+  border-right: 1px solid rgba(var(--dynamic-dominant-color-rgb), 0.3);
+}
+.post.case .markdown table.nt tbody tr:last-child th { border-bottom: 0; }
+
+/* ---------- columns (Notion's column list) ---------- */
+
+.post.case .ncols { display: grid; grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr)); gap: 1rem; margin: 1rem 0; }
+.post.case .ncol { min-width: 0; }
+.post.case .ncol hr { margin: 0.3rem 0; border-top-style: solid; }
+.post.case .ncol p { margin: 0.3rem 0; font-size: 0.85rem; }
+
+/* ---------- Figma cards (Notion's Figma preview) ---------- */
+
+.post.case .figma-card { margin: 1.5rem 0; border: 1px solid rgba(var(--primary-color-rgb), 0.35); background: rgba(var(--background-color-rgb), 0.6); }
+.post.case .figma-shot { background: #1e1e1e; }
+.post.case .markdown .figma-shot img { display: block; width: 100%; height: auto; margin: 0; padding: 0; border: 0; box-shadow: none; background: none; }
+.post.case .markdown .figma-foot {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0.6rem 0.9rem;
+  text-align: left;
+  border-top: 1px solid rgba(var(--primary-color-rgb), 0.35);
+}
+.post.case .figma-logo { font-size: 1.4rem; color: var(--dynamic-dominant-color); }
+.post.case .figma-meta { display: flex; flex-direction: column; min-width: 0; flex: 1; }
+.post.case .figma-title { font-size: 0.85rem; font-weight: 700; color: var(--text-color); }
+.post.case .figma-when { font-size: 0.72rem; color: rgba(var(--text-color-rgb), 0.6); }
+.post.case .markdown a.figma-open { flex: 0 0 auto; text-decoration: none; font-size: 0.72rem; }
+
+/* ---------- roadmap (Notion's timeline and table views) ---------- */
+
+.roadmap { margin: 1.5rem 0; }
+.roadmap .rm-view { position: absolute; opacity: 0; pointer-events: none; }
+.rm-tabs { display: flex; gap: 0.25rem; border-bottom: 1px solid rgba(var(--primary-color-rgb), 0.3); }
+.rm-tabs label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.8rem;
+  font-size: 0.8rem;
+  cursor: pointer;
+  color: rgba(var(--text-color-rgb), 0.65);
+  border: 1px dashed transparent;
+  border-bottom: 0;
+}
+.rm-tabs label:hover { color: var(--text-color); border-color: rgba(var(--dynamic-dominant-color-rgb), 0.4); }
+#rm-view-timeline:checked ~ .rm-tabs label[for="rm-view-timeline"],
+#rm-view-table:checked ~ .rm-tabs label[for="rm-view-table"] {
+  color: var(--dynamic-dominant-color);
+  border: 2px solid var(--dynamic-dominant-color);
+  border-bottom: 0;
+  background: rgba(var(--dynamic-dominant-color-rgb), 0.08);
+}
+.rm-view:focus-visible ~ .rm-tabs label { outline-offset: 2px; }
+#rm-view-timeline:focus-visible ~ .rm-tabs label[for="rm-view-timeline"],
+#rm-view-table:focus-visible ~ .rm-tabs label[for="rm-view-table"] { outline: 2px solid var(--dynamic-dominant-color); }
+.rm-pane { display: none; }
+#rm-view-timeline:checked ~ .rm-timeline,
+#rm-view-table:checked ~ .rm-table { display: block; }
+
+.post .markdown .rm-legend { display: flex; flex-wrap: wrap; gap: 0.4rem 1rem; margin: 0.75rem 0; padding: 0; }
+.post .markdown .rm-legend li { display: inline-flex; align-items: center; gap: 0.4rem; margin: 0; font-size: 0.75rem; }
+.post .markdown .rm-legend li::before { content: none; }
+.rm-dot { width: 0.6rem; height: 0.6rem; background: var(--team); }
+
+/* team colours from the Team Allocation design */
+[data-team="Management"] { --team: #ecf0f1; }
+[data-team="Development"] { --team: #9b59b6; }
+[data-team="Art"] { --team: #3498db; }
+[data-team="Audio"] { --team: #1abc9c; }
+[data-team="QA"] { --team: #e67e22; }
+[data-team="Marketing"] { --team: #95a5a6; }
+[data-team="Business"] { --team: #e74c3c; }
+
+.rm-scroll { overflow-x: auto; border: 1px solid rgba(var(--primary-color-rgb), 0.3); background: rgba(var(--background-color-rgb), 0.6); }
+.rm-grid { min-width: 56rem; }
+.rm-head, .rm-row { display: grid; grid-template-columns: 15rem 1fr; padding-right: 3rem; }
+.rm-head { position: sticky; top: 0; border-bottom: 1px solid rgba(var(--dynamic-dominant-color-rgb), 0.4); background: rgba(var(--dynamic-dominant-color-rgb), 0.08); }
+.rm-name-h { padding: 0.5rem 0.75rem; font-size: 0.75rem; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--dynamic-dominant-color); }
+.rm-axis { width: 100%; height: 34px; overflow: visible; }
+.rm-month { font-size: 11px; font-weight: 700; fill: var(--text-color); transform: translateX(4px); }
+.rm-week { font-size: 10px; fill: rgba(var(--text-color-rgb), 0.55); transform: translateX(4px); }
+.rm-row { border-bottom: 1px dashed rgba(var(--primary-color-rgb), 0.15); }
+.rm-row:hover { background: rgba(var(--dynamic-dominant-color-rgb), 0.08); }
+.rm-name {
+  overflow: hidden;
+  padding: 0.35rem 0.75rem;
+  font-size: 0.78rem;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: rgba(var(--text-color-rgb), 0.9);
+  border-right: 1px solid rgba(var(--primary-color-rgb), 0.25);
+}
+.rm-row.is-milestone .rm-name { color: var(--dynamic-dominant-color); }
+.rm-track { width: 100%; height: 28px; overflow: visible; }
+.rm-tick { stroke: rgba(var(--primary-color-rgb), 0.15); stroke-width: 1; }
+.rm-bar { fill: rgba(var(--dynamic-dominant-color-rgb), 0.25); stroke: var(--dynamic-dominant-color); stroke-width: 1; }
+.rm-row:hover .rm-bar { fill: rgba(var(--dynamic-dominant-color-rgb), 0.45); }
+.rm-diamond { fill: var(--dynamic-dominant-color); }
+.rm-team { fill: var(--team); }
+
+.post.case .markdown .rm-list tbody th[scope="row"] { width: 16rem; }
+.post .markdown .rm-chips { display: flex; flex-wrap: wrap; gap: 0.3rem; margin: 0; padding: 0; }
+.post .markdown .rm-chips li { margin: 0; padding: 0 0.35rem; font-size: 0.72rem; border: 1px solid var(--team); color: var(--text-color); }
+.post .markdown .rm-chips li::before { content: none; }
+.rm-when { white-space: nowrap; font-size: 0.8rem; }
+.rm-tasks summary { cursor: pointer; font-size: 0.8rem; color: var(--dynamic-dominant-color); }
+.rm-tasks .checklist { margin: 0.5rem 0 0; }
+.post .markdown .rm-tasks li { font-size: 0.8rem; }
+.rm-none { opacity: 0.4; }
+
+@media (max-width: 700px) {
+  .post.case { --post-pad: 1rem; }
+  .case-title { font-size: 1.5rem; }
+  .rm-head, .rm-row { grid-template-columns: 10rem 1fr; }
+  .post.case .markdown table.nt tbody th[scope="row"] { width: auto; }
+}

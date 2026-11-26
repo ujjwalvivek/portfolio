@@ -1,0 +1,468 @@
+# Pet Palooza roadmap: the Notion database of the same name, converted by notion/convert.py.
+# left and width are percentages of the timeline, from Monday 2023-04-03 to 2023-08-14.
+
+start = "2023-04-03"
+end = "2023-08-14"
+
+[[teams]]
+key = "Management Team"
+label = "Management"
+colour = "#ecf0f1"
+
+[[teams]]
+key = "Development Team"
+label = "Development"
+colour = "#9b59b6"
+
+[[teams]]
+key = "Art Team"
+label = "Art"
+colour = "#3498db"
+
+[[teams]]
+key = "Audio Team"
+label = "Audio"
+colour = "#1abc9c"
+
+[[teams]]
+key = "Quality Assurance"
+label = "QA"
+colour = "#e67e22"
+
+[[teams]]
+key = "Marketing team"
+label = "Marketing"
+colour = "#95a5a6"
+
+[[teams]]
+key = "Business Team"
+label = "Business"
+colour = "#e74c3c"
+
+[[weeks]]
+left = 0.0
+label = "3"
+month = "April"
+
+[[weeks]]
+left = 5.263
+label = "10"
+month = ""
+
+[[weeks]]
+left = 10.526
+label = "17"
+month = ""
+
+[[weeks]]
+left = 15.789
+label = "24"
+month = ""
+
+[[weeks]]
+left = 21.053
+label = "1"
+month = "May"
+
+[[weeks]]
+left = 26.316
+label = "8"
+month = ""
+
+[[weeks]]
+left = 31.579
+label = "15"
+month = ""
+
+[[weeks]]
+left = 36.842
+label = "22"
+month = ""
+
+[[weeks]]
+left = 42.105
+label = "29"
+month = ""
+
+[[weeks]]
+left = 47.368
+label = "5"
+month = "June"
+
+[[weeks]]
+left = 52.632
+label = "12"
+month = ""
+
+[[weeks]]
+left = 57.895
+label = "19"
+month = ""
+
+[[weeks]]
+left = 63.158
+label = "26"
+month = ""
+
+[[weeks]]
+left = 68.421
+label = "3"
+month = "July"
+
+[[weeks]]
+left = 73.684
+label = "10"
+month = ""
+
+[[weeks]]
+left = 78.947
+label = "17"
+month = ""
+
+[[weeks]]
+left = 84.211
+label = "24"
+month = ""
+
+[[weeks]]
+left = 89.474
+label = "31"
+month = ""
+
+[[weeks]]
+left = 94.737
+label = "7"
+month = "August"
+
+[[rows]]
+name = "Resource Allocation"
+when = "3 Apr 2023"
+milestone = true
+left = 0.0
+width = 0.752
+teams = ["Management", "Marketing", "Business"]
+tasks = []
+
+[[rows]]
+name = "Kickoff Meeting w/ Team"
+when = "4 Apr 2023"
+milestone = true
+left = 0.752
+width = 0.752
+teams = ["Management", "Marketing", "Business", "Development", "Audio", "Art", "QA"]
+tasks = []
+
+[[rows]]
+name = "Planning and Research"
+when = "4 Apr 2023 → 7 Apr 2023"
+milestone = false
+left = 0.752
+width = 3.008
+teams = ["Management", "Marketing", "Business"]
+tasks = ["Define project scope and goals.", "Conduct user research and identify key features."]
+
+[[rows]]
+name = "Game Developer Document Creation"
+when = "10 Apr 2023 → 14 Apr 2023"
+milestone = false
+left = 5.263
+width = 3.759
+teams = ["Management", "Business"]
+tasks = ["Begin the creation of a GDD which is a storyboard for the developers and designers to work with."]
+
+[[rows]]
+name = "Wireframe and Prototypes"
+when = "12 Apr 2023 → 14 Apr 2023"
+milestone = false
+left = 6.767
+width = 2.256
+teams = ["Development", "Art"]
+tasks = ["Develop wireframes and initial designs"]
+
+[[rows]]
+name = "Finalize Game Design and Features"
+when = "13 Apr 2023 → 15 Apr 2023"
+milestone = false
+left = 7.519
+width = 2.256
+teams = ["Management", "Development", "Art"]
+tasks = []
+
+[[rows]]
+name = "Develop User Stories and Scenarios"
+when = "14 Apr 2023 → 15 Apr 2023"
+milestone = false
+left = 8.271
+width = 1.504
+teams = ["Management", "Marketing", "Business"]
+tasks = []
+
+[[rows]]
+name = "Design Kicks Off"
+when = "17 Apr 2023 → 28 Apr 2023"
+milestone = false
+left = 10.526
+width = 9.023
+teams = ["Audio", "Art"]
+tasks = ["Begin design for the game", "Design initial game user interface", "Design a bare minimum where the developers would be able to reintegrate in their framework for reviews."]
+
+[[rows]]
+name = "Design Review Level 1"
+when = "28 Apr 2023"
+milestone = true
+left = 18.797
+width = 0.752
+teams = ["Management", "Audio", "Art"]
+tasks = []
+
+[[rows]]
+name = "Development Kicks Off"
+when = "24 Apr 2023 → 28 Apr 2023"
+milestone = false
+left = 15.789
+width = 3.759
+teams = ["Development"]
+tasks = ["Begin coding and development of the game", "Develop initial game mechanics"]
+
+[[rows]]
+name = "Development Review Level 1"
+when = "28 Apr 2023"
+milestone = true
+left = 18.797
+width = 0.752
+teams = ["Management", "Development"]
+tasks = []
+
+[[rows]]
+name = "Design Phase Alpha"
+when = "1 May 2023 → 12 May 2023"
+milestone = false
+left = 21.053
+width = 9.023
+teams = ["Audio", "Art"]
+tasks = []
+
+[[rows]]
+name = "Sound Design + Review w/ Design"
+when = "1 May 2023 → 12 May 2023"
+milestone = false
+left = 21.053
+width = 9.023
+teams = ["Management", "Audio", "Art"]
+tasks = ["Implement sound effects and music"]
+
+[[rows]]
+name = "Design Review Level 2"
+when = "12 May 2023"
+milestone = true
+left = 29.323
+width = 0.752
+teams = ["Management", "Audio", "Art"]
+tasks = []
+
+[[rows]]
+name = "Development Phase Alpha"
+when = "1 May 2023 → 22 May 2023"
+milestone = false
+left = 21.053
+width = 16.541
+teams = ["Development"]
+tasks = ["Continue coding and development of the game", "Develop pet customization features", "Develop feeding, grooming, and exercise mechanics", "Implement financial management system", "Develop initial level-up and reward system"]
+
+[[rows]]
+name = "Development Review Level 2"
+when = "22 May 2023"
+milestone = true
+left = 36.842
+width = 0.752
+teams = ["Management", "Development"]
+tasks = []
+
+[[rows]]
+name = "QA for Alpha Phase"
+when = "22 May 2023 → 26 May 2023"
+milestone = false
+left = 36.842
+width = 3.759
+teams = ["QA", "Development"]
+tasks = ["Conduct internal testing and quality assurance", "Fix bugs and address technical issues"]
+
+[[rows]]
+name = "Design Phase Beta"
+when = "22 May 2023 → 31 May 2023"
+milestone = false
+left = 36.842
+width = 7.519
+teams = ["Audio", "Art"]
+tasks = ["Develop visual effects and animation"]
+
+[[rows]]
+name = "Development Phase Beta"
+when = "30 May 2023 → 12 Jun 2023"
+milestone = false
+left = 42.857
+width = 10.526
+teams = ["Development"]
+tasks = ["Refine game mechanics and user interface based on feedback", "Develop additional game features and levels", "Implement in-app purchase system"]
+
+[[rows]]
+name = "Development Review Level 3"
+when = "12 Jun 2023"
+milestone = true
+left = 52.632
+width = 0.752
+teams = ["Management", "Development"]
+tasks = []
+
+[[rows]]
+name = "QA for Beta Phase"
+when = "12 Jun 2023 → 16 Jun 2023"
+milestone = false
+left = 52.632
+width = 3.759
+teams = ["Development", "QA"]
+tasks = ["Conduct external beta testing and gather feedback"]
+
+[[rows]]
+name = "Design Final Stage Optimizations"
+when = "16 Jun 2023 → 26 Jun 2023"
+milestone = false
+left = 55.639
+width = 8.271
+teams = ["Audio", "Art"]
+tasks = ["Also develop App Store and Google Play pages"]
+
+[[rows]]
+name = "Design Review Level 3"
+when = "26 Jun 2023"
+milestone = true
+left = 63.158
+width = 0.752
+teams = ["Management", "Audio", "Art"]
+tasks = []
+
+[[rows]]
+name = "Development Final Stage"
+when = "26 Jun 2023 → 30 Jun 2023"
+milestone = false
+left = 63.158
+width = 3.759
+teams = ["Development"]
+tasks = ["Optimaztions"]
+
+[[rows]]
+name = "Development Review Level 4"
+when = "30 Jun 2023"
+milestone = true
+left = 66.165
+width = 0.752
+teams = ["Management", "Development"]
+tasks = []
+
+[[rows]]
+name = "QA for Final Phase"
+when = "30 Jun 2023 → 7 Jul 2023"
+milestone = false
+left = 66.165
+width = 6.015
+teams = ["QA", "Development", "Audio", "Art"]
+tasks = ["Conduct final testing and quality assurance", "Prepare for release"]
+
+[[rows]]
+name = "Prepare for Release"
+when = "7 Jul 2023 → 11 Jul 2023"
+milestone = false
+left = 71.429
+width = 3.759
+teams = ["Management", "Marketing", "Business"]
+tasks = ["Finalize marketing plan and materials", "Develop App Store and Google Play pages", "Prepare for release", "Ensure the game is ready to go."]
+
+[[rows]]
+name = "Final Review and Demo"
+when = "10 Jul 2023 → 12 Jul 2023"
+milestone = false
+left = 73.684
+width = 2.256
+teams = ["Management", "Marketing", "Business", "Development", "Audio", "Art", "QA"]
+tasks = []
+
+[[rows]]
+name = "Release"
+when = "13 Jul 2023 → 21 Jul 2023"
+milestone = false
+left = 75.94
+width = 6.767
+teams = ["Marketing", "Business"]
+tasks = ["Release the game on iOS, Android, and Windows platforms", "Launch marketing campaign", "Monitor user feedback and reviews", "Begin post-release bug fixing and updates"]
+
+[[rows]]
+name = "Development releases Post Release Patches"
+when = "20 Jul 2023 → 28 Jul 2023"
+milestone = false
+left = 81.203
+width = 6.767
+teams = ["Development"]
+tasks = []
+
+[[rows]]
+name = "Design Changes if needed"
+when = "20 Jul 2023 → 28 Jul 2023"
+milestone = false
+left = 81.203
+width = 6.767
+teams = ["Audio", "Art"]
+tasks = []
+
+[[rows]]
+name = "Quality Assurance Team tests the Updates"
+when = "20 Jul 2023 → 28 Jul 2023"
+milestone = false
+left = 81.203
+width = 6.767
+teams = ["QA", "Development", "Audio", "Art"]
+tasks = []
+
+[[rows]]
+name = "Post Release Campaign"
+when = "20 Jul 2023 → 28 Jul 2023"
+milestone = false
+left = 81.203
+width = 6.767
+teams = ["Management", "Marketing", "Business"]
+tasks = ["Analyze user data and identify areas for improvement", "Develop additional game features and levels based on user feedback", "Begin work on next game update"]
+
+[[rows]]
+name = "Level 2 Review"
+when = "28 Jul 2023"
+milestone = true
+left = 87.218
+width = 0.752
+teams = ["Management", "Development", "Audio", "Art"]
+tasks = []
+
+[[rows]]
+name = "Game Improvements"
+when = "28 Jul 2023 → 4 Aug 2023"
+milestone = false
+left = 87.218
+width = 6.015
+teams = ["Development", "Audio", "Art", "QA"]
+tasks = ["Continue work on game updates and improvements", "Develop additional marketing materials and campaigns"]
+
+[[rows]]
+name = "Promote the Game"
+when = "31 Jul 2023 → 4 Aug 2023"
+milestone = false
+left = 89.474
+width = 3.759
+teams = ["Marketing"]
+tasks = ["Collaborate with influencers and partners to promote the game"]
+
+[[rows]]
+name = "Post release Updates"
+when = "4 Aug 2023 → 11 Aug 2023"
+milestone = false
+left = 92.481
+width = 6.015
+teams = ["Development", "Audio", "Art", "QA"]
+tasks = ["Release game updates and improvements", "Monitor user feedback and reviews", "Evaluate the success of the game and plan for future updates and improvements"]

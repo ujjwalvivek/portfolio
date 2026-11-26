@@ -56,7 +56,7 @@
       {#- v3 ButtonGroup: the blog button first, then the first of case study, docs, design, code, web; at most two. -#}
       {%- set blog = false %}{% if links and links.blogPost is defined %}{% set blog = links.blogPost %}{% endif %}
       {%- set limit = 2 %}{% if blog %}{% set limit = 1 %}{% endif %}
-      {%- set kinds = ["notionEmbed", "pdfDocument", "figmaDesign", "githubRepo", "websiteLink"] %}
+      {%- set kinds = ["caseStudy", "notionEmbed", "pdfDocument", "figmaDesign", "githubRepo", "websiteLink"] %}
       {%- set_global n_kinds = 0 %}
       {%- if links %}{% for k in kinds %}{% if links[k] is defined %}{% set_global n_kinds = n_kinds + 1 %}{% endif %}{% endfor %}{% endif %}
       {%- set n_btn = n_kinds %}{% if n_btn > limit %}{% set n_btn = limit %}{% endif %}{% if blog %}{% set n_btn = n_btn + 1 %}{% endif %}
@@ -67,7 +67,9 @@
         {%- endif %}
         {%- set_global used = 0 %}
         {%- for k in kinds %}{% if links and links[k] is defined and used < limit %}{% set_global used = used + 1 %}
-        {%- if k == "notionEmbed" %}
+        {%- if k == "caseStudy" %}
+        <a class="pj-btn" href="{{ links.caseStudy | safe }}" target="_blank" rel="noopener" data-pj-open="case" data-pj-title="{{ p.title }}"><svg class="icon" aria-hidden="true"><use href="/icons.svg#ep-docs"/></svg>Case Study</a>
+        {%- elif k == "notionEmbed" %}
         <a class="pj-btn" href="{{ links.notionEmbed | safe }}" target="_blank" rel="noopener" data-pj-open="notion" data-pj-title="{{ p.title }}"><svg class="icon" aria-hidden="true"><use href="/icons.svg#pi-notion-logo-fill"/></svg>Case Study</a>
         {%- elif k == "pdfDocument" %}
         <a class="pj-btn" href="{{ links.pdfDocument | safe }}" target="_blank" rel="noopener" data-pj-open="pdf" data-pj-title="{{ p.title }}"><svg class="icon" aria-hidden="true"><use href="/icons.svg#pi-file-pdf-fill"/></svg>Docs</a>
