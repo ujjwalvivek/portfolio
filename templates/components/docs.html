@@ -18,16 +18,16 @@
 <div class="rm-pane rm-timeline">
 <div class="rm-scroll">
 <div class="rm-grid">
-<div class="rm-head"><span class="rm-name-h">Name</span><svg class="rm-axis" role="img" aria-label="Weeks from {{ rm.start }} to {{ rm.end }}">{% for w in rm.weeks %}{% if w.month %}<text x="{{ w.left }}%" y="12" class="rm-month">{{ w.month }}</text>{% endif %}<text x="{{ w.left }}%" y="28" class="rm-week">{{ w.label }}</text>{% endfor %}</svg></div>
+<div class="rm-head"><span class="rm-name-h">Name</span><svg class="rm-axis" role="img" aria-label="Weeks from {{ rm.start }} to {{ rm.end }}">{% for w in rm.weeks %}{% if w.month %}<text x="{{ w.left }}%" y="15" class="rm-month">{{ w.month }}</text>{% endif %}<text x="{{ w.left }}%" y="34" class="rm-week">{{ w.label }}</text>{% endfor %}</svg></div>
 {%- for r in rm.rows %}
 <div class="rm-row{% if r.milestone %} is-milestone{% endif %}">
 <span class="rm-name" title="{{ r.name }}, {{ r.when }}">{{ r.name }}</span>
 <svg class="rm-track" role="img" aria-label="{{ r.name }}: {{ r.when }}; {{ r.teams | join(sep=', ') }}">
 {%- for w in rm.weeks %}<line class="rm-tick" x1="{{ w.left }}%" x2="{{ w.left }}%" y1="0" y2="100%"/>{% endfor -%}
-{%- if r.milestone %}<svg x="{{ r.left + r.width / 2 }}%" y="50%" overflow="visible"><rect class="rm-diamond" x="-6" y="-6" width="12" height="12" transform="rotate(45)"/></svg>
-{%- else %}<rect class="rm-bar" x="{{ r.left }}%" width="{{ r.width }}%" y="5" height="18"/>{% endif -%}
+{%- if r.milestone %}<svg x="{{ r.left + r.width / 2 }}%" y="50%" overflow="visible"><rect class="rm-diamond" x="-5" y="-5" width="10" height="10" transform="rotate(45)"/></svg>
+{%- else %}<rect class="rm-bar" x="{{ r.left }}%" width="{{ r.width }}%" y="11" height="14"/>{% endif -%}
 {%- set n = r.teams | length -%}
-{%- for t in r.teams %}<svg x="{{ r.left + r.width }}%" y="0" overflow="visible"><rect class="rm-team" data-team="{{ t }}" x="{{ loop.index0 * 7 }}" transform="translate({% if r.milestone %}10{% else %}6{% endif %},0)" y="7" width="5" height="14"/></svg>{% endfor -%}
+{%- for t in r.teams %}<svg x="{{ r.left + r.width }}%" y="0" overflow="visible"><rect class="rm-team" data-team="{{ t }}" x="{{ loop.index0 * 11 }}" transform="translate({% if r.milestone %}12{% else %}8{% endif %},0)" y="14" width="8" height="8"/></svg>{% endfor -%}
 </svg>
 </div>
 {%- endfor %}
