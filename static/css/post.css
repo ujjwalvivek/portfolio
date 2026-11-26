@@ -319,7 +319,6 @@
 .post .markdown p:has(> img:only-child) { margin: 0; }
 
 /* figures, raw iframes and captions */
-.post .markdown iframe.ratio-2-1 { aspect-ratio: 2 / 1; } /* a class, not a style attribute, for the CSP */
 .post .markdown figure { margin: 1rem 0; padding: 0; }
 .post .markdown figure > iframe,
 .post .markdown > iframe {

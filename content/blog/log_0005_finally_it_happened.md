@@ -92,7 +92,7 @@ Feel free to check out the demos below. The first being the port of the old Dino
 
 ## Dino Blink: A Journey Engine Game
 
-<figure><iframe class="ratio-2-1" src="/games/dino-blink.html" title="Dino Blink" width="100%" loading="lazy"></iframe><figcaption>An ode to the past which started it all. Space is the button. Go crazy.</figcaption></figure>
+{{ <embed src="/games/dino-blink.html" title="Dino Blink" cover="dino" caption="An ode to the past which started it all. Space is the button. Go crazy." ratio="2/1" gpu="webgpu" /> }}
 
 ## Journey Engine: A v1.1.2 Demo
 
