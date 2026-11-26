@@ -8,7 +8,7 @@ tags = ["Rust", "GPUI", "LLM", "Porting", "Postmortem"]
 
 [extra]
 id = 15
-thumbnail = "https://raw.githubusercontent.com/ujjwalvivek/devhub/a19035008ac5ed1aedd42cea370fed73b65d257b/web/public/images/gpui/shot-5.webp"
+thumbnail = "https://cdn.ujjwalvivek.com/posts/media/log_0010_thumb.webp"
 legacy = "log_0010_gpui_experiment.md"
 +++
 
