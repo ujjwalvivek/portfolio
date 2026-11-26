@@ -643,7 +643,6 @@
 .post .dino-final b { color: var(--dynamic-dominant-color); }
 .post .dino-hint { font-size: 0.8rem; font-weight: 700; color: var(--text-color); opacity: 0.5; }
 .post .dino-hint u { color: var(--dynamic-dominant-color); }
-.post .dino-hint.is-faint { opacity: 0.25; }
 .post .dino-flicker { animation: dino-flicker 1.2s infinite alternate; }
 .post .dino-blink { animation: dino-blink 0.7s steps(1) infinite; }
 @keyframes dino-flicker { 0%, 100% { opacity: 1; } 80% { opacity: 0.85; } 85% { opacity: 0.6; } 90% { opacity: 0.95; } }

@@ -33,7 +33,7 @@ const html = `
   <div class="dino-ground"></div>
   <div class="dino-score">0</div>
   <div class="dino-over" hidden><div class="dino-over-row"><span class="dino-dead">D.E.A.D</span><span class="dino-final">score: <b>0</b></span></div>
-    <div class="dino-hint">press <u>space</u> to restart</div><div class="dino-hint is-faint">⟬tip: open your đɘʋ ĉøŋşɸʟə⟭</div></div>
+    <div class="dino-hint">press <u>space</u> to restart</div></div>
 </div>`;
 
 export function mount(host: HTMLElement): () => void {
